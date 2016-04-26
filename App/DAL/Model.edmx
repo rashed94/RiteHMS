@@ -1,0 +1,2361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BedOccupancy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="Occupied" Type="bit" />
+          <Property Name="UserId" Type="bigint" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Street" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="6" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="50" />
+          <Property Name="WebSite" Type="nvarchar(max)" />
+          <Property Name="Photo" Type="image" />
+          <Property Name="IsCompany" Type="bit" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="DrugAdministration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="DrugDosage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="DrugFrequency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="StoreID" Type="bigint" Nullable="false" />
+          <Property Name="Stock" Type="int" />
+          <Property Name="BuyPrice" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="BuyDate" Type="datetime" />
+          <Property Name="ExpireDate" Type="datetime" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="InvoicePayment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvoiceId" Type="bigint" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="PaymentID" Type="bigint" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="InvoiceStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="GenericName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ItemTypeId" Type="bigint" Nullable="false" />
+          <Property Name="MedicalTypeId" Type="bigint" Nullable="false" />
+          <Property Name="ItemCategoryId" Type="bigint" Nullable="false" />
+          <Property Name="MeasurementUnitId" Type="bigint" Nullable="false" />
+          <Property Name="SalePrice" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="BuyPrice" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="ServiceProviderId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Item_ItemGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="ItemGroupID" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="ItemCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="MedicalTypeId" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="ItemDefaults">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="DosageId" Type="bigint" />
+          <Property Name="AdministrationId" Type="bigint" />
+          <Property Name="FrequencyId" Type="bigint" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="ItemGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="ItemReorder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReorderLevel" Type="int" Nullable="false" />
+          <Property Name="ShelfName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="ItemType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="MeasurementUnit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="MedicalType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="Membership">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="PatiendId" Type="bigint" Nullable="false" />
+          <Property Name="ValidityPeriod" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="AnnualFee" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="HealthBook" Type="bit" />
+          <Property Name="EntryDate" Type="datetime" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Gender" Type="bit" Nullable="false" />
+          <Property Name="BloodGroup" Type="nvarchar" MaxLength="5" />
+          <Property Name="FatherName" Type="nvarchar" MaxLength="50" />
+          <Property Name="DOB" Type="datetime" />
+          <Property Name="NationalId" Type="nvarchar" MaxLength="50" />
+          <Property Name="Occupation" Type="nvarchar" MaxLength="50" />
+          <Property Name="Street" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="6" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Photo" Type="image" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="PatientAdmission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="PatientId" Type="bigint" Nullable="false" />
+          <Property Name="AdmissionDate" Type="datetime" Nullable="false" />
+          <Property Name="DischargeDate" Type="datetime" />
+          <Property Name="ServiceProviderId" Type="bigint" />
+          <Property Name="RefererId" Type="bigint" />
+          <Property Name="DepartmentId" Type="bigint" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PatientInvoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientID" Type="bigint" Nullable="false" />
+          <Property Name="InvoiceDate" Type="datetime" Nullable="false" />
+          <Property Name="DueDate" Type="datetime" />
+          <Property Name="UserId" Type="bigint" />
+          <Property Name="StatusId" Type="bigint" Nullable="false" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="TotalDiscount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ItemDiscount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="PatientService">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientID" Type="bigint" Nullable="false" />
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="InvoiceID" Type="bigint" />
+          <Property Name="ServiceListPrice" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ServiceActualPrice" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ServiceQuantity" Type="int" Nullable="false" />
+          <Property Name="ServiceDate" Type="datetime" Nullable="false" />
+          <Property Name="UserId" Type="bigint" />
+          <Property Name="Discount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Refund" Type="bit" />
+          <Property Name="Billed" Type="bit" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="DeductionAmount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="PaymentTypeId" Type="bigint" Nullable="false" />
+          <Property Name="PatientID" Type="bigint" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="ReceiptPayment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="PaymentId" Type="bigint" Nullable="false" />
+          <Property Name="ItemId" Type="bigint" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="SalePrice" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="Refund">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="InvoiceID" Type="bigint" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="ApprovedUserID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServiceProvider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContactId" Type="bigint" Nullable="false" />
+          <Property Name="ServiceProviderTypeId" Type="bigint" Nullable="false" />
+          <Property Name="DepartmentId" Type="bigint" Nullable="false" />
+          <Property Name="Speciality" Type="nvarchar" MaxLength="100" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="AssignedToAllUsers" Type="bit" />
+          <Property Name="IsReferer" Type="bit" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="ServiceProviderType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StoreName" Type="nvarchar" MaxLength="255" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <Association Name="FK_Contact_ServiceProvider">
+          <End Role="Contact" Type="Self.Contact" Multiplicity="1" />
+          <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contact">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ServiceProvider">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Department_ServiceProvider">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ServiceProvider">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DrugAdministration_T_ItemDefaults">
+          <End Role="DrugAdministration" Type="Self.DrugAdministration" Multiplicity="0..1" />
+          <End Role="ItemDefaults" Type="Self.ItemDefaults" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DrugAdministration">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemDefaults">
+              <PropertyRef Name="AdministrationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DrugDosage_T_ItemDefaults">
+          <End Role="DrugDosage" Type="Self.DrugDosage" Multiplicity="0..1" />
+          <End Role="ItemDefaults" Type="Self.ItemDefaults" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DrugDosage">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemDefaults">
+              <PropertyRef Name="DosageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DrugFrequency_T_ItemDefaults">
+          <End Role="DrugFrequency" Type="Self.DrugFrequency" Multiplicity="0..1" />
+          <End Role="ItemDefaults" Type="Self.ItemDefaults" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DrugFrequency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemDefaults">
+              <PropertyRef Name="FrequencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_BedOccupancy">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="BedOccupancy" Type="Self.BedOccupancy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BedOccupancy">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Item_ItemGroup" Type="Self.Item_ItemGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item_ItemGroup">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ItemCategory">
+          <End Role="ItemCategory" Type="Self.ItemCategory" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ItemDefaults">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemDefaults" Type="Self.ItemDefaults" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemDefaults">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ItemGroup">
+          <End Role="ItemGroup" Type="Self.ItemGroup" Multiplicity="1" />
+          <End Role="Item_ItemGroup" Type="Self.Item_ItemGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item_ItemGroup">
+              <PropertyRef Name="ItemGroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ItemReorder">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemReorder" Type="Self.ItemReorder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemReorder">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ItemType">
+          <End Role="ItemType" Type="Self.ItemType" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_MeasurementUnit">
+          <End Role="MeasurementUnit" Type="Self.MeasurementUnit" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MeasurementUnit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="MeasurementUnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_MedicalType">
+          <End Role="MedicalType" Type="Self.MedicalType" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MedicalType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="MedicalTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ServiceProvider">
+          <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="0..1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceProvider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ServiceProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item1_T_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemCategory_T_MedicalType">
+          <End Role="MedicalType" Type="Self.MedicalType" Multiplicity="1" />
+          <End Role="ItemCategory" Type="Self.ItemCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MedicalType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemCategory">
+              <PropertyRef Name="MedicalTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Membership_T_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Membership" Type="Self.Membership" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Membership">
+              <PropertyRef Name="PatiendId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_T_PatientInvoice">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="PatientInvoice" Type="Self.PatientInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientInvoice">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceProviderType_ServiceProvider">
+          <End Role="ServiceProviderType" Type="Self.ServiceProviderType" Multiplicity="1" />
+          <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceProviderType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ServiceProvider">
+              <PropertyRef Name="ServiceProviderTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Store_T_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_InvoicePayment_T_PatientInvoice1">
+          <End Role="PatientInvoice" Type="Self.PatientInvoice" Multiplicity="1" />
+          <End Role="InvoicePayment" Type="Self.InvoicePayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientInvoice">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InvoicePayment">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_InvoicePayment_T_Payment">
+          <End Role="Payment" Type="Self.Payment" Multiplicity="0..1" />
+          <End Role="InvoicePayment" Type="Self.InvoicePayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="InvoicePayment">
+              <PropertyRef Name="PaymentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientAdmission_T_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="PatientAdmission" Type="Self.PatientAdmission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientAdmission">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientAdmission_T_PatientAdmission">
+          <End Role="PatientAdmission" Type="Self.PatientAdmission" Multiplicity="1" />
+          <End Role="PatientAdmission1" Type="Self.PatientAdmission" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PatientAdmission">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientAdmission1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientAdmission_T_ServiceProvider">
+          <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="0..1" />
+          <End Role="PatientAdmission" Type="Self.PatientAdmission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceProvider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientAdmission">
+              <PropertyRef Name="ServiceProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientAdmission_T_ServiceProvider1">
+          <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="0..1" />
+          <End Role="PatientAdmission" Type="Self.PatientAdmission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceProvider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientAdmission">
+              <PropertyRef Name="RefererId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientInvoice_T_InvoiceStatus">
+          <End Role="InvoiceStatus" Type="Self.InvoiceStatus" Multiplicity="1" />
+          <End Role="PatientInvoice" Type="Self.PatientInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InvoiceStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientInvoice">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientService_T_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="PatientService" Type="Self.PatientService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientService">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientService_T_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="PatientService" Type="Self.PatientService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientService">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientService_T_PatientInvoice">
+          <End Role="PatientInvoice" Type="Self.PatientInvoice" Multiplicity="0..1" />
+          <End Role="PatientService" Type="Self.PatientService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientInvoice">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientService">
+              <PropertyRef Name="InvoiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Payment_T_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Payment_T_PaymentType">
+          <End Role="PaymentType" Type="Self.PaymentType" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="PaymentTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_ReceiptPayment_T_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ReceiptPayment" Type="Self.ReceiptPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReceiptPayment">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_ReceiptPayment_T_Payment">
+          <End Role="Payment" Type="Self.Payment" Multiplicity="1" />
+          <End Role="ReceiptPayment" Type="Self.ReceiptPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReceiptPayment">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Refund_T_PatientInvoice">
+          <End Role="PatientInvoice" Type="Self.PatientInvoice" Multiplicity="1" />
+          <End Role="Refund" Type="Self.Refund" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientInvoice">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Refund">
+              <PropertyRef Name="InvoiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HMSModelStoreContainer">
+          <EntitySet Name="BedOccupancy" EntityType="Self.BedOccupancy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contact" EntityType="Self.Contact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DrugAdministration" EntityType="Self.DrugAdministration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DrugDosage" EntityType="Self.DrugDosage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DrugFrequency" EntityType="Self.DrugFrequency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InvoicePayment" EntityType="Self.InvoicePayment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InvoiceStatus" EntityType="Self.InvoiceStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item_ItemGroup" EntityType="Self.Item_ItemGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemCategory" EntityType="Self.ItemCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemDefaults" EntityType="Self.ItemDefaults" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemGroup" EntityType="Self.ItemGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemReorder" EntityType="Self.ItemReorder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemType" EntityType="Self.ItemType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MeasurementUnit" EntityType="Self.MeasurementUnit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MedicalType" EntityType="Self.MedicalType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Membership" EntityType="Self.Membership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientAdmission" EntityType="Self.PatientAdmission" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientInvoice" EntityType="Self.PatientInvoice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientService" EntityType="Self.PatientService" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentType" EntityType="Self.PaymentType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReceiptPayment" EntityType="Self.ReceiptPayment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Refund" EntityType="Self.Refund" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceProvider" EntityType="Self.ServiceProvider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceProviderType" EntityType="Self.ServiceProviderType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Contact_ServiceProvider" Association="Self.FK_Contact_ServiceProvider">
+            <End Role="Contact" EntitySet="Contact" />
+            <End Role="ServiceProvider" EntitySet="ServiceProvider" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Department_ServiceProvider" Association="Self.FK_Department_ServiceProvider">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="ServiceProvider" EntitySet="ServiceProvider" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DrugAdministration_T_ItemDefaults" Association="Self.FK_DrugAdministration_T_ItemDefaults">
+            <End Role="DrugAdministration" EntitySet="DrugAdministration" />
+            <End Role="ItemDefaults" EntitySet="ItemDefaults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DrugDosage_T_ItemDefaults" Association="Self.FK_DrugDosage_T_ItemDefaults">
+            <End Role="DrugDosage" EntitySet="DrugDosage" />
+            <End Role="ItemDefaults" EntitySet="ItemDefaults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DrugFrequency_T_ItemDefaults" Association="Self.FK_DrugFrequency_T_ItemDefaults">
+            <End Role="DrugFrequency" EntitySet="DrugFrequency" />
+            <End Role="ItemDefaults" EntitySet="ItemDefaults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_BedOccupancy" Association="Self.FK_Item_T_BedOccupancy">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="BedOccupancy" EntitySet="BedOccupancy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_Item" Association="Self.FK_Item_T_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="Item_ItemGroup" EntitySet="Item_ItemGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ItemCategory" Association="Self.FK_Item_T_ItemCategory">
+            <End Role="ItemCategory" EntitySet="ItemCategory" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ItemDefaults" Association="Self.FK_Item_T_ItemDefaults">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemDefaults" EntitySet="ItemDefaults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ItemGroup" Association="Self.FK_Item_T_ItemGroup">
+            <End Role="ItemGroup" EntitySet="ItemGroup" />
+            <End Role="Item_ItemGroup" EntitySet="Item_ItemGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ItemReorder" Association="Self.FK_Item_T_ItemReorder">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemReorder" EntitySet="ItemReorder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ItemType" Association="Self.FK_Item_T_ItemType">
+            <End Role="ItemType" EntitySet="ItemType" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_MeasurementUnit" Association="Self.FK_Item_T_MeasurementUnit">
+            <End Role="MeasurementUnit" EntitySet="MeasurementUnit" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_MedicalType" Association="Self.FK_Item_T_MedicalType">
+            <End Role="MedicalType" EntitySet="MedicalType" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ServiceProvider" Association="Self.FK_Item_T_ServiceProvider">
+            <End Role="ServiceProvider" EntitySet="ServiceProvider" />
+            <End Role="Item" EntitySet="Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item1_T_Item" Association="Self.FK_Item1_T_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemCategory_T_MedicalType" Association="Self.FK_ItemCategory_T_MedicalType">
+            <End Role="MedicalType" EntitySet="MedicalType" />
+            <End Role="ItemCategory" EntitySet="ItemCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Membership_T_Patient" Association="Self.FK_Membership_T_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Membership" EntitySet="Membership" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_T_PatientInvoice" Association="Self.FK_Patient_T_PatientInvoice">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="PatientInvoice" EntitySet="PatientInvoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceProviderType_ServiceProvider" Association="Self.FK_ServiceProviderType_ServiceProvider">
+            <End Role="ServiceProviderType" EntitySet="ServiceProviderType" />
+            <End Role="ServiceProvider" EntitySet="ServiceProvider" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Store_T_Store" Association="Self.FK_Store_T_Store">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_InvoicePayment_T_PatientInvoice1" Association="Self.FK_T_InvoicePayment_T_PatientInvoice1">
+            <End Role="PatientInvoice" EntitySet="PatientInvoice" />
+            <End Role="InvoicePayment" EntitySet="InvoicePayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_InvoicePayment_T_Payment" Association="Self.FK_T_InvoicePayment_T_Payment">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="InvoicePayment" EntitySet="InvoicePayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientAdmission_T_Department" Association="Self.FK_T_PatientAdmission_T_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="PatientAdmission" EntitySet="PatientAdmission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientAdmission_T_PatientAdmission" Association="Self.FK_T_PatientAdmission_T_PatientAdmission">
+            <End Role="PatientAdmission" EntitySet="PatientAdmission" />
+            <End Role="PatientAdmission1" EntitySet="PatientAdmission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientAdmission_T_ServiceProvider" Association="Self.FK_T_PatientAdmission_T_ServiceProvider">
+            <End Role="ServiceProvider" EntitySet="ServiceProvider" />
+            <End Role="PatientAdmission" EntitySet="PatientAdmission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientAdmission_T_ServiceProvider1" Association="Self.FK_T_PatientAdmission_T_ServiceProvider1">
+            <End Role="ServiceProvider" EntitySet="ServiceProvider" />
+            <End Role="PatientAdmission" EntitySet="PatientAdmission" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientInvoice_T_InvoiceStatus" Association="Self.FK_T_PatientInvoice_T_InvoiceStatus">
+            <End Role="InvoiceStatus" EntitySet="InvoiceStatus" />
+            <End Role="PatientInvoice" EntitySet="PatientInvoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientService_T_Item" Association="Self.FK_T_PatientService_T_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="PatientService" EntitySet="PatientService" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientService_T_Patient" Association="Self.FK_T_PatientService_T_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="PatientService" EntitySet="PatientService" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientService_T_PatientInvoice" Association="Self.FK_T_PatientService_T_PatientInvoice">
+            <End Role="PatientInvoice" EntitySet="PatientInvoice" />
+            <End Role="PatientService" EntitySet="PatientService" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Payment_T_Patient" Association="Self.FK_T_Payment_T_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Payment_T_PaymentType" Association="Self.FK_T_Payment_T_PaymentType">
+            <End Role="PaymentType" EntitySet="PaymentType" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_ReceiptPayment_T_Item" Association="Self.FK_T_ReceiptPayment_T_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ReceiptPayment" EntitySet="ReceiptPayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_ReceiptPayment_T_Payment" Association="Self.FK_T_ReceiptPayment_T_Payment">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="ReceiptPayment" EntitySet="ReceiptPayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Refund_T_PatientInvoice" Association="Self.FK_T_Refund_T_PatientInvoice">
+            <End Role="PatientInvoice" EntitySet="PatientInvoice" />
+            <End Role="Refund" EntitySet="Refund" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="HMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BedOccupancies" EntityType="HMSModel.BedOccupancy" />
+          <EntitySet Name="Contacts" EntityType="HMSModel.Contact" />
+          <EntitySet Name="Departments" EntityType="HMSModel.Department" />
+          <EntitySet Name="DrugAdministrations" EntityType="HMSModel.DrugAdministration" />
+          <EntitySet Name="DrugDosages" EntityType="HMSModel.DrugDosage" />
+          <EntitySet Name="DrugFrequencies" EntityType="HMSModel.DrugFrequency" />
+          <EntitySet Name="Inventories" EntityType="HMSModel.Inventory" />
+          <EntitySet Name="InvoicePayments" EntityType="HMSModel.InvoicePayment" />
+          <EntitySet Name="InvoiceStatus" EntityType="HMSModel.InvoiceStatu" />
+          <EntitySet Name="Items" EntityType="HMSModel.Item" />
+          <EntitySet Name="ItemItemGroups" EntityType="HMSModel.ItemItemGroup" />
+          <EntitySet Name="ItemCategories" EntityType="HMSModel.ItemCategory" />
+          <EntitySet Name="ItemDefaults" EntityType="HMSModel.ItemDefault" />
+          <EntitySet Name="ItemGroups" EntityType="HMSModel.ItemGroup" />
+          <EntitySet Name="ItemReorders" EntityType="HMSModel.ItemReorder" />
+          <EntitySet Name="ItemTypes" EntityType="HMSModel.ItemType" />
+          <EntitySet Name="MeasurementUnits" EntityType="HMSModel.MeasurementUnit" />
+          <EntitySet Name="MedicalTypes" EntityType="HMSModel.MedicalType" />
+          <EntitySet Name="Memberships" EntityType="HMSModel.Membership" />
+          <EntitySet Name="Patients" EntityType="HMSModel.Patient" />
+          <EntitySet Name="PatientAdmissions" EntityType="HMSModel.PatientAdmission" />
+          <EntitySet Name="PatientInvoices" EntityType="HMSModel.PatientInvoice" />
+          <EntitySet Name="PatientServices" EntityType="HMSModel.PatientService" />
+          <EntitySet Name="Payments" EntityType="HMSModel.Payment" />
+          <EntitySet Name="PaymentTypes" EntityType="HMSModel.PaymentType" />
+          <EntitySet Name="ReceiptPayments" EntityType="HMSModel.ReceiptPayment" />
+          <EntitySet Name="Refunds" EntityType="HMSModel.Refund" />
+          <EntitySet Name="ServiceProviders" EntityType="HMSModel.ServiceProvider" />
+          <EntitySet Name="ServiceProviderTypes" EntityType="HMSModel.ServiceProviderType" />
+          <EntitySet Name="Stores" EntityType="HMSModel.Store" />
+          <AssociationSet Name="FK_Item_T_BedOccupancy" Association="HMSModel.FK_Item_T_BedOccupancy">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="BedOccupancy" EntitySet="BedOccupancies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contact_ServiceProvider" Association="HMSModel.FK_Contact_ServiceProvider">
+            <End Role="Contact1" EntitySet="Contacts" />
+            <End Role="ServiceProvider" EntitySet="ServiceProviders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Department_ServiceProvider" Association="HMSModel.FK_Department_ServiceProvider">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="ServiceProvider" EntitySet="ServiceProviders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientAdmission_T_Department" Association="HMSModel.FK_T_PatientAdmission_T_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="PatientAdmission" EntitySet="PatientAdmissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DrugAdministration_T_ItemDefaults" Association="HMSModel.FK_DrugAdministration_T_ItemDefaults">
+            <End Role="DrugAdministration" EntitySet="DrugAdministrations" />
+            <End Role="ItemDefault" EntitySet="ItemDefaults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DrugDosage_T_ItemDefaults" Association="HMSModel.FK_DrugDosage_T_ItemDefaults">
+            <End Role="DrugDosage" EntitySet="DrugDosages" />
+            <End Role="ItemDefault" EntitySet="ItemDefaults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DrugFrequency_T_ItemDefaults" Association="HMSModel.FK_DrugFrequency_T_ItemDefaults">
+            <End Role="DrugFrequency" EntitySet="DrugFrequencies" />
+            <End Role="ItemDefault" EntitySet="ItemDefaults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item1_T_Item" Association="HMSModel.FK_Item1_T_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="Inventory" EntitySet="Inventories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Store_T_Store" Association="HMSModel.FK_Store_T_Store">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="Inventory" EntitySet="Inventories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_InvoicePayment_T_PatientInvoice1" Association="HMSModel.FK_T_InvoicePayment_T_PatientInvoice1">
+            <End Role="PatientInvoice" EntitySet="PatientInvoices" />
+            <End Role="InvoicePayment" EntitySet="InvoicePayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_InvoicePayment_T_Payment" Association="HMSModel.FK_T_InvoicePayment_T_Payment">
+            <End Role="Payment" EntitySet="Payments" />
+            <End Role="InvoicePayment" EntitySet="InvoicePayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientInvoice_T_InvoiceStatus" Association="HMSModel.FK_T_PatientInvoice_T_InvoiceStatus">
+            <End Role="InvoiceStatu" EntitySet="InvoiceStatus" />
+            <End Role="PatientInvoice" EntitySet="PatientInvoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_Item" Association="HMSModel.FK_Item_T_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="Item_ItemGroup" EntitySet="ItemItemGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ItemCategory" Association="HMSModel.FK_Item_T_ItemCategory">
+            <End Role="ItemCategory" EntitySet="ItemCategories" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ItemDefaults" Association="HMSModel.FK_Item_T_ItemDefaults">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemDefault" EntitySet="ItemDefaults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ItemReorder" Association="HMSModel.FK_Item_T_ItemReorder">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemReorder" EntitySet="ItemReorders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ItemType" Association="HMSModel.FK_Item_T_ItemType">
+            <End Role="ItemType" EntitySet="ItemTypes" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_MeasurementUnit" Association="HMSModel.FK_Item_T_MeasurementUnit">
+            <End Role="MeasurementUnit" EntitySet="MeasurementUnits" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_MedicalType" Association="HMSModel.FK_Item_T_MedicalType">
+            <End Role="MedicalType" EntitySet="MedicalTypes" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ServiceProvider" Association="HMSModel.FK_Item_T_ServiceProvider">
+            <End Role="ServiceProvider" EntitySet="ServiceProviders" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientService_T_Item" Association="HMSModel.FK_T_PatientService_T_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="PatientService" EntitySet="PatientServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_ReceiptPayment_T_Item" Association="HMSModel.FK_T_ReceiptPayment_T_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ReceiptPayment" EntitySet="ReceiptPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Item_T_ItemGroup" Association="HMSModel.FK_Item_T_ItemGroup">
+            <End Role="ItemGroup" EntitySet="ItemGroups" />
+            <End Role="Item_ItemGroup" EntitySet="ItemItemGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemCategory_T_MedicalType" Association="HMSModel.FK_ItemCategory_T_MedicalType">
+            <End Role="MedicalType" EntitySet="MedicalTypes" />
+            <End Role="ItemCategory" EntitySet="ItemCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Membership_T_Patient" Association="HMSModel.FK_Membership_T_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Membership" EntitySet="Memberships" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_T_PatientInvoice" Association="HMSModel.FK_Patient_T_PatientInvoice">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="PatientInvoice" EntitySet="PatientInvoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientService_T_Patient" Association="HMSModel.FK_T_PatientService_T_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="PatientService" EntitySet="PatientServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Payment_T_Patient" Association="HMSModel.FK_T_Payment_T_Patient">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientAdmission_T_PatientAdmission" Association="HMSModel.FK_T_PatientAdmission_T_PatientAdmission">
+            <End Role="PatientAdmission" EntitySet="PatientAdmissions" />
+            <End Role="PatientAdmission1" EntitySet="PatientAdmissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientAdmission_T_ServiceProvider" Association="HMSModel.FK_T_PatientAdmission_T_ServiceProvider">
+            <End Role="ServiceProvider" EntitySet="ServiceProviders" />
+            <End Role="PatientAdmission" EntitySet="PatientAdmissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientAdmission_T_ServiceProvider1" Association="HMSModel.FK_T_PatientAdmission_T_ServiceProvider1">
+            <End Role="ServiceProvider" EntitySet="ServiceProviders" />
+            <End Role="PatientAdmission" EntitySet="PatientAdmissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_PatientService_T_PatientInvoice" Association="HMSModel.FK_T_PatientService_T_PatientInvoice">
+            <End Role="PatientInvoice" EntitySet="PatientInvoices" />
+            <End Role="PatientService" EntitySet="PatientServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Refund_T_PatientInvoice" Association="HMSModel.FK_T_Refund_T_PatientInvoice">
+            <End Role="PatientInvoice" EntitySet="PatientInvoices" />
+            <End Role="Refund" EntitySet="Refunds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_Payment_T_PaymentType" Association="HMSModel.FK_T_Payment_T_PaymentType">
+            <End Role="PaymentType" EntitySet="PaymentTypes" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_T_ReceiptPayment_T_Payment" Association="HMSModel.FK_T_ReceiptPayment_T_Payment">
+            <End Role="Payment" EntitySet="Payments" />
+            <End Role="ReceiptPayment" EntitySet="ReceiptPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceProviderType_ServiceProvider" Association="HMSModel.FK_ServiceProviderType_ServiceProvider">
+            <End Role="ServiceProviderType" EntitySet="ServiceProviderTypes" />
+            <End Role="ServiceProvider" EntitySet="ServiceProviders" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="BedOccupancy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="Occupied" Type="Boolean" />
+          <Property Name="UserId" Type="Int64" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Item" Relationship="HMSModel.FK_Item_T_BedOccupancy" FromRole="BedOccupancy" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WebSite" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IsCompany" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="ServiceProviders" Relationship="HMSModel.FK_Contact_ServiceProvider" FromRole="Contact1" ToRole="ServiceProvider" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="ServiceProviders" Relationship="HMSModel.FK_Department_ServiceProvider" FromRole="Department" ToRole="ServiceProvider" />
+          <NavigationProperty Name="PatientAdmissions" Relationship="HMSModel.FK_T_PatientAdmission_T_Department" FromRole="Department" ToRole="PatientAdmission" />
+        </EntityType>
+        <EntityType Name="DrugAdministration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="ItemDefaults" Relationship="HMSModel.FK_DrugAdministration_T_ItemDefaults" FromRole="DrugAdministration" ToRole="ItemDefault" />
+        </EntityType>
+        <EntityType Name="DrugDosage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="ItemDefaults" Relationship="HMSModel.FK_DrugDosage_T_ItemDefaults" FromRole="DrugDosage" ToRole="ItemDefault" />
+        </EntityType>
+        <EntityType Name="DrugFrequency">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="ItemDefaults" Relationship="HMSModel.FK_DrugFrequency_T_ItemDefaults" FromRole="DrugFrequency" ToRole="ItemDefault" />
+        </EntityType>
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="StoreID" Type="Int64" Nullable="false" />
+          <Property Name="Stock" Type="Int32" />
+          <Property Name="BuyPrice" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="BuyDate" Type="DateTime" Precision="3" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Item" Relationship="HMSModel.FK_Item1_T_Item" FromRole="Inventory" ToRole="Item" />
+          <NavigationProperty Name="Store" Relationship="HMSModel.FK_Store_T_Store" FromRole="Inventory" ToRole="Store" />
+        </EntityType>
+        <EntityType Name="InvoicePayment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceId" Type="Int64" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="PaymentID" Type="Int64" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="PatientInvoice" Relationship="HMSModel.FK_T_InvoicePayment_T_PatientInvoice1" FromRole="InvoicePayment" ToRole="PatientInvoice" />
+          <NavigationProperty Name="Payment" Relationship="HMSModel.FK_T_InvoicePayment_T_Payment" FromRole="InvoicePayment" ToRole="Payment" />
+        </EntityType>
+        <EntityType Name="InvoiceStatu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PatientInvoices" Relationship="HMSModel.FK_T_PatientInvoice_T_InvoiceStatus" FromRole="InvoiceStatu" ToRole="PatientInvoice" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GenericName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemTypeId" Type="Int64" Nullable="false" />
+          <Property Name="MedicalTypeId" Type="Int64" Nullable="false" />
+          <Property Name="ItemCategoryId" Type="Int64" Nullable="false" />
+          <Property Name="MeasurementUnitId" Type="Int64" Nullable="false" />
+          <Property Name="SalePrice" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="BuyPrice" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="ServiceProviderId" Type="Int64" />
+          <NavigationProperty Name="BedOccupancies" Relationship="HMSModel.FK_Item_T_BedOccupancy" FromRole="Item" ToRole="BedOccupancy" />
+          <NavigationProperty Name="Inventories" Relationship="HMSModel.FK_Item1_T_Item" FromRole="Item" ToRole="Inventory" />
+          <NavigationProperty Name="Item_ItemGroup" Relationship="HMSModel.FK_Item_T_Item" FromRole="Item" ToRole="Item_ItemGroup" />
+          <NavigationProperty Name="ItemCategory" Relationship="HMSModel.FK_Item_T_ItemCategory" FromRole="Item" ToRole="ItemCategory" />
+          <NavigationProperty Name="ItemDefaults" Relationship="HMSModel.FK_Item_T_ItemDefaults" FromRole="Item" ToRole="ItemDefault" />
+          <NavigationProperty Name="ItemReorders" Relationship="HMSModel.FK_Item_T_ItemReorder" FromRole="Item" ToRole="ItemReorder" />
+          <NavigationProperty Name="ItemType" Relationship="HMSModel.FK_Item_T_ItemType" FromRole="Item" ToRole="ItemType" />
+          <NavigationProperty Name="MeasurementUnit" Relationship="HMSModel.FK_Item_T_MeasurementUnit" FromRole="Item" ToRole="MeasurementUnit" />
+          <NavigationProperty Name="MedicalType" Relationship="HMSModel.FK_Item_T_MedicalType" FromRole="Item" ToRole="MedicalType" />
+          <NavigationProperty Name="ServiceProvider" Relationship="HMSModel.FK_Item_T_ServiceProvider" FromRole="Item" ToRole="ServiceProvider" />
+          <NavigationProperty Name="PatientServices" Relationship="HMSModel.FK_T_PatientService_T_Item" FromRole="Item" ToRole="PatientService" />
+          <NavigationProperty Name="ReceiptPayments" Relationship="HMSModel.FK_T_ReceiptPayment_T_Item" FromRole="Item" ToRole="ReceiptPayment" />
+        </EntityType>
+        <EntityType Name="ItemItemGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="ItemGroupID" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Item" Relationship="HMSModel.FK_Item_T_Item" FromRole="Item_ItemGroup" ToRole="Item" />
+          <NavigationProperty Name="ItemGroup" Relationship="HMSModel.FK_Item_T_ItemGroup" FromRole="Item_ItemGroup" ToRole="ItemGroup" />
+        </EntityType>
+        <EntityType Name="ItemCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="MedicalTypeId" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Items" Relationship="HMSModel.FK_Item_T_ItemCategory" FromRole="ItemCategory" ToRole="Item" />
+          <NavigationProperty Name="MedicalType" Relationship="HMSModel.FK_ItemCategory_T_MedicalType" FromRole="ItemCategory" ToRole="MedicalType" />
+        </EntityType>
+        <EntityType Name="ItemDefault">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="DosageId" Type="Int64" />
+          <Property Name="AdministrationId" Type="Int64" />
+          <Property Name="FrequencyId" Type="Int64" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="DrugAdministration" Relationship="HMSModel.FK_DrugAdministration_T_ItemDefaults" FromRole="ItemDefault" ToRole="DrugAdministration" />
+          <NavigationProperty Name="DrugDosage" Relationship="HMSModel.FK_DrugDosage_T_ItemDefaults" FromRole="ItemDefault" ToRole="DrugDosage" />
+          <NavigationProperty Name="DrugFrequency" Relationship="HMSModel.FK_DrugFrequency_T_ItemDefaults" FromRole="ItemDefault" ToRole="DrugFrequency" />
+          <NavigationProperty Name="Item" Relationship="HMSModel.FK_Item_T_ItemDefaults" FromRole="ItemDefault" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="ItemGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Item_ItemGroup" Relationship="HMSModel.FK_Item_T_ItemGroup" FromRole="ItemGroup" ToRole="Item_ItemGroup" />
+        </EntityType>
+        <EntityType Name="ItemReorder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReorderLevel" Type="Int32" Nullable="false" />
+          <Property Name="ShelfName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Item" Relationship="HMSModel.FK_Item_T_ItemReorder" FromRole="ItemReorder" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="ItemType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Items" Relationship="HMSModel.FK_Item_T_ItemType" FromRole="ItemType" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="MeasurementUnit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Items" Relationship="HMSModel.FK_Item_T_MeasurementUnit" FromRole="MeasurementUnit" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="MedicalType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Items" Relationship="HMSModel.FK_Item_T_MedicalType" FromRole="MedicalType" ToRole="Item" />
+          <NavigationProperty Name="ItemCategories" Relationship="HMSModel.FK_ItemCategory_T_MedicalType" FromRole="MedicalType" ToRole="ItemCategory" />
+        </EntityType>
+        <EntityType Name="Membership">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="PatiendId" Type="Int64" Nullable="false" />
+          <Property Name="ValidityPeriod" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AnnualFee" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="HealthBook" Type="Boolean" />
+          <Property Name="EntryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Patient" Relationship="HMSModel.FK_Membership_T_Patient" FromRole="Membership" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Boolean" Nullable="false" />
+          <Property Name="BloodGroup" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="FatherName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="NationalId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Occupation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Memberships" Relationship="HMSModel.FK_Membership_T_Patient" FromRole="Patient" ToRole="Membership" />
+          <NavigationProperty Name="PatientInvoices" Relationship="HMSModel.FK_Patient_T_PatientInvoice" FromRole="Patient" ToRole="PatientInvoice" />
+          <NavigationProperty Name="PatientServices" Relationship="HMSModel.FK_T_PatientService_T_Patient" FromRole="Patient" ToRole="PatientService" />
+          <NavigationProperty Name="Payments" Relationship="HMSModel.FK_T_Payment_T_Patient" FromRole="Patient" ToRole="Payment" />
+        </EntityType>
+        <EntityType Name="PatientAdmission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="PatientId" Type="Int64" Nullable="false" />
+          <Property Name="AdmissionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DischargeDate" Type="DateTime" Precision="3" />
+          <Property Name="ServiceProviderId" Type="Int64" />
+          <Property Name="RefererId" Type="Int64" />
+          <Property Name="DepartmentId" Type="Int64" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Department" Relationship="HMSModel.FK_T_PatientAdmission_T_Department" FromRole="PatientAdmission" ToRole="Department" />
+          <NavigationProperty Name="PatientAdmission1" Relationship="HMSModel.FK_T_PatientAdmission_T_PatientAdmission" FromRole="PatientAdmission" ToRole="PatientAdmission1" />
+          <NavigationProperty Name="PatientAdmission2" Relationship="HMSModel.FK_T_PatientAdmission_T_PatientAdmission" FromRole="PatientAdmission1" ToRole="PatientAdmission" />
+          <NavigationProperty Name="ServiceProvider" Relationship="HMSModel.FK_T_PatientAdmission_T_ServiceProvider" FromRole="PatientAdmission" ToRole="ServiceProvider" />
+          <NavigationProperty Name="ServiceProvider1" Relationship="HMSModel.FK_T_PatientAdmission_T_ServiceProvider1" FromRole="PatientAdmission" ToRole="ServiceProvider" />
+        </EntityType>
+        <EntityType Name="PatientInvoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientID" Type="Int64" Nullable="false" />
+          <Property Name="InvoiceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DueDate" Type="DateTime" Precision="3" />
+          <Property Name="UserId" Type="Int64" />
+          <Property Name="StatusId" Type="Int64" Nullable="false" />
+          <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="TotalDiscount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ItemDiscount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="InvoicePayments" Relationship="HMSModel.FK_T_InvoicePayment_T_PatientInvoice1" FromRole="PatientInvoice" ToRole="InvoicePayment" />
+          <NavigationProperty Name="InvoiceStatu" Relationship="HMSModel.FK_T_PatientInvoice_T_InvoiceStatus" FromRole="PatientInvoice" ToRole="InvoiceStatu" />
+          <NavigationProperty Name="Patient" Relationship="HMSModel.FK_Patient_T_PatientInvoice" FromRole="PatientInvoice" ToRole="Patient" />
+          <NavigationProperty Name="PatientServices" Relationship="HMSModel.FK_T_PatientService_T_PatientInvoice" FromRole="PatientInvoice" ToRole="PatientService" />
+          <NavigationProperty Name="Refunds" Relationship="HMSModel.FK_T_Refund_T_PatientInvoice" FromRole="PatientInvoice" ToRole="Refund" />
+        </EntityType>
+        <EntityType Name="PatientService">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientID" Type="Int64" Nullable="false" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="InvoiceID" Type="Int64" />
+          <Property Name="ServiceListPrice" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="ServiceActualPrice" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="ServiceQuantity" Type="Int32" Nullable="false" />
+          <Property Name="ServiceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserId" Type="Int64" />
+          <Property Name="Discount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Refund" Type="Boolean" />
+          <Property Name="Billed" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Item" Relationship="HMSModel.FK_T_PatientService_T_Item" FromRole="PatientService" ToRole="Item" />
+          <NavigationProperty Name="Patient" Relationship="HMSModel.FK_T_PatientService_T_Patient" FromRole="PatientService" ToRole="Patient" />
+          <NavigationProperty Name="PatientInvoice" Relationship="HMSModel.FK_T_PatientService_T_PatientInvoice" FromRole="PatientService" ToRole="PatientInvoice" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="DeductionAmount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PaymentTypeId" Type="Int64" Nullable="false" />
+          <Property Name="PatientID" Type="Int64" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="InvoicePayments" Relationship="HMSModel.FK_T_InvoicePayment_T_Payment" FromRole="Payment" ToRole="InvoicePayment" />
+          <NavigationProperty Name="Patient" Relationship="HMSModel.FK_T_Payment_T_Patient" FromRole="Payment" ToRole="Patient" />
+          <NavigationProperty Name="PaymentType" Relationship="HMSModel.FK_T_Payment_T_PaymentType" FromRole="Payment" ToRole="PaymentType" />
+          <NavigationProperty Name="ReceiptPayments" Relationship="HMSModel.FK_T_ReceiptPayment_T_Payment" FromRole="Payment" ToRole="ReceiptPayment" />
+        </EntityType>
+        <EntityType Name="PaymentType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentType1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Payments" Relationship="HMSModel.FK_T_Payment_T_PaymentType" FromRole="PaymentType" ToRole="Payment" />
+        </EntityType>
+        <EntityType Name="ReceiptPayment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="PaymentId" Type="Int64" Nullable="false" />
+          <Property Name="ItemId" Type="Int64" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="SalePrice" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Item" Relationship="HMSModel.FK_T_ReceiptPayment_T_Item" FromRole="ReceiptPayment" ToRole="Item" />
+          <NavigationProperty Name="Payment" Relationship="HMSModel.FK_T_ReceiptPayment_T_Payment" FromRole="ReceiptPayment" ToRole="Payment" />
+        </EntityType>
+        <EntityType Name="Refund">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="InvoiceID" Type="Int64" Nullable="false" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="ApprovedUserID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="PatientInvoice" Relationship="HMSModel.FK_T_Refund_T_PatientInvoice" FromRole="Refund" ToRole="PatientInvoice" />
+        </EntityType>
+        <EntityType Name="ServiceProvider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContactId" Type="Int64" Nullable="false" />
+          <Property Name="ServiceProviderTypeId" Type="Int64" Nullable="false" />
+          <Property Name="DepartmentId" Type="Int64" Nullable="false" />
+          <Property Name="Speciality" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AssignedToAllUsers" Type="Boolean" />
+          <Property Name="IsReferer" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Contact" Relationship="HMSModel.FK_Contact_ServiceProvider" FromRole="ServiceProvider" ToRole="Contact1" />
+          <NavigationProperty Name="Department" Relationship="HMSModel.FK_Department_ServiceProvider" FromRole="ServiceProvider" ToRole="Department" />
+          <NavigationProperty Name="Items" Relationship="HMSModel.FK_Item_T_ServiceProvider" FromRole="ServiceProvider" ToRole="Item" />
+          <NavigationProperty Name="PatientAdmissions" Relationship="HMSModel.FK_T_PatientAdmission_T_ServiceProvider" FromRole="ServiceProvider" ToRole="PatientAdmission" />
+          <NavigationProperty Name="PatientAdmissions1" Relationship="HMSModel.FK_T_PatientAdmission_T_ServiceProvider1" FromRole="ServiceProvider" ToRole="PatientAdmission" />
+          <NavigationProperty Name="ServiceProviderType" Relationship="HMSModel.FK_ServiceProviderType_ServiceProvider" FromRole="ServiceProvider" ToRole="ServiceProviderType" />
+        </EntityType>
+        <EntityType Name="ServiceProviderType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="ServiceProviders" Relationship="HMSModel.FK_ServiceProviderType_ServiceProvider" FromRole="ServiceProviderType" ToRole="ServiceProvider" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StoreName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <NavigationProperty Name="Inventories" Relationship="HMSModel.FK_Store_T_Store" FromRole="Store" ToRole="Inventory" />
+        </EntityType>
+        <Association Name="FK_Item_T_BedOccupancy">
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="HMSModel.BedOccupancy" Role="BedOccupancy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BedOccupancy">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contact_ServiceProvider">
+          <End Type="HMSModel.Contact" Role="Contact1" Multiplicity="1" />
+          <End Type="HMSModel.ServiceProvider" Role="ServiceProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contact1">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ServiceProvider">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Department_ServiceProvider">
+          <End Type="HMSModel.Department" Role="Department" Multiplicity="1" />
+          <End Type="HMSModel.ServiceProvider" Role="ServiceProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ServiceProvider">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientAdmission_T_Department">
+          <End Type="HMSModel.Department" Role="Department" Multiplicity="0..1" />
+          <End Type="HMSModel.PatientAdmission" Role="PatientAdmission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientAdmission">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DrugAdministration_T_ItemDefaults">
+          <End Type="HMSModel.DrugAdministration" Role="DrugAdministration" Multiplicity="0..1" />
+          <End Type="HMSModel.ItemDefault" Role="ItemDefault" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DrugAdministration">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemDefault">
+              <PropertyRef Name="AdministrationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DrugDosage_T_ItemDefaults">
+          <End Type="HMSModel.DrugDosage" Role="DrugDosage" Multiplicity="0..1" />
+          <End Type="HMSModel.ItemDefault" Role="ItemDefault" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DrugDosage">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemDefault">
+              <PropertyRef Name="DosageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DrugFrequency_T_ItemDefaults">
+          <End Type="HMSModel.DrugFrequency" Role="DrugFrequency" Multiplicity="0..1" />
+          <End Type="HMSModel.ItemDefault" Role="ItemDefault" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DrugFrequency">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemDefault">
+              <PropertyRef Name="FrequencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item1_T_Item">
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="HMSModel.Inventory" Role="Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Store_T_Store">
+          <End Type="HMSModel.Store" Role="Store" Multiplicity="1" />
+          <End Type="HMSModel.Inventory" Role="Inventory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Inventory">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_InvoicePayment_T_PatientInvoice1">
+          <End Type="HMSModel.PatientInvoice" Role="PatientInvoice" Multiplicity="1" />
+          <End Type="HMSModel.InvoicePayment" Role="InvoicePayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientInvoice">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="InvoicePayment">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_InvoicePayment_T_Payment">
+          <End Type="HMSModel.Payment" Role="Payment" Multiplicity="0..1" />
+          <End Type="HMSModel.InvoicePayment" Role="InvoicePayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="InvoicePayment">
+              <PropertyRef Name="PaymentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientInvoice_T_InvoiceStatus">
+          <End Type="HMSModel.InvoiceStatu" Role="InvoiceStatu" Multiplicity="1" />
+          <End Type="HMSModel.PatientInvoice" Role="PatientInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InvoiceStatu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientInvoice">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_Item">
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="HMSModel.ItemItemGroup" Role="Item_ItemGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item_ItemGroup">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ItemCategory">
+          <End Type="HMSModel.ItemCategory" Role="ItemCategory" Multiplicity="1" />
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ItemDefaults">
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="HMSModel.ItemDefault" Role="ItemDefault" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemDefault">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ItemReorder">
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="HMSModel.ItemReorder" Role="ItemReorder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemReorder">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ItemType">
+          <End Type="HMSModel.ItemType" Role="ItemType" Multiplicity="1" />
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ItemTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_MeasurementUnit">
+          <End Type="HMSModel.MeasurementUnit" Role="MeasurementUnit" Multiplicity="1" />
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MeasurementUnit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="MeasurementUnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_MedicalType">
+          <End Type="HMSModel.MedicalType" Role="MedicalType" Multiplicity="1" />
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MedicalType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="MedicalTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ServiceProvider">
+          <End Type="HMSModel.ServiceProvider" Role="ServiceProvider" Multiplicity="0..1" />
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceProvider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="ServiceProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientService_T_Item">
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="HMSModel.PatientService" Role="PatientService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientService">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_ReceiptPayment_T_Item">
+          <End Type="HMSModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="HMSModel.ReceiptPayment" Role="ReceiptPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReceiptPayment">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Item_T_ItemGroup">
+          <End Type="HMSModel.ItemGroup" Role="ItemGroup" Multiplicity="1" />
+          <End Type="HMSModel.ItemItemGroup" Role="Item_ItemGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemGroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Item_ItemGroup">
+              <PropertyRef Name="ItemGroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemCategory_T_MedicalType">
+          <End Type="HMSModel.MedicalType" Role="MedicalType" Multiplicity="1" />
+          <End Type="HMSModel.ItemCategory" Role="ItemCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MedicalType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ItemCategory">
+              <PropertyRef Name="MedicalTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Membership_T_Patient">
+          <End Type="HMSModel.Patient" Role="Patient" Multiplicity="1" />
+          <End Type="HMSModel.Membership" Role="Membership" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Membership">
+              <PropertyRef Name="PatiendId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_T_PatientInvoice">
+          <End Type="HMSModel.Patient" Role="Patient" Multiplicity="1" />
+          <End Type="HMSModel.PatientInvoice" Role="PatientInvoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientInvoice">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientService_T_Patient">
+          <End Type="HMSModel.Patient" Role="Patient" Multiplicity="1" />
+          <End Type="HMSModel.PatientService" Role="PatientService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientService">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Payment_T_Patient">
+          <End Type="HMSModel.Patient" Role="Patient" Multiplicity="0..1" />
+          <End Type="HMSModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientAdmission_T_PatientAdmission">
+          <End Type="HMSModel.PatientAdmission" Role="PatientAdmission" Multiplicity="1" />
+          <End Type="HMSModel.PatientAdmission" Role="PatientAdmission1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PatientAdmission">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientAdmission1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientAdmission_T_ServiceProvider">
+          <End Type="HMSModel.ServiceProvider" Role="ServiceProvider" Multiplicity="0..1" />
+          <End Type="HMSModel.PatientAdmission" Role="PatientAdmission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceProvider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientAdmission">
+              <PropertyRef Name="ServiceProviderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientAdmission_T_ServiceProvider1">
+          <End Type="HMSModel.ServiceProvider" Role="ServiceProvider" Multiplicity="0..1" />
+          <End Type="HMSModel.PatientAdmission" Role="PatientAdmission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceProvider">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientAdmission">
+              <PropertyRef Name="RefererId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_PatientService_T_PatientInvoice">
+          <End Type="HMSModel.PatientInvoice" Role="PatientInvoice" Multiplicity="0..1" />
+          <End Type="HMSModel.PatientService" Role="PatientService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientInvoice">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientService">
+              <PropertyRef Name="InvoiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Refund_T_PatientInvoice">
+          <End Type="HMSModel.PatientInvoice" Role="PatientInvoice" Multiplicity="1" />
+          <End Type="HMSModel.Refund" Role="Refund" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientInvoice">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Refund">
+              <PropertyRef Name="InvoiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_Payment_T_PaymentType">
+          <End Type="HMSModel.PaymentType" Role="PaymentType" Multiplicity="1" />
+          <End Type="HMSModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="PaymentTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_T_ReceiptPayment_T_Payment">
+          <End Type="HMSModel.Payment" Role="Payment" Multiplicity="1" />
+          <End Type="HMSModel.ReceiptPayment" Role="ReceiptPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReceiptPayment">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceProviderType_ServiceProvider">
+          <End Type="HMSModel.ServiceProviderType" Role="ServiceProviderType" Multiplicity="1" />
+          <End Type="HMSModel.ServiceProvider" Role="ServiceProvider" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceProviderType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ServiceProvider">
+              <PropertyRef Name="ServiceProviderTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HMSModelStoreContainer" CdmEntityContainer="HMSEntities">
+        <EntitySetMapping Name="BedOccupancies">
+            <EntityTypeMapping TypeName="HMSModel.BedOccupancy">
+              <MappingFragment StoreEntitySet="BedOccupancy">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Occupied" ColumnName="Occupied" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contacts">
+            <EntityTypeMapping TypeName="HMSModel.Contact">
+              <MappingFragment StoreEntitySet="Contact">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsCompany" ColumnName="IsCompany" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="HMSModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DrugAdministrations">
+            <EntityTypeMapping TypeName="HMSModel.DrugAdministration">
+              <MappingFragment StoreEntitySet="DrugAdministration">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DrugDosages">
+            <EntityTypeMapping TypeName="HMSModel.DrugDosage">
+              <MappingFragment StoreEntitySet="DrugDosage">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DrugFrequencies">
+            <EntityTypeMapping TypeName="HMSModel.DrugFrequency">
+              <MappingFragment StoreEntitySet="DrugFrequency">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inventories">
+            <EntityTypeMapping TypeName="HMSModel.Inventory">
+              <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="BuyDate" ColumnName="BuyDate" />
+                <ScalarProperty Name="BuyPrice" ColumnName="BuyPrice" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InvoicePayments">
+            <EntityTypeMapping TypeName="HMSModel.InvoicePayment">
+              <MappingFragment StoreEntitySet="InvoicePayment">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InvoiceStatus">
+            <EntityTypeMapping TypeName="HMSModel.InvoiceStatu">
+              <MappingFragment StoreEntitySet="InvoiceStatus">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="HMSModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="ServiceProviderId" ColumnName="ServiceProviderId" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="BuyPrice" ColumnName="BuyPrice" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="MeasurementUnitId" ColumnName="MeasurementUnitId" />
+                <ScalarProperty Name="ItemCategoryId" ColumnName="ItemCategoryId" />
+                <ScalarProperty Name="MedicalTypeId" ColumnName="MedicalTypeId" />
+                <ScalarProperty Name="ItemTypeId" ColumnName="ItemTypeId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="GenericName" ColumnName="GenericName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemItemGroups">
+            <EntityTypeMapping TypeName="HMSModel.ItemItemGroup">
+              <MappingFragment StoreEntitySet="Item_ItemGroup">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ItemGroupID" ColumnName="ItemGroupID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemCategories">
+            <EntityTypeMapping TypeName="HMSModel.ItemCategory">
+              <MappingFragment StoreEntitySet="ItemCategory">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="MedicalTypeId" ColumnName="MedicalTypeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemDefaults">
+            <EntityTypeMapping TypeName="HMSModel.ItemDefault">
+              <MappingFragment StoreEntitySet="ItemDefaults">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="FrequencyId" ColumnName="FrequencyId" />
+                <ScalarProperty Name="AdministrationId" ColumnName="AdministrationId" />
+                <ScalarProperty Name="DosageId" ColumnName="DosageId" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemGroups">
+            <EntityTypeMapping TypeName="HMSModel.ItemGroup">
+              <MappingFragment StoreEntitySet="ItemGroup">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemReorders">
+            <EntityTypeMapping TypeName="HMSModel.ItemReorder">
+              <MappingFragment StoreEntitySet="ItemReorder">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ShelfName" ColumnName="ShelfName" />
+                <ScalarProperty Name="ReorderLevel" ColumnName="ReorderLevel" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemTypes">
+            <EntityTypeMapping TypeName="HMSModel.ItemType">
+              <MappingFragment StoreEntitySet="ItemType">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MeasurementUnits">
+            <EntityTypeMapping TypeName="HMSModel.MeasurementUnit">
+              <MappingFragment StoreEntitySet="MeasurementUnit">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MedicalTypes">
+            <EntityTypeMapping TypeName="HMSModel.MedicalType">
+              <MappingFragment StoreEntitySet="MedicalType">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Memberships">
+            <EntityTypeMapping TypeName="HMSModel.Membership">
+              <MappingFragment StoreEntitySet="Membership">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+                <ScalarProperty Name="HealthBook" ColumnName="HealthBook" />
+                <ScalarProperty Name="AnnualFee" ColumnName="AnnualFee" />
+                <ScalarProperty Name="ValidityPeriod" ColumnName="ValidityPeriod" />
+                <ScalarProperty Name="PatiendId" ColumnName="PatiendId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patients">
+            <EntityTypeMapping TypeName="HMSModel.Patient">
+              <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="Occupation" ColumnName="Occupation" />
+                <ScalarProperty Name="NationalId" ColumnName="NationalId" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientAdmissions">
+            <EntityTypeMapping TypeName="HMSModel.PatientAdmission">
+              <MappingFragment StoreEntitySet="PatientAdmission">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="RefererId" ColumnName="RefererId" />
+                <ScalarProperty Name="ServiceProviderId" ColumnName="ServiceProviderId" />
+                <ScalarProperty Name="DischargeDate" ColumnName="DischargeDate" />
+                <ScalarProperty Name="AdmissionDate" ColumnName="AdmissionDate" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientInvoices">
+            <EntityTypeMapping TypeName="HMSModel.PatientInvoice">
+              <MappingFragment StoreEntitySet="PatientInvoice">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ItemDiscount" ColumnName="ItemDiscount" />
+                <ScalarProperty Name="TotalDiscount" ColumnName="TotalDiscount" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientServices">
+            <EntityTypeMapping TypeName="HMSModel.PatientService">
+              <MappingFragment StoreEntitySet="PatientService">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Billed" ColumnName="Billed" />
+                <ScalarProperty Name="Refund" ColumnName="Refund" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+                <ScalarProperty Name="ServiceQuantity" ColumnName="ServiceQuantity" />
+                <ScalarProperty Name="ServiceActualPrice" ColumnName="ServiceActualPrice" />
+                <ScalarProperty Name="ServiceListPrice" ColumnName="ServiceListPrice" />
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="HMSModel.Payment">
+              <MappingFragment StoreEntitySet="Payment">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="PaymentTypeId" ColumnName="PaymentTypeId" />
+                <ScalarProperty Name="DeductionAmount" ColumnName="DeductionAmount" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentTypes">
+            <EntityTypeMapping TypeName="HMSModel.PaymentType">
+              <MappingFragment StoreEntitySet="PaymentType">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="PaymentType1" ColumnName="PaymentType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReceiptPayments">
+            <EntityTypeMapping TypeName="HMSModel.ReceiptPayment">
+              <MappingFragment StoreEntitySet="ReceiptPayment">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Refunds">
+            <EntityTypeMapping TypeName="HMSModel.Refund">
+              <MappingFragment StoreEntitySet="Refund">
+                <ScalarProperty Name="ApprovedUserID" ColumnName="ApprovedUserID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceProviders">
+            <EntityTypeMapping TypeName="HMSModel.ServiceProvider">
+              <MappingFragment StoreEntitySet="ServiceProvider">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsReferer" ColumnName="IsReferer" />
+                <ScalarProperty Name="AssignedToAllUsers" ColumnName="AssignedToAllUsers" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Speciality" ColumnName="Speciality" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="ServiceProviderTypeId" ColumnName="ServiceProviderTypeId" />
+                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceProviderTypes">
+            <EntityTypeMapping TypeName="HMSModel.ServiceProviderType">
+              <MappingFragment StoreEntitySet="ServiceProviderType">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stores">
+            <EntityTypeMapping TypeName="HMSModel.Store">
+              <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="StoreName" ColumnName="StoreName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

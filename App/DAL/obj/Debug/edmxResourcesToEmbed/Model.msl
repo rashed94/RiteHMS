@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="HMSModelStoreContainer" CdmEntityContainer="HMSEntities">
+    <EntitySetMapping Name="BedOccupancies">
+      <EntityTypeMapping TypeName="HMSModel.BedOccupancy">
+        <MappingFragment StoreEntitySet="BedOccupancy">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Occupied" ColumnName="Occupied" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Contacts">
+      <EntityTypeMapping TypeName="HMSModel.Contact">
+        <MappingFragment StoreEntitySet="Contact">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="IsCompany" ColumnName="IsCompany" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Zip" ColumnName="Zip" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Departments">
+      <EntityTypeMapping TypeName="HMSModel.Department">
+        <MappingFragment StoreEntitySet="Department">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DrugAdministrations">
+      <EntityTypeMapping TypeName="HMSModel.DrugAdministration">
+        <MappingFragment StoreEntitySet="DrugAdministration">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DrugDosages">
+      <EntityTypeMapping TypeName="HMSModel.DrugDosage">
+        <MappingFragment StoreEntitySet="DrugDosage">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DrugFrequencies">
+      <EntityTypeMapping TypeName="HMSModel.DrugFrequency">
+        <MappingFragment StoreEntitySet="DrugFrequency">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Inventories">
+      <EntityTypeMapping TypeName="HMSModel.Inventory">
+        <MappingFragment StoreEntitySet="Inventory">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+          <ScalarProperty Name="BuyDate" ColumnName="BuyDate" />
+          <ScalarProperty Name="BuyPrice" ColumnName="BuyPrice" />
+          <ScalarProperty Name="Stock" ColumnName="Stock" />
+          <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="InvoicePayments">
+      <EntityTypeMapping TypeName="HMSModel.InvoicePayment">
+        <MappingFragment StoreEntitySet="InvoicePayment">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="InvoiceStatus">
+      <EntityTypeMapping TypeName="HMSModel.InvoiceStatu">
+        <MappingFragment StoreEntitySet="InvoiceStatus">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Items">
+      <EntityTypeMapping TypeName="HMSModel.Item">
+        <MappingFragment StoreEntitySet="Item">
+          <ScalarProperty Name="ServiceProviderId" ColumnName="ServiceProviderId" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="BuyPrice" ColumnName="BuyPrice" />
+          <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+          <ScalarProperty Name="MeasurementUnitId" ColumnName="MeasurementUnitId" />
+          <ScalarProperty Name="ItemCategoryId" ColumnName="ItemCategoryId" />
+          <ScalarProperty Name="MedicalTypeId" ColumnName="MedicalTypeId" />
+          <ScalarProperty Name="ItemTypeId" ColumnName="ItemTypeId" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="GenericName" ColumnName="GenericName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemItemGroups">
+      <EntityTypeMapping TypeName="HMSModel.ItemItemGroup">
+        <MappingFragment StoreEntitySet="Item_ItemGroup">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="ItemGroupID" ColumnName="ItemGroupID" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemCategories">
+      <EntityTypeMapping TypeName="HMSModel.ItemCategory">
+        <MappingFragment StoreEntitySet="ItemCategory">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="MedicalTypeId" ColumnName="MedicalTypeId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemDefaults">
+      <EntityTypeMapping TypeName="HMSModel.ItemDefault">
+        <MappingFragment StoreEntitySet="ItemDefaults">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="FrequencyId" ColumnName="FrequencyId" />
+          <ScalarProperty Name="AdministrationId" ColumnName="AdministrationId" />
+          <ScalarProperty Name="DosageId" ColumnName="DosageId" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemGroups">
+      <EntityTypeMapping TypeName="HMSModel.ItemGroup">
+        <MappingFragment StoreEntitySet="ItemGroup">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemReorders">
+      <EntityTypeMapping TypeName="HMSModel.ItemReorder">
+        <MappingFragment StoreEntitySet="ItemReorder">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="ShelfName" ColumnName="ShelfName" />
+          <ScalarProperty Name="ReorderLevel" ColumnName="ReorderLevel" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ItemTypes">
+      <EntityTypeMapping TypeName="HMSModel.ItemType">
+        <MappingFragment StoreEntitySet="ItemType">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MeasurementUnits">
+      <EntityTypeMapping TypeName="HMSModel.MeasurementUnit">
+        <MappingFragment StoreEntitySet="MeasurementUnit">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MedicalTypes">
+      <EntityTypeMapping TypeName="HMSModel.MedicalType">
+        <MappingFragment StoreEntitySet="MedicalType">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Memberships">
+      <EntityTypeMapping TypeName="HMSModel.Membership">
+        <MappingFragment StoreEntitySet="Membership">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="EntryDate" ColumnName="EntryDate" />
+          <ScalarProperty Name="HealthBook" ColumnName="HealthBook" />
+          <ScalarProperty Name="AnnualFee" ColumnName="AnnualFee" />
+          <ScalarProperty Name="ValidityPeriod" ColumnName="ValidityPeriod" />
+          <ScalarProperty Name="PatiendId" ColumnName="PatiendId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Patients">
+      <EntityTypeMapping TypeName="HMSModel.Patient">
+        <MappingFragment StoreEntitySet="Patient">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Zip" ColumnName="Zip" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Street" ColumnName="Street" />
+          <ScalarProperty Name="Occupation" ColumnName="Occupation" />
+          <ScalarProperty Name="NationalId" ColumnName="NationalId" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+          <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PatientAdmissions">
+      <EntityTypeMapping TypeName="HMSModel.PatientAdmission">
+        <MappingFragment StoreEntitySet="PatientAdmission">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="RefererId" ColumnName="RefererId" />
+          <ScalarProperty Name="ServiceProviderId" ColumnName="ServiceProviderId" />
+          <ScalarProperty Name="DischargeDate" ColumnName="DischargeDate" />
+          <ScalarProperty Name="AdmissionDate" ColumnName="AdmissionDate" />
+          <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PatientInvoices">
+      <EntityTypeMapping TypeName="HMSModel.PatientInvoice">
+        <MappingFragment StoreEntitySet="PatientInvoice">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="ItemDiscount" ColumnName="ItemDiscount" />
+          <ScalarProperty Name="TotalDiscount" ColumnName="TotalDiscount" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+          <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+          <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PatientServices">
+      <EntityTypeMapping TypeName="HMSModel.PatientService">
+        <MappingFragment StoreEntitySet="PatientService">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Billed" ColumnName="Billed" />
+          <ScalarProperty Name="Refund" ColumnName="Refund" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+          <ScalarProperty Name="ServiceQuantity" ColumnName="ServiceQuantity" />
+          <ScalarProperty Name="ServiceActualPrice" ColumnName="ServiceActualPrice" />
+          <ScalarProperty Name="ServiceListPrice" ColumnName="ServiceListPrice" />
+          <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Payments">
+      <EntityTypeMapping TypeName="HMSModel.Payment">
+        <MappingFragment StoreEntitySet="Payment">
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+          <ScalarProperty Name="PaymentTypeId" ColumnName="PaymentTypeId" />
+          <ScalarProperty Name="DeductionAmount" ColumnName="DeductionAmount" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PaymentTypes">
+      <EntityTypeMapping TypeName="HMSModel.PaymentType">
+        <MappingFragment StoreEntitySet="PaymentType">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="PaymentType1" ColumnName="PaymentType" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReceiptPayments">
+      <EntityTypeMapping TypeName="HMSModel.ReceiptPayment">
+        <MappingFragment StoreEntitySet="ReceiptPayment">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Refunds">
+      <EntityTypeMapping TypeName="HMSModel.Refund">
+        <MappingFragment StoreEntitySet="Refund">
+          <ScalarProperty Name="ApprovedUserID" ColumnName="ApprovedUserID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServiceProviders">
+      <EntityTypeMapping TypeName="HMSModel.ServiceProvider">
+        <MappingFragment StoreEntitySet="ServiceProvider">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="IsReferer" ColumnName="IsReferer" />
+          <ScalarProperty Name="AssignedToAllUsers" ColumnName="AssignedToAllUsers" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Speciality" ColumnName="Speciality" />
+          <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+          <ScalarProperty Name="ServiceProviderTypeId" ColumnName="ServiceProviderTypeId" />
+          <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ServiceProviderTypes">
+      <EntityTypeMapping TypeName="HMSModel.ServiceProviderType">
+        <MappingFragment StoreEntitySet="ServiceProviderType">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Stores">
+      <EntityTypeMapping TypeName="HMSModel.Store">
+        <MappingFragment StoreEntitySet="Store">
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="StoreName" ColumnName="StoreName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

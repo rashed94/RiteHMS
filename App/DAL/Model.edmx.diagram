@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="48ae3d7191c0473ab3cff99887bc2bff" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="HMSModel.BedOccupancy" Width="1.5" PointX="7.25" PointY="34.25" />
+        <EntityTypeShape EntityType="HMSModel.Contact" Width="1.5" PointX="0.5" PointY="24" />
+        <EntityTypeShape EntityType="HMSModel.Department" Width="1.5" PointX="0.5" PointY="21.375" />
+        <EntityTypeShape EntityType="HMSModel.DrugAdministration" Width="1.5" PointX="5" PointY="22" />
+        <EntityTypeShape EntityType="HMSModel.DrugDosage" Width="1.5" PointX="5" PointY="6" />
+        <EntityTypeShape EntityType="HMSModel.DrugFrequency" Width="1.5" PointX="5" PointY="19.5" />
+        <EntityTypeShape EntityType="HMSModel.Inventory" Width="1.5" PointX="10.25" PointY="8.875" />
+        <EntityTypeShape EntityType="HMSModel.InvoicePayment" Width="1.5" PointX="13.25" PointY="15" />
+        <EntityTypeShape EntityType="HMSModel.InvoiceStatu" Width="1.5" PointX="5.75" PointY="1.625" />
+        <EntityTypeShape EntityType="HMSModel.Item" Width="1.5" PointX="5" PointY="12.5" />
+        <EntityTypeShape EntityType="HMSModel.ItemItemGroup" Width="1.5" PointX="7.25" PointY="10.25" />
+        <EntityTypeShape EntityType="HMSModel.ItemCategory" Width="1.5" PointX="2.75" PointY="17.375" />
+        <EntityTypeShape EntityType="HMSModel.ItemDefault" Width="1.5" PointX="7.25" PointY="13.875" />
+        <EntityTypeShape EntityType="HMSModel.ItemGroup" Width="1.5" PointX="5" PointY="9.375" />
+        <EntityTypeShape EntityType="HMSModel.ItemReorder" Width="1.5" PointX="7.25" PointY="31.25" />
+        <EntityTypeShape EntityType="HMSModel.ItemType" Width="1.5" PointX="2.75" PointY="8.25" />
+        <EntityTypeShape EntityType="HMSModel.MeasurementUnit" Width="1.5" PointX="2.75" PointY="10.75" />
+        <EntityTypeShape EntityType="HMSModel.MedicalType" Width="1.5" PointX="0.5" PointY="11.125" />
+        <EntityTypeShape EntityType="HMSModel.Membership" Width="1.5" PointX="10.25" PointY="27.375" />
+        <EntityTypeShape EntityType="HMSModel.Patient" Width="1.5" PointX="8" PointY="22.125" />
+        <EntityTypeShape EntityType="HMSModel.PatientAdmission" Width="1.5" PointX="11" PointY="22.75" />
+        <EntityTypeShape EntityType="HMSModel.PatientInvoice" Width="1.5" PointX="8" PointY="0.5" />
+        <EntityTypeShape EntityType="HMSModel.PatientService" Width="1.5" PointX="10.25" PointY="13.375" />
+        <EntityTypeShape EntityType="HMSModel.Payment" Width="1.5" PointX="5" PointY="28.75" />
+        <EntityTypeShape EntityType="HMSModel.PaymentType" Width="1.5" PointX="2.75" PointY="29.5" />
+        <EntityTypeShape EntityType="HMSModel.ReceiptPayment" Width="1.5" PointX="7.25" PointY="18.125" />
+        <EntityTypeShape EntityType="HMSModel.Refund" Width="1.5" PointX="10.25" PointY="1.375" />
+        <EntityTypeShape EntityType="HMSModel.ServiceProvider" Width="1.5" PointX="2.75" PointY="24" />
+        <EntityTypeShape EntityType="HMSModel.ServiceProviderType" Width="1.5" PointX="0.5" PointY="28.75" />
+        <EntityTypeShape EntityType="HMSModel.Store" Width="1.5" PointX="8" PointY="7.5" />
+        <AssociationConnector Association="HMSModel.FK_Item_T_BedOccupancy" />
+        <AssociationConnector Association="HMSModel.FK_Contact_ServiceProvider" />
+        <AssociationConnector Association="HMSModel.FK_Department_ServiceProvider" />
+        <AssociationConnector Association="HMSModel.FK_T_PatientAdmission_T_Department" />
+        <AssociationConnector Association="HMSModel.FK_DrugAdministration_T_ItemDefaults" />
+        <AssociationConnector Association="HMSModel.FK_DrugDosage_T_ItemDefaults" />
+        <AssociationConnector Association="HMSModel.FK_DrugFrequency_T_ItemDefaults" />
+        <AssociationConnector Association="HMSModel.FK_Item1_T_Item" />
+        <AssociationConnector Association="HMSModel.FK_Store_T_Store" />
+        <AssociationConnector Association="HMSModel.FK_T_InvoicePayment_T_PatientInvoice1" />
+        <AssociationConnector Association="HMSModel.FK_T_InvoicePayment_T_Payment" />
+        <AssociationConnector Association="HMSModel.FK_T_PatientInvoice_T_InvoiceStatus" />
+        <AssociationConnector Association="HMSModel.FK_Item_T_Item" />
+        <AssociationConnector Association="HMSModel.FK_Item_T_ItemCategory" />
+        <AssociationConnector Association="HMSModel.FK_Item_T_ItemDefaults" />
+        <AssociationConnector Association="HMSModel.FK_Item_T_ItemReorder" />
+        <AssociationConnector Association="HMSModel.FK_Item_T_ItemType" />
+        <AssociationConnector Association="HMSModel.FK_Item_T_MeasurementUnit" />
+        <AssociationConnector Association="HMSModel.FK_Item_T_MedicalType" />
+        <AssociationConnector Association="HMSModel.FK_Item_T_ServiceProvider" />
+        <AssociationConnector Association="HMSModel.FK_T_PatientService_T_Item" />
+        <AssociationConnector Association="HMSModel.FK_T_ReceiptPayment_T_Item" />
+        <AssociationConnector Association="HMSModel.FK_Item_T_ItemGroup" />
+        <AssociationConnector Association="HMSModel.FK_ItemCategory_T_MedicalType" />
+        <AssociationConnector Association="HMSModel.FK_Membership_T_Patient" />
+        <AssociationConnector Association="HMSModel.FK_Patient_T_PatientInvoice" />
+        <AssociationConnector Association="HMSModel.FK_T_PatientService_T_Patient" />
+        <AssociationConnector Association="HMSModel.FK_T_Payment_T_Patient" />
+        <AssociationConnector Association="HMSModel.FK_T_PatientAdmission_T_PatientAdmission" />
+        <AssociationConnector Association="HMSModel.FK_T_PatientAdmission_T_ServiceProvider" />
+        <AssociationConnector Association="HMSModel.FK_T_PatientAdmission_T_ServiceProvider1" />
+        <AssociationConnector Association="HMSModel.FK_T_PatientService_T_PatientInvoice" />
+        <AssociationConnector Association="HMSModel.FK_T_Refund_T_PatientInvoice" />
+        <AssociationConnector Association="HMSModel.FK_T_Payment_T_PaymentType" />
+        <AssociationConnector Association="HMSModel.FK_T_ReceiptPayment_T_Payment" />
+        <AssociationConnector Association="HMSModel.FK_ServiceProviderType_ServiceProvider" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,10 @@
+G:\GitHub\RightHMS\App\DAL\bin\Debug\DAL.dll.config
+G:\GitHub\RightHMS\App\DAL\bin\Debug\DAL.dll
+G:\GitHub\RightHMS\App\DAL\bin\Debug\DAL.pdb
+G:\GitHub\RightHMS\App\DAL\bin\Debug\EntityFramework.dll
+G:\GitHub\RightHMS\App\DAL\bin\Debug\EntityFramework.SqlServer.dll
+G:\GitHub\RightHMS\App\DAL\bin\Debug\EntityFramework.xml
+G:\GitHub\RightHMS\App\DAL\bin\Debug\EntityFramework.SqlServer.xml
+G:\GitHub\RightHMS\App\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+G:\GitHub\RightHMS\App\DAL\obj\Debug\DAL.dll
+G:\GitHub\RightHMS\App\DAL\obj\Debug\DAL.pdb
