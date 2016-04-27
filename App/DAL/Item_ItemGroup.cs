@@ -12,7 +12,7 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class ItemItemGroup
+    public partial class Item_ItemGroup
     {
         public long Id { get; set; }
         public long ItemID { get; set; }

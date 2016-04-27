@@ -35,7 +35,7 @@ namespace DAL
         public virtual DbSet<InvoicePayment> InvoicePayments { get; set; }
         public virtual DbSet<InvoiceStatu> InvoiceStatus { get; set; }
         public virtual DbSet<Item> Items { get; set; }
-        public virtual DbSet<ItemItemGroup> ItemItemGroups { get; set; }
+        public virtual DbSet<Item_ItemGroup> Item_ItemGroup { get; set; }
         public virtual DbSet<ItemCategory> ItemCategories { get; set; }
         public virtual DbSet<ItemDefault> ItemDefaults { get; set; }
         public virtual DbSet<ItemGroup> ItemGroups { get; set; }

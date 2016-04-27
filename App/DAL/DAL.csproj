@@ -90,13 +90,13 @@
     <Compile Include="ItemGroup.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="ItemItemGroup.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="ItemReorder.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="ItemType.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Item_ItemGroup.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="MeasurementUnit.cs">
@@ -112,6 +112,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Model.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -155,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <None Include="ClassDiagram1.cd" />
     <EntityDeploy Include="Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model.Designer.cs</LastGenOutput>

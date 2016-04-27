@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="HMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="HMS.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="BedOccupancy">
     <Key>
       <PropertyRef Name="Id" />
@@ -622,18 +622,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_T_PatientAdmission_T_PatientAdmission">
-    <End Role="PatientAdmission" Type="Self.PatientAdmission" Multiplicity="1" />
-    <End Role="PatientAdmission1" Type="Self.PatientAdmission" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="PatientAdmission">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="PatientAdmission1">
-        <PropertyRef Name="Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_T_PatientAdmission_T_ServiceProvider">
     <End Role="ServiceProvider" Type="Self.ServiceProvider" Multiplicity="0..1" />
     <End Role="PatientAdmission" Type="Self.PatientAdmission" Multiplicity="*" />
@@ -892,10 +880,6 @@
     <AssociationSet Name="FK_T_PatientAdmission_T_Department" Association="Self.FK_T_PatientAdmission_T_Department">
       <End Role="Department" EntitySet="Department" />
       <End Role="PatientAdmission" EntitySet="PatientAdmission" />
-    </AssociationSet>
-    <AssociationSet Name="FK_T_PatientAdmission_T_PatientAdmission" Association="Self.FK_T_PatientAdmission_T_PatientAdmission">
-      <End Role="PatientAdmission" EntitySet="PatientAdmission" />
-      <End Role="PatientAdmission1" EntitySet="PatientAdmission" />
     </AssociationSet>
     <AssociationSet Name="FK_T_PatientAdmission_T_ServiceProvider" Association="Self.FK_T_PatientAdmission_T_ServiceProvider">
       <End Role="ServiceProvider" EntitySet="ServiceProvider" />

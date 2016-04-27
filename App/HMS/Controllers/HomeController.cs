@@ -9,6 +9,8 @@ namespace HMS.Controllers
 {
     public class HomeController : Controller
     {
+        //internal static JsonNetMVCHelper.JsonHelper _JsonHelper = new JsonNetMVCHelper.JsonHelper();
+
         public ActionResult Index()
         {
             return View();
@@ -28,16 +30,23 @@ namespace HMS.Controllers
             return View();
         }
 
-        public JsonResult GetPesrons()
+        public JsonResult GetPersons()
         {
             HMSEntities e = new HMSEntities();
             var result = e.Contacts.ToList();
+            
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetPersonById(int id)
+        {
+            HMSEntities e = new HMSEntities();
+            return Json(e.Contacts.Find(id), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SavePerson()
         {
-            Contact contact = new Contact { FirstName = "Muzahidul", LastName = "Islam", Email = "mail.muzahid@gmail.com" };
+            Contact contact = new Contact { FirstName = "Muzahidul", LastName = "Islam", PhoneNumber = "01833353657", Email = "mail.muzahid@gmail.com" };
             HMSEntities e = new HMSEntities();
             e.Contacts.Add(contact);
             e.SaveChanges();

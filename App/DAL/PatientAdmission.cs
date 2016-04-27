@@ -25,8 +25,6 @@ namespace DAL
         public bool Active { get; set; }
     
         public virtual Department Department { get; set; }
-        public virtual PatientAdmission PatientAdmission1 { get; set; }
-        public virtual PatientAdmission PatientAdmission2 { get; set; }
         public virtual ServiceProvider ServiceProvider { get; set; }
         public virtual ServiceProvider ServiceProvider1 { get; set; }
     }

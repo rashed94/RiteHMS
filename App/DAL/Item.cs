@@ -19,7 +19,7 @@ namespace DAL
         {
             this.BedOccupancies = new HashSet<BedOccupancy>();
             this.Inventories = new HashSet<Inventory>();
-            this.ItemItemGroup = new HashSet<ItemItemGroup>();
+            this.Item_ItemGroup = new HashSet<Item_ItemGroup>();
             this.ItemDefaults = new HashSet<ItemDefault>();
             this.ItemReorders = new HashSet<ItemReorder>();
             this.PatientServices = new HashSet<PatientService>();
@@ -44,7 +44,7 @@ namespace DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Inventory> Inventories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ItemItemGroup> ItemItemGroup { get; set; }
+        public virtual ICollection<Item_ItemGroup> Item_ItemGroup { get; set; }
         public virtual ItemCategory ItemCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ItemDefault> ItemDefaults { get; set; }

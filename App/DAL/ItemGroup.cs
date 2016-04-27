@@ -17,7 +17,7 @@ namespace DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ItemGroup()
         {
-            this.Item_ItemGroup = new HashSet<ItemItemGroup>();
+            this.Item_ItemGroup = new HashSet<Item_ItemGroup>();
         }
     
         public long Id { get; set; }
@@ -26,6 +26,6 @@ namespace DAL
         public Nullable<bool> Active { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ItemItemGroup> Item_ItemGroup { get; set; }
+        public virtual ICollection<Item_ItemGroup> Item_ItemGroup { get; set; }
     }
 }
