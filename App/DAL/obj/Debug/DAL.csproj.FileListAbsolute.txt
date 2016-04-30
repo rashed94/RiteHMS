@@ -8,3 +8,5 @@ G:\GitHub\RightHMS\App\DAL\bin\Debug\EntityFramework.SqlServer.xml
 G:\GitHub\RightHMS\App\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
 G:\GitHub\RightHMS\App\DAL\obj\Debug\DAL.dll
 G:\GitHub\RightHMS\App\DAL\obj\Debug\DAL.pdb
+G:\GitHub\RightHMS\App\DAL\bin\Debug\log4net.dll
+G:\GitHub\RightHMS\App\DAL\bin\Debug\log4net.xml

@@ -69,3 +69,5 @@ G:\GitHub\RightHMS\App\HMS\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 G:\GitHub\RightHMS\App\HMS\obj\Debug\HMS.csprojResolveAssemblyReference.cache
 G:\GitHub\RightHMS\App\HMS\obj\Debug\HMS.dll
 G:\GitHub\RightHMS\App\HMS\obj\Debug\HMS.pdb
+G:\GitHub\RightHMS\App\HMS\bin\log4net.dll
+G:\GitHub\RightHMS\App\HMS\bin\log4net.xml

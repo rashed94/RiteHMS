@@ -1,0 +1,51 @@
+﻿using DAL.Entities;
+using System;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+
+namespace DAL
+{
+    public partial class Context : DbContext
+    {
+        public Context() : base("name=HMSContext")
+        {
+            Database.SetInitializer<Context>(null);
+        }
+
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    throw new UnintentionalCodeFirstException();
+        //}
+
+        public virtual DbSet<BedOccupancy> BedOccupancies { get; set; }
+        public virtual DbSet<Contact> Contacts { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<DrugAdministration> DrugAdministrations { get; set; }
+        public virtual DbSet<DrugDosage> DrugDosages { get; set; }
+        public virtual DbSet<DrugFrequency> DrugFrequencies { get; set; }
+        public virtual DbSet<Inventory> Inventories { get; set; }
+        public virtual DbSet<InvoicePayment> InvoicePayments { get; set; }
+        public virtual DbSet<InvoiceStatus> InvoiceStatus { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<Item_ItemGroup> Item_ItemGroups { get; set; }
+        public virtual DbSet<ItemCategory> ItemCategories { get; set; }
+        public virtual DbSet<ItemDefault> ItemDefaults { get; set; }
+        public virtual DbSet<ItemGroup> ItemGroups { get; set; }
+        public virtual DbSet<ItemReorder> ItemReorders { get; set; }
+        public virtual DbSet<ItemType> ItemTypes { get; set; }
+        public virtual DbSet<MeasurementUnit> MeasurementUnits { get; set; }
+        public virtual DbSet<MedicalType> MedicalTypes { get; set; }
+        public virtual DbSet<Membership> Memberships { get; set; }
+        public virtual DbSet<Patient> Patients { get; set; }
+        public virtual DbSet<PatientAdmission> PatientAdmissions { get; set; }
+        public virtual DbSet<PatientInvoice> PatientInvoices { get; set; }
+        public virtual DbSet<PatientService> PatientServices { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<PaymentType> PaymentTypes { get; set; }
+        public virtual DbSet<ReceiptPayment> ReceiptPayments { get; set; }
+        public virtual DbSet<Refund> Refunds { get; set; }
+        public virtual DbSet<ServiceProvider> ServiceProviders { get; set; }
+        public virtual DbSet<ServiceProviderType> ServiceProviderTypes { get; set; }
+        public virtual DbSet<Store> Stores { get; set; }
+    }
+}
