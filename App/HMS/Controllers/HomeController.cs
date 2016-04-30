@@ -1,4 +1,5 @@
 ﻿using DAL;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,24 +33,24 @@ namespace HMS.Controllers
 
         public JsonResult GetPersons()
         {
-            HMSEntities e = new HMSEntities();
-            var result = e.Contacts.ToList();
+            Context ctx = new Context();
+            var result = ctx.Contacts.ToList();
             
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetPersonById(int id)
         {
-            HMSEntities e = new HMSEntities();
-            return Json(e.Contacts.Find(id), JsonRequestBehavior.AllowGet);
+            Context ctx = new Context();
+            return Json(ctx.Contacts.Find(id), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult SavePerson()
         {
             Contact contact = new Contact { FirstName = "Muzahidul", LastName = "Islam", PhoneNumber = "01833353657", Email = "mail.muzahid@gmail.com" };
-            HMSEntities e = new HMSEntities();
-            e.Contacts.Add(contact);
-            e.SaveChanges();
+            Context ctx = new Context();
+            ctx.Contacts.Add(contact);
+            ctx.SaveChanges();
 
             return new JsonResult();
         }
