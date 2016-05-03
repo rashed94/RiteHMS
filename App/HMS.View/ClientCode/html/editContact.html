@@ -1,0 +1,32 @@
+﻿<div ng-app="HmsApp" class="container">
+    <table class="table table-bordered" ng-controller="ContactController">
+        <tr>
+            <td>First Name</td>
+            <td><input type="text" class="_s_FirstName" value="{{Contact.FirstName}}" /></td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td><input type="text" class="_s_LastName" value="{{Contact.LastName}}" /></td>
+        </tr>
+        <tr>
+            <td>Phone Number</td>
+            <td><input type="text" class="_s_PhoneNumber" value="{{Contact.PhoneNumber}}" /></td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><input type="email" class="_s_Email" value="{{Contact.Email}}" /></td>
+        </tr>
+        <tr>
+            <td>Photo</td>
+            <td><input type="file" class="_s_Photo" value="{{Contact.Photo}}" /></td>
+        </tr>
+        <tr>
+            <td>
+                <input type="button" value="Save" class="_s_Save" ng-click="SaveContact(Contact)" />
+            </td>
+            <td>
+                <input type="button" value="Cancel" class="_s_Cancel" onclick="window.location.href=''" />
+            </td>
+        </tr>
+    </table>
+</div>

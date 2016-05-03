@@ -1,0 +1,36 @@
+﻿<p>
+    Search Contact: <input ng-model="search">
+</p>
+
+<div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Photo</th>
+            </tr>
+        </thead>
+        <tr ng-repeat="contact in Contacts | orderBy:'FirstName' | filter:search">
+            <td>
+                <a href="#/contact/{{contact.Id}}">
+                    {{contact.Id}}
+                </a>
+            </td>
+            <td>
+                {{contact.FirstName}} {{contact.LastName}}
+            </td>
+            <td class="tdLeft">
+                {{contact.PhoneNumber}}
+            </td>
+            <td class="tdLeft">
+                {{contact.Email}}
+            </td>
+            <td class="tdLeft">
+                <img ng-src="favicon.ico" alt="{{contact.FirstName}} {{contact.LastName}}" />
+            </td>
+        </tr>
+    </table>
+</div>

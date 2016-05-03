@@ -20,12 +20,12 @@ namespace HMS.DAL.Repository
 
         #region IRepository<T> Members
 
-        public void Insert(T entity)
+        public T Insert(T entity)
         {
-            _DbSet.Add(entity);
+            return _DbSet.Add(entity);
         }
 
-        public T GetById(int id)
+        public T GetById(long id)
         {
             return _DbSet.Find(id);
         }
@@ -63,31 +63,44 @@ namespace HMS.DAL.Repository
             return _DbSet.First(predicate);
         }
 
-        public void Update(T entity)
+        public T Update(T entity)
         {
-            _DbSet.Attach(entity);
+            var updatedEntity = _DbSet.Attach(entity);
             _DbContext.Entry(entity).State = EntityState.Modified;
+            return updatedEntity;
         }
 
-        public void UpdateById(int id)
+        public T UpdateById(long id)
         {
             T entity = _DbSet.Find(id);
             _DbSet.Attach(entity);
             _DbContext.Entry(entity).State = EntityState.Modified;
+            return entity;
         }
 
+        //private void Delete(T entity)
+        //{
+        //    if (_DbContext.Entry(entity).State == EntityState.Detached)
+        //        _DbSet.Attach(entity);
+
+        //    _DbSet.Remove(entity);
+        //}
         private void Delete(T entity)
         {
             if (_DbContext.Entry(entity).State == EntityState.Detached)
                 _DbSet.Attach(entity);
-
-            _DbSet.Remove(entity);
+            entity.Active = false;
         }
 
-        private void DeleteByID(int id)
+        //private void DeleteByID(long id)
+        //{
+        //    T entity = _DbSet.Find(id);
+        //    _DbSet.Remove(entity);
+        //}
+        private void DeleteByID(long id)
         {
             T entity = _DbSet.Find(id);
-            _DbSet.Remove(entity);
+            entity.Active = false;
         }
 
         public void DeleteAll()

@@ -8,21 +8,21 @@ namespace HMS.DAL.Repository
 {
     public interface IRepository<T> where T : EntityBase
     {
-        void Insert(T entity);
+        T Insert(T entity);
 
-        T GetById(int id);
+        T GetById(long id);
 
         IEnumerable<T> GetByQuery(Expression<Func<T, bool>> query = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
 
         T GetFirst(Expression<Func<T, bool>> predicate);
 
-        void Update(T entity);
+        T Update(T entity);
 
-        void UpdateById(int id);
+        T UpdateById(long id);
 
         //void Delete(T entity);
 
-        //void DeleteByID(int id);
+        //void DeleteByID(long id);
 
         void DeleteAll();
     }
