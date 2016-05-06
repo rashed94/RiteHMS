@@ -14,6 +14,8 @@ namespace HMS.DAL.Repository
 
         public Repository(DbContext dataContext)
         {
+            if (dataContext == null)
+                throw new ArgumentNullException("dbContext");
             _DbContext = dataContext;
             _DbSet = _DbContext.Set<T>();
         }
@@ -105,7 +107,7 @@ namespace HMS.DAL.Repository
 
         public void DeleteAll()
         {
-            _DbSet.ToList().ForEach(c => Delete(c));
+            _DbSet.RemoveRange(GetByQuery());
         }
 
         #endregion

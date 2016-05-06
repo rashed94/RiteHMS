@@ -63,6 +63,8 @@ class Program
         patientRepo.DeleteAll();
         contactRepo.DeleteAll();
 
+        context.SaveChanges();
+
 
         var entDepartment = new Department { Name = "ENT" };
         deptRepo.Insert(entDepartment);
