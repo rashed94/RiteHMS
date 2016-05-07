@@ -1,32 +1,58 @@
-﻿<div ng-app="HmsApp" class="container">
-    <table class="table table-bordered" ng-controller="ContactController">
-        <tr>
-            <td>First Name</td>
-            <td><input type="text" class="_s_FirstName" value="{{Contact.FirstName}}" /></td>
-        </tr>
-        <tr>
-            <td>Last Name</td>
-            <td><input type="text" class="_s_LastName" value="{{Contact.LastName}}" /></td>
-        </tr>
-        <tr>
-            <td>Phone Number</td>
-            <td><input type="text" class="_s_PhoneNumber" value="{{Contact.PhoneNumber}}" /></td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td><input type="email" class="_s_Email" value="{{Contact.Email}}" /></td>
-        </tr>
-        <tr>
-            <td>Photo</td>
-            <td><input type="file" class="_s_Photo" value="{{Contact.Photo}}" /></td>
-        </tr>
-        <tr>
-            <td>
-                <input type="button" value="Save" class="_s_Save" ng-click="SaveContact(Contact)" />
-            </td>
-            <td>
-                <input type="button" value="Cancel" class="_s_Cancel" onclick="window.location.href=''" />
-            </td>
-        </tr>
-    </table>
-</div>
+﻿<table class="table table-bordered">
+    <tr>
+        <td>First Name</td>
+        <td><input type="text" class="_s_FirstName" ng-model="Contact.FirstName" /></td>
+    </tr>
+    <tr>
+        <td>Last Name</td>
+        <td><input type="text" class="_s_LastName" ng-model="Contact.LastName" /></td>
+    </tr>
+    <tr>
+        <td>Phone Number</td>
+        <td><input type="text" class="_s_PhoneNumber" ng-model="Contact.PhoneNumber" /></td>
+    </tr>
+    <tr>
+        <td>Street</td>
+        <td><input type="text" class="_s_Street" ng-model="Contact.Street" /></td>
+    </tr>
+    <tr>
+        <td>City</td>
+        <td><input type="text" class="_s_City" ng-model="Contact.City" /></td>
+    </tr>
+    <tr>
+        <td>Zip</td>
+        <td><input type="text" class="_s_Zip" ng-model="Contact.Zip" /></td>
+    </tr>
+    <tr>
+        <td>Country</td>
+        <td><input type="text" class="_s_Country" ng-model="Contact.Country" /></td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td><input type="text" class="_s_Email" ng-model="Contact.Email" /></td>
+    </tr>
+    <tr>
+        <td>Fax</td>
+        <td><input type="text" class="_s_Fax" ng-model="Contact.Fax" /></td>
+    </tr>
+    <tr>
+        <td>WebSite</td>
+        <td><input type="text" class="_s_WebSite" ng-model="Contact.WebSite" /></td>
+    </tr>
+    <tr>
+        <td>Photo</td>
+        <td><input type="file" class="_s_Photo" ng-model="Contact.Photo" /></td>
+    </tr>
+    <tr>
+        <td>IsCompany</td>
+        <td><input type="checkbox" class="_s_IsCompany" ng-model="Contact.IsCompany" /></td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="Save" class="_s_Save" ng-click="SaveContact()" />
+        </td>
+        <td>
+            <input type="button" value="Cancel" class="_s_Cancel" onclick="window.location.href=''" />
+        </td>
+    </tr>
+</table>

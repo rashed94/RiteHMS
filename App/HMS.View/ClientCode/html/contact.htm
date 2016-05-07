@@ -13,7 +13,7 @@
                 <th>Photo</th>
             </tr>
         </thead>
-        <tr ng-repeat="contact in Contacts | orderBy:'FirstName' | filter:search">
+        <tr ng-repeat="contact in Contacts | orderBy:'Id' | filter:search">
             <td>
                 <a href="#/contact/{{contact.Id}}">
                     {{contact.Id}}

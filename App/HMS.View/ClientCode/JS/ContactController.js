@@ -1,12 +1,11 @@
 ﻿'use strict';
 
-function ContactController_temp($scope, $routeParams, ContactService) {
-    GetContacts();
-    function GetContacts() {
+function ContactController($scope, $routeParams, ContactService) {
+    $scope.GetContacts = function() {
         ContactService.GetContacts()
             .success(function (cts) {
                 $scope.Contacts = cts;
-                console.log($scope.Contacts);
+                //console.log($scope.Contacts);
             })
             .error(function (error) {
                 $scope.status = 'Unable to load contact data: ' + error.message;
@@ -14,8 +13,8 @@ function ContactController_temp($scope, $routeParams, ContactService) {
             });
     }
 
-    function GetContact(id) {
-        ContactService.GetContact()
+    $scope.GetContact = function(id) {
+        ContactService.GetContact(id)
             .success(function (ct) {
                 $scope.Contact = ct;
                 console.log($scope.Contact);
@@ -26,8 +25,8 @@ function ContactController_temp($scope, $routeParams, ContactService) {
             });
     }
 
-    function SaveContact(ctc) {
-        ContactService.SaveContact(ctc)
+    $scope.SaveContact = function() {
+        ContactService.SaveContact($scope.Contact)
             .success(function (data) {
                 console.log(data);
             })
@@ -35,5 +34,12 @@ function ContactController_temp($scope, $routeParams, ContactService) {
                 $scope.status = 'Unable to save contact data: ' + error.message;
                 console.log($scope.status);
             });
+    }
+
+    if ($routeParams.id != null) {
+        $scope.GetContact($routeParams.id);
+    }
+    else {
+        $scope.GetContacts();
     }
 }

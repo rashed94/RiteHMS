@@ -20,6 +20,19 @@ namespace HMS.DAL.Repository
             _DbSet = _DbContext.Set<T>();
         }
 
+        //public virtual void Add(T entity)
+        //{
+        //    var dbEntityEntry = _DbContext.Entry(entity);
+        //    if (dbEntityEntry.State != EntityState.Detached)
+        //    {
+        //        dbEntityEntry.State = EntityState.Added;
+        //    }
+        //    else
+        //    {
+        //        _DbSet.Add(entity);
+        //    }
+        //}
+
         #region IRepository<T> Members
 
         public T Insert(T entity)

@@ -98,9 +98,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientCode\app.js" />
-    <Content Include="ClientCode\html\contact.htm" />
-    <Content Include="ClientCode\html\editContact.html" />
-    <Content Include="ClientCode\JS\contact.js" />
+    <Content Include="ClientCode\html\Contact.htm" />
+    <Content Include="ClientCode\html\EditContact.html" />
+    <Content Include="ClientCode\JS\ContactController.js" />
+    <Content Include="ClientCode\JS\ContactService.js" />
     <Content Include="Content\bootstrap-combined.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />

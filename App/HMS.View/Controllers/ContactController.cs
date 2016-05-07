@@ -61,12 +61,28 @@ namespace HMS.Controllers
             {
                 return Json(new HttpStatusCodeResult(HttpStatusCode.BadRequest), JsonRequestBehavior.AllowGet);
             }
-            Contact contact = _Repository.GetById(id.Value);
-            if (contact == null)
+            Contact c = _Repository.GetById(id.Value);
+            if (c == null)
             {
                 return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
             }
-            return Json(contact, JsonRequestBehavior.AllowGet);
+            return Json(new Contact
+            {
+                Id = c.Id,
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                PhoneNumber = c.PhoneNumber,
+                Email = c.Email,
+                City = c.City,
+                Country = c.Country,
+                Fax = c.Fax,
+                Street = c.Street,
+                IsCompany = c.IsCompany,
+                Active = c.Active,
+                Photo = c.Photo,
+                WebSite = c.WebSite,
+                Zip = c.Zip
+            }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Contacts/GetContactByPhone/phoneNumber/01833353657
@@ -97,7 +113,7 @@ namespace HMS.Controllers
         }
         
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public JsonResult UpdateContact(Contact contact)
         {
             if (ModelState.IsValid)

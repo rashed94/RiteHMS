@@ -5,37 +5,15 @@
 var HmsApp = angular.module('HMS', []).
   config(['$routeProvider', function ($routeProvider) {
       $routeProvider.
-          //when('/store', {
-          //    templateUrl: '/ClientCode/html/store.htm',
-          //    controller: storeController
-          //}).
           when('/contact/:id', {
-              templateUrl: '/ClientCode/html/editContact.html',
+              templateUrl: '/ClientCode/html/EditContact.html',
               controller: ContactController
           }).
-          //when('/cart', {
-          //    templateUrl: '/ClientCode/html/shoppingCart.htm',
-          //    controller: storeController
-          //}).
           when('/contact', {
-              templateUrl: '/ClientCode/html/contact.htm',
+              templateUrl: '/ClientCode/html/Contact.htm',
               controller: ContactController
           }).
           otherwise({
               redirectTo: '/contact'
           });
   }]);
-
-HmsApp.factory('ContactService', ['$http', function ($http) {
-    var ContactService = {};
-    ContactService.GetContacts = function () {
-        return $http.get('/Contact/GetContacts');
-    };
-    ContactService.SaveContact = function (contact) {
-        return $http.get('/Contact/SaveContact');
-    };
-    ContactService.GetContact = function (id) {
-        return $http.get('/Contact/GetContactById?id=' + id);
-    };
-    return ContactService;
-}]);
