@@ -1,0 +1,356 @@
+@charset "utf-8";
+/* CSS Document */
+
+@import url('layout.css') screen;
+@import url('reset.css') screen;
+
+body
+{
+	background-color:#e6e6e6;
+	margin:0;
+	padding:0;
+	font-family:SansRegular;
+	font-size:12px;
+	color:#6b6c6b;
+}
+.round_box_title
+{
+	background:url(../images/arrow_head.gif) no-repeat right ;
+	height:90px;
+	padding-top:20px;
+	
+}
+.round_box_title img {
+	vertical-align:middle;
+	margin-bottom:12px;
+	margin-top:6px;
+	
+	
+	}
+h1
+{
+	color:#424342;
+	text-transform:uppercase;
+	font-family:SansSemiBold;
+	font-size:13px;
+	display:inline-block;
+	font-size:13px;
+
+}
+.round_box_title h1
+{
+	padding-top:6px;
+	margin-left:4px;	
+}
+
+h2
+{
+	color:#424342;
+	text-transform:uppercase;
+	font-family:SansSemiBold;
+	font-size:13px;
+	display:inline-block;
+	font-size:12px;
+	padding-right:12px;
+
+}
+strong
+{
+font-family:SansSemiBold;
+color:#424342;	
+}
+.home_appointment_details p, .patient_address p
+{
+	padding-top:6px;
+}
+.line_height_small p
+{
+	padding-top:2px;
+}
+
+
+.login_info a
+{
+	color:#538e4a;
+	text-transform:uppercase;
+	text-decoration:underline;
+	font-family:SansSemiBold;
+	font-size:10px;
+	
+}
+.login_info a:hover
+{
+
+	text-decoration:none;
+}
+.register a
+{
+	color:#1d5a13;
+	text-transform:uppercase;
+	text-decoration:underline;
+	font-family:SansSemiBold;
+	font-size:11px;
+	background:url(../images/arrow_green.gif) no-repeat top left;
+	
+	padding-left:18px;
+	
+}
+.register a:hover
+{
+
+	text-decoration:none;
+}
+input[type="text"]
+{
+	border:1px solid #ced1d7;
+	background:#fff;
+	 border-radius:2px;
+}
+select
+{
+ border: 1px solid #ced1d7;
+  background: transparent;
+  width: 100px;
+  
+  height:20px;
+ 
+}
+input[type=button]:hover
+{
+	cursor:pointer;
+}
+input[type=text]:focus, textarea:focus {
+  box-shadow: 0 0 5px rgba(192, 247, 97, 1);
+  border: 1px solid rgba(186, 209, 183, 1);
+ 
+}
+#patientcode
+{
+	width:95px;
+}
+#patientname
+{
+	width:385px;
+}
+.round_box_rightcontent
+{
+	font-size:11px;
+	font-family:SansSemiBold;
+	color:#676867;
+	text-transform:uppercase;
+}
+.site_navigation
+{
+	font-size: 11px;
+	font-family: SansSemiBold;
+	color: #ff45f;
+	text-transform: uppercase;
+    margin:0 auto;
+	width:665px;
+	
+	
+	
+}
+.site_navigation ul:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+.site_navigation { list-style: none; }
+.site_navigation li { display: inline;}
+.site_navigation li a { color: #fff;padding:15px; background: #80b24a; text-decoration: none;float:left; position:relative; margin-left:1px; top:1px;  }
+.site_navigation li a:hover { background: #538e4a; }
+
+
+.site_navigation li a.selected:after {
+	content: '';
+	display: block;  
+	position: absolute;
+	left: 40%;
+	top: 100%;
+	width: 0;
+	height: 0;
+	border-top: 10px solid #538e4a;
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+}
+
+.site_navigation li.patientinfo a.selected 
+{
+	background: url(../images/sitemenu_patieninfo_hover.gif) no-repeat 4px 2px #538e4a;
+	padding-left:30px;	
+}
+.site_navigation li.patientinfo a:hover
+{
+background: url(../images/sitemenu_patieninfo_hover.gif) no-repeat 4px 2px #538e4a;	
+padding-left:30px;	
+}
+.site_navigation li.patientinfo a
+{
+background: url(../images/sitemenu_patieninfo.gif) no-repeat 4px 2px #80b24a;	
+padding-left:30px;	
+}
+
+.site_navigation li.lab a.selected 
+{
+	background: url(../images/sitemenu_lab_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:32px;	
+}
+.site_navigation li.lab a:hover
+{
+background: url(../images/sitemenu_lab_hover.gif) no-repeat 6px 2px #538e4a;	
+padding-left:32px;	
+}
+.site_navigation li.lab a
+{
+background: url(../images/sitemenu_lab.gif) no-repeat 6px 2px #80b24a;	
+padding-left:32px;	
+}
+
+
+.site_navigation li.pharmacy a.selected 
+{
+	background: url(../images/sitemenu_pharmacy_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:32px;	
+}
+.site_navigation li.pharmacy a:hover
+{
+background: url(../images/sitemenu_pharmacy_hover.gif) no-repeat 6px 2px #538e4a;	
+padding-left:32px;	
+}
+.site_navigation li.pharmacy a
+{
+background: url(../images/sitemenu_pharmacy.gif) no-repeat 6px 2px #80b24a;	
+padding-left:32px;	
+}
+
+
+.site_navigation li.appointment a.selected 
+{
+	background: url(../images/sitemenu_appointment_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:32px;	
+}
+.site_navigation li.appointment a:hover
+{
+background: url(../images/sitemenu_appointment_hover.gif) no-repeat 6px 2px #538e4a;	
+padding-left:32px;	
+}
+.site_navigation li.appointment a
+{
+background: url(../images/sitemenu_appointment.gif) no-repeat 6px 2px #80b24a;	
+padding-left:32px;	
+}
+
+
+.site_navigation li.bed a.selected 
+{
+	background: url(../images/sitemenu_bed_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:48px;	
+}
+.site_navigation li.bed a:hover
+{
+background: url(../images/sitemenu_bed_hover.gif) no-repeat 6px 2px #538e4a;	
+	
+}
+.site_navigation li.bed a
+{
+background: url(../images/sitemenu_bed.gif) no-repeat 6px 2px #80b24a;	
+padding-left:48px;	
+}
+
+
+
+.site_navigation li.billing a.selected 
+{
+	background: url(../images/sitemenu_billing_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:32px;	
+}
+.site_navigation li.billing a:hover
+{
+background: url(../images/sitemenu_billing_hover.gif) no-repeat 6px 2px #538e4a;	
+	
+}
+.site_navigation li.billing a
+{
+background: url(../images/sitemenu_billing.gif) no-repeat 6px 2px #80b24a;	
+padding-left:32px;	
+}
+#itemname
+{
+	margin-top:2px;
+	margin-bottom:2px;
+	width:395px;
+	height:22px;
+}
+.add_item_input
+{
+	margin-left:20px;
+	margin-bottom:5px; 
+	margin-top:30px;
+}
+
+.add_item_input select
+{
+	display:block; 
+	height:25px;
+}
+.floatleft
+{
+	float:left;
+}
+.itemButton
+{
+	float:left;
+	margin-top:2px;
+	 margin-left:2px;
+}
+.item_grid
+{
+	margin-top:12px;width:1200px; margin:0 auto; margin-bottom:22px;
+}
+.item_grid .quantity
+{
+	width:100px;
+}
+.item_grid .referrer
+{
+	width:100px;
+}
+.item_grid .amount
+{
+	width:100px;
+}
+.item_grid .reportdeliverydate
+{
+	width:100px;
+}
+.item_grid .datepickicon
+{
+	vertical-align:middle;
+	
+}
+.item_grid .quantity
+{
+	width:50px;
+}
+.round_title_margin h1
+{
+	margin-top:25px;
+}
+img
+{
+	vertical-align:middle;
+}
+.line_item_total_calc
+{
+	margin-top:12px;
+	
+}
+.border_bottom
+{
+	border-bottom:1px solid #b9d0c4;
+	padding:6px;
+}
