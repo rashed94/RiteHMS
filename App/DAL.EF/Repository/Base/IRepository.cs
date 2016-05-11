@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace HMS.DAL.Repository
 {
-    public interface IRepository<T> where T : EntityBase
+    public interface IRepository<T> : IDisposable where T : EntityBase
     {
         T Insert(T entity);
 

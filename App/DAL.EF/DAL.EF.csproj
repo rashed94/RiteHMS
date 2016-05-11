@@ -60,6 +60,8 @@
     <Compile Include="Repository\Base\IRepository.cs" />
     <Compile Include="Repository\Impl\ContactRepository.cs" />
     <Compile Include="Repository\Impl\Repository.cs" />
+    <Compile Include="SessionFactory\Impl\SessionFactory.cs" />
+    <Compile Include="SessionFactory\ISessionFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config">

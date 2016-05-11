@@ -1,6 +1,12 @@
 ﻿'use strict';
 
 function ContactController($scope, $routeParams, ContactService) {
+    $scope.Files = [];
+    $scope.LoadFileData = function (files) {
+        console.log(files[0].type);
+        $scope.Contact.Photo = files[0];
+    };
+
     $scope.GetContacts = function() {
         ContactService.GetContacts()
             .success(function (cts) {
@@ -28,7 +34,7 @@ function ContactController($scope, $routeParams, ContactService) {
     $scope.SaveContact = function() {
         ContactService.SaveContact($scope.Contact)
             .success(function (data) {
-                console.log(data);
+
             })
             .error(function (error) {
                 $scope.status = 'Unable to save contact data: ' + error.message;

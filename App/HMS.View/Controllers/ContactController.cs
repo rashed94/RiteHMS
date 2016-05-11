@@ -1,57 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using HMS.DAL;
 using HMS.Model.Core;
 using HMS.DAL.Repository;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System;
+using System.Web;
+using Newtonsoft.Json.Linq;
+using System.Collections;
+using System.Configuration;
 
 namespace HMS.Controllers
 {
     public class ContactController : Controller
     {
+        static readonly string _PhotoLocation = ConfigurationManager.AppSettings["PhotoLocation"];
         //private Repository<Contact> _Repository;
-        private ContactRepository _Repository;
+        //private ContactRepository _Repository;
 
         public ContactController()
         {
              //_Repository = new Repository<Contact>(new Context());
-            _Repository = new ContactRepository(new Context());
+            //_Repository = new ContactRepository(new Context());
         }
 
         // GET: Contacts/GetContacts
         public JsonResult GetContacts()
         {
-            List<Contact> contacts = _Repository.GetByQuery().ToList();
-            if (contacts == null)
+            using (ContactRepository repository = new ContactRepository())
             {
-                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                List<Contact> contacts = repository.GetByQuery().ToList();
+                if (contacts == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+                List<Contact> onlyContacts = new List<Contact>();
+                contacts.ForEach(c => onlyContacts.Add(new Contact
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    PhoneNumber = c.PhoneNumber,
+                    Email = c.Email,
+                    City = c.City,
+                    Country = c.Country,
+                    Fax = c.Fax,
+                    Street = c.Street,
+                    IsCompany = c.IsCompany,
+                    Active = c.Active,
+                    Photo = c.Photo,
+                    WebSite = c.WebSite,
+                    Zip = c.Zip
+                }));
+
+                return Json(onlyContacts, JsonRequestBehavior.AllowGet);
             }
-
-            List<Contact> onlyContacts = new List<Contact>();
-            contacts.ForEach(c => onlyContacts.Add(new Contact
-            {
-                Id = c.Id,
-                FirstName = c.FirstName,
-                LastName = c.LastName,
-                PhoneNumber = c.PhoneNumber,
-                Email = c.Email,
-                City = c.City,
-                Country = c.Country,
-                Fax = c.Fax,
-                Street = c.Street,
-                IsCompany = c.IsCompany,
-                Active = c.Active,
-                Photo = c.Photo,
-                WebSite = c.WebSite,
-                Zip = c.Zip
-            }));
-
-            return Json(onlyContacts, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Contacts/GetContactById/5
@@ -61,28 +68,31 @@ namespace HMS.Controllers
             {
                 return Json(new HttpStatusCodeResult(HttpStatusCode.BadRequest), JsonRequestBehavior.AllowGet);
             }
-            Contact c = _Repository.GetById(id.Value);
-            if (c == null)
+            using (ContactRepository repository = new ContactRepository())
             {
-                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                Contact c = repository.GetById(id.Value);
+                if (c == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(new Contact
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    PhoneNumber = c.PhoneNumber,
+                    Email = c.Email,
+                    City = c.City,
+                    Country = c.Country,
+                    Fax = c.Fax,
+                    Street = c.Street,
+                    IsCompany = c.IsCompany,
+                    Active = c.Active,
+                    Photo = c.Photo,
+                    WebSite = c.WebSite,
+                    Zip = c.Zip
+                }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new Contact
-            {
-                Id = c.Id,
-                FirstName = c.FirstName,
-                LastName = c.LastName,
-                PhoneNumber = c.PhoneNumber,
-                Email = c.Email,
-                City = c.City,
-                Country = c.Country,
-                Fax = c.Fax,
-                Street = c.Street,
-                IsCompany = c.IsCompany,
-                Active = c.Active,
-                Photo = c.Photo,
-                WebSite = c.WebSite,
-                Zip = c.Zip
-            }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Contacts/GetContactByPhone/phoneNumber/01833353657
@@ -92,38 +102,65 @@ namespace HMS.Controllers
             {
                 return Json(new HttpStatusCodeResult(HttpStatusCode.BadRequest), JsonRequestBehavior.AllowGet);
             }
-            Contact contact = _Repository.GetByPhoneNumber(phoneNumber);
-            if (contact == null)
+            using (ContactRepository repository = new ContactRepository())
             {
-                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                Contact contact = repository.GetByPhoneNumber(phoneNumber);
+                if (contact == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+                return Json(contact, JsonRequestBehavior.AllowGet);
             }
-            return Json(contact, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public JsonResult CreateContact(Contact contact)
         {
             if (ModelState.IsValid)
             {
-                _Repository.Insert(contact);
-                _Repository.SaveChanges();
+                using (ContactRepository repository = new ContactRepository())
+                {
+                    repository.Insert(contact);
+                }
             }
             return Json(contact, JsonRequestBehavior.AllowGet);
         }
-        
-        [HttpPost]
+
+        [System.Web.Mvc.HttpPost]
+        public JsonResult UploadImage()
+        {
+            var fName = "";
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase file = Request.Files[0];
+                fName = Path.Combine(_PhotoLocation, string.Format("{0}{1}", Request.Form["Id"], Path.GetExtension(file.FileName)));
+                file.SaveAs(fName);
+            }
+            return Json(new
+            {
+                FileName = fName
+            });
+        }
+
+        [System.Web.Mvc.HttpPost]
         //[ValidateAntiForgeryToken]
-        public JsonResult UpdateContact(Contact contact)
+        public JsonResult UpdateContact(Contact contact, string filePath)
         {
             if (ModelState.IsValid)
             {
-                _Repository.Entry(contact).State = EntityState.Modified;
-                _Repository.SaveChanges();
+                using (ContactRepository repository = new ContactRepository())
+                {
+                    if (!string.IsNullOrEmpty(filePath))
+                    {
+                        contact.Photo = Path.GetFileName(filePath);
+                    }
+                    repository.Update(contact);
+                }
             }
-            return Json(contact, JsonRequestBehavior.AllowGet);
+            return Json("Success");
         }
-        
+
         //public JsonResult Delete(long? id)
         //{
         //    if (id == null)
@@ -144,9 +181,15 @@ namespace HMS.Controllers
         {
             if (disposing)
             {
-                _Repository.Dispose();
+                //_Repository.Dispose();
             }
             base.Dispose(disposing);
         }
+    }
+
+    class UploadObject
+    {
+        public string FilePath { get; set; }
+        public Contact Contact { get; set; }
     }
 }

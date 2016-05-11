@@ -3,20 +3,21 @@ using System.Linq;
 using System.Data.Entity;
 using System.Linq.Expressions;
 using HMS.Model.Core;
+using HMS.DAL.SessionFactory;
 
 namespace HMS.DAL.Repository
 {
-    public class Repository<T> : Context, IRepository<T> where T : EntityBase
+    public class Repository<T> : IDisposable, IRepository<T> where T : EntityBase
     {
         protected DbSet<T> _DbSet;
 
         protected DbContext _DbContext;
 
-        public Repository(DbContext dataContext)
+        public Repository()
         {
-            if (dataContext == null)
-                throw new ArgumentNullException("dbContext");
-            _DbContext = dataContext;
+            //if (dataContext == null)
+            //    throw new ArgumentNullException("dbContext");
+            _DbContext = new Context();
             _DbSet = _DbContext.Set<T>();
         }
 
@@ -121,6 +122,13 @@ namespace HMS.DAL.Repository
         public void DeleteAll()
         {
             _DbSet.RemoveRange(GetByQuery());
+        }
+
+        public void Dispose()
+        {
+            _DbContext.SaveChanges();
+            _DbContext.Dispose();
+            _DbSet = null;
         }
 
         #endregion

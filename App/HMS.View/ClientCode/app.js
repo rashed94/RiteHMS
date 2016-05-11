@@ -2,7 +2,7 @@
 
 // App Module: the name HMS matches the ng-app attribute in the main <html> tag
 // the route provides parses the URL and injects the appropriate partial page
-var HmsApp = angular.module('HMS', []).
+var HmsApp = angular.module('HMS', ['angular-loading-bar']).
   config(['$routeProvider', function ($routeProvider) {
       $routeProvider.
           when('/contact/:id', {
@@ -17,3 +17,6 @@ var HmsApp = angular.module('HMS', []).
               redirectTo: '/contact'
           });
   }]);
+  //.run(['authService', function (authService) {
+  //    authService.fillAuthData();
+  //}]);

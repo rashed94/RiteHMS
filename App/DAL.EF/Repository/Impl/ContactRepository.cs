@@ -6,9 +6,8 @@ namespace HMS.DAL.Repository
 {
     public class ContactRepository : Repository<Contact>
     {
-        public ContactRepository(DbContext dataContext) : base(dataContext)
+        public ContactRepository()
         {
-            _DbContext = dataContext;
             _DbSet = _DbContext.Set<Contact>();
         }
 

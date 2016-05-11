@@ -41,7 +41,10 @@
     </tr>
     <tr>
         <td>Photo</td>
-        <td><input type="file" class="_s_Photo" ng-model="Contact.Photo" /></td>
+        <td>
+            <img src="GetImage.ashx?Name={{Contact.Photo}}" style="height: 100px;" /><br/>
+            <input type="file" class="_s_Photo" file-upload onchange="angular.element(this).scope().LoadFileData(this.files)" accept="image/*" />
+        </td>
     </tr>
     <tr>
         <td>IsCompany</td>

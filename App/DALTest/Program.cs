@@ -1,5 +1,7 @@
 ﻿using HMS.DAL;
 using HMS.DAL.Repository;
+using HMS.DAL.SessionFactory;
+using HMS.DAL.SessionFactory.Impl;
 using HMS.Model.Core;
 using System;
 using System.Collections.Generic;
@@ -9,47 +11,88 @@ class Program
 {
     static void Main(string[] args)
     {
+        var p = new Program();
+        p.Run();
+    }
+
+    private Contact GetContactByPhone(string phone)
+    {
+        ContactRepository contactRepo = new ContactRepository();
+        return contactRepo.GetByPhoneNumber(phone);
+    }
+    private Department GetDepartmentByName(string name)
+    {
+        IRepository<Department> departmentRepo = new Repository<Department>();
+        return departmentRepo.GetFirst(d => d.Name == "ENT");
+    }
+    private ServiceProviderType GetServiceProviderTypeByName(string name)
+    {
+        IRepository<ServiceProviderType> serviceProviderTypeRepo = new Repository<ServiceProviderType>();
+        return serviceProviderTypeRepo.GetFirst(d => d.Name == "Doctor");
+    }
+
+    private void Run()
+    {
         log4net.ILog logger = log4net.LogManager.GetLogger("Logger");
 
-        using (Context context = new Context())
+        Contact contact;
+        using (ContactRepository contactRepo = new ContactRepository())
         {
-            InitData(context);
+            contact = contactRepo.GetByPhoneNumber("01833353657");
+        }
 
-            IRepository<ServiceProvider> serviceProviderRepo = new Repository<ServiceProvider>(context);
-            ContactRepository contactRepo = new ContactRepository(context);
-            IRepository<Department> departmentRepo = new Repository<Department>(context);
-            IRepository<ServiceProviderType> serviceProviderTypeRepo = new Repository<ServiceProviderType>(context);
+        Department department;
+        using (IRepository<Department> departmentRepo = new Repository<Department>())
+        {
+            department = departmentRepo.GetFirst(d => d.Name == "ENT");
+        }
 
+        ServiceProviderType serviceProviderType;
+        using (IRepository<ServiceProviderType> serviceProviderTypeRepo = new Repository<ServiceProviderType>())
+        {
+            serviceProviderType = serviceProviderTypeRepo.GetFirst(d => d.Name == "Doctor");
+        }
+
+        //ISessionFactory sessionFactory = SessionFactory.Instance;
+        //sessionFactory.OpenSession();
+        //using (Context context = new Context())
+        //{
+        //InitData();
+
+        using (IRepository<ServiceProvider> serviceProviderRepo = new Repository<ServiceProvider>())
+        {
             serviceProviderRepo.Insert(new ServiceProvider
             {
                 Code = "SP1",
-                Contact = contactRepo.GetByPhoneNumber("01833353657"),
-                Department = departmentRepo.GetFirst(d => d.Name == "ENT"),
-                ServiceProviderType = serviceProviderTypeRepo.GetFirst(d => d.Name == "Doctor"),
+                Contact = contact,
+                Department = department,
+                ServiceProviderType = serviceProviderType,
                 IsReferer = true,
                 Speciality = "Paediatritian"
             });
-            context.SaveChanges();
-
-            logger.Debug("All data insertion completed.");
         }
+        //context.SaveChanges();
+        //sessionFactory.Commit();
+
+        logger.Debug("All data insertion completed.");
+        //}
     }
 
-    private static void InitData(Context context)
+    private void InitData()
     {
-        Repository<Department> deptRepo = new Repository<Department>(context);
-        Repository<ServiceProviderType> serviceProviderTypeRepo = new Repository<ServiceProviderType>(context);
-        Repository<Item> itemRepo = new Repository<Item>(context);
+        Repository<Department> deptRepo = new Repository<Department>();
+        Repository<ServiceProviderType> serviceProviderTypeRepo = new Repository<ServiceProviderType>();
+        Repository<Item> itemRepo = new Repository<Item>();
 
-        Repository<ItemCategory> itemCategoryRepo = new Repository<ItemCategory>(context);
-        Repository<MedicalType> medicalTypeRepo = new Repository<MedicalType>(context);
-        Repository<MeasurementUnit> measurementUnitRepo = new Repository<MeasurementUnit>(context);
-        Repository<ItemType> itemTypeRepo = new Repository<ItemType>(context);
+        Repository<ItemCategory> itemCategoryRepo = new Repository<ItemCategory>();
+        Repository<MedicalType> medicalTypeRepo = new Repository<MedicalType>();
+        Repository<MeasurementUnit> measurementUnitRepo = new Repository<MeasurementUnit>();
+        Repository<ItemType> itemTypeRepo = new Repository<ItemType>();
 
-        Repository<PatientService> patientServiceRepo = new Repository<PatientService>(context);
-        Repository<ServiceProvider> serviceProvidereRepo = new Repository<ServiceProvider>(context);
-        Repository<Patient> patientRepo = new Repository<Patient>(context);
-        Repository<Contact> contactRepo = new Repository<Contact>(context);
+        Repository<PatientService> patientServiceRepo = new Repository<PatientService>();
+        Repository<ServiceProvider> serviceProvidereRepo = new Repository<ServiceProvider>();
+        Repository<Patient> patientRepo = new Repository<Patient>();
+        Repository<Contact> contactRepo = new Repository<Contact>();
 
         deptRepo.DeleteAll();
         serviceProviderTypeRepo.DeleteAll();
@@ -62,8 +105,7 @@ class Program
         serviceProvidereRepo.DeleteAll();
         patientRepo.DeleteAll();
         contactRepo.DeleteAll();
-
-        context.SaveChanges();
+        
 
 
         var entDepartment = new Department { Name = "ENT" };
@@ -156,7 +198,5 @@ class Program
             Street = "Mohammadia Housing Society",
             Zip = "1207"
         });
-
-        context.SaveChanges();
     }
 }

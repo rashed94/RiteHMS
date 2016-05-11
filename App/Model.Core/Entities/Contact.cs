@@ -22,7 +22,7 @@ namespace HMS.Model.Core
         public string Email { get; set; }
         public string Fax { get; set; }
         public string WebSite { get; set; }
-        public byte[] Photo { get; set; }
+        public string Photo { get; set; }
         public bool? IsCompany { get; set; }
 
         public virtual ICollection<ServiceProvider> ServiceProviders { get; set; }
