@@ -268,6 +268,19 @@ table.bordered th
 	padding-top:18px;
 	border-bottom:1px solid #d4d4d4;
 }
+
+table.bordered .small_header th
+{
+	background:#f0f0f0;
+	height:25px;
+	font-family:SansSemiBold;
+	font-size:11px;
+	text-transform:uppercase;
+	color:#424342;
+	padding-top:12px;
+	border-bottom:1px solid #d4d4d4;
+}
+
 table.bordered th,table.bordered  td
 {
 	text-align:left;
@@ -284,6 +297,13 @@ table.bordered tr:nth-child(even)
 {
 	 background-color:#f5f2f2; 
 }
+
+table.evencolor tr:nth-child(even)		
+
+{
+	 background-color:#fff; 
+}
+
 table.bordered a
 {
 	color:#000;
@@ -374,4 +394,167 @@ a:active, a:focus { outline-style: none; -moz-outline-style:none; }
 .close span
 {
 	color: #000;	
+}
+
+.payment_detail_left
+{
+	float:left;
+	padding:20px;
+	margin-right:50px;
+}
+.payment_detail_right
+{
+	float:left;
+	padding:20px;
+}
+.title
+{
+	text-transform:uppercase;
+	font-size:12px;
+	font-family:SansSemiBold;
+	color:#424342;
+	text-align:right;
+	margin-right:30px;
+	float:left;
+	width:150px;
+	padding-top:4px;
+}
+.inputbox
+{
+	float:left;
+	margin-right:30px;
+}
+table.bordered a.fa-print
+{
+	color:#4c7d5c;
+}
+table.bordered a.link_brown
+{
+		color:#c66c1c;
+	font-size:11px;
+	font-family:SansSemiBold;
+	text-transform:uppercase;
+	text-decoration:underline;
+	padding-bottom:12px;
+	margin-left:12px;
+}
+table.bordered a.link_brown:hover
+{
+	text-decoration:none;
+}
+.fa-1_5x
+{
+	font-size:1.5em;
+}
+.criteria_box
+{
+	text-align:right;
+	padding-right:30px;
+	margin-top:20px;
+	margin-bottom:1px;
+	
+}
+.invoice_status
+{
+	height:25px;
+	margin-bottom:2px;
+}
+.search{
+	height:20px;
+	
+	margin-bottom:1px;
+}
+.search_container a
+{
+	 position: relative;
+  width: 37px;
+  height: 35px;
+  float: right;
+  margin: -20px 5px 0 0;
+}
+
+.search_container
+{
+	width:150px;
+	float:right;
+	height:20px;
+		
+}
+.form-control
+{
+	padding:4px;
+	height:14px;
+	font-size:11px;
+	font-family:SansRegular;
+	margin-left:4px;
+}
+.btn
+{
+	padding:1px;
+	padding-left:8px;
+	padding-right:5px;
+	font-family:SansSemiBold;
+	text-transform:uppercase;
+	font-size:12px;
+	height:24px;
+	background:#eae7e7;
+	
+}
+.input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group
+{
+	margin-left:10px;
+}
+.btn:hover
+{
+	background:#c7c4c4;
+	
+	
+}
+
+.reportdeliverydate
+{
+	font-size:11px;
+	font-family:SansRegular;
+	height:20px;
+	width:100px;
+}
+.date_range{
+	float:right;
+}
+.padding_left10
+{
+	padding-left:10px;
+}
+.select_all_patient
+{
+	float:left;
+	margin-left:40px;
+}
+.select_all_patient input[type="radio"], input[type="checkbox"]
+{
+	margin-top:2px;
+	vertical-align:bottom;
+}
+.select_all_patient h2
+{
+	padding-left:6px;
+}
+
+
+.input_containter
+{
+	padding:6px;
+}
+
+.input_containter:after
+{
+	 content: ".";
+   display: block;
+   clear: both;
+   visibility: hidden;
+   height: 0;
+}
+.patient_registration_contnet
+{
+	margin-left:120px;
 }

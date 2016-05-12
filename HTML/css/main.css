@@ -1,8 +1,8 @@
 @charset "utf-8";
 /* CSS Document */
-
-@import url('layout.css') screen;
 @import url('reset.css') screen;
+@import url('layout.css') screen;
+
 
 body
 {
@@ -54,6 +54,16 @@ h2
 	padding-right:12px;
 
 }
+
+h3
+{
+	
+	color:#424342;
+	font-size:24px;
+	text-transform:uppercase;
+	display:block;
+	padding-bottom:30px;
+}
 strong
 {
 font-family:SansSemiBold;
@@ -104,7 +114,7 @@ input[type="text"]
 {
 	border:1px solid #ced1d7;
 	background:#fff;
-	 border-radius:2px;
+	 border-radius:4px;
 }
 select
 {
@@ -301,6 +311,13 @@ padding-left:32px;
 {
 	float:left;
 }
+
+.floatright
+{
+	float:right;
+}
+
+
 .itemButton
 {
 	float:left;
@@ -313,19 +330,19 @@ padding-left:32px;
 }
 .item_grid .quantity
 {
-	width:100px;
+	width:80px;
 }
 .item_grid .referrer
 {
-	width:100px;
+	width:80px;
 }
 .item_grid .amount
 {
-	width:100px;
+	width:80px;
 }
 .item_grid .reportdeliverydate
 {
-	width:100px;
+	width:120px;
 }
 .item_grid .datepickicon
 {
@@ -334,8 +351,31 @@ padding-left:32px;
 }
 .item_grid .quantity
 {
-	width:50px;
+	width:40px;
 }
+
+.item_grid .cost
+{
+	width:80px;
+}
+
+.item_grid .discount
+{
+	width:80px;
+}
+.item_grid .cost_after_discount
+{
+	width:80px;
+}
+.item_grid .referrer_after_discount
+{
+	width:80px;
+}
+.item_grid .cost
+{
+	width:80px;
+}
+
 .round_title_margin h1
 {
 	margin-top:25px;
@@ -353,4 +393,102 @@ img
 {
 	border-bottom:1px solid #b9d0c4;
 	padding:6px;
+}
+.success_message
+{
+	font-size:11px;
+	margin-top:2px;
+	margin-left:10px;
+	color:#06a412
+}
+.modal_menu
+{
+	color:#c66c1c;
+	font-size:11px;
+	font-family:SansSemiBold;
+	text-transform:uppercase;
+}
+
+.modal_menu a.active
+{
+	color:#000;
+	text-decoration:none;
+}
+.modal_menu a
+{
+	text-decoration:underline;
+	color:#c66c1c;
+}
+.modal_header
+{
+	border-bottom:1px solid #cbd8d1;
+}
+div.payment_input_box
+{
+	padding:20px;
+	padding-top:20px;
+	
+	
+}
+.payment_input_box .payment_amount
+{
+	width:140xp;
+}
+
+.payment_input_box .payment_method
+{
+	width:145px;
+	
+}
+.payment_input_box .copayer_amount
+{
+	140px;
+}
+.payment_input_box > div
+{
+	height:12px;
+	
+}
+.space
+{
+	padding:5px;
+}
+.status_green
+{
+	color:#538e4a;
+	font-size:11px;
+	font-family:SansSemiBold;
+	text-transform:uppercase;
+}
+
+.status_red
+{
+	color:#e30d21;
+	font-size:11px;
+	font-family:SansSemiBold;
+	text-transform:uppercase;
+}
+
+.status_brown
+{
+	color:#c66c1c;
+	font-size:11px;
+	font-family:SansSemiBold;
+	text-transform:uppercase;
+}
+.status_blue
+{
+	color:#26a6e1;
+	font-size:11px;
+	font-family:SansSemiBold;
+	text-transform:uppercase;
+}
+table td.padding_left60
+{
+	padding-left:60px;
+	padding-bottom:30px;
+}
+a.fa-search:hover, a.fa-search:focus
+{
+	text-decoration:none;
 }

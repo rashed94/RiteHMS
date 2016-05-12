@@ -26,6 +26,20 @@
                 $('.reportdeliverydate').datepicker({
                     format: "dd/mm/yyyy"
                 });  
+				
+			 $('.dob').datepicker({
+                    format: "dd/mm/yyyy"
+                });  
+				
+			$(".modal_click").click(function(e) {
+				
+				//alert("test");
+				$('#myModal').modal({
+				  keyboard: false
+				})
+			});
+				
+				
             
             });
         </script>
@@ -40,7 +54,7 @@
       <div class="user_info">
       	<div><img src="images/hospitalmanagement.gif" width="260" height="63" alt="hospital management system"></div>
         <div class="login_info">You are loged in as   Rashed alam   |   <a href="#">SIGN OUT</a></div>
-        <div class="register"><a href="">Register new patient </a></div>
+        <div class="register"><a data-toggle="modal" data-target="#registrationView" href="">Register new patient </a></div>
       </div>
       
       <div class="round_box">
@@ -109,6 +123,7 @@
                 <p><h2>DATE OF BIRTH</h2>   19-March-1979  (37)</p>
      		 </div>
           </div>
+      n
       <div class="home_appointment_details">
       	<p><h2>APPOINTMENT (04/22/2016)</h2></p>
         <p> <h2>  DEPARTMENT</h2> Neurology </p>
@@ -214,10 +229,116 @@
            <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a></td>
         </tr>
         </tbody>
+         <tfoot>
+            <tr>
+              <td colspan="7" style="text-align:right; padding-right:42pz;"><input  name="save" type="button" value="save" class="md_button">
+               
+              <input  name="cancel" type="button" value="cancel" class="md_button"></td>
+              <td style="text-align:right; padding-right:42pz;">&nbsp;</td>
+            </tr>
+          </tfoot>
       </table>     
       </div>
     
     </div>
 </div>
+
+
+<!--- modal -->
+
+<div class="modal fade bs-example-modal-lg" id="registrationView" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    <div class="modal-header rite_modal_header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><h2>Patient Registration</h2>
+      </div>
+      <div class="modal-body">
+        <div class="patient_registration_contnet">
+            
+            
+            <div class="input_containter">
+                <div class="title">First Name</div><div class="inputbox"><input type="text"  class="first_name" ></div>
+            </div>
+            
+            <div class="input_containter">
+                <div class="title">Last Name</div><div class="inputbox"><input type="text"  class="last_name" ></div>
+            </div>
+
+            
+            <div class="input_containter">
+                <div class="title">gender</div><div class="inputbox">
+                
+                 <select name="gender" class="time">
+                <option value="Male">MALE</option>
+                <option value="Female">Female</option>
+              </select>
+                </div>
+            </div>
+            
+            <div class="input_containter">
+                <div class="title">blood group</div><div class="inputbox">
+                                 <select name="bloodgroup" class="time">
+                <option value="AB">AB</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="0-">O-</option>
+              </select>
+                </div>
+            </div>
+            
+            <div class="input_containter">
+                <div class="title">mobile</div><div class="inputbox"><input type="text"  class="mobile" ></div>
+            </div>
+            
+            <div class="input_containter">
+                <div class="title">e-mail</div><div class="inputbox"><input type="text"  class="email" ></div>
+            </div>
+            
+            
+            <div class="input_containter">
+                <div class="title">city</div><div class="inputbox"><input type="text"  class="city" ></div>
+            </div>   
+            <div class="input_containter">
+                <div class="title">zip</div><div class="inputbox"><input type="text"  class="zip" ></div>
+            </div>    
+            
+            <div class="input_containter">
+                <div class="title">Country</div><div class="inputbox"><input type="text"  class="country" ></div>
+            </div>                 
+            
+            
+            <div class="input_containter">
+                <div class="title">date of birth</div><div class="inputbox">
+                
+                 <input type="text" width="110" placeholder="click to show datepicker"  name="dob" class="dob" >
+                
+                </div>
+            </div>
+            
+            <div class="input_containter">
+                <div class="title">picture</div><div class="inputbox"><input type="file"  class="name" ></div>
+            </div>
+            
+            <div class="input_containter">
+                        <div class="space"></div>
+            <div class="title"></div><div class="inputbox"><input  name="save" type="button" value="save" class="md_button">&nbsp;<input  name="cancel" type="button" value="cancel" class="md_button"></div>
+               </div>         
+            
+            
+            
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal end -->
+
+
+
+
 </body>
 </html>
