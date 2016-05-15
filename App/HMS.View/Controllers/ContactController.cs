@@ -5,7 +5,6 @@ using System.Net;
 using System.Web.Mvc;
 using HMS.Model.Core;
 using HMS.DAL.Repository;
-using System.Net.Http;
 using Newtonsoft.Json;
 using System;
 using System.Web;

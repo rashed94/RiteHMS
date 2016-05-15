@@ -57,12 +57,9 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -72,7 +69,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -106,19 +102,52 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientCode\app.js" />
+    <Content Include="ClientCode\html\Billing.html" />
     <Content Include="ClientCode\html\Contact.htm" />
     <Content Include="ClientCode\html\EditContact.html" />
+    <Content Include="ClientCode\html\PatientInfo.html" />
+    <Content Include="ClientCode\JS\BillingController.js" />
+    <Content Include="ClientCode\JS\BillingService.js" />
     <Content Include="ClientCode\JS\ContactController.js" />
     <Content Include="ClientCode\JS\ContactService.js" />
-    <Content Include="Content\bootstrap-combined.min.css" />
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="ClientCode\JS\PatientController.js" />
+    <Content Include="ClientCode\JS\PatientService.js" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\datepicker.css" />
+    <Content Include="css\font-awesome.css" />
+    <Content Include="css\font-awesome.min.css" />
+    <Content Include="css\layout.css" />
+    <Content Include="css\main.css" />
+    <Content Include="css\reset.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="favicon.ico" />
+    <Content Include="images\arrow_green.gif" />
+    <Content Include="images\arrow_head.gif" />
+    <Content Include="images\hospitalmanagement.gif" />
+    <Content Include="images\ico_calender.gif" />
+    <Content Include="images\ico_note.gif" />
+    <Content Include="images\ico_patient.gif" />
+    <Content Include="images\ico_print.gif" />
+    <Content Include="images\md_button_bg.gif" />
+    <Content Include="images\patient_img.gif" />
+    <Content Include="images\sitemenu_appointment.gif" />
+    <Content Include="images\sitemenu_appointment_hover.gif" />
+    <Content Include="images\sitemenu_bed.gif" />
+    <Content Include="images\sitemenu_bed_hover.gif" />
+    <Content Include="images\sitemenu_billing.gif" />
+    <Content Include="images\sitemenu_billing_hover.gif" />
+    <Content Include="images\sitemenu_lab.gif" />
+    <Content Include="images\sitemenu_lab_hover.gif" />
+    <Content Include="images\sitemenu_patieninfo.gif" />
+    <Content Include="images\sitemenu_patieninfo_hover.gif" />
+    <Content Include="images\sitemenu_pharmacy.gif" />
+    <Content Include="images\sitemenu_pharmacy_hover.gif" />
+    <Content Include="images\sm_button_bg.gif" />
+    <Content Include="images\stethoscope.gif" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -133,8 +162,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BillingController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="GetImage.ashx.cs">
       <DependentUpon>GetImage.ashx</DependentUpon>
     </Compile>

@@ -1,0 +1,78 @@
+﻿<div class="patient_registration_contnet">
+
+
+    <div class="input_containter">
+        <div class="title">First Name</div><div class="inputbox"><input type="text" class="first_name" ng-model="Patient.FirstName"></div>
+    </div>
+
+    <div class="input_containter">
+        <div class="title">Last Name</div><div class="inputbox"><input type="text" class="last_name" ng-model="Patient.LastName"></div>
+    </div>
+
+
+    <div class="input_containter">
+        <div class="title">gender</div>
+        <div class="inputbox">
+            <select name="gender" class="time" ng-model="Patient.Gender">
+                <option value="Male">MALE</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="input_containter">
+        <div class="title">blood group</div><div class="inputbox">
+            <select name="bloodgroup" class="" ng-model="Patient.BloodGroup">
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="0-">O-</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="input_containter">
+        <div class="title">mobile</div><div class="inputbox"><input type="text" class="mobile" ng-model="Patient.PhoneNumber"></div>
+    </div>
+
+    <div class="input_containter">
+        <div class="title">e-mail</div><div class="inputbox"><input type="text" class="email" ng-model="Patient.Email"></div>
+    </div>
+
+
+    <div class="input_containter">
+        <div class="title">city</div><div class="inputbox"><input type="text" class="city" ng-model="Patient.City"></div>
+    </div>
+    <div class="input_containter">
+        <div class="title">zip</div><div class="inputbox"><input type="text" class="zip" ng-model="Patient.Zip"></div>
+    </div>
+
+    <div class="input_containter">
+        <div class="title">Country</div><div class="inputbox"><input type="text" class="country" ng-model="Patient.Country"></div>
+    </div>
+
+
+    <div class="input_containter">
+        <div class="title">date of birth</div><div class="inputbox">
+
+            <input type="text" width="110" placeholder="click to show datepicker" name="dob" class="dob" ng-model="Patient.DOB">
+
+        </div>
+    </div>
+
+    <div class="input_containter">
+        <div class="title">picture</div><div class="inputbox"><input type="file" class="name"></div>
+    </div>
+
+    <div class="input_containter">
+        <div class="space"></div>
+        <div class="title"></div><div class="inputbox"><input name="save" type="button" value="save" class="md_button">&nbsp;<input name="cancel" type="button" value="cancel" class="md_button cancel" data-dismiss="modal"></div>
+    </div>
+
+
+
+</div>

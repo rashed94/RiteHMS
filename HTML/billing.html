@@ -1,0 +1,597 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hospital Management Software</title>
+
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css"  href="css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link href="css/datepicker.css" rel="stylesheet" />
+    <!-- jQuery, Angular -->
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script src="js/angular/angular.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+   
+
+    <!-- Bootstrap -->
+    
+    
+
+    
+
+           <script type="text/javascript">
+		   
+		   
+		   function getParameterByName(name) {
+				name = name.replace(/[\\[]/, "\\\\[").replace(/[\\]]/, "\\\\]");
+				var regex = new RegExp("[\\\\?&]" + name + "=([^&#]*)"),
+					results = regex.exec(location.search);
+				return results == null ? "" : decodeURIComponent(results[1].replace(/\\+/g, " "));
+			}
+
+            // When the document is ready
+            $(document).ready(function () {
+				
+				var tab = getParameterByName("tab");
+				if(tab){
+				  alert(tab);
+				}
+                
+                $('.reportdeliverydate').datepicker({
+                    format: "dd/mm/yyyy"
+                });  
+            
+            });
+			
+			$(function() {
+				$(".container_secondary_tab_abs li").click(function(e) {
+					  e.preventDefault();
+					  $("li").removeClass("active");
+					  $(this).addClass("active");
+					 // this.blur();
+					   if($(this).children("a").text()=="SUMMARY")
+					   {
+						   $(".summary").show();
+						   $(".invoices").hide();
+					   }else if ($(this).children("a").text()=="INVOICES")
+					   {
+						   $(".summary").hide();
+						   $(".invoices").show();
+					   }
+			});
+				
+				$(".modal_click").click(function(e) {
+				
+				//alert("test");
+				$('#invoiceView').modal({
+				  keyboard: false
+				})
+			});
+			
+			
+			$(".modal_registration_click").click(function(e) {
+				
+				alert("test");
+				$('#registrationView').modal({
+				  keyboard: false
+				})
+			});
+			
+			
+		});
+
+        </script>
+
+</head>
+
+<body>
+<div class="top_header">
+  <div class="top_container">
+  	<div>
+   	  <div class="logo_img"><img src="images/stethoscope.gif" width="136" height="143" alt="stethoscope"></div>
+      <div class="user_info">
+      	<div><img src="images/hospitalmanagement.gif" width="260" height="63" alt="hospital management system"></div>
+        <div class="login_info">You are loged in as   Rashed alam   |   <a href="#">SIGN OUT</a></div>
+        <div class="register"><a data-toggle="modal" class="modal_registration_click"  href="">Register new patient </a></div>
+      </div>
+      
+      <div class="round_box">
+      
+         <div class="round_box_title"><img  src="images/ico_patient.gif"  width="28" height="44"><h1>Select Patient</h1></div>
+         <div class="select_patient">
+           <table width="528" border="1" cellpadding="1" cellspacing="1">
+             <tr>
+               <td width="99">Patient Code</td>
+               <td width="132"><label for="patientcode"></label>
+               <input type="text" name="patientcode" id="patientcode"></td>
+               <td width="101">Patient Cell No</td>
+               <td width="173"> <input type="text" name="patientcellno" id="patientcellno"></td>
+             </tr>
+             <tr>
+               <td>&nbsp;</td>
+               <td>&nbsp;</td>
+               <td>&nbsp;</td>
+               <td>&nbsp;</td>
+             </tr>
+             <tr>
+               <td>Patient Name</td>
+               <td colspan="3"><input type="text" name="patientname" id="patientname"></td>
+             </tr>
+           </table>
+         </div>
+      </div>
+      <div style="clear:both;"> </div>
+  	</div>
+   
+    <div class="site_navigation">
+
+    	<ul>
+        	<li class="patientinfo"><a href="index.html" >Patient info</a></li>
+            <li class="lab"><a href="#">Lab Test</a></li>
+            <li class="pharmacy"><a href="#">Pharmacy</a></li>
+            <li class="appointment"><a href="#">Appointemt</a></li>
+            <li class="bed"><a href="#">Bed Setup</a></li>
+            <li class="billing"><a class="selected" href="billing.html">Billing</a></li>
+           
+        </ul>
+         
+       
+    </div>
+   
+  </div>
+
+</div>
+
+<div class="outer_content">
+
+    <div class="container_secondary_tab" style="">
+        <div class="container_secondary_tab_abs">
+            <ul class="tabs group">
+                <li class="active"><a href="?tab=1">SUMMARY</a></li>
+                <li><a href="?tab=2">INVOICES</a></li>
+                <li><a href="?tab=3">RECEIPT</a></li>
+                <li><a href="?tab=4">STATEMENT</a></li>
+            </ul>
+            <div style="clear:both"></div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+
+<div class="content">
+
+
+
+<div class="summary">
+<div class="box_general_wihout_border">
+       	  <input name="add  payment" type="button" value="add  payment" class="sm_button">
+          <input name="add receipt" type="button" value="add receipt" class="sm_button">
+
+</div>
+<div style="clear:both"></div>
+<div class="round_box box_general">
+      
+         <div class="round_box_title round_title_margin"><h1>Balance summary</h1></div>
+         <div class="round_box_rightcontent line_height_small">
+           		<p><h2>Balance</h2>0 BDT</p>
+                <p><h2>DEBIT</h2>5000 BDT</p>
+                <p><h2>CREDIT</h2>5000 BDT</p>
+         </div>
+      </div>
+<div style="clear:both"></div>
+<div class="box_general_wihout_border margin_bottom_small">
+       	 
+          <button type="button" class="sm_button modal_click" data-toggle="modal">build invoice</button>
+          <button type="button" class="sm_button modal_click" data-toggle="modal" data-target="#receiptView">build receipt</button>
+
+</div>
+<div style="clear:both"></div>
+  <div class="add_item_container">
+    <div class="item_grid">
+      <table width="100%" border="1" align="center" class="bordered">
+      	<thead>
+        <tr>
+          <th width="3%"><input type="checkbox" name="all" id="all" class="lineitem_check_box"></th>
+          <th width="18%">ITEM  NAME</th>
+          <th width="14%">CATEGORY</th>
+          <th width="7%">QUANTITY</th>
+          <th width="10%">cost</th>
+          <th width="10%">discount</th>
+          <th width="11%">Discount type</th>
+          <th width="10%">cost after discount</th>
+          <th width="14%">Referrer after discount</th>
+          <th width="3%">&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><input type="checkbox" name="lineitem" class="lineitem_check_box"></td>
+          <td>USG - HBS (Liver) </td>
+          <td>Haematology Clinic  </td>
+          <td><input type="text" width="50" name="quantity" class="quantity" ></td>
+          <td><input type="text" width="100" name="cost" class="cost" ></td>
+          <td><input type="text" width="100" name="discount" class="discount" ></td>
+          <td><select name="discounttype" class="distype">
+            <option value="amount">by Amount</option>
+            <option value="percentage">by Percentage</option>
+          </select>
+          <td><input type="text" width="50" name="costafterdiscount" class="cost_after_discount" >
+          
+          </td>
+          <td><input type="text" width="50" name="referrerafterdiscount" class="referrer_after_discount" ></td>
+          <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="lineitem" class="lineitem_check_box"></td>
+          <td>USG - HBS (Liver) </td>
+          <td>Haematology Clinic  </td>
+          <td><input type="text" width="50" name="quantity" class="quantity" ></td>
+          <td><input type="text" width="100" name="referrer" class="referrer" ></td>
+          <td><input type="text" width="100" name="amount" class="amount" ></td>
+          <td><select name="discounttype2" class="distype">
+            <option value="amount">by Amount</option>
+            <option value="percentage">by Percentage</option>
+          </select></td>
+          <td><input type="text" width="50" name="costafterdiscount2" class="cost_after_discount" ></td>
+          <td><input type="text" width="50" name="referrerafterdiscount2" class="referrer_after_discount" ></td>
+          <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="lineitem" class="lineitem_check_box"></td>
+          <td>Napa Extended </td>
+          <td>Anti Inflamatory   </td>
+          <td><input type="text" width="50" name="quantity" class="quantity" ></td>
+          <td>&nbsp;</td>
+          <td><input type="text" width="100" name="discount2" class="discount" ></td>
+          <td><select name="discounttype3" class="distype">
+            <option value="amount">by Amount</option>
+            <option value="percentage">by Percentage</option>
+          </select></td>
+          <td><input type="text" width="50" name="costafterdiscount3" class="cost_after_discount" ></td>
+           <td>&nbsp;</td>
+           <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a></td>
+        </tr>
+        </tbody>
+      </table> 
+      
+      <table width="100%" border="1" cellpadding="2" cellspacing="2" class="line_item_total_calc">
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td width="2%"><img src="images/ico_note.gif"  width="17" height="17" aslt="note"></td>
+          <td width="66%"><h2> DOCTOR’S REFERRER FEE   200</h2></td>
+          <td width="14%"><h2>TOTAL COST </h2></td>
+          <td width="18%"><h2>600</h2></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox" name="referral" id="referral">
+          <label for="referral"></label></td>
+          <td><h2>REFERRER FULL DISCOUNT</h2></td>
+          <td><h2>TOTAL DISCOUNT</h2></td>
+          <td><h2>200</h2></td>
+        </tr>
+        <tr>
+          <td colspan="4" class="border_bottom"></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td><h2>Total</h2></td>
+          <td><h2>400</h2></td>
+        </tr>
+      </table>
+    </div>
+    
+    </div>
+    </div>
+    
+   <div class="invoices" style="display:none;">
+   
+   
+        <div class="criteria_box">
+        <div class="search_container">
+       <!-- <input type="text" width="50" maxlength="20" name="search" class="search" ><a href="#" class="fa fa-search"></a>-->
+         <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+   		 </div>
+        
+        </div>
+        <div class="date_range">
+       <h2 class="padding_left10">start date</h2>
+        <input type="text" width="110" placeholder="click to show datepicker"  name="reportdeliverydate" class="reportdeliverydate" >
+       <h2 class="padding_left10">end date</h2>
+         <input type="text" width="110" placeholder="click to show datepicker"  name="reportdeliverydate" class="reportdeliverydate" >
+       </div>
+       <div class="select_all_patient">
+         <input type="radio" value="all" name="patient" class="all_patient_checkbox"><h2>all patient</h2>
+         <input type="radio" value="selected" name="patient" class="selected_patient_checkbox"><h2>selected patient</h2>
+       </div>
+        <select name="status" class="invoice_status">
+            <option value="open">OPEN</option>
+            <option value="close">CLOSED</option>
+             <option value="refunded">REFUNDED</option>
+          </select>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="invoices_grid">
+        
+        <div class="item_grid">
+          <table width="100%" border="1" align="center" class="bordered evencolor">
+                <thead>
+                <tr>
+                  <th width="5%">&nbsp;</th>
+                  <th width="12%">date</th>
+                  <th width="6%">no</th>
+                  <th width="24%">patient</th>
+                  <th width="10%">total cost</th>
+                  <th width="7%">paid</th>
+                  <th width="9%">copayer</th>
+                  <th width="16%">status</th>
+                  <th width="11%">&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td><a class="fa fa-arrow-circle-down fa-2x" aria-hidden="true" href="#"></a></td>
+                  <td>23-ARPL-2016 </td>
+                  <td>12  </td>
+                  <td>Delwar Hossain</td>
+                  <td>4500.00</td>
+                  <td>2000.00</td>
+                  <td>0.00
+                  <td><span class="status_green">Open</span></td>
+                  <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="link_brown" href="#">payment</a></td>
+                </tr>
+                <tr>
+                  <td colspan="9" align="center" class="padding_left60">
+                  
+                              <table width="90%" border="1" align="center" class="bordered small_header">
+                                <thead>
+                                <tr>
+                                  <th width="16%">ITEM  NAME</th>
+                                  <th width="13%">CATEGORY</th>
+                                  <th width="7%">QUANTITY</th>
+                                  <th width="6%">cost</th>
+                                  <th width="9%">discount</th>
+                                  <th width="10%">Discount type</th>
+                                  <th width="9%">cost after discount</th>
+                                  <th width="9%">Referrer after discount</th>
+                                  <th width="21%">&nbsp;</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                  <td>USG - HBS (Liver) </td>
+                                  <td>Haematology Clinic  </td>
+                                  <td>1</td>
+                                  <td>1200</td>
+                                  <td>120</td>
+                                  <td>by Amount
+                                  <td>1200</td>
+                                  <td>100</td>
+                                  <td>
+                                 	 <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" href="#"></a>
+                                  	<span class="status_green">refund request sent</span>
+                                   </td>
+                                </tr>
+                                <tr>
+                                  <td>USG - HBS (Liver) </td>
+                                  <td>Haematology Clinic  </td>
+                                  <td>1</td>
+                                  <td>1400</td>
+                                  <td><input type="text" width="100" name="amount" class="amount" ></td>
+                                  <td>by Amount</td>
+                                  <td>1400</td>
+                                  <td>200</td>
+                                  <td>
+                                  	<a class="fa fa-floppy-o fa-1_5x" aria-hidden="true" href="#"></a>
+                                  	<a href="#" class="link_brown">refund</a>
+                                  </td>
+                                </tr>
+                                </tbody>
+                              </table>                   
+                  </td>
+                  </tr>
+                <tr>
+                  <td><a class="fa fa-arrow-circle-right fa-2x" aria-hidden="true" href="#"></a></td>
+                  <td>23-ARPL-2016 </td>
+                  <td>12 </td>
+                  <td>Delwar Hossain</td>
+                  <td>4500.00</td>
+                  <td>2000.00</td>
+                  <td>0.00
+                  <td><span class="status_blue">Close</span></td>
+                  <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a></td>
+                </tr>
+                </tbody>
+              </table>
+        </div>    
+        
+        
+        </div>
+        
+        
+   </div>
+    
+    
+</div>
+</div>
+<!--- modal invoice -->
+
+<div class="modal fade bs-example-modal-lg" id="invoiceView" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    <div class="modal-header rite_modal_header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><h2>invoice</h2></h4>
+      </div>
+      <div class="modal-body">
+      
+      <div class="payment">
+      
+      <div class="payment_top">
+           <div class="floatleft"><img src="images/ico_note.gif"  width="17" height="17" aslt="note"></div>
+           <div class="floatleft success_message">INVOICE CREATED SUCCESSFULLY</div>
+           <div class="floatright modal_menu"><a href="#" class="active">Enter payment</a> | <a href="#">view/EDIT INVOICE</a> | <a href="#">PRINT INVOICE</a></div>
+           <div style="clear:both"></div>
+       </div>
+       <div class="payment_middle">
+       
+           <div class="payment_detail_left line_height_small">
+           
+          <p> <h2>NAME</h2>         Delwar Hossain</p>
+           <p><h2>GENDER</h2>       Mal</p>
+           <p><h2>ADDRESS</h2>    24/7  West Monipur Para.</p>
+           
+           </div>
+           <div class="payment_detail_right line_height_small">
+          <p> <h2> INVOICE DATE</h2>        23/05/2016</p>
+		    <p> <h2>INVOICE NO</h2>  43</p>
+             <p> <h2>TOTAL</h2>    400.00  BDT  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             <h2>PAID</h2>   0.00  BDT</p>
+           </div>
+       <div style="clear:both"></div>
+       </div>
+       <div class="horizontal_line"></div>
+        <div class="payment_input_box">
+            <h3>ENTER PAYMENT</h3>
+            <div class="title">PAYMENT AMOUNT</div><div class="inputbox"><input type="text"  class="payment_amount" ></div>
+             <div class="title">COPAYER AMOUNT</div><div class="inputbox"><input type="text"  class="copayer_amount" ></div>
+              <div style="clear:both"></div>
+              
+              <div class="title">PAYMENT METHOD</div><div class="inputbox"><select name="paymentmethod" class="payment_method">
+                <option value="cash">Cash</option>
+                <option value="visa">Visa Card</option>
+                 <option value="visa">Master Card</option>
+              </select>
+              </div>
+             <div class="title">RECONCILE  AMOUNT</div><div class="inputbox"><input type="text"  class="copayer_amount" ></div>
+			<div style="clear:both"></div>
+            <div class="space"></div>
+            <div class="title"></div><div class="inputbox"><input  name="save" type="button" value="save" class="md_button">&nbsp;<input  name="cancel" type="button" value="cancel" class="md_button"></div>
+            <div style="clear:both"></div>
+ 			<div class="space"></div>
+              
+            
+        </div>
+       
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- modal end -->
+
+<!--- modal registration -->
+
+<div class="modal fade bs-example-modal-lg" id="registrationView" tabindex="-1" role="dialog" aria-labelledby="regLargeModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    <div class="modal-header rite_modal_header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="regModalLabel"><h2>Patient Registration</h2></h4>
+      </div>
+      <div class="modal-body">
+        <div class="patient_registration_contnet">
+            
+            
+            <div class="input_containter">
+                <div class="title">First Name</div><div class="inputbox"><input type="text"  class="first_name" ></div>
+            </div>
+            
+            <div class="input_containter">
+                <div class="title">Last Name</div><div class="inputbox"><input type="text"  class="last_name" ></div>
+            </div>
+
+            
+            <div class="input_containter">
+                <div class="title">gender</div><div class="inputbox">
+                
+                 <select name="gender" class="time">
+                <option value="Male">MALE</option>
+                <option value="Female">Female</option>
+              </select>
+                </div>
+            </div>
+            
+            <div class="input_containter">
+                <div class="title">blood group</div><div class="inputbox">
+                                 <select name="bloodgroup" class="time">
+                <option value="AB">AB</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="0-">O-</option>
+              </select>
+                </div>
+            </div>
+            
+            <div class="input_containter">
+                <div class="title">mobile</div><div class="inputbox"><input type="text"  class="mobile" ></div>
+            </div>
+            
+            <div class="input_containter">
+                <div class="title">e-mail</div><div class="inputbox"><input type="text"  class="email" ></div>
+            </div>
+            
+            
+            <div class="input_containter">
+                <div class="title">city</div><div class="inputbox"><input type="text"  class="city" ></div>
+            </div>   
+            <div class="input_containter">
+                <div class="title">zip</div><div class="inputbox"><input type="text"  class="zip" ></div>
+            </div>    
+            
+            <div class="input_containter">
+                <div class="title">Country</div><div class="inputbox"><input type="text"  class="country" ></div>
+            </div>                 
+            
+            
+            <div class="input_containter">
+                <div class="title">date of birth</div><div class="inputbox">
+                
+                 <input type="text" width="110" placeholder="click to show datepicker"  name="dob" class="dob" >
+                
+                </div>
+            </div>
+            
+            <div class="input_containter">
+                <div class="title">picture</div><div class="inputbox"><input type="file"  class="name" ></div>
+            </div>
+            
+            <div class="input_containter">
+                        <div class="space"></div>
+            <div class="title"></div><div class="inputbox"><input  name="save" type="button" value="save" class="md_button">&nbsp;<input  name="cancel" type="button" value="cancel" class="md_button"></div>
+               </div>         
+            
+            
+            
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- modal end -->
+
+
+
+
+</body>
+</html>
