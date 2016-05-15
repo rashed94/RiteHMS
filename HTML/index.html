@@ -4,19 +4,16 @@
 <meta charset="utf-8">
 <title>Hospital Management Software</title>
 
-	<link rel="stylesheet" type="text/css" href="packages/bootstrap.3.3.6/content/Content/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <!-- jQuery, Angular -->
-    <script src="packages/jQuery.2.2.3/Content/Scripts/jquery-2.2.3.min.js"></script>
-    <script src="packages/angularjs.1.5.5/content/Scripts/angular.min.js"></script>
-    <script src="packages/bootstrap.3.3.6/content/Scripts/bootstrap.js"></script>
-    <script src="packages/bootstrap.3.3.6/content/Scripts/bootstrap-datepicker.js"></script>
-   
 
-    <!-- Bootstrap -->
-    
-    <link href="packages/font-awesome-4.6.2/css/font-awesome.css" rel="stylesheet" />
-     <link href="css/datepicker.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css"  href="css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link href="css/datepicker.css" rel="stylesheet" />
+    <!-- jQuery, Angular -->
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script src="js/angular/angular.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
     
 
            <script type="text/javascript">
@@ -31,10 +28,10 @@
                     format: "dd/mm/yyyy"
                 });  
 				
-			$(".modal_click").click(function(e) {
+			$(".modal_registration_click").click(function(e) {
 				
 				//alert("test");
-				$('#myModal').modal({
+				$('#registrationView').modal({
 				  keyboard: false
 				})
 			});
@@ -54,7 +51,7 @@
       <div class="user_info">
       	<div><img src="images/hospitalmanagement.gif" width="260" height="63" alt="hospital management system"></div>
         <div class="login_info">You are loged in as   Rashed alam   |   <a href="#">SIGN OUT</a></div>
-        <div class="register"><a data-toggle="modal" data-target="#registrationView" href="">Register new patient </a></div>
+        <div class="register"><a data-toggle="modal" class="modal_registration_click"  href="">Register new patient </a></div>
       </div>
       
       <div class="round_box">
@@ -103,6 +100,7 @@
   </div>
 
 </div>
+<div class="outer_content">
 <div class="content">
 
     <div class="home_top">
@@ -123,7 +121,7 @@
                 <p><h2>DATE OF BIRTH</h2>   19-March-1979  (37)</p>
      		 </div>
           </div>
-      n
+      <p>&nbsp;</p>
       <div class="home_appointment_details">
       	<p><h2>APPOINTMENT (04/22/2016)</h2></p>
         <p> <h2>  DEPARTMENT</h2> Neurology </p>
@@ -242,16 +240,17 @@
     
     </div>
 </div>
+</div>
 
 
-<!--- modal -->
+<!--- modal registration -->
 
 <div class="modal fade bs-example-modal-lg" id="registrationView" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
     <div class="modal-header rite_modal_header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><h2>Patient Registration</h2>
+        <h4 class="modal-title" id="myModalLabel"><h2>Patient Registration</h2></h4>
       </div>
       <div class="modal-body">
         <div class="patient_registration_contnet">
@@ -334,7 +333,7 @@
     </div>
   </div>
 </div>
-
+</div>
 <!-- modal end -->
 
 
