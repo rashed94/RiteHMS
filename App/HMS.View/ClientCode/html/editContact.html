@@ -42,8 +42,8 @@
     <tr>
         <td>Photo</td>
         <td>
-            <img src="GetImage.ashx?Name={{Contact.Photo}}" style="height: 100px;" /><br/>
-            <input type="file" class="_s_Photo" file-upload onchange="angular.element(this).scope().LoadFileData(this.files)" accept="image/*" />
+            <img src="GetImage.ashx?Name={{Contact.Photo}}" style="height: 100px;" onclick="$('._s_Photo').click();" /><br/>
+            <input type="file" class="_s_Photo" file-upload onchange="angular.element(this).scope().LoadFileData(this.files)" accept="image/*" style="opacity: 0; height: 1px;" />
         </td>
     </tr>
     <tr>
