@@ -105,6 +105,7 @@
     <Content Include="ClientCode\html\Billing.html" />
     <Content Include="ClientCode\html\Contact.htm" />
     <Content Include="ClientCode\html\EditContact.html" />
+    <Content Include="ClientCode\html\EditPatient.html" />
     <Content Include="ClientCode\html\PatientInfo.html" />
     <Content Include="ClientCode\JS\BillingController.js" />
     <Content Include="ClientCode\JS\BillingService.js" />
