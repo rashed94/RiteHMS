@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace HMS.DAL.Repository
 {
-    public class ContactRepository : Repository<Contact>
+    public class ContactRepository : Repository<Contact>, IContactRepository
     {
         public ContactRepository()
         {

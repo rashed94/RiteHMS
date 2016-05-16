@@ -124,6 +124,11 @@ namespace HMS.DAL.Repository
             _DbSet.RemoveRange(GetByQuery());
         }
 
+        public void Commit()
+        {
+            _DbContext.SaveChanges();
+        }
+
         public void Dispose()
         {
             _DbContext.SaveChanges();

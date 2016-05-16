@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 /* CSS Document */
 
 
@@ -557,4 +557,9 @@ table.bordered a.link_brown:hover
 .patient_registration_contnet
 {
 	margin-left:120px;
+}
+select.generaldropdown {
+    text-transform:uppercase;
+
+
 }

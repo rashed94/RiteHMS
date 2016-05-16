@@ -14,123 +14,155 @@ namespace HMS.Controllers
 {
     public class PatientController : Controller
     {
-        private IRepository<Patient> _Repository;
+        //private IRepository<Patient> _Repository;
 
         public PatientController()
         {
-            _Repository = new Repository<Patient>();
+            //_Repository = new PatientRepository();
         }
 
-        // GET: Patients/GetPatients
-        public JsonResult GetPatients()
+        // GET: Patient/GetPatients
+        public JsonResult GetPatientsByName(string name)
         {
-            List<Patient> Patients = _Repository.GetByQuery().ToList();
-            if (Patients == null)
+            List<Patient> patients;
+            using (PatientRepository repository = new PatientRepository())
+            {
+                patients = repository.GetByName(name).ToList();
+            }
+            if (patients == null)
             {
                 return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
             }
 
             List<Patient> onlyPatients = new List<Patient>();
-            //Patients.ForEach(c => onlyPatients.Add(new Patient
-            //{
-            //    Id = c.Id,
-            //    FirstName = c.FirstName,
-            //    LastName = c.LastName,
-            //    PhoneNumber = c.PhoneNumber,
-            //    Email = c.Email,
-            //    City = c.City,
-            //    Country = c.Country,
-            //    Fax = c.Fax,
-            //    Street = c.Street,
-            //    IsCompany = c.IsCompany,
-            //    Active = c.Active,
-            //    Photo = c.Photo,
-            //    WebSite = c.WebSite,
-            //    Zip = c.Zip
-            //}));
+            patients.ForEach(corePatient => onlyPatients.Add(MapToClientObject(corePatient)));
 
             return Json(onlyPatients, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Patients/GetPatientById/5
+        // GET: Patient/GetPatientById/5
         public JsonResult GetPatientById(long? id)
         {
             if (id == null)
             {
                 return Json(new HttpStatusCodeResult(HttpStatusCode.BadRequest), JsonRequestBehavior.AllowGet);
             }
-            Patient c = _Repository.GetById(id.Value);
-            if (c == null)
+            Patient corePatient = null;
+            using (PatientRepository repository = new PatientRepository())
+            {
+                corePatient = repository.GetById(id.Value);
+            }
+            if (corePatient == null)
             {
                 return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
             }
 
-            Patient patient = null;
-            //patient = new Patient
-            //{
-            //    Id = c.Id,
-            //    FirstName = c.FirstName,
-            //    LastName = c.LastName,
-            //    PhoneNumber = c.PhoneNumber,
-            //    Email = c.Email,
-            //    City = c.City,
-            //    Country = c.Country,
-            //    Fax = c.Fax,
-            //    Street = c.Street,
-            //    IsCompany = c.IsCompany,
-            //    Active = c.Active,
-            //    Photo = c.Photo,
-            //    WebSite = c.WebSite,
-            //    Zip = c.Zip
-            //};
+            Patient patient = MapToClientObject(corePatient);
             return Json(patient, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Patients/GetPatientByPhone/phoneNumber/01833353657
+        // GET: Patient/GetPatientByPhone/phoneNumber/01833353657
         public JsonResult GetPatientByPhone(string phoneNumber)
         {
             if (string.IsNullOrEmpty(phoneNumber))
             {
                 return Json(new HttpStatusCodeResult(HttpStatusCode.BadRequest), JsonRequestBehavior.AllowGet);
             }
-            Patient patient = null;
-            //Patient Patient = _Repository.GetByPhoneNumber(phoneNumber);
-            if (patient == null)
+            Patient corePatient = null;
+            using (PatientRepository repository = new PatientRepository())
+            {
+                corePatient = repository.GetByPhoneNumber(phoneNumber);
+            }
+            if (corePatient == null)
             {
                 return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
             }
-            return Json(patient, JsonRequestBehavior.AllowGet);
+            return Json(MapToClientObject(corePatient), JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public JsonResult CreatePatient(Patient Patient)
+        // GET: Patient/SearchPatientByPartialName/ras
+        public JsonResult SearchPatientByPartialName(string name)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(name))
             {
-                _Repository.Insert(Patient);
-                //_Repository.SaveChanges();
+                return Json(new HttpStatusCodeResult(HttpStatusCode.BadRequest), JsonRequestBehavior.AllowGet);
             }
-            return Json(Patient, JsonRequestBehavior.AllowGet);
+            List<Patient> corePatients = null;
+            using (PatientRepository repository = new PatientRepository())
+            {
+                corePatients = repository.GetByPartialName(name).ToList();
+            }
+            if (corePatients == null)
+            {
+                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+            }
+
+            List<Patient> patients = new List<Patient>();
+            corePatients.ForEach(corePatient => patients.Add(MapToClientObject(corePatient)));
+
+            return Json(patients, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public JsonResult UpdatePatient(Patient Patient)
+        public JsonResult CreatePatient(Patient patient)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
-                //_Repository.Entry(Patient).State = EntityState.Modified;
-                //_Repository.SaveChanges();
+                using (PatientRepository repository = new PatientRepository())
+                {
+                    repository.Insert(patient);
+                    repository.Commit();
+                    patient = repository.GetByPhoneNumber(patient.PhoneNumber);
+                }
             }
-            return Json(Patient, JsonRequestBehavior.AllowGet);
+            return Json(MapToClientObject(patient), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public JsonResult UpdatePatient(Patient patient)
+        {
+            //if (ModelState.IsValid)
+            {
+                using (PatientRepository repository = new PatientRepository())
+                {
+                    repository.Update(patient);
+                    repository.Commit();
+                    patient = repository.GetByPhoneNumber(patient.PhoneNumber);
+                }
+            }
+            return Json(MapToClientObject(patient), JsonRequestBehavior.AllowGet);
+        }
+
+        private Patient MapToClientObject(Patient corePatient)
+        {
+            return new Patient
+            {
+                Id = corePatient.Id,
+                FirstName = corePatient.FirstName,
+                LastName = corePatient.LastName,
+                PhoneNumber = corePatient.PhoneNumber,
+                Email = corePatient.Email,
+                City = corePatient.City,
+                Country = corePatient.Country,
+                FatherName = corePatient.FatherName,
+                Gender = corePatient.Gender,
+                BloodGroup = corePatient.BloodGroup,
+                DOB = corePatient.DOB,
+                NationalId = corePatient.NationalId,
+                Occupation = corePatient.Occupation,
+                Photo = corePatient.Photo,
+                Street = corePatient.Street,
+                Zip = corePatient.Zip
+            };
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                //_Repository.Dispose();
+                
             }
             base.Dispose(disposing);
         }

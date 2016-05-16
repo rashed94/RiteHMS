@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-function PatientController($scope, $routeParams, $modal, PatientService) {
+function PatientController($scope, $routeParams, $modal, $http, PatientService) {
     $scope.GetPatients = function () {
         PatientService.GetPatients()
             .success(function (cts) {
@@ -48,9 +48,37 @@ function PatientController($scope, $routeParams, $modal, PatientService) {
             });
     }
 
+    var _selected;
+    $scope.selected = undefined;
+    $scope.getLocation = function (val) {
+        return $http.get('//maps.googleapis.com/maps/api/geocode/json', {
+            params: {
+                address: val,
+                sensor: false
+            }
+        }).then(function (response) {
+            return response.data.results.map(function (item) {
+                return item.formatted_address;
+            });
+        });
+    };
+
+    $scope.SearchPatientsByPartialName = function (name) {
+        PatientService.SearchPatientsByPartialName(name)
+            .success(function (pt) {
+                $scope.Patients = pt;
+                console.log($scope.Patients);
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load Patient data: ' + error.message;
+                console.log($scope.status);
+            });
+    }
+
     $scope.SavePatient = function () {
-        PatientService.SaveContact($scope.Patient)
+        PatientService.SavePatient($scope.Patient)
             .success(function (data) {
+                $scope.Patient = data;
                 console.log(data);
             })
             .error(function (error) {
@@ -59,21 +87,26 @@ function PatientController($scope, $routeParams, $modal, PatientService) {
             });
     }
 
-    $scope.open = function () {
+    $scope.OpenNew = function (size) {
+        var patient = {
+
+        };
         var modalInstance = $modal.open({
-            templateUrl: 'myModalContent.html',
-            controller: ModalInstanceCtrl,
+            templateUrl: '/ClientCode/Template/EditPatient.html',
+            size: size,
+            controller: ModalController,
             resolve: {
-                Patient: function () {
-                    return $scope.Patient;
+                patient: function () {
+                    return patient;
                 }
             }
         });
-
-        modalInstance.result.then(function (selectedItem) {
-            $scope.selected = selectedItem;
+        modalInstance.result.then(function (patient) {
+            alert(patient);
+            $scope.Patient = patient;
+            $scope.SavePatient();
         }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
+            console.log('Modal dismissed at: ' + new Date());
         });
     };
 
@@ -88,13 +121,3 @@ function PatientController($scope, $routeParams, $modal, PatientService) {
         };
     }
 }
-
-var ModalInstanceCtrl = function ($scope, $modalInstance, patient) {
-    $scope.Patient = patient;
-    $scope.ok = function () {
-        $modalInstance.close($scope.Patient);
-    };
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-};

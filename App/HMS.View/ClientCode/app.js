@@ -6,31 +6,31 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap']).
   config(['$routeProvider', function ($routeProvider) {
       $routeProvider.
         when('/patient', {
-            templateUrl: '/ClientCode/html/PatientInfo.html',
+            templateUrl: '/ClientCode/Template/PatientInfo.html',
             controller: PatientController
         }).
         when('/patientResistration', {
-            templateUrl: '/ClientCode/html/EditPatient.html',
+            templateUrl: '/ClientCode/Template/EditPatient.html',
             controller: PatientController
         }).
         when('/patientResistration/:id', {
-            templateUrl: '/ClientCode/html/EditPatient.html',
+            templateUrl: '/ClientCode/Template/EditPatient.html',
             controller: PatientController
         }).
         when('/billing', {
-            templateUrl: '/ClientCode/html/Billing.html',
+            templateUrl: '/ClientCode/Template/Billing.html',
             controller: BillingController
         }).
         when('/billing/:tab', {
-            templateUrl: '/ClientCode/html/Billing.html',
+            templateUrl: '/ClientCode/Template/Billing.html',
             controller: BillingController
         }).
         when('/contact/:id', {
-            templateUrl: '/ClientCode/html/EditContact.html',
+            templateUrl: '/ClientCode/Template/EditContact.html',
             controller: ContactController
         }).
         when('/contact', {
-            templateUrl: '/ClientCode/html/Contact.html',
+            templateUrl: '/ClientCode/Template/Contact.html',
             controller: ContactController
         }).
         otherwise({

@@ -102,17 +102,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientCode\app.js" />
-    <Content Include="ClientCode\html\Billing.html" />
-    <Content Include="ClientCode\html\Contact.htm" />
-    <Content Include="ClientCode\html\EditContact.html" />
-    <Content Include="ClientCode\html\EditPatient.html" />
-    <Content Include="ClientCode\html\PatientInfo.html" />
-    <Content Include="ClientCode\JS\BillingController.js" />
-    <Content Include="ClientCode\JS\BillingService.js" />
-    <Content Include="ClientCode\JS\ContactController.js" />
-    <Content Include="ClientCode\JS\ContactService.js" />
-    <Content Include="ClientCode\JS\PatientController.js" />
-    <Content Include="ClientCode\JS\PatientService.js" />
+    <Content Include="ClientCode\Template\Billing.html" />
+    <Content Include="ClientCode\Template\Contact.html" />
+    <Content Include="ClientCode\Template\EditContact.html" />
+    <Content Include="ClientCode\Template\EditPatient.html" />
+    <Content Include="ClientCode\Template\PatientInfo.html" />
+    <Content Include="ClientCode\Script\Controller\BillingController.js" />
+    <Content Include="ClientCode\Script\Service\BillingService.js" />
+    <Content Include="ClientCode\Script\Controller\ContactController.js" />
+    <Content Include="ClientCode\Script\Service\ContactService.js" />
+    <Content Include="ClientCode\Script\Controller\ModalController.js" />
+    <Content Include="ClientCode\Script\Controller\PatientController.js" />
+    <Content Include="ClientCode\Script\Service\PatientService.js" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\datepicker.css" />
@@ -189,6 +190,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Uploads\Photos\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL.EF\DAL.EF.csproj">
