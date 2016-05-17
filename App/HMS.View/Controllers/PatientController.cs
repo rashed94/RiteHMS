@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using HMS.DAL;
 using HMS.Model.Core;
 using HMS.DAL.Repository;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
 
 namespace HMS.Controllers
 {
@@ -58,7 +60,8 @@ namespace HMS.Controllers
             }
 
             Patient patient = MapToClientObject(corePatient);
-            return Json(patient, JsonRequestBehavior.AllowGet);
+            var jsondata= Json(patient, JsonRequestBehavior.AllowGet);
+            return jsondata;
         }
 
         // GET: Patient/GetPatientByPhone/phoneNumber/01833353657
@@ -100,7 +103,7 @@ namespace HMS.Controllers
             List<Patient> patients = new List<Patient>();
             corePatients.ForEach(corePatient => patients.Add(MapToClientObject(corePatient)));
 
-            return Json(patients, JsonRequestBehavior.AllowGet);
+            return new CustomJsonResult {Data=patients} ;
         }
 
         [HttpPost]
@@ -167,4 +170,42 @@ namespace HMS.Controllers
             base.Dispose(disposing);
         }
     }
+
+
+
+    public class CustomJsonResult : JsonResult
+    {
+        private const string _dateFormat = "yyyy-MM-dd HH:mm:ss";
+
+        public override void ExecuteResult(ControllerContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
+            HttpResponseBase response = context.HttpContext.Response;
+
+            if (!String.IsNullOrEmpty(ContentType))
+            {
+                response.ContentType = ContentType;
+            }
+            else
+            {
+                response.ContentType = "application/json";
+            }
+            if (ContentEncoding != null)
+            {
+                response.ContentEncoding = ContentEncoding;
+            }
+            if (Data != null)
+            {
+                // Using Json.NET serializer
+                var isoConvert = new IsoDateTimeConverter();
+                isoConvert.DateTimeFormat = _dateFormat;
+                response.Write(JsonConvert.SerializeObject(Data, isoConvert));
+            }
+        }
+    }
+
 }

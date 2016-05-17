@@ -16,22 +16,22 @@
 
 <div class="content">
     
-    <div class="home_top">
+    <div class="home_top" ng-controller="ChildPatientController">
         <div class="home_patient_details">
             <div class="patient_pic">
-                <img src="../images/patient_img.gif" width="115" height="146" alt="delwar hossain" >
+                <img src="../images/patient_img.gif" width="115" height="146" alt="delwar hossain">
 
                 <input name="Admit to Hospital" type="button" value="Admit to Hospital" class="sm_button">
             </div>
             <p>&nbsp;</p>
             <div class="patient_address">
-                <p><h2>NAME</h2>         Delwar Hossain</p>
-                <p><h2> GENDER</h2>  Male</p>
-                <p><h2>ADDRESS</h2>    24/7  West Monipur Para.</p>
-                <p><h2>BLOOD GROU</h2>P   B+</p>
-                <p><h2>MOBILE</h2>   01733662672</p>
-                <p><h2>E-MAIL</h2>   delwar.hossain@attrabit.com</p>
-                <p><h2>DATE OF BIRTH</h2>   19-March-1979  (37)</p>
+                <p><h2>NAME</h2>        <span> {{Patient.FirstName}} {{Patient.LastName}}</span></p>
+                <p><h2> GENDER</h2>  <span>{{Patient.Gender}}</span></p>
+                <p><h2>ADDRESS</h2>    <span>{{Patient.City}}, {{Patient.Zip}}, {{Patient.Country}}</span></p>
+                <p><h2>BLOOD GROU</h2>   <span>{{Patient.BloodGroup}}</span></p>
+                <p><h2>MOBILE</h2>  <span> {{Patient.PhoneNumber}}</span></p>
+                <p><h2>E-MAIL</h2>   <span>{{Patient.Email}}</span></p>
+                <p><h2>DATE OF BIRTH</h2>   <span>{{Patient.DOB |date:'medium'}}</span><span> ({{ Patient.Age }})</span></p>
             </div>
         </div>
         <p>&nbsp;</p>

@@ -1,6 +1,24 @@
 ﻿'use strict';
 
+
+function ChildPatientController($scope, $routeParams, $modal, $http, PatientService) {
+
+
+  
+    $scope.$on("update_child_controller", function (event, patient) {
+        $scope.Patient = patient;
+    });
+
+}
+
 function PatientController($scope, $routeParams, $modal, $http, PatientService) {
+
+    //$scope.calculateAge = function (birthday) { // birthday is a date
+    //    var ageDifMs = Date.now() - birthday.getTime();
+    //    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    //    return Math.abs(ageDate.getUTCFullYear() - 1970);
+    //}
+
     $scope.GetPatients = function () {
         PatientService.GetPatients()
             .success(function (cts) {
@@ -16,6 +34,12 @@ function PatientController($scope, $routeParams, $modal, $http, PatientService) 
         PatientService.GetPatientById(id)
             .success(function (pt) {
                 $scope.Patient = pt;
+                if ($scope.Patient.DOB != null)
+                {
+                $scope.Patient.DOB = ToJavaScriptDate($scope.Patient.DOB);
+                $scope.Patient.Age = calculateAge($scope.Patient.DOB);
+                }
+                $scope.$broadcast('update_child_controller', $scope.Patient);
                 console.log($scope.Patient);
             })
             .error(function (error) {
