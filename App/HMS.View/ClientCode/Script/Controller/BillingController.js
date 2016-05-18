@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-function BillingController($scope, $routeParams, BillingService) {
+HmsApp.controller("BillingController", function ($scope, $routeParams, BillingService) {
     $scope.GetBillingItemByPatientId = function (patientId) {
         BillingService.GetBillingItemByPatientId(patientId)
             .success(function (pt) {
@@ -23,4 +23,4 @@ function BillingController($scope, $routeParams, BillingService) {
     $('.tabs li').removeClass('active');
     $(tabClass).addClass('active');
     $(tabClass).removeClass('hide');
-}
+});

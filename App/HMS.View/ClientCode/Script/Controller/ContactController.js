@@ -1,13 +1,13 @@
 ﻿'use strict';
 
-function ContactController($scope, $routeParams, ContactService) {
+HmsApp.controller("ContactController", function ($scope, $routeParams, ContactService) {
     $scope.Files = [];
     $scope.LoadFileData = function (files) {
         console.log(files[0].type);
         $scope.Contact.Photo = files[0];
     };
 
-    $scope.GetContacts = function() {
+    $scope.GetContacts = function () {
         ContactService.GetContacts()
             .success(function (cts) {
                 $scope.Contacts = cts;
@@ -19,7 +19,7 @@ function ContactController($scope, $routeParams, ContactService) {
             });
     }
 
-    $scope.GetContact = function(id) {
+    $scope.GetContact = function (id) {
         ContactService.GetContact(id)
             .success(function (ct) {
                 $scope.Contact = ct;
@@ -31,7 +31,7 @@ function ContactController($scope, $routeParams, ContactService) {
             });
     }
 
-    $scope.SaveContact = function() {
+    $scope.SaveContact = function () {
         ContactService.SaveContact($scope.Contact)
             .success(function (data) {
 
@@ -48,4 +48,4 @@ function ContactController($scope, $routeParams, ContactService) {
     else {
         $scope.GetContacts();
     }
-}
+});

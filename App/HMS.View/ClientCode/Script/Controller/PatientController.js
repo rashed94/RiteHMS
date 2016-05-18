@@ -1,18 +1,6 @@
 ﻿'use strict';
 
-
-function ChildPatientController($scope, $routeParams, $modal, $http, PatientService) {
-
-
-  
-    $scope.$on("update_child_controller", function (event, patient) {
-        $scope.Patient = patient;
-    });
-
-}
-
-function PatientController($scope, $routeParams, $modal, $http, PatientService) {
-
+HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $http, PatientService) {
     //$scope.calculateAge = function (birthday) { // birthday is a date
     //    var ageDifMs = Date.now() - birthday.getTime();
     //    var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -34,10 +22,9 @@ function PatientController($scope, $routeParams, $modal, $http, PatientService) 
         PatientService.GetPatientById(id)
             .success(function (pt) {
                 $scope.Patient = pt;
-                if ($scope.Patient.DOB != null)
-                {
-                $scope.Patient.DOB = ToJavaScriptDate($scope.Patient.DOB);
-                $scope.Patient.Age = calculateAge($scope.Patient.DOB);
+                if ($scope.Patient.DOB != null) {
+                    $scope.Patient.DOB = ToJavaScriptDate($scope.Patient.DOB);
+                    $scope.Patient.Age = calculateAge($scope.Patient.DOB);
                 }
                 $scope.$broadcast('update_child_controller', $scope.Patient);
                 console.log($scope.Patient);
@@ -118,7 +105,7 @@ function PatientController($scope, $routeParams, $modal, $http, PatientService) 
         var modalInstance = $modal.open({
             templateUrl: '/ClientCode/Template/EditPatient.html',
             size: size,
-            controller: ModalController,
+            controller: 'ModalController',
             resolve: {
                 patient: function () {
                     return patient;
@@ -144,4 +131,4 @@ function PatientController($scope, $routeParams, $modal, $http, PatientService) 
         $scope.Patient = {
         };
     }
-}
+});

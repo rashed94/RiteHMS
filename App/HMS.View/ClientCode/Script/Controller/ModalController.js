@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-var ModalController = function ($scope, $modalInstance, patient) {
+HmsApp.controller("ModalController", function ($scope, $modalInstance, patient) {
     $scope.Patient = patient;
     $scope.ok = function () {
         $modalInstance.close($scope.Patient);
@@ -8,4 +8,4 @@ var ModalController = function ($scope, $modalInstance, patient) {
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-};
+});

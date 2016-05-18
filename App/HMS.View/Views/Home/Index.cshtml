@@ -8,18 +8,13 @@
     
     <!-- jQuery, Angular -->
     <script src="~/Scripts/jquery-2.2.3.min.js"></script>
-    <!--<script src="~/Scripts/angular.min.js"></script>-->
-    
-    <script src="~/Scripts/bootstrap.js"></script>
     <script src="~/Scripts//bootstrap-datepicker.js"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.2/ui-bootstrap.min.js"></script>-->
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/ui-bootstrap-tpls-0.12.0.js"></script>
+    <script src="~/Scripts/angular-route.js"></script>
 
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.js"></script>
-    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
-    
     <!-- Bootstrap -->
-    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+    <link rel=" stylesheet" type="text/css" href="~/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="~/css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="~/css/main.css">
     <link rel="stylesheet" type="text/css" href="~/css/datepicker.css" />
@@ -102,6 +97,10 @@
                                     <td>Patient Name</td>
                                     <td colspan="3">
                                         <input type="text" name="patientname" ng-model="Patient.FirstName" id="patientname" ng-keyup="$event.keyCode == 13 && GetPatientsByName(Patient.FirstName)">
+
+                                        <div ng-controller="TypeaheadCtrl">
+                                            <input name="states" id="states" type="text" placeholder="enter a state" ng-model="selected" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control">
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
