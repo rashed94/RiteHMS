@@ -59,31 +59,24 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
             });
     }
 
-    var _selected;
-    $scope.selected = undefined;
-    $scope.getLocation = function (val) {
-        return $http.get('//maps.googleapis.com/maps/api/geocode/json', {
-            params: {
-                address: val,
-                sensor: false
-            }
-        }).then(function (response) {
-            return response.data.results.map(function (item) {
-                return item.formatted_address;
-            });
-        });
+    $scope.OnPatientSelect = function ($item, $model, $label) {
+        $scope.Patient = $item;
     };
 
     $scope.SearchPatientsByPartialName = function (name) {
-        PatientService.SearchPatientsByPartialName(name)
-            .success(function (pt) {
-                $scope.Patients = pt;
-                console.log($scope.Patients);
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to load Patient data: ' + error.message;
-                console.log($scope.status);
-            });
+        return $http.get('/Patient/SearchPatientByPartialName?name=' + name).then(function (response) {
+            return response.data;
+        });
+    }
+
+    $scope.FormatInput = function ($model) {
+        var inputLabel = '';
+        angular.forEach($scope.Patients, function (patient) {
+            if ($model === patient.Id) {
+                inputLabel = patient.FirstName + " " + patient.LastName;
+            }
+        });
+        return inputLabel;
     }
 
     $scope.SavePatient = function () {

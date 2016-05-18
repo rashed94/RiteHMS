@@ -7,15 +7,12 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap']).
       $routeProvider.
         when('/patient', {
             templateUrl: '/ClientCode/Template/PatientInfo.html',
-            controller: 'PatientController'
         }).
         when('/patientResistration', {
             templateUrl: '/ClientCode/Template/EditPatient.html',
-            controller: 'PatientController'
         }).
         when('/patientResistration/:id', {
             templateUrl: '/ClientCode/Template/EditPatient.html',
-            controller: 'PatientController'
         }).
         when('/billing', {
             templateUrl: '/ClientCode/Template/Billing.html',
