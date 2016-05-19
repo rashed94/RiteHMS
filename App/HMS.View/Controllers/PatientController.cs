@@ -108,7 +108,7 @@ namespace HMS.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public JsonResult CreatePatient(Patient patient)
+        public JsonResult CreatePatient(Patient patient, string filePath)
         {
             //if (ModelState.IsValid)
             {
@@ -175,7 +175,7 @@ namespace HMS.Controllers
 
     public class CustomJsonResult : JsonResult
     {
-        private const string _dateFormat = "yyyy-MM-dd HH:mm:ss";
+        private const string _dateFormat = "MM/dd/yyyy";
 
         public override void ExecuteResult(ControllerContext context)
         {

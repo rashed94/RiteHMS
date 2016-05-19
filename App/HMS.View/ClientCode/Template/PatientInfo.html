@@ -3,15 +3,15 @@
     $(document).ready(function () {
 
         $('.reportdeliverydate').datepicker({
-            format: "dd/mm/yyyy"
-        });
-
-        $('.dob').datepicker({
-            format: "dd/mm/yyyy"
+            format: "yyyy-mm-dd"
+      
         });
 
 
     });
+
+
+   
 </script>
 
 <div class="content">
@@ -19,14 +19,14 @@
     <div class="home_top">
         <div class="home_patient_details">
             <div class="patient_pic">
-                <img src="../images/patient_img.gif" width="115" height="146" alt="delwar hossain">
+                <img src="GetImage.ashx?Name={{Patient.Photo}}" ng-model="Patient.Photo" width="115" height="146" alt="delwar hossain">
 
                 <input name="Admit to Hospital" type="button" value="Admit to Hospital" class="sm_button">
             </div>
             <p>&nbsp;</p>
             <div class="patient_address">
                 <p><h2>NAME</h2>        <span> {{Patient.FirstName}} {{Patient.LastName}}</span></p>
-                <p><h2> GENDER</h2>  <span>{{Patient.Gender}}</span></p>
+                <p><h2> GENDER</h2>  <span>{{Patient.Gender ? 'Female' : 'Male'}}</span></p>
                 <p><h2>ADDRESS</h2>    <span>{{Patient.City}}, {{Patient.Zip}}, {{Patient.Country}}</span></p>
                 <p><h2>BLOOD GROU</h2>   <span>{{Patient.BloodGroup}}</span></p>
                 <p><h2>MOBILE</h2>  <span> {{Patient.PhoneNumber}}</span></p>

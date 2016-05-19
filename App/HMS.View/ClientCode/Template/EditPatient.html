@@ -1,4 +1,20 @@
-﻿<div class="modal-header rite_modal_header">
+﻿<script>
+ $(document).ready(function () {
+
+
+
+        $('.dob').datepicker({
+            format: "yyyy-mm-dd",
+            startView: "year",
+            minViewMode: "day"
+        }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
+        });
+ });
+    </script>   
+
+<div class="modal-header rite_modal_header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden=" true">&times;</span></button>
     <h4 class="modal-title" id="myModalLabel"><h2>Patient Registration</h2></h4>
 </div>
@@ -17,8 +33,8 @@
             <div class="title">gender</div>
             <div class="inputbox">
                 <select name="gender" class="generaldropdown" ng-model="Patient.Gender">
-                    <option value="Male">MALE</option>
-                    <option value="Female">Female</option>
+                    <option value="0">MALE</option>
+                    <option value="1">Female</option>
                 </select>
             </div>
         </div>
@@ -68,7 +84,15 @@
         </div>
 
         <div class="input_containter">
-            <div class="title">picture</div><div class="inputbox"><input type="file" class="name"></div>
+
+            <div class="title">picture</div>
+
+            <div class="inputbox">
+                <!--<input type="hidden" ng-model="Patient.Photo" id="patientPhoto"/>-->
+                <img src="GetImage.ashx?Name=" ng-model="Patient.Photo" style="height: 100px;" onclick="$('._s_Photo').click();" /><br />
+                <input type="file" class="_s_Photo" ng-model="Patient.Photo" file-upload onchange="angular.element(this).scope().LoadFileData(this.files)" accept="image/*" />
+
+            </div>
         </div>
 
         <div class="input_containter">

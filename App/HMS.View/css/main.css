@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 /* CSS Document */
 @import url('reset.css') screen;
 @import url('layout.css') screen;
@@ -491,4 +491,9 @@ table td.padding_left60
 a.fa-search:hover, a.fa-search:focus
 {
 	text-decoration:none;
+}
+
+
+body.datepicker-dropdown {
+   z-index:99999 !important;
 }

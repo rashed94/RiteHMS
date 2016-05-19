@@ -28,7 +28,7 @@ namespace HMS.Model.Core
         public string Zip { get; set; }
         public string Country { get; set; }
         public string Email { get; set; }
-        public byte[] Photo { get; set; }
+        public string Photo { get; set; }
     
         public virtual ICollection<Membership> Memberships { get; set; }
         public virtual ICollection<PatientInvoice> PatientInvoices { get; set; }

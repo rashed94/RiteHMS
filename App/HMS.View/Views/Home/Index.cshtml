@@ -16,8 +16,9 @@
     <!-- Bootstrap -->
     <link rel=" stylesheet" type="text/css" href="~/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="~/css/font-awesome.css" />
-    <link rel="stylesheet" type="text/css" href="~/css/main.css">
     <link rel="stylesheet" type="text/css" href="~/css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+  
 
     <!-- HMS app -->
     <script src="~/ClientCode/app.js" type="text/javascript"></script>
@@ -37,8 +38,14 @@
         function ToJavaScriptDate(value) {
         var pattern = /Date\(([^)]+)\)/;
         var results = pattern.exec(value);
+        if (results != null) {
         var dt = new Date(parseFloat(results[1]));
-        return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+        
+            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+        }else
+        {
+            return value;
+        }
         }
 
         function calculateAge(dateString) { // birthday is a date
@@ -58,6 +65,8 @@
         }
 
     </script>
+
+
 
 </head>
 
@@ -103,7 +112,7 @@
                                                    ng-model="Patient"
                                                    typeahead="item as (item.FirstName + ' ' + item.LastName) for item in SearchPatientsByPartialName($viewValue)"
                                                    typeahead-on-select="OnPatientSelect($item, $model, $label)"
-                                                   typeahead-min-length="2"
+                                                   typeahead-min-length="1"
                                                    typeahead-wait-ms="1"
                                                    @*typeahead-input-formatter="FormatInput($model)"*@
                                                    class="form-control">

@@ -7,6 +7,18 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
     //    return Math.abs(ageDate.getUTCFullYear() - 1970);
     //}
 
+
+
+
+    $scope.AgeCalculate = function () {
+
+        $scope.Patient.DOB = ToJavaScriptDate($scope.Patient.DOB);
+        $scope.Patient.Age = calculateAge($scope.Patient.DOB);
+
+
+
+    }
+
     $scope.GetPatients = function () {
         PatientService.GetPatients()
             .success(function (cts) {
@@ -23,10 +35,9 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
             .success(function (pt) {
                 $scope.Patient = pt;
                 if ($scope.Patient.DOB != null) {
-                    $scope.Patient.DOB = ToJavaScriptDate($scope.Patient.DOB);
-                    $scope.Patient.Age = calculateAge($scope.Patient.DOB);
+                    $scope.AgeCalculate();
                 }
-                $scope.$broadcast('update_child_controller', $scope.Patient);
+                //$scope.$broadcast('update_child_controller', $scope.Patient);
                 console.log($scope.Patient);
             })
             .error(function (error) {
@@ -61,6 +72,9 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
 
     $scope.OnPatientSelect = function ($item, $model, $label) {
         $scope.Patient = $item;
+        if ($scope.Patient.DOB != null) {
+            $scope.AgeCalculate();
+        }
     };
 
     $scope.SearchPatientsByPartialName = function (name) {
@@ -83,6 +97,9 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
         PatientService.SavePatient($scope.Patient)
             .success(function (data) {
                 $scope.Patient = data;
+                if ($scope.Patient.DOB != null) {
+                    $scope.AgeCalculate();
+                }
                 console.log(data);
             })
             .error(function (error) {
@@ -99,15 +116,17 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
             templateUrl: '/ClientCode/Template/EditPatient.html',
             size: size,
             controller: 'ModalController',
+            scope: $scope,
             resolve: {
                 patient: function () {
-                    return patient;
+                    return $scope.Patient;
                 }
             }
         });
         modalInstance.result.then(function (patient) {
-            alert(patient);
+            
             $scope.Patient = patient;
+           // $scope.Patient.DOB = $scope.Patient.DOB;
             $scope.SavePatient();
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
@@ -121,7 +140,6 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
         $scope.GetPatientById($routeParams.id);
     }
     else {
-        $scope.Patient = {
-        };
+        $scope.Patient;
     }
 });

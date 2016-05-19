@@ -8,4 +8,9 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient) 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+    $scope.Files = [];
+    $scope.LoadFileData = function (files) {
+        console.log(files[0].type);
+       $scope.Patient.Photo = files[0].name;
+    };
 });
