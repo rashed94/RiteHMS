@@ -92,7 +92,10 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
         });
         return inputLabel;
     }
+    $scope.UploadPhoto = function () {
 
+        PatientService.UploadPhoto($scope.Patient)
+    }
     $scope.SavePatient = function () {
         PatientService.SavePatient($scope.Patient)
             .success(function (data) {
@@ -128,6 +131,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
             $scope.Patient = patient;
            // $scope.Patient.DOB = $scope.Patient.DOB;
             $scope.SavePatient();
+            $scope.UploadPhoto();
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });

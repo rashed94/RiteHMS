@@ -19,6 +19,7 @@
             progress: function (evt) {
                 console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
             }
+
         })
         .success(function (response) {
             console.log('Upload finished');

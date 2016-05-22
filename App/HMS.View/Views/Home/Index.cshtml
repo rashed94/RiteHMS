@@ -34,6 +34,9 @@
 
     <script src="~/ClientCode/Script/Controller/ModalController.js" type="text/javascript"></script>
 
+    <script src="~/ClientCode/Script/Controller/AddItemController.js"></script>
+    <script src="~/ClientCode/Script/Service/AddItemService.js"></script>
+
     <script>
         function ToJavaScriptDate(value) {
         var pattern = /Date\(([^)]+)\)/;
@@ -114,7 +117,7 @@
                                                    typeahead-on-select="OnPatientSelect($item, $model, $label)"
                                                    typeahead-min-length="1"
                                                    typeahead-wait-ms="1"
-                                                   @*typeahead-input-formatter="FormatInput($model)"*@
+                                                  
                                                    class="form-control">
                                         </div>
                                     </td>

@@ -54,20 +54,30 @@
 
     </div>
     <div class="horizontal_line"></div>
-    <div class="home_add_item_container">
+    <div class="home_add_item_container" ng-controller="AddItemController">
         <div class="add_item_input">
             <h1>Add Item</h1><br /><br />
-            <select name="item" id="item">
-                <option value="lab">Lab Test</option>
-                <option value="Pharmacy">Pharmacy</option>
-                <option value="Surgery">Surgery</option>
-                <option value="InPatient ">In Patient </option>
+            <select ng-model="filterCondition.MedicalType">
+                <option ng-repeat="MedicalType in MedicalTypes" value="{{MedicalType.Id}}">{{MedicalType.Name}}</option>
             </select>
 
 
 
 
-            <div class="floatleft"><input type="text" name="itemname" id="itemname"></div>
+            <div class="floatleft">
+                 <!--<input type="text" name="itemname" id="itemname">-->
+                <input name="itemname" id="itemname" type="text" placeholder="Type Item's name"
+                       ng-model="Item"
+                       typeahead="item as (item.Name) for item in GetItembyMedicalPartialName($viewValue)"
+                       
+                       typeahead-min-length="1"
+                       typeahead-wait-ms="1"
+                      
+                       class="form-control">
+
+
+
+            </div>
             <div class="itemButton"> <input name="Add" type="button" value="add" class="md_button"></div>
             <div style="clear:both;"> </div>
         </div>

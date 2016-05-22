@@ -11,16 +11,83 @@ using HMS.Model.Core;
 using HMS.DAL.Repository;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
+using System.IO;
+using System.Configuration;
 
 namespace HMS.Controllers
 {
     public class PatientController : Controller
     {
         //private IRepository<Patient> _Repository;
+        static readonly string _PhotoLocation = ConfigurationManager.AppSettings["PhotoLocation"];
 
         public PatientController()
         {
             //_Repository = new PatientRepository();
+        }
+
+
+        public JsonResult GetItembyMedicalPartialName(long id,string name)
+        {
+            List<Item> item;
+            using (ItemRepository repository = new ItemRepository())
+            {
+                item = repository.GetItembyMedicalPartialName(id,name).ToList();
+            }
+            if (item == null)
+            {
+                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+            }
+
+            List<Item> onlyItems = new List<Item>();
+            //  patients.ForEach(corePatient => onlyPatients.Add(MapToClientObject(corePatient)));
+            item.ForEach(c => onlyItems.Add(new Item
+            {
+                Id = c.Id,
+                Name = c.Name,
+                GenericName = c.GenericName,
+                Code=c.Code,
+                ItemTypeId=c.ItemTypeId,
+                MedicalTypeId=c.MedicalTypeId,
+                ItemCategoryId=c.ItemCategoryId,
+                MeasurementUnitId=c.MeasurementUnitId,
+                SalePrice=c.SalePrice,
+                BuyPrice=c.BuyPrice
+                
+
+
+            }));
+
+            return Json(onlyItems, JsonRequestBehavior.AllowGet);
+
+
+        }
+        public JsonResult GetMedicalType()
+        {
+            List<MedicalType> medicaltype;
+            using (MedicalTypeRepository repository = new MedicalTypeRepository())
+            {
+                medicaltype = repository.GetAll().ToList();
+            }
+            if (medicaltype == null)
+            {
+                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+            }
+
+            List<MedicalType> onlyMedicalType = new List<MedicalType>();
+          //  patients.ForEach(corePatient => onlyPatients.Add(MapToClientObject(corePatient)));
+            medicaltype.ForEach(c => onlyMedicalType.Add(new MedicalType
+            {
+                Id = c.Id,
+                Name =c.Name,
+            
+            }));
+
+            return Json(onlyMedicalType, JsonRequestBehavior.AllowGet);
+
+
+           
+
         }
 
         // GET: Patient/GetPatients
@@ -106,10 +173,27 @@ namespace HMS.Controllers
             return new CustomJsonResult {Data=patients} ;
         }
 
+        [System.Web.Mvc.HttpPost]
+        public JsonResult UploadImage()
+        {
+            var fName = "";
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase file = Request.Files[0];
+                fName = Path.Combine(_PhotoLocation, string.Format("{0}{1}", Request.Form["Id"], Path.GetExtension(file.FileName)));
+                file.SaveAs(fName);
+            }
+            return Json(new
+            {
+                FileName = fName
+            });
+        }
+
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public JsonResult CreatePatient(Patient patient, string filePath)
+        public JsonResult CreatePatient(Patient patient)
         {
+          
             //if (ModelState.IsValid)
             {
                 using (PatientRepository repository = new PatientRepository())

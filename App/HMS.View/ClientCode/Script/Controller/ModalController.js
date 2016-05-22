@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-HmsApp.controller("ModalController", function ($scope, $modalInstance, patient) {
-    $scope.Patient = patient;
+HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, PatientService) {
+    $scope.Patient = {};
     $scope.ok = function () {
         $modalInstance.close($scope.Patient);
     };
@@ -13,4 +13,8 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient) 
         console.log(files[0].type);
        $scope.Patient.Photo = files[0].name;
     };
+    $scope.UploadPhoto = function () {
+
+        PatientService.UploadPhoto($scope.Patient)
+    }
 });

@@ -102,6 +102,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ClientCode\app.js" />
+    <Content Include="ClientCode\Script\Controller\AddItemController.js" />
+    <Content Include="ClientCode\Script\Service\AddItemService.js" />
     <Content Include="ClientCode\Template\Billing.html" />
     <Content Include="ClientCode\Template\Contact.html" />
     <Content Include="ClientCode\Template\EditContact.html" />
