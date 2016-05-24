@@ -7,7 +7,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
     //    return Math.abs(ageDate.getUTCFullYear() - 1970);
     //}
 
-
+    $scope.Items = [];
 
 
     $scope.AgeCalculate = function () {
@@ -68,6 +68,14 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
                 $scope.status = 'Unable to load Patient data: ' + error.message;
                 console.log($scope.status);
             });
+    }
+
+    $scope.OnItemSelect=function ($item)
+    {
+        $scope.Items.push($item);
+        //angular.forEach($scope.Items, function(obj){
+        //    obj.push($item);
+        //});
     }
 
     $scope.OnPatientSelect = function ($item, $model, $label) {

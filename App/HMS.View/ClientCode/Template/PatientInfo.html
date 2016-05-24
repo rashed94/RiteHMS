@@ -69,10 +69,9 @@
                 <input name="itemname" id="itemname" type="text" placeholder="Type Item's name"
                        ng-model="Item"
                        typeahead="item as (item.Name) for item in GetItembyMedicalPartialName($viewValue)"
-                       
+                       typeahead-on-select="OnItemSelect($item)"
                        typeahead-min-length="1"
                        typeahead-wait-ms="1"
-                      
                        class="form-control">
 
 
@@ -97,9 +96,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>USG - HBS (Liver) </td>
-                        <td>Haematology Clinic  </td>
+                    <tr ng-repeat="item in Items">
+                        <td>{{item.Name}}</td>
+                        <td>{{item.GenericName}}</td>
                         <td><input type="text" width="50" name="quantity" class="quantity"></td>
                         <td><input type="text" width="100" name="referrer" class="referrer"></td>
                         <td><input type="text" width="100" name="amount" class="amount"></td>
@@ -116,39 +115,7 @@
                         </td>
                         <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a></td>
                     </tr>
-                    <tr>
-                        <td>USG - HBS (Liver) </td>
-                        <td>Haematology Clinic  </td>
-                        <td><input type="text" width="50" name="quantity" class="quantity"></td>
-                        <td><input type="text" width="100" name="referrer" class="referrer"></td>
-                        <td><input type="text" width="100" name="amount" class="amount"></td>
-                        <td>
 
-                            <input type="text" width="110" placeholder="click to show datepicker" name="reportdeliverydate" class="reportdeliverydate">
-
-
-                        </td>
-                        <td>
-                            <select name="reportdtime" class="time">
-                                <option value="7pm">7PM-8PM</option>
-                                <option value="9pm">9PM-10PM</option>
-                                <option value="8am">8AM-10AM</option>
-                                <option value="11am ">11AM-12AM</option>
-                            </select>
-
-                        </td>
-                        <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a></td>
-                    </tr>
-                    <tr>
-                        <td>Napa Extended </td>
-                        <td>Anti Inflamatory   </td>
-                        <td><input type="text" width="50" name="quantity" class="quantity"></td>
-                        <td>&nbsp;</td>
-                        <td><input type="text" width="100" name="amount" class="amount"></td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a></td>
-                    </tr>
                 </tbody>
                 <tfoot>
                     <tr>
