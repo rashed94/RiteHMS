@@ -1,6 +1,22 @@
 ﻿'use strict';
 
-HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $http, PatientService) {
+HmsApp.directive('datepickerAuto', function () {
+    return {
+        require: ['ngModel'],
+        restrict: 'E',
+        template: '<input class="input form-control" datepicker-popup="MM/dd/yyyy" show-weeks="false"' +
+            ' is-open="autoIsOpen" ng-focus="autoIsOpen = true" ng-click="autoIsOpen = true"'
+            + ' type="text" ng-model="ngModel" ng-model-options="{\'updateOn\': \'blur\'}"/>',
+        link: function (scope) {
+            scope.autoIsOpen = false;
+        },
+        scope: {
+            ngModel: '='
+        }
+    };
+});
+
+HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout, $modal, $http, PatientService) {
     //$scope.calculateAge = function (birthday) { // birthday is a date
     //    var ageDifMs = Date.now() - birthday.getTime();
     //    var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -8,7 +24,6 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $modal, $
     //}
 
     $scope.Items = [];
-
 
     $scope.AgeCalculate = function () {
 
