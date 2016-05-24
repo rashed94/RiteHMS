@@ -1,20 +1,21 @@
 ﻿'use strict';
 
-HmsApp.directive('datepickerAuto', function () {
-    return {
-        require: ['ngModel'],
-        restrict: 'E',
-        template: '<input class="input form-control" datepicker-popup="MM/dd/yyyy" show-weeks="false"' +
-            ' is-open="autoIsOpen" ng-focus="autoIsOpen = true" ng-click="autoIsOpen = true"'
-            + ' type="text" ng-model="ngModel" ng-model-options="{\'updateOn\': \'blur\'}"/>',
-        link: function (scope) {
-            scope.autoIsOpen = false;
-        },
-        scope: {
-            ngModel: '='
-        }
-    };
-});
+//HmsApp.directive('datepickerAuto', function () {
+//    return {
+//        require: ['ngModel'],
+//        restrict: 'E',
+//        template: '<input class="input form-control" datepicker-popup="MM/dd/yyyy" show-weeks="false"' +
+//            ' is-open="autoIsOpen" ng-focus="autoIsOpen = true" ng-click="autoIsOpen = true"'
+//            + ' type="text" ng-model="ngModel" ng-model-options="{\'updateOn\': \'blur\'}"/>',
+//        link: function (scope) {
+//            scope.autoIsOpen = false;
+//        },
+//        scope: {
+//            ngModel: '='
+//        }
+
+//    };
+//});
 
 HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout, $modal,$filter, $http, PatientService) {
     //$scope.calculateAge = function (birthday) { // birthday is a date
@@ -25,6 +26,15 @@ HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout, 
 
     $scope.Items = [];
 
+    $scope.initDatePicker=function () {
+        $('.reportdeliverydate').datepicker({
+            format: "mm/dd/yyyy"
+        }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
+        });
+        
+    }
     $scope.AgeCalculate = function () {
 
         $scope.Patient.DOB = ToJavaScriptDate($scope.Patient.DOB);

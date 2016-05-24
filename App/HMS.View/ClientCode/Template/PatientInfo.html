@@ -1,4 +1,13 @@
-﻿
+﻿<script type="text/javascript">
+    // When the document is ready
+    $(document).ready(function () {
+
+
+
+
+
+    });
+</script>
 
 <div class="content">
     
@@ -68,6 +77,7 @@
         </div>
 
         <div class="item_grid">
+
             <table width="100%" border="1" align="center" class="bordered">
                 <thead>
                     <tr>
@@ -89,7 +99,8 @@
                         <td><input type="text" width="100" name="referrer" class="referrer"></td>
                         <td><input type="text" width="100" name="amount" ng-model="item.Amount" class="amount"></td>
                         <td>
-                            <datepicker-auto ng-model="someDate" class="reportdeliverydate"></datepicker-auto>
+                           <!--<datepicker-auto ng-model="item.Date" class="reportdeliverydate"></datepicker-auto>-->
+                            <input type="text" width="110" ng-model="item.Date" ng-init="initDatePicker()" placeholder="click to show datepicker" name="reportdeliverydate" class="reportdeliverydate">
                             </td>
 
                         <td>
