@@ -18,6 +18,10 @@ namespace HMS.Model.Core
         public bool? Refund { get; set; }
         public bool? Billed { get; set; }
 
+        public decimal ReferralFee { get; set; }
+        public System.DateTime DeliveryDate { get; set; }
+        public string DeliverTime { get; set; }
+
         public virtual Item Item { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual PatientInvoice PatientInvoice { get; set; }

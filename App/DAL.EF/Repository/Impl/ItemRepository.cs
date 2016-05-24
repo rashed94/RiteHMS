@@ -19,7 +19,6 @@ namespace HMS.DAL.Repository
             IQueryable<Item> queryResult = _DbSet;
           //  bool active = true;
             return queryResult.Where(c => c.MedicalTypeId == id && c.Name.StartsWith(name)).ToList();
-
         }
     }
 }

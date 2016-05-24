@@ -27,6 +27,8 @@ namespace HMS.Model.Core
         public decimal SalePrice { get; set; }
         public decimal BuyPrice { get; set; }
         public long? ServiceProviderId { get; set; }
+        public bool ReferralAllowed { get; set; }
+        public decimal DefaultReferrarFee { get; set; }
     
         public virtual ICollection<BedOccupancy> BedOccupancies { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }

@@ -78,6 +78,7 @@
     <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\PaymentType.cs" />
     <Compile Include="Entities\ReceiptPayment.cs" />
+    <Compile Include="Entities\Referral.cs" />
     <Compile Include="Entities\Refund.cs" />
     <Compile Include="Entities\ServiceProvider.cs" />
     <Compile Include="Entities\ServiceProviderType.cs" />

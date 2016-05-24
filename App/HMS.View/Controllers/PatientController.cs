@@ -173,6 +173,11 @@ namespace HMS.Controllers
             return new CustomJsonResult {Data=patients} ;
         }
 
+        public JsonResult GetReferralFeeByDoctor(string doctorId)
+        {
+            return Json("200");
+        }
+
         [System.Web.Mvc.HttpPost]
         public JsonResult UploadImage()
         {
