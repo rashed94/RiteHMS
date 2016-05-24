@@ -16,7 +16,7 @@ HmsApp.directive('datepickerAuto', function () {
     };
 });
 
-HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout, $modal, $http, PatientService) {
+HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout, $modal,$filter, $http, PatientService) {
     //$scope.calculateAge = function (birthday) { // birthday is a date
     //    var ageDifMs = Date.now() - birthday.getTime();
     //    var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -85,9 +85,39 @@ HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout, 
             });
     }
 
+    $scope.updateItem=function($item)
+    {
+        angular.forEach($scope.Items, function (obj) {
+            // obj.push($item);
+            if (obj.Id == $item.Id) {
+
+                obj.Amount = obj.SalePrice * $item.Quantity;
+
+            }
+        });
+    }
+  
+
+    //$scope.deleteItem = function ($item) {
+    //    angular.forEach($scope.Items, function (obj) {
+    //        // obj.push($item);
+    //        if (obj.Id == $item.Id) {
+
+    //            $scope.ite
+
+    //        }
+    //    });
+    //}
+
+
     $scope.OnItemSelect=function ($item)
     {
-        $scope.Items.push($item);
+        $item.Quantity = 1;
+        $item.Amount = $item.SalePrice;
+        var found = $filter('filter')($scope.Items, { Id: $item.Id }, true);
+        if (!found.length) {
+            $scope.Items.push($item);
+        }
         //angular.forEach($scope.Items, function(obj){
         //    obj.push($item);
         //});
