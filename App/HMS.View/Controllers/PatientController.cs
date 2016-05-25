@@ -52,7 +52,8 @@ namespace HMS.Controllers
                 ItemCategoryId=c.ItemCategoryId,
                 MeasurementUnitId=c.MeasurementUnitId,
                 SalePrice=c.SalePrice,
-                BuyPrice=c.BuyPrice
+                BuyPrice=c.BuyPrice,
+                DefaultReferrarFee=c.DefaultReferrarFee
                 
 
 
@@ -171,6 +172,40 @@ namespace HMS.Controllers
             corePatients.ForEach(corePatient => patients.Add(MapToClientObject(corePatient)));
 
             return new CustomJsonResult {Data=patients} ;
+        }
+        public JsonResult GetServiceProviderPartialName(string name)
+        {
+            List<ServiceProvider> serviceProviders = null;
+            List<ServiceProvider> onlyserviceProviders = new List<ServiceProvider>();
+            Contact contact = new Contact();
+
+            using (ServiceProviderRepository repository = new ServiceProviderRepository())
+            {
+                serviceProviders = repository.GetServiceProviderPartialName(name).ToList();
+
+                ServiceProvider serviceProvider = new ServiceProvider();
+                serviceProvider.Contact = contact;
+
+                foreach (ServiceProvider item in serviceProviders)
+                {
+                    serviceProvider.Id = item.Id;
+                    serviceProvider.ContactId = item.ContactId;
+
+                    serviceProvider.Contact.FirstName = item.Contact.FirstName;
+                    serviceProvider.Contact.LastName = item.Contact.LastName;
+                    onlyserviceProviders.Add(serviceProvider);
+                }
+
+                return Json(onlyserviceProviders, JsonRequestBehavior.AllowGet);
+                //serviceProviders.ForEach(c => onlyserviceProviders.Add(new ServiceProvider()
+                //{
+                //    Id = c.Id,
+                //    Contact.FirstName = c.Contact.FirstName
+                //}));
+            }
+
+
+
         }
 
         public JsonResult GetReferralFeeByDoctor(string doctorId)

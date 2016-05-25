@@ -62,11 +62,13 @@
     <Compile Include="Repository\Base\IContactRepository.cs" />
     <Compile Include="Repository\Base\IPatientRepository.cs" />
     <Compile Include="Repository\Base\IRepository.cs" />
+    <Compile Include="Repository\Base\IServiceProviderRepository.cs" />
     <Compile Include="Repository\Impl\ItemRepository.cs" />
     <Compile Include="Repository\Impl\ContactRepository.cs" />
     <Compile Include="Repository\Impl\MedicalTypeRepository.cs" />
     <Compile Include="Repository\Impl\PatientRepository.cs" />
     <Compile Include="Repository\Impl\Repository.cs" />
+    <Compile Include="Repository\Impl\ServiceProviderRepository.cs" />
     <Compile Include="SessionFactory\Impl\SessionFactory.cs" />
     <Compile Include="SessionFactory\ISessionFactory.cs" />
   </ItemGroup>

@@ -17,7 +17,7 @@
 //    };
 //});
 
-HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout, $modal,$filter, $http, PatientService) {
+HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout,$location, $modal,$filter, $http, PatientService) {
     //$scope.calculateAge = function (birthday) { // birthday is a date
     //    var ageDifMs = Date.now() - birthday.getTime();
     //    var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -200,6 +200,19 @@ HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout, 
         });
     };
 
+    $scope.UpdateTopLink = function (link) {
+        if (link == 'patient') {
+        $('.site_navigation li a').removeClass('selected');
+        $('.site_navigation li.patientinfo a').addClass('selected');
+        // $location.path = $location.path(link);
+        }
+        if(link=='billing')
+        {
+            $('.site_navigation li a').removeClass('selected');
+            $('.site_navigation li.billing a').addClass('selected');
+        }
+
+    }
     $('.site_navigation li a').removeClass('selected');
     $('.site_navigation li.patientinfo a').addClass('selected');
 

@@ -13,8 +13,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, BillingSe
             });
     }
 
-    $('.site_navigation li a').removeClass('selected');
-    $('.site_navigation li.billing a').addClass('selected');
+ 
 
     var tabClass = ".summary";
     if ($routeParams.tab != null) {

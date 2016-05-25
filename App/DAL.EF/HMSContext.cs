@@ -8,6 +8,7 @@ namespace HMS.DAL
         public Context() : base("name=HMSContext")
         {
             Database.SetInitializer<Context>(null);
+          //  this.Configuration.ProxyCreationEnabled = false; 
         }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)

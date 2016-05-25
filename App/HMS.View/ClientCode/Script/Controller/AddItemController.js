@@ -18,13 +18,20 @@ HmsApp.controller("AddItemController", function ($scope, $http, AddItemService) 
     $scope.filterCondition = {
         MedicalType: '62'
     }
-     $scope.GetMedicalType();
+    $scope.GetMedicalType();
+
+    $scope.GetServiceProviderPartialName = function (name) {
+        return $http.get('/Patient/GetServiceProviderPartialName?name=' + name).then(function (response) {
+            return response.data;
+        });
+    }
 
      $scope.GetItembyMedicalPartialName = function (name) {
          return $http.get('/Patient/GetItembyMedicalPartialName?id=' + $scope.filterCondition.MedicalType + '&name=' + name).then(function (response) {
              return response.data;
          });
      }
+    // $scope.GetServiceProviderPartialName('m');
      //var test = $scope.GetItembyMedicalPartialName('usg');
 
     //$scope.operators = [

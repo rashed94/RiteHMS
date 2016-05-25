@@ -81,14 +81,15 @@
             <table width="100%" border="1" align="center" class="bordered">
                 <thead>
                     <tr>
-                        <th width="23%">ITEM  NAME</th>
-                        <th width="14%">CATEGORY</th>
+                        <th width="20%">ITEM  NAME</th>
+                        <th width="12%">CATEGORY</th>
                         <th width="7%">QUANTITY</th>
-                        <th width="11%">REFERRER  FEE</th>
+                        <th width="9%">REFERRER  FEE</th>
+                        <th width="9%">DOCTOR</th>
                         <th width="10%">AMOUNT</th>
-                        <th width="15%">REPORT DELIVERY DATE</th>
-                        <th width="16%">REPORT DELIVERY TIME </th>
-                        <th width="4%">&nbsp;</th>
+                        <th width="11%">REPORT DELIVERY DATE</th>
+                        <th width="13%">REPORT DELIVERY TIME </th>
+                        <th width="9%">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -96,12 +97,23 @@
                         <td>{{item.Name}}</td>
                         <td>{{item.GenericName}}</td>
                         <td><input type="text" width="50" ng-model="item.Quantity" ng-change="updateItem(item)" name="quantity" class="quantity"></td>
-                        <td><input type="text" width="100" name="referrer" class="referrer"></td>
+                        <td><input type="text" width="100" ng-model="item.DefaultReferrarFee" name="referrer" class="referrer"></td>
+                        <td>
+                            <!--<input type="text" width="100" name="doctor" class="doctor">-->
+
+                            <input name="doctorName" id="doctorName" type="text" placeholder="Type Doctor's name"
+                                   ng-model="Doctor"
+                                   typeahead="Doctor as (doctor.Contact.FirstName) for doctor in GetServiceProviderPartialName($viewValue)"
+                                   typeahead-min-length="1"
+                                   typeahead-wait-ms="1"
+                                   class="form-control">
+
+                        </td>
                         <td><input type="text" width="100" name="amount" ng-model="item.Amount" class="amount"></td>
                         <td>
-                           <!--<datepicker-auto ng-model="item.Date" class="reportdeliverydate"></datepicker-auto>-->
+                            <!--<datepicker-auto ng-model="item.Date" class="reportdeliverydate"></datepicker-auto>-->
                             <input type="text" width="110" ng-model="item.Date" ng-init="initDatePicker()" placeholder="click to show datepicker" name="reportdeliverydate" class="reportdeliverydate">
-                            </td>
+                        </td>
 
                         <td>
                             <select name="reportdtime" class="time">
@@ -118,7 +130,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="7" style="text-align:right; padding-right:42pz;">
+                        <td colspan="8" style="text-align:right; padding-right:42pz;">
                             <input name="save" type="button" value="save" class="md_button">
 
                             <input name="cancel" type="button" value="cancel" class="md_button">

@@ -19,6 +19,7 @@ namespace HMS.DAL.Repository
             //    throw new ArgumentNullException("dbContext");
             _DbContext = new Context();
             _DbSet = _DbContext.Set<T>();
+            
         }
 
         //public virtual void Add(T entity)

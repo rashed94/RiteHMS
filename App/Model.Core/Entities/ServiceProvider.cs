@@ -10,6 +10,7 @@ namespace HMS.Model.Core
         {
             this.Items = new List<Item>();
             this.PatientAdmissions = new List<PatientAdmission>();
+            //this.Contact = new Contact();
         }
     
         public long ContactId { get; set; }
