@@ -194,7 +194,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout, 
             $scope.Patient = patient;
            // $scope.Patient.DOB = $scope.Patient.DOB;
             $scope.SavePatient();
-            $scope.UploadPhoto();
+           // $scope.UploadPhoto();
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });

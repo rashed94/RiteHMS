@@ -22,7 +22,7 @@ namespace HMS.View
             }
             else
             {
-                context.Response.WriteFile(HttpContext.Current.Server.MapPath("Images/no_avatar.png"));
+               // context.Response.WriteFile(HttpContext.Current.Server.MapPath("Images/no_avatar.png"));
             }
         }
 
