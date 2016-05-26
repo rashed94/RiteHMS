@@ -252,7 +252,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         PatientService.SavePatient($scope, file);
     }
 
-    $scope.OpenNew = function (size) {
+    $scope.PatientModal = function (size, isEdit) {
         var patient = {
 
         };
@@ -263,7 +263,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
             scope: $scope,
             resolve: {
                 patient: function () {
-                    return $scope.Patient;
+                    return isEdit ? $scope.Patient : patient;
                 }
             }
         });
