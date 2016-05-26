@@ -22,6 +22,8 @@ namespace HMS.Model.Core
         public bool? IsReferer { get; set; }
     
         public virtual Contact Contact { get; set; }
+     
+     
         public virtual Department Department { get; set; }
         public virtual ICollection<Item> Items { get; set; }
         public virtual ICollection<PatientAdmission> PatientAdmissions { get; set; }

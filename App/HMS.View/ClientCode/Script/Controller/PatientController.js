@@ -17,7 +17,7 @@
 //    };
 //});
 
-HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout,$location, $modal,$filter, $http, PatientService) {
+HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout, $window, $modal, $filter, $http, PatientService) {
     //$scope.calculateAge = function (birthday) { // birthday is a date
     //    var ageDifMs = Date.now() - birthday.getTime();
     //    var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -106,6 +106,82 @@ HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout,$
             }
         });
     }
+
+    $scope.updateReferrerItem = function ($item,doctor) {
+        if (doctor == '')
+        {
+            angular.forEach($scope.Items, function (obj) {
+                // obj.push($item);
+                if (obj.Id == $item.Id) {
+
+                    obj.ReferralFee = obj.DefaultReferrarFee;
+
+                }
+            });
+        }
+    }
+    $scope.serviceItemSave=function()
+    {
+        $scope.PatientServiceItem = [];
+        $scope.serviceItem = {};
+        
+        angular.forEach($scope.Items, function (obj) {
+
+            
+        /*   var serviceItem = {
+                PatientID: $scope.Patient.Id,
+                ItemID: obj.Id,
+                InvoiceID: '',
+                ServiceListPrice: obj.Amount,
+                ServiceActualPrice: obj.SalePrice,
+                ServiceQuantity: obj.Quantity,
+                ServiceDate: Date.now(),
+                UserId: '',
+                Discount: '',
+                Refund: '',
+                Billed: '',
+                ReferralFee: obj.ReferralFee,
+                DeliveryDate: obj.Date,
+                DeliverTime:obj.ReportDeliveryTime
+            };*/
+            $scope.serviceItem.PatientID = $scope.Patient.Id;
+            $scope.serviceItem.ItemID = obj.Id;
+            $scope.serviceItem.InvoiceID = '';
+            $scope.serviceItem.ServiceListPrice = obj.Amount;
+            $scope.serviceItem.ServiceActualPrice = obj.SalePrice;
+            $scope.serviceItem.ServiceQuantity = obj.Quantity;
+            $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');;
+            $scope.serviceItem.UserId = '';
+            $scope.serviceItem.Discount = '';
+            $scope.serviceItem.Refund = '';
+            $scope.serviceItem.Billed = '';
+            $scope.serviceItem.ReferralFee = obj.ReferralFee;
+            $scope.serviceItem.DeliveryDate = obj.Date;
+            $scope.serviceItem.DeliveryTime = obj.ReportDeliveryTime;
+
+            $scope.PatientServiceItem.push($scope.serviceItem);
+            
+        });
+
+        PatientService.SavePatientServiceItem($scope.PatientServiceItem)
+        .success(function (data) {
+                
+            console.log(data);
+            $scope.UpdateTopLink('billing');
+            $window.location.href = '#/billing';
+           
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save Patient data: ' + error.message;
+            console.log($scope.status);
+        });
+
+
+    }
+    $scope.serviceItemEmpty=function()
+    {
+        $scope.Items = [];
+    }
   
 
     //$scope.deleteItem = function ($item) {
@@ -120,10 +196,26 @@ HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout,$
     //}
 
 
+
+    $scope.OnDocotorSelect = function ($item,serviceitem) {
+
+
+
+        serviceitem.ReferralFee = $item.ReferralFee;
+        var found = $filter('filter')($scope.Items, { Id: serviceitem.Id }, true);
+        if (!found.length) {
+            $scope.Items.push(serviceitem);
+        }
+
+        //  console.log($item.Id);
+
+    }
+
     $scope.OnItemSelect=function ($item)
     {
         $item.Quantity = 1;
         $item.Amount = $item.SalePrice;
+        $item.ReferralFee = $item.DefaultReferrarFee;
         var found = $filter('filter')($scope.Items, { Id: $item.Id }, true);
         if (!found.length) {
             $scope.Items.push($item);

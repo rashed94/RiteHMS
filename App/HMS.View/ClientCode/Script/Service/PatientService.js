@@ -6,6 +6,12 @@
     PatientService.SavePatient = function (patient) {
         return $http.post('/Patient/CreatePatient', patient);
     };
+
+    PatientService.SavePatientServiceItem = function (patientService) {
+        return $http.post('/Patient/CreatePatientService', patientService);
+    };
+
+
     PatientService.UploadPhoto = function (patient) {
 
         return $http({

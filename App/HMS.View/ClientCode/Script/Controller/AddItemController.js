@@ -1,5 +1,5 @@
 ﻿'use strict';
-HmsApp.controller("AddItemController", function ($scope, $http, AddItemService) {
+HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemService) {
 
     $scope.MedicalTypes = {};
     $scope.GetMedicalType = function () {
@@ -20,8 +20,15 @@ HmsApp.controller("AddItemController", function ($scope, $http, AddItemService) 
     }
     $scope.GetMedicalType();
 
-    $scope.GetServiceProviderPartialName = function (name) {
-        return $http.get('/Patient/GetServiceProviderPartialName?name=' + name).then(function (response) {
+
+  
+
+
+    $scope.GetServiceProviderPartialName = function (name, itemid) {
+
+        
+        return $http.get('/patient/getserviceproviderpartialname?name=' + name + "&itemid=" + itemid).then(function (response) {
+            var data = response.data;
             return response.data;
         });
     }

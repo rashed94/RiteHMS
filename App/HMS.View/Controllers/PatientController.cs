@@ -53,7 +53,8 @@ namespace HMS.Controllers
                 MeasurementUnitId=c.MeasurementUnitId,
                 SalePrice=c.SalePrice,
                 BuyPrice=c.BuyPrice,
-                DefaultReferrarFee=c.DefaultReferrarFee
+                DefaultReferrarFee=c.DefaultReferrarFee,
+                ReferralAllowed=c.ReferralAllowed
                 
 
 
@@ -173,38 +174,72 @@ namespace HMS.Controllers
 
             return new CustomJsonResult {Data=patients} ;
         }
-        public JsonResult GetServiceProviderPartialName(string name)
+        public JsonResult GetServiceProviderPartialName(string name,long itemid)
         {
-            List<ServiceProvider> serviceProviders = null;
-            List<ServiceProvider> onlyserviceProviders = new List<ServiceProvider>();
-            Contact contact = new Contact();
+            //List<ServiceProvider> serviceProviders = null;
+            //List<ServiceProvider> onlyserviceProviders = new List<ServiceProvider>();
+            //Contact contact = new Contact();
 
-            using (ServiceProviderRepository repository = new ServiceProviderRepository())
+            //using (ServiceProviderRepository repository = new ServiceProviderRepository())
+            //{
+            //    serviceProviders = repository.GetServiceProviderPartialName(name,itemid).ToList();
+
+            //    ServiceProvider serviceProvider = new ServiceProvider();
+            //    serviceProvider.Contact = contact;
+
+            //    foreach (ServiceProvider item in serviceProviders)
+            //    {
+            //        serviceProvider.Id = item.Id;
+            //        serviceProvider.ContactId = item.ContactId;
+
+            //        serviceProvider.Contact.FirstName = item.Contact.FirstName;
+            //        serviceProvider.Contact.LastName = item.Contact.LastName;
+            //        onlyserviceProviders.Add(serviceProvider);
+            //    }
+
+            //    return Json(onlyserviceProviders, JsonRequestBehavior.AllowGet);
+            //    //serviceProviders.ForEach(c => onlyserviceProviders.Add(new ServiceProvider()
+            //    //{
+            //    //    Id = c.Id,
+            //    //    Contact.FirstName = c.Contact.FirstName
+            //    //}));
+            //}
+
+            List<Referral> referrals = null;
+            List<Referral> onlyReferrals = new List<Referral>();
+
+
+            
+
+
+            using (ReferralRepository repository = new ReferralRepository())
             {
-                serviceProviders = repository.GetServiceProviderPartialName(name).ToList();
+                referrals = repository.GetServiceProviderPartialName(name, itemid).ToList();
+                
 
-                ServiceProvider serviceProvider = new ServiceProvider();
-                serviceProvider.Contact = contact;
+                
 
-                foreach (ServiceProvider item in serviceProviders)
+              
+                foreach (Referral item in referrals)
                 {
-                    serviceProvider.Id = item.Id;
-                    serviceProvider.ContactId = item.ContactId;
+                    Referral referral = new Referral();
+                    ServiceProvider serviceProvider = new ServiceProvider();
+                    Contact contact = new Contact();
+                    serviceProvider.Contact = contact;
+                    referral.ServiceProvider = serviceProvider;
 
-                    serviceProvider.Contact.FirstName = item.Contact.FirstName;
-                    serviceProvider.Contact.LastName = item.Contact.LastName;
-                    onlyserviceProviders.Add(serviceProvider);
+                    referral.Id = item.Id;
+                    referral.ItemId=item.ItemId;
+                    referral.ReferralFee = item.ReferralFee;
+                    referral.ServiceProviderId = item.ServiceProviderId;
+                    referral.ServiceProvider.Contact.FirstName = item.ServiceProvider.Contact.FirstName;
+                    referral.ServiceProvider.Contact.LastName = item.ServiceProvider.Contact.LastName;
+                    referral.ServiceProvider.Speciality = item.ServiceProvider.Speciality;
+                    onlyReferrals.Add(referral);
+                    
                 }
-
-                return Json(onlyserviceProviders, JsonRequestBehavior.AllowGet);
-                //serviceProviders.ForEach(c => onlyserviceProviders.Add(new ServiceProvider()
-                //{
-                //    Id = c.Id,
-                //    Contact.FirstName = c.Contact.FirstName
-                //}));
+                return Json(onlyReferrals, JsonRequestBehavior.AllowGet);
             }
-
-
 
         }
 
@@ -227,6 +262,29 @@ namespace HMS.Controllers
             {
                 FileName = fName
             });
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public JsonResult CreatePatientService(IList<PatientService> patientServices)
+        {
+
+            //if (ModelState.IsValid)
+            {
+                using (PatientServiceRepository repository = new PatientServiceRepository())
+                {
+                    foreach (PatientService patientervice in patientServices)
+                    {
+                        repository.Insert(patientervice);
+                        
+                    }
+                    repository.Commit();
+                   // repository.Insert(patientService);
+                   // repository.Commit();
+                   // patient = repository.GetByPhoneNumber(patient.PhoneNumber);
+                }
+            }
+            return Json("200");
         }
 
         [HttpPost]
