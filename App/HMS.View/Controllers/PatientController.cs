@@ -27,12 +27,12 @@ namespace HMS.Controllers
         }
 
 
-        public JsonResult GetItembyMedicalPartialName(long id,string name)
+        public JsonResult GetItembyMedicalPartialName(long id, string name)
         {
             List<Item> item;
             using (ItemRepository repository = new ItemRepository())
             {
-                item = repository.GetItembyMedicalPartialName(id,name).ToList();
+                item = repository.GetItembyMedicalPartialName(id, name).ToList();
             }
             if (item == null)
             {
@@ -46,23 +46,19 @@ namespace HMS.Controllers
                 Id = c.Id,
                 Name = c.Name,
                 GenericName = c.GenericName,
-                Code=c.Code,
-                ItemTypeId=c.ItemTypeId,
-                MedicalTypeId=c.MedicalTypeId,
-                ItemCategoryId=c.ItemCategoryId,
-                MeasurementUnitId=c.MeasurementUnitId,
-                SalePrice=c.SalePrice,
-                BuyPrice=c.BuyPrice,
-                DefaultReferrarFee=c.DefaultReferrarFee
-                
-
-
+                Code = c.Code,
+                ItemTypeId = c.ItemTypeId,
+                MedicalTypeId = c.MedicalTypeId,
+                ItemCategoryId = c.ItemCategoryId,
+                MeasurementUnitId = c.MeasurementUnitId,
+                SalePrice = c.SalePrice,
+                BuyPrice = c.BuyPrice,
+                DefaultReferrarFee = c.DefaultReferrarFee
             }));
 
             return Json(onlyItems, JsonRequestBehavior.AllowGet);
-
-
         }
+
         public JsonResult GetMedicalType()
         {
             List<MedicalType> medicaltype;
@@ -76,19 +72,14 @@ namespace HMS.Controllers
             }
 
             List<MedicalType> onlyMedicalType = new List<MedicalType>();
-          //  patients.ForEach(corePatient => onlyPatients.Add(MapToClientObject(corePatient)));
+            //  patients.ForEach(corePatient => onlyPatients.Add(MapToClientObject(corePatient)));
             medicaltype.ForEach(c => onlyMedicalType.Add(new MedicalType
             {
                 Id = c.Id,
-                Name =c.Name,
-            
+                Name = c.Name
             }));
 
             return Json(onlyMedicalType, JsonRequestBehavior.AllowGet);
-
-
-           
-
         }
 
         // GET: Patient/GetPatients
@@ -128,7 +119,7 @@ namespace HMS.Controllers
             }
 
             Patient patient = MapToClientObject(corePatient);
-            var jsondata= Json(patient, JsonRequestBehavior.AllowGet);
+            var jsondata = Json(patient, JsonRequestBehavior.AllowGet);
             return jsondata;
         }
 
@@ -171,8 +162,9 @@ namespace HMS.Controllers
             List<Patient> patients = new List<Patient>();
             corePatients.ForEach(corePatient => patients.Add(MapToClientObject(corePatient)));
 
-            return new CustomJsonResult {Data=patients} ;
+            return new CustomJsonResult { Data = patients };
         }
+
         public JsonResult GetServiceProviderPartialName(string name)
         {
             List<ServiceProvider> serviceProviders = null;
@@ -203,9 +195,6 @@ namespace HMS.Controllers
                 //    Contact.FirstName = c.Contact.FirstName
                 //}));
             }
-
-
-
         }
 
         public JsonResult GetReferralFeeByDoctor(string doctorId)
@@ -213,35 +202,24 @@ namespace HMS.Controllers
             return Json("200");
         }
 
-        [System.Web.Mvc.HttpPost]
-        public JsonResult UploadImage()
-        {
-            var fName = "";
-            if (Request.Files.Count > 0)
-            {
-                HttpPostedFileBase file = Request.Files[0];
-                fName = Path.Combine(_PhotoLocation, string.Format("{0}{1}", Request.Form["Id"], Path.GetExtension(file.FileName)));
-                file.SaveAs(fName);
-            }
-            return Json(new
-            {
-                FileName = fName
-            });
-        }
-
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public JsonResult CreatePatient(Patient patient)
         {
-          
-            //if (ModelState.IsValid)
+            using (PatientRepository repository = new PatientRepository())
             {
-                using (PatientRepository repository = new PatientRepository())
+                if (Request.Files.Count > 0)
                 {
-                    repository.Insert(patient);
-                    repository.Commit();
-                    patient = repository.GetByPhoneNumber(patient.PhoneNumber);
+                    HttpPostedFileBase file = Request.Files[0];
+                    string fileName = string.Concat(Guid.NewGuid().ToString(), Path.GetExtension(file.FileName));
+                    string fileNameWithPath = Path.Combine(_PhotoLocation, fileName);
+                    file.SaveAs(fileNameWithPath);
+                    patient.Photo = fileName;
                 }
+
+                repository.Insert(patient);
+                repository.Commit();
+                patient = repository.GetByPhoneNumber(patient.PhoneNumber);
             }
             return Json(MapToClientObject(patient), JsonRequestBehavior.AllowGet);
         }
@@ -250,14 +228,23 @@ namespace HMS.Controllers
         //[ValidateAntiForgeryToken]
         public JsonResult UpdatePatient(Patient patient)
         {
-            //if (ModelState.IsValid)
+            using (PatientRepository repository = new PatientRepository())
             {
-                using (PatientRepository repository = new PatientRepository())
+                if (Request.Files.Count > 0)
                 {
-                    repository.Update(patient);
-                    repository.Commit();
-                    patient = repository.GetByPhoneNumber(patient.PhoneNumber);
+                    HttpPostedFileBase file = Request.Files[0];
+                    string fileName = string.Concat(Guid.NewGuid().ToString(), Path.GetExtension(file.FileName));
+                    string fileNameWithPath = Path.Combine(_PhotoLocation, fileName);
+                    file.SaveAs(fileNameWithPath);
+                    if (patient.Photo != null)
+                    {
+                        System.IO.File.Delete(Path.Combine(_PhotoLocation, patient.Photo));
+                    }
+                    patient.Photo = fileName;
                 }
+                repository.Update(patient);
+                repository.Commit();
+                patient = repository.GetByPhoneNumber(patient.PhoneNumber);
             }
             return Json(MapToClientObject(patient), JsonRequestBehavior.AllowGet);
         }
@@ -289,7 +276,7 @@ namespace HMS.Controllers
         {
             if (disposing)
             {
-                
+
             }
             base.Dispose(disposing);
         }

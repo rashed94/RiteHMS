@@ -1,5 +1,5 @@
 ﻿<script>
- $(document).ready(function () {
+    $(document).ready(function () {
 
 
 
@@ -11,8 +11,8 @@
             $(this).blur();
             $(this).datepicker('hide');
         });
- });
-    </script>   
+    });
+</script>
 
 <div class="modal-header rite_modal_header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden=" true">&times;</span></button>
@@ -85,19 +85,45 @@
 
         <div class="input_containter">
 
-            <div class="title">picture</div>
+            <form name="form">
+                <div class="title">Picture</div>
+                <input type="file"
+                       id="PatientFileInput"
+                       accept="image/*"
+                       ngf-select ng-model="picFile"
+                       name="file"
+                       ngf-max-size="2MB"
+                       ngf-model-invalid="errorFile"
+                       style="opacity:0; position: absolute; top: 0px;">
 
-            <div class="inputbox">
-                <!--<input type="hidden" ng-model="Patient.Photo" id="patientPhoto"/>-->
-                <img src="GetImage.ashx?Name=" ng-model="Patient.Photo" style="height: 100px;" onclick="$('._s_Photo').click();" /><br />
-                <input type="file" class="_s_Photo" ng-model="Patient.Photo" file-upload onchange="angular.element(this).scope().LoadFileData(this.files)" accept="image/*" />
+                <input type="button"
+                       ng-show="picFile == null"
+                       class="_s_SelectFile md_button"
+                       style="width: 100px; float: left;"
+                       onclick="document.getElementById('PatientFileInput').click()"
+                       value="Select file">
+                
+                <i ng-show="form.file.$error.maxSize" class="text-danger">
+                    File too large({{errorFile.size / 1000000|number:1}}MB). Maximum file size is 2MB.
+                </i>
 
-            </div>
+                <div>
+                    <img ng-show="form.file.$valid" ngf-thumbnail="picFile" class="thumb" style="width: 200px;">
+                    <button ng-click="picFile = null" ng-show="picFile" class="md_button">Remove</button>
+                </div>
+            </form>
+            <span class="progress" ng-show="picFile.progress >= 0">
+                <div style="width: {{picFile.progress}}%" ng-bind="picFile.progress + '%'"></div>
+            </span>
         </div>
 
         <div class="input_containter">
             <div class="space"></div>
-            <div class="title"></div><div class="inputbox"><input name="save" type="button" value="save" class="md_button" ng-click="ok()">&nbsp;<input name="cancel" type="button" value="cancel" class="md_button cancel" ng-click="cancel()"></div>
+            <div class="title"></div>
+            <div class="inputbox">
+                <input name="save" type="button" value="save" class="md_button" ng-click="ok(picFile)">
+                <input name="cancel" type="button" value="cancel" class="md_button cancel" ng-click="cancel()">
+            </div>
         </div>
 
     </div>

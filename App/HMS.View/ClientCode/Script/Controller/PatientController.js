@@ -1,47 +1,20 @@
 ﻿'use strict';
 
-//HmsApp.directive('datepickerAuto', function () {
-//    return {
-//        require: ['ngModel'],
-//        restrict: 'E',
-//        template: '<input class="input form-control" datepicker-popup="MM/dd/yyyy" show-weeks="false"' +
-//            ' is-open="autoIsOpen" ng-focus="autoIsOpen = true" ng-click="autoIsOpen = true"'
-//            + ' type="text" ng-model="ngModel" ng-model-options="{\'updateOn\': \'blur\'}"/>',
-//        link: function (scope) {
-//            scope.autoIsOpen = false;
-//        },
-//        scope: {
-//            ngModel: '='
-//        }
-
-//    };
-//});
-
-HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout,$location, $modal,$filter, $http, PatientService) {
-    //$scope.calculateAge = function (birthday) { // birthday is a date
-    //    var ageDifMs = Date.now() - birthday.getTime();
-    //    var ageDate = new Date(ageDifMs); // miliseconds from epoch
-    //    return Math.abs(ageDate.getUTCFullYear() - 1970);
-    //}
-
+HmsApp.controller("PatientController", function ($scope, $routeParams, Upload, $timeout, $location, $modal, $filter, $http, PatientService) {
     $scope.Items = [];
 
-    $scope.initDatePicker=function () {
+    $scope.initDatePicker = function () {
         $('.reportdeliverydate').datepicker({
             format: "mm/dd/yyyy"
         }).on('changeDate', function (ev) {
             $(this).blur();
             $(this).datepicker('hide');
         });
-        
+
     }
     $scope.AgeCalculate = function () {
-
         $scope.Patient.DOB = ToJavaScriptDate($scope.Patient.DOB);
         $scope.Patient.Age = calculateAge($scope.Patient.DOB);
-
-
-
     }
 
     $scope.GetPatients = function () {
@@ -95,18 +68,15 @@ HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout,$
             });
     }
 
-    $scope.updateItem=function($item)
-    {
+    $scope.updateItem = function ($item) {
         angular.forEach($scope.Items, function (obj) {
             // obj.push($item);
             if (obj.Id == $item.Id) {
-
                 obj.Amount = obj.SalePrice * $item.Quantity;
-
             }
         });
     }
-  
+
 
     //$scope.deleteItem = function ($item) {
     //    angular.forEach($scope.Items, function (obj) {
@@ -120,8 +90,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout,$
     //}
 
 
-    $scope.OnItemSelect=function ($item)
-    {
+    $scope.OnItemSelect = function ($item) {
         $item.Quantity = 1;
         $item.Amount = $item.SalePrice;
         var found = $filter('filter')($scope.Items, { Id: $item.Id }, true);
@@ -155,23 +124,9 @@ HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout,$
         });
         return inputLabel;
     }
-    $scope.UploadPhoto = function () {
 
-        PatientService.UploadPhoto($scope.Patient)
-    }
-    $scope.SavePatient = function () {
-        PatientService.SavePatient($scope.Patient)
-            .success(function (data) {
-                $scope.Patient = data;
-                if ($scope.Patient.DOB != null) {
-                    $scope.AgeCalculate();
-                }
-                console.log(data);
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to save Patient data: ' + error.message;
-                console.log($scope.status);
-            });
+    $scope.SavePatient = function (file) {
+        PatientService.SavePatient($scope, file);
     }
 
     $scope.OpenNew = function (size) {
@@ -189,12 +144,9 @@ HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout,$
                 }
             }
         });
-        modalInstance.result.then(function (patient) {
-            
-            $scope.Patient = patient;
-           // $scope.Patient.DOB = $scope.Patient.DOB;
-            $scope.SavePatient();
-           // $scope.UploadPhoto();
+        modalInstance.result.then(function (result) {
+            $scope.Patient = result.Patient;
+            $scope.SavePatient(result.File);
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });
@@ -202,17 +154,17 @@ HmsApp.controller("PatientController", function ($scope, $routeParams,$timeout,$
 
     $scope.UpdateTopLink = function (link) {
         if (link == 'patient') {
-        $('.site_navigation li a').removeClass('selected');
-        $('.site_navigation li.patientinfo a').addClass('selected');
-        // $location.path = $location.path(link);
+            $('.site_navigation li a').removeClass('selected');
+            $('.site_navigation li.patientinfo a').addClass('selected');
+            // $location.path = $location.path(link);
         }
-        if(link=='billing')
-        {
+        if (link == 'billing') {
             $('.site_navigation li a').removeClass('selected');
             $('.site_navigation li.billing a').addClass('selected');
         }
-
     }
+
+
     $('.site_navigation li a').removeClass('selected');
     $('.site_navigation li.patientinfo a').addClass('selected');
 
