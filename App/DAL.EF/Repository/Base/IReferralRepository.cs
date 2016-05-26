@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace HMS.DAL.Repository
 {
-    public interface IServiceProviderRepository
+    public interface IReferralRepository
     {
 
-      //  IList<ServiceProvider> GetAll();
-        IList<ServiceProvider> GetServiceProviderPartialName(string name, long itemid);
+        //  IList<ServiceProvider> GetAll();
+        IList<Referral> GetServiceProviderPartialName(string name, long itemid);
 
     }
 }

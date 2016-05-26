@@ -20,7 +20,7 @@ namespace HMS.Model.Core
 
         public decimal ReferralFee { get; set; }
         public System.DateTime DeliveryDate { get; set; }
-        public string DeliverTime { get; set; }
+        public string DeliveryTime { get; set; }
 
         public virtual Item Item { get; set; }
         public virtual Patient Patient { get; set; }

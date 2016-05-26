@@ -501,3 +501,8 @@ body.datepicker-dropdown {
    z-index:99999 !important;
 }
 
+input[type="text"]#doctorName
+{
+    width:200px;
+
+}

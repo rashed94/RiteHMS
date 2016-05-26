@@ -18,7 +18,7 @@ namespace HMS.View
             if (!string.IsNullOrEmpty(context.Request.QueryString["Name"]))
             {
                 _imageName = context.Request.QueryString["Name"];
-                context.Response.WriteFile(Path.Combine(_PhotoLocation, _imageName));
+              //  context.Response.WriteFile(Path.Combine(_PhotoLocation, _imageName));
             }
             else
             {

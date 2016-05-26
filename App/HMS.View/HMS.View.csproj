@@ -103,8 +103,6 @@
   <ItemGroup>
     <Content Include="ClientCode\app.js" />
     <Content Include="ClientCode\Script\Controller\AddItemController.js" />
-    <Content Include="ClientCode\Script\Controller\UploadController.js" />
-    <Content Include="ClientCode\Script\Directive\FileUploadDirective.js" />
     <Content Include="ClientCode\Script\Service\AddItemService.js" />
     <Content Include="ClientCode\Template\Billing.html" />
     <Content Include="ClientCode\Template\Contact.html" />
@@ -164,11 +162,6 @@
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
-    <Content Include="Scripts\jquery.fileupload-angular.js" />
-    <Content Include="Scripts\jquery.fileupload-image.js" />
-    <Content Include="Scripts\jquery.fileupload-jquery-ui.js" />
-    <Content Include="Scripts\jquery.fileupload-process.js" />
-    <Content Include="Scripts\jquery.fileupload.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ClientCode\Script\Directive\" />
     <Folder Include="Models\" />
     <Folder Include="Uploads\Photos\" />
   </ItemGroup>
