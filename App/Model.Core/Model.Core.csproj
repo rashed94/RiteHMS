@@ -83,6 +83,7 @@
     <Compile Include="Entities\ServiceProvider.cs" />
     <Compile Include="Entities\ServiceProviderType.cs" />
     <Compile Include="Entities\Store.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\ValidationExtensions\PersonValidationExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

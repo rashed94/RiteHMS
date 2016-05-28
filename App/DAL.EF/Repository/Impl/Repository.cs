@@ -39,7 +39,9 @@ namespace HMS.DAL.Repository
 
         public T Insert(T entity)
         {
-            return _DbSet.Add(entity);
+            var savedEntity = _DbSet.Add(entity);
+            _DbContext.SaveChanges();
+            return savedEntity;
         }
 
         public T GetById(long id)
@@ -84,6 +86,7 @@ namespace HMS.DAL.Repository
         {
             var updatedEntity = _DbSet.Attach(entity);
             _DbContext.Entry(entity).State = EntityState.Modified;
+            _DbContext.SaveChanges();
             return updatedEntity;
         }
 
@@ -92,6 +95,7 @@ namespace HMS.DAL.Repository
             T entity = _DbSet.Find(id);
             _DbSet.Attach(entity);
             _DbContext.Entry(entity).State = EntityState.Modified;
+            _DbContext.SaveChanges();
             return entity;
         }
 
@@ -107,6 +111,7 @@ namespace HMS.DAL.Repository
             if (_DbContext.Entry(entity).State == EntityState.Detached)
                 _DbSet.Attach(entity);
             entity.Active = false;
+            _DbContext.SaveChanges();
         }
 
         //private void DeleteByID(long id)
@@ -118,11 +123,13 @@ namespace HMS.DAL.Repository
         {
             T entity = _DbSet.Find(id);
             entity.Active = false;
+            _DbContext.SaveChanges();
         }
 
         public void DeleteAll()
         {
             _DbSet.RemoveRange(GetByQuery());
+            _DbContext.SaveChanges();
         }
 
         public void Commit()
@@ -132,7 +139,6 @@ namespace HMS.DAL.Repository
 
         public void Dispose()
         {
-            _DbContext.SaveChanges();
             _DbContext.Dispose();
             _DbSet = null;
         }

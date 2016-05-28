@@ -13,6 +13,8 @@ namespace HMS.View
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
         }
     }
 }

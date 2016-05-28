@@ -25,6 +25,9 @@
     <!-- HMS app -->
     <script src="~/ClientCode/app.js" type="text/javascript"></script>
 
+    <script src="~/ClientCode/Script/Controller/UserController.js"></script>
+    <script src="~/ClientCode/Script/Service/UserService.js"></script>
+
     <script src="~/ClientCode/Script/Controller/ContactController.js" type="text/javascript"></script>
     <script src="~/ClientCode/Script/Service/ContactService.js" type="text/javascript"></script>
 
@@ -77,9 +80,9 @@
             <div class="top_container">
                 <div>
                     <div class="logo_img"><img src="~/images/stethoscope.gif" width="136" height="143" alt="stethoscope"></div>
-                    <div class="user_info">
+                    <div class="user_info" ng-controller="UserController">
                         <div><img src="~/images/hospitalmanagement.gif" width="260" height="63" alt="hospital management system"></div>
-                        <div class="login_info">You are loged in as   Rashed alam   |   <a href="#">SIGN OUT</a></div>
+                        <div class="login_info">You are loged in as {{User.Name}}   |   <a href="/Login/LogOff">SIGN OUT</a></div>
                         <div class="register">
                             <a data-toggle="modal" class="modal_registration_click" href="#" ng-click="PatientModal('lg')">Register new patient </a>
                         </div>
