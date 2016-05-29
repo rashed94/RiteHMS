@@ -92,18 +92,27 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $filter, 
 
     };
 
+    $scope.SaveInvoice = function () {
+        BillingService.SaveInvoice($scope.Invoice);
+    };
 
     $scope.InvoiceModal = function (size, isEdit) {
-        var billingItems = [
-            {
-                ItemId: 112,
-                Amount: 400
-            },
-            {
-                ItemId: 114,
-                Amount: 120
+        var billingItems = [];
+        angular.forEach($scope.BillingItem, function (item) {
+            if (item.Selected) {
+                billingItems.push(item);
             }
-        ];
+        });
+        //var billingItems = [
+        //    {
+        //        ItemId: 112,
+        //        Amount: 400
+        //    },
+        //    {
+        //        ItemId: 114,
+        //        Amount: 120
+        //    }
+        //];
         var modalInstance = $modal.open({
             templateUrl: '/ClientCode/Template/Invoice.html',
             size: size,

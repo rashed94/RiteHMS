@@ -17,7 +17,7 @@
         </div>
         <div class="payment_middle">
 
-            <div class="payment_detail_left line_height_small" ng-controller="PatientController">
+            <div class="payment_detail_left line_height_small">
 
                 <p>
                     <h2>NAME</h2>
@@ -36,7 +36,7 @@
             <div class="payment_detail_right line_height_small">
                 <p>
                     <h2>INVOICE DATE</h2>
-                    {{Invoice.Date.getDate() + '/' + Invoice.Date.getMonth() + '/' + Invoice.Date.getFullYear()}}
+                    {{Invoice.InvoiceDate.getDate() + '/' + Invoice.InvoiceDate.getMonth() + '/' + Invoice.InvoiceDate.getFullYear()}}
                 </p>
                 <p>
                     <h2>INVOICE NO</h2>

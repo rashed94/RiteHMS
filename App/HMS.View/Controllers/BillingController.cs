@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using HMS.DAL;
 using HMS.Model.Core;
 using HMS.DAL.Repository;
+using System.Security.Claims;
 
 namespace HMS.Controllers
 {
@@ -90,16 +91,27 @@ namespace HMS.Controllers
 
 
             return Json(onlypatientServiceItems, JsonRequestBehavior.AllowGet);
-
-
-
-
         }
+
+        public JsonResult CreateInvoice(PatientInvoice patientInvoice)
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+            var userId = claims.Where(r => r.Type == ClaimTypes.SerialNumber).FirstOrDefault().Value;
+
+            using (Repository<PatientInvoice> repository = new Repository<PatientInvoice>())
+            {
+                patientInvoice.UserId = Convert.ToInt32(userId);
+                patientInvoice.StatusId = 0;
+                patientInvoice = repository.Insert(patientInvoice);
+                return Json(patientInvoice);
+            }
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                //_Repository.Dispose();
             }
             base.Dispose(disposing);
         }
