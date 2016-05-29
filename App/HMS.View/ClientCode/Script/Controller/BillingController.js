@@ -2,9 +2,26 @@
 
 HmsApp.controller("BillingController", function ($scope, $routeParams, $filter, $modal, BillingService) {
 
-
+    $scope.TotalDiscount = 0;
+    $scope.TotalAmount = 0;
+    $scope.TotalAmountAfterDiscount = 0
+    $scope.TotalReferralFee = 0;
    
+    $scope.CalculateTotalDiscount = function () {
+        $scope.TotalAmount = 0;
+        $scope.TotalDiscount = 0;
+        $scope.TotalAmountAfterDiscount = 0;
+        $scope.TotalReferralFee = 0;
 
+        angular.forEach($scope.BillingItem, function (obj) {
+
+            $scope.TotalAmount = $scope.TotalAmount + obj.ServiceListPrice;
+            $scope.TotalAmountAfterDiscount = $scope.TotalAmountAfterDiscount + obj.ServiceListPriceAfterDiscount;
+            $scope.TotalDiscount = $scope.TotalDiscount + (obj.ServiceListPrice - obj.ServiceListPriceAfterDiscount);
+            $scope.TotalReferralFee = $scope.TotalReferralFee + obj.ReferralAfterDiscount;
+        });
+
+    }
 
 
     $scope.GetBillingItemByPatientId = function (patientId) {
@@ -13,6 +30,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $filter, 
                 $scope.BillingItem = pt;
 
                 $scope.adjustBillingData();
+                $scope.CalculateTotalDiscount();
 
                 console.log($scope.BillingItem);
             })
@@ -55,6 +73,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $filter, 
 
            
         }
+        $scope.CalculateTotalDiscount();
 
 
 
