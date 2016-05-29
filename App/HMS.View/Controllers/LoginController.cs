@@ -39,6 +39,7 @@ namespace HMS.View.Controllers
                     if (Cryptography.VerifyHashedPassword(user.Password, model.Password))
                     {
                         var identity = new ClaimsIdentity(new[] {
+                            new Claim(ClaimTypes.SerialNumber, user.Id.ToString()),
                             new Claim(ClaimTypes.GivenName, user.UserName),
                             new Claim(ClaimTypes.MobilePhone, user.Contact.PhoneNumber),
                             new Claim(ClaimTypes.Name, string.Format("{0} {1}", user.Contact.FirstName, user.Contact.LastName ?? ""))

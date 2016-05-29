@@ -295,6 +295,6 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         $scope.GetPatientById($routeParams.id);
     }
     else {
-        $scope.Patient;
+        $scope.Patient = {};
     }
 });

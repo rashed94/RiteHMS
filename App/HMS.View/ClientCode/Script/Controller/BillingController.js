@@ -36,7 +36,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $modal, B
             }
         });
         modalInstance.result.then(function (result) {
-            $scope.BillingItem = result.BillingItem;
+            $scope.Invoice = result.Invoice;
             $scope.SaveInvoice();
         }, function () {
             console.log('Modal dismissed at: ' + new Date());

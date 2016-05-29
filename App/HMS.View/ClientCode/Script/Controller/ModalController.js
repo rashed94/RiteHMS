@@ -16,14 +16,18 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, bi
         Date: new Date(),
         BillingItems: billingItems,
         TotalAmount: 0.0,
-        PaidAmount: 0.0
+        PaidAmount: 0.0,
+        PaymentAmount: 0.0,
+        PaymentMethod: 'Cash',
+        CoPayerAmount: 0.0,
+        ReconcileAmount: 0.0
     };
 
     angular.forEach($scope.Invoice.BillingItems, function (item, key) {
         $scope.Invoice.TotalAmount += item.Amount;
     });
     $scope.ok = function () {
-        $modalInstance.close({ BillingItems: $scope.BillingItems });
+        $modalInstance.close({ Invoice: $scope.Invoice });
     };
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');

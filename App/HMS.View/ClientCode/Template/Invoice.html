@@ -56,25 +56,25 @@
             <h3>ENTER PAYMENT</h3>
             <div class="title">PAYMENT AMOUNT</div>
             <div class="inputbox">
-                <input type="text" class="payment_amount">
+                <input type="text" class="payment_amount" ng-model="Invoice.PaymentAmount">
             </div>
             <div class="title">COPAYER AMOUNT</div>
             <div class="inputbox">
-                <input type="text" class="copayer_amount">
+                <input type="text" class="copayer_amount" ng-model="Invoice.CoPayerAmount">
             </div>
             <div style="clear: both"></div>
 
             <div class="title">PAYMENT METHOD</div>
             <div class="inputbox">
-                <select name="paymentmethod" class="payment_method">
-                    <option value="cash">Cash</option>
-                    <option value="visa">Visa Card</option>
-                    <option value="visa">Master Card</option>
+                <select name="paymentmethod" class="payment_method" ng-model="Invoice.PaymentMethod">
+                    <option value="Cash">Cash</option>
+                    <option value="Visa">Visa Card</option>
+                    <option value="MasterCard">Master Card</option>
                 </select>
             </div>
             <div class="title">RECONCILE  AMOUNT</div>
             <div class="inputbox">
-                <input type="text" class="copayer_amount">
+                <input type="text" class="copayer_amount" ng-model="Invoice.ReconcileAmount">
             </div>
             <div style="clear: both"></div>
             <div class="space"></div>

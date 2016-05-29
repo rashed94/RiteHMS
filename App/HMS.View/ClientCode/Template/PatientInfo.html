@@ -1,7 +1,5 @@
-﻿
+﻿<div class="content">
 
-<div class="content">
-    
     <div class="home_top">
         <div class="home_patient_details">
             <div class="patient_pic">
@@ -11,20 +9,38 @@
             </div>
             <p>&nbsp;</p>
             <div class="patient_address">
-                <p><h2>NAME</h2>        <span> {{Patient.FirstName}} {{Patient.LastName}}</span></p>
-                <p><h2> GENDER</h2>  <span>{{Patient.Gender ? 'Female' : 'Male'}}</span></p>
-                <p><h2>ADDRESS</h2>    <span>{{Patient.City}}, {{Patient.Zip}}, {{Patient.Country}}</span></p>
-                <p><h2>BLOOD GROU</h2>   <span>{{Patient.BloodGroup}}</span></p>
-                <p><h2>MOBILE</h2>  <span> {{Patient.PhoneNumber}}</span></p>
-                <p><h2>E-MAIL</h2>   <span>{{Patient.Email}}</span></p>
-                <p><h2>DATE OF BIRTH</h2>   <span>{{Patient.DOB |date:'medium'}}</span><span> ({{ Patient.Age }})</span></p>
+                <p>
+                    <h2>NAME</h2>
+                    <span>{{Patient.FirstName}} {{Patient.LastName}}</span></p>
+                <p>
+                    <h2>GENDER</h2>
+                    <span>{{Patient.Gender ? 'Female' : 'Male'}}</span></p>
+                <p>
+                    <h2>ADDRESS</h2>
+                    <span>{{Patient.City}}, {{Patient.Zip}}, {{Patient.Country}}</span></p>
+                <p>
+                    <h2>BLOOD GROU</h2>
+                    <span>{{Patient.BloodGroup}}</span></p>
+                <p>
+                    <h2>MOBILE</h2>
+                    <span>{{Patient.PhoneNumber}}</span></p>
+                <p>
+                    <h2>E-MAIL</h2>
+                    <span>{{Patient.Email}}</span></p>
+                <p>
+                    <h2>DATE OF BIRTH</h2>
+                    <span>{{Patient.DOB |date:'medium'}}</span><span> ({{ Patient.Age }})</span></p>
             </div>
         </div>
         <p>&nbsp;</p>
         <div class="home_appointment_details">
-            <p><h2>APPOINTMENT (04/22/2016)</h2></p>
-            <p> <h2>  DEPARTMENT</h2> Neurology </p>
-            <p> <strong>Dr. Alim Akhtar Bhuiyan</strong></p>
+            <p>
+                <h2>APPOINTMENT (04/22/2016)</h2>
+            </p>
+            <p>
+                <h2>DEPARTMENT</h2>
+                Neurology </p>
+            <p><strong>Dr. Alim Akhtar Bhuiyan</strong></p>
             <p>MBBS, DTM & H (UK), MD (USA), Board Certified in Neurology (USA), </p>
             <p>Post Doctoral Fellowship in Epilepsy (USA)</p>
             <p>Senior Consultant</p>
@@ -36,13 +52,15 @@
 
         </div>
 
-        <div style="clear:both;"> </div>
+        <div style="clear: both;"></div>
 
     </div>
     <div class="horizontal_line"></div>
     <div class="home_add_item_container" ng-controller="AddItemController">
         <div class="add_item_input">
-            <h1>Add Item</h1><br /><br />
+            <h1>Add Item</h1>
+            <br />
+            <br />
             <select ng-model="filterCondition.MedicalType">
                 <option ng-repeat="MedicalType in MedicalTypes" value="{{MedicalType.Id}}">{{MedicalType.Name}}</option>
             </select>
@@ -51,20 +69,18 @@
 
 
             <div class="floatleft">
-                 <!--<input type="text" name="itemname" id="itemname">-->
+                <!--<input type="text" name="itemname" id="itemname">-->
                 <input name="itemname" id="itemname" type="text" placeholder="Type Item's name"
-                       ng-model="Item"
-                       typeahead="item as (item.Name) for item in GetItembyMedicalPartialName($viewValue)"
-                       typeahead-on-select="OnItemSelect($item)"
-                       typeahead-min-length="1"
-                       typeahead-wait-ms="1"
-                       class="form-control">
-
-
-
+                    ng-model="Item"
+                    typeahead="item as (item.Name) for item in GetItembyMedicalPartialName($viewValue)"
+                    typeahead-on-select="OnItemSelect($item)"
+                    typeahead-min-length="1"
+                    typeahead-wait-ms="1"
+                    class="form-control">
             </div>
-            <div class="itemButton"> <input name="Add" type="button" value="add" class="md_button"></div>
-            <div style="clear:both;"> </div>
+            <div class="itemButton">
+                <input name="Add" type="button" value="add" class="md_button"></div>
+            <div style="clear: both;"></div>
         </div>
 
         <div class="item_grid">
@@ -87,8 +103,10 @@
                     <tr ng-repeat="serviceitem in Items">
                         <td>{{serviceitem.Name}}</td>
                         <td>{{serviceitem.GenericName}}</td>
-                        <td><input type="text" width="50" ng-model="serviceitem.Quantity" ng-change="updateItem(serviceitem)" name="quantity" class="quantity"></td>
-                        <td><input type="text" width="100" ng-model="serviceitem.ReferralFee" ng-show="serviceitem.ReferralAllowed" name="referrer" class="referrer"></td>
+                        <td>
+                            <input type="text" width="50" ng-model="serviceitem.Quantity" ng-change="updateItem(serviceitem)" name="quantity" class="quantity"></td>
+                        <td>
+                            <input type="text" width="100" ng-model="serviceitem.ReferralFee" ng-show="serviceitem.ReferralAllowed" name="referrer" class="referrer"></td>
                         <td>
                             <!--<input type="text" width="100" name="doctor" class="doctor">-->
 
@@ -102,15 +120,15 @@
 
 
                             <input name="doctorName" id="doctorName" type="text" ng-show="serviceitem.ReferralAllowed" ng-change="updateReferrerItem(serviceitem,Doctor)" placeholder="Type Doctor's name"
-                                   ng-model="Doctor"
-                                   typeahead="item as (item.ServiceProvider.Contact.FirstName + ' ' + item.ServiceProvider.Contact.LastName) for item in GetServiceProviderPartialName($viewValue,serviceitem.Id)"
-                                   typeahead-on-select="OnDocotorSelect($item,serviceitem)"
-                                   typeahead-min-length="1"
-                                   typeahead-wait-ms="1"
-                                   class="form-control">
-
+                                ng-model="Doctor"
+                                typeahead="item as (item.ServiceProvider.Contact.FirstName + ' ' + item.ServiceProvider.Contact.LastName) for item in GetServiceProviderPartialName($viewValue,serviceitem.Id)"
+                                typeahead-on-select="OnDocotorSelect($item,serviceitem)"
+                                typeahead-min-length="1"
+                                typeahead-wait-ms="1"
+                                class="form-control">
                         </td>
-                        <td><input type="text" width="100" name="amount" ng-model="serviceitem.Amount" class="amount"></td>
+                        <td>
+                            <input type="text" width="100" name="amount" ng-model="serviceitem.Amount" class="amount"></td>
                         <td>
                             <!--<datepicker-auto ng-model="item.Date" class="reportdeliverydate"></datepicker-auto>-->
                             <input type="text" width="110" ng-show="serviceitem.ReferralAllowed" ng-model="serviceitem.Date" ng-init="initDatePicker()" placeholder="click to show datepicker" name="reportdeliverydate" class="reportdeliverydate">
@@ -131,12 +149,12 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="8" style="text-align:right; padding-right:42pz;">
+                        <td colspan="8" style="text-align: right; padding-right: 42pz;">
                             <input name="save" type="button" value="save" ng-click="serviceItemSave()" class="md_button">
 
                             <input name="cancel" type="button" value="cancel" ng-click="serviceItemEmpty()" class="md_button">
                         </td>
-                        <td style="text-align:right; padding-right:42pz;">&nbsp;</td>
+                        <td style="text-align: right; padding-right: 42pz;">&nbsp;</td>
                     </tr>
                 </tfoot>
             </table>
