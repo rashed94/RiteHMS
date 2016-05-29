@@ -13,8 +13,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, BillingSe
             });
     }
 
- 
-
+    //$scope.GetBillingItemByPatientId($scope.Patiend.Id);
     var tabClass = ".summary";
     if ($routeParams.tab != null) {
         tabClass = "." + $routeParams.tab;

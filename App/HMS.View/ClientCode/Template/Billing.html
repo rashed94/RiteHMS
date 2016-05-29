@@ -19,20 +19,20 @@
 
 
 
-<div class="container_secondary_tab" style="">
-    <div class="container_secondary_tab_abs">
-        <ul class="tabs group">
-            <li class="summary active"><a href="#/billing/summary">SUMMARY</a></li>
-            <li class="invoices"><a href="#/billing/invoices">INVOICES</a></li>
-            <li class="receipt"><a href="#/billing/receipt">RECEIPT</a></li>
-            <li class="statement"><a href="#/billing/statement">STATEMENT</a></li>
-        </ul>
+    <div class="container_secondary_tab" style="">
+        <div class="container_secondary_tab_abs">
+            <ul class="tabs group">
+                <li class="summary active"><a href="#/billing/summary">SUMMARY</a></li>
+                <li class="invoices"><a href="#/billing/invoices">INVOICES</a></li>
+                <li class="receipt"><a href="#/billing/receipt">RECEIPT</a></li>
+                <li class="statement"><a href="#/billing/statement">STATEMENT</a></li>
+            </ul>
+            <div style="clear:both"></div>
+        </div>
         <div style="clear:both"></div>
     </div>
-    <div style="clear:both"></div>
-</div>
 
-<div class="content">
+    <div class="content" ng-controller="BillingController">
 
 
 
@@ -210,7 +210,7 @@
         <div style="clear:both;"></div>
         <div class="invoices_grid">
 
-            <div class="item_grid">
+            <div class="item_grid" ng-model="BillingItem" ng-init="GetBillingItemByPatientId(Patient.Id)">
                 <table width="100%" border="1" align="center" class="bordered evencolor">
                     <thead>
                         <tr>
@@ -311,71 +311,71 @@
 
 </div>
 
-<!--- modal invoice -->
+    <!--- modal invoice -->
 
-<div class="modal fade bs-example-modal-lg" id="invoiceView" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header rite_modal_header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel"><h2>invoice</h2></h4>
-            </div>
-            <div class="modal-body">
+    <div class="modal fade bs-example-modal-lg" id="invoiceView" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header rite_modal_header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel"><h2>invoice</h2></h4>
+                </div>
+                <div class="modal-body">
 
-                <div class="payment">
+                    <div class="payment">
 
-                    <div class="payment_top">
-                        <div class="floatleft"><img src="images/ico_note.gif" width="17" height="17" aslt="note"></div>
-                        <div class="floatleft success_message">INVOICE CREATED SUCCESSFULLY</div>
-                        <div class="floatright modal_menu"><a href="#" class="active">Enter payment</a> | <a href="#">view/EDIT INVOICE</a> | <a href="#">PRINT INVOICE</a></div>
-                        <div style="clear:both"></div>
-                    </div>
-                    <div class="payment_middle">
+                        <div class="payment_top">
+                            <div class="floatleft"><img src="images/ico_note.gif" width="17" height="17" aslt="note"></div>
+                            <div class="floatleft success_message">INVOICE CREATED SUCCESSFULLY</div>
+                            <div class="floatright modal_menu"><a href="#" class="active">Enter payment</a> | <a href="#">view/EDIT INVOICE</a> | <a href="#">PRINT INVOICE</a></div>
+                            <div style="clear:both"></div>
+                        </div>
+                        <div class="payment_middle">
 
-                        <div class="payment_detail_left line_height_small">
+                            <div class="payment_detail_left line_height_small">
 
-                            <p> <h2>NAME</h2>         Delwar Hossain</p>
-                            <p><h2>GENDER</h2>       Mal</p>
-                            <p><h2>ADDRESS</h2>    24/7  West Monipur Para.</p>
+                                <p> <h2>NAME</h2>         Delwar Hossain</p>
+                                <p><h2>GENDER</h2>       Mal</p>
+                                <p><h2>ADDRESS</h2>    24/7  West Monipur Para.</p>
+
+                            </div>
+                            <div class="payment_detail_right line_height_small">
+                                <p> <h2> INVOICE DATE</h2>        23/05/2016</p>
+                                <p> <h2>INVOICE NO</h2>  43</p>
+                                <p> <h2>TOTAL</h2>    400.00  BDT  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             <h2>PAID</h2>   0.00  BDT</p>
+                            </div>
+                            <div style="clear:both"></div>
+                        </div>
+                        <div class="horizontal_line"></div>
+                        <div class="payment_input_box">
+                            <h3>ENTER PAYMENT</h3>
+                            <div class="title">PAYMENT AMOUNT</div><div class="inputbox"><input type="text" class="payment_amount"></div>
+                            <div class="title">COPAYER AMOUNT</div><div class="inputbox"><input type="text" class="copayer_amount"></div>
+                            <div style="clear:both"></div>
+
+                            <div class="title">PAYMENT METHOD</div><div class="inputbox">
+                                <select name="paymentmethod" class="payment_method">
+                                    <option value="cash">Cash</option>
+                                    <option value="visa">Visa Card</option>
+                                    <option value="visa">Master Card</option>
+                                </select>
+                            </div>
+                            <div class="title">RECONCILE  AMOUNT</div><div class="inputbox"><input type="text" class="copayer_amount"></div>
+                            <div style="clear:both"></div>
+                            <div class="space"></div>
+                            <div class="title"></div><div class="inputbox"><input name="save" type="button" value="save" class="md_button">&nbsp;<input name="cancel" type="button" value="cancel" class="md_button"></div>
+                            <div style="clear:both"></div>
+                            <div class="space"></div>
+
 
                         </div>
-                        <div class="payment_detail_right line_height_small">
-                            <p> <h2> INVOICE DATE</h2>        23/05/2016</p>
-                            <p> <h2>INVOICE NO</h2>  43</p>
-                            <p> <h2>TOTAL</h2>    400.00  BDT  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             <h2>PAID</h2>   0.00  BDT</p>
-                        </div>
-                        <div style="clear:both"></div>
-                    </div>
-                    <div class="horizontal_line"></div>
-                    <div class="payment_input_box">
-                        <h3>ENTER PAYMENT</h3>
-                        <div class="title">PAYMENT AMOUNT</div><div class="inputbox"><input type="text" class="payment_amount"></div>
-                        <div class="title">COPAYER AMOUNT</div><div class="inputbox"><input type="text" class="copayer_amount"></div>
-                        <div style="clear:both"></div>
-
-                        <div class="title">PAYMENT METHOD</div><div class="inputbox">
-                            <select name="paymentmethod" class="payment_method">
-                                <option value="cash">Cash</option>
-                                <option value="visa">Visa Card</option>
-                                <option value="visa">Master Card</option>
-                            </select>
-                        </div>
-                        <div class="title">RECONCILE  AMOUNT</div><div class="inputbox"><input type="text" class="copayer_amount"></div>
-                        <div style="clear:both"></div>
-                        <div class="space"></div>
-                        <div class="title"></div><div class="inputbox"><input name="save" type="button" value="save" class="md_button">&nbsp;<input name="cancel" type="button" value="cancel" class="md_button"></div>
-                        <div style="clear:both"></div>
-                        <div class="space"></div>
-
 
                     </div>
 
                 </div>
-
             </div>
         </div>
     </div>
-</div>
 
-<!-- modal end -->
+    <!-- modal end -->
 
