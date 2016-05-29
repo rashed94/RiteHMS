@@ -12,6 +12,6 @@ namespace HMS.DAL.Repository
 
       //  IList<ServiceProvider> GetAll();
         IList<ServiceProvider> GetServiceProviderPartialName(string name, long itemid);
-
+ 
     }
 }

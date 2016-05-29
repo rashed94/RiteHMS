@@ -9,6 +9,6 @@ namespace HMS.DAL.Repository
 {
     public interface IPatientServiceRepository
     {
-
+        IList<PatientService> GetServiceItemsByPatientId(long id);
     }
 }

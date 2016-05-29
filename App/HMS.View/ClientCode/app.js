@@ -16,11 +16,11 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload']).
         }).
         when('/billing', {
             templateUrl: '/ClientCode/Template/Billing.html',
-            controller: 'BillingController'
+           
         }).
         when('/billing/:tab', {
             templateUrl: '/ClientCode/Template/Billing.html',
-            controller: 'BillingController'
+       
         }).
         when('/contact/:id', {
             templateUrl: '/ClientCode/Template/EditContact.html',

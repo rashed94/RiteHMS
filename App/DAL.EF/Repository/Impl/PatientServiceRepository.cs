@@ -13,7 +13,12 @@ namespace HMS.DAL.Repository
         {
             _DbSet = _DbContext.Set<PatientService>();
         }
-
+        public IList<PatientService> GetServiceItemsByPatientId(long id)
+        {
+            IQueryable<PatientService> queryResult = _DbSet;
+            //  bool active = true;
+            return queryResult.Where(c => c.PatientID== id).ToList();
+        }
 
     }
 }
