@@ -17,7 +17,7 @@ namespace HMS.DAL.Repository
         {
             IQueryable<PatientService> queryResult = _DbSet;
             //  bool active = true;
-            return queryResult.Where(c => c.PatientID== id).ToList();
+            return queryResult.Where(c => c.PatientID== id && c.ItemID==c.Item.Id).ToList();
         }
 
     }

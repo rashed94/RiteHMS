@@ -121,7 +121,7 @@
 
                                         <div>
                                             <input name="patients" id="patients" type="text" placeholder="Type patient's name"
-                                                   ng-model="Patient"
+                                                   ng-model="Patient.Name"
                                                    typeahead="item as (item.FirstName + ' ' + item.LastName) for item in SearchPatientsByPartialName($viewValue)"
                                                    typeahead-on-select="OnPatientSelect($item, $model, $label)"
                                                    typeahead-min-length="1"
@@ -139,12 +139,12 @@
                 <div class="site_navigation">
 
                     <ul>
-                        <li class="patientinfo"><a ng-href="#/patient" class="selected" ng-click="UpdateTopLink('patient')">Patient info</a></li>
+                        <li class="patientinfo"><a ng-href="#/patient" class="selected" ng-click="$event.preventDefault();UpdateTopLink('patient')">Patient info</a></li>
                         <li class="lab"><a href="#">Lab Test</a></li>
                         <li class="pharmacy"><a href="#">Pharmacy</a></li>
                         <li class="appointment"><a href="#">Appointemt</a></li>
                         <li class="bed"><a href="#">Bed Setup</a></li>
-                        <li class="billing"><a ng-href="#/billing" ng-click="UpdateTopLink('billing')">Billing</a></li>
+                        <li class="billing"><a ng-href="#/billing" ng-click="$event.preventDefault();UpdateTopLink('billing')">Billing</a></li>
 
                     </ul>
 
