@@ -25,6 +25,8 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     //}
 
     $scope.Items = [];
+    $scope.Patient = {};
+    $scope.Patient.Photo = "";
 
     $scope.initDatePicker=function () {
         $('.reportdeliverydate').datepicker({
@@ -48,6 +50,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         PatientService.GetPatients()
             .success(function (cts) {
                 $scope.Patients = cts;
+               
             })
             .error(function (error) {
                 $scope.status = 'Unable to load Patient data: ' + error.message;
@@ -59,6 +62,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         PatientService.GetPatientById(id)
             .success(function (pt) {
                 $scope.Patient = pt;
+                $scope.Patient.Name = pt.FirstName + " " + pt.LastName;
                 if ($scope.Patient.DOB != null) {
                     $scope.AgeCalculate();
                 }
@@ -75,6 +79,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         PatientService.GetPatientByPhone(phone)
             .success(function (pt) {
                 $scope.Patient = pt;
+                $scope.Patient.Name = pt.FirstName + " " + pt.LastName;
                 console.log($scope.Patient);
             })
             .error(function (error) {
@@ -123,10 +128,11 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.serviceItemSave=function()
     {
         $scope.PatientServiceItem = [];
-        $scope.serviceItem = {};
+      
         
         angular.forEach($scope.Items, function (obj) {
 
+            $scope.serviceItem = {};
             
         /*   var serviceItem = {
                 PatientID: $scope.Patient.Id,
@@ -227,6 +233,8 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
 
     $scope.OnPatientSelect = function ($item, $model, $label) {
         $scope.Patient = $item;
+        $scope.Patient.Name = $item.FirstName + " " + $item.LastName;
+       // $scope.Patient.Name = $item.FirstName + "  " + $item.LastName;
         if ($scope.Patient.DOB != null) {
             $scope.AgeCalculate();
         }
@@ -279,12 +287,15 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         if (link == 'patient') {
         $('.site_navigation li a').removeClass('selected');
         $('.site_navigation li.patientinfo a').addClass('selected');
-        // $location.path = $location.path(link);
+            // $location.path = $location.path(link);
+        $window.location.href = '#/patient';
         }
         if(link=='billing')
         {
             $('.site_navigation li a').removeClass('selected');
             $('.site_navigation li.billing a').addClass('selected');
+          
+            $window.location.href = '#/billing';
         }
 
     }
