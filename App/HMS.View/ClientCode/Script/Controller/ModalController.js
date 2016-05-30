@@ -10,11 +10,13 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, 
     };
 });
 
-HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, billingItems, BillingService) {
+HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance,$filter, billingItems, BillingService) {
+
+    $scope.PatientServiceItem = [];
     $scope.Invoice = {
         Id: null,
-        InvoiceDate: new Date(),
-        DueDate: new Date(),
+        InvoiceDate: $filter('date')(new Date(), 'MM/dd/yy'),
+        DueDate: $filter('date')(new Date(), 'MM/dd/yy'),
         PatientId: $scope.Patient.Id,
         TotalAmount: 0.0,
         //PaidAmount: 0.0,
@@ -22,7 +24,10 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, bi
         //PaymentMethod: 'Cash',
         //CoPayerAmount: 0.0,
         //ReconcileAmount: 0.0,
-        TotalDiscount: 0.0
+        TotalDiscount: 0.0,
+        InvoiceStatusId: 1,
+        ItemDiscount: "",
+        UserId:null
     };
 
     $scope.InvoicePayment = {
@@ -37,10 +42,71 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, bi
         }
     };
 
+    function parseJsonDate(jsonDateString) {
+        return new Date(parseInt(jsonDateString.replace('/Date(', '')));
+    }
+
+    $scope.GenerateServiceItem = function (item) {
+        $scope.serviceItem = {};
+
+        /*   var serviceItem = {
+                PatientID: $scope.Patient.Id,
+                ItemID: obj.Id,
+                InvoiceID: '',
+                ServiceListPrice: obj.Amount,
+                ServiceActualPrice: obj.SalePrice,
+                ServiceQuantity: obj.Quantity,
+                ServiceDate: Date.now(),
+                UserId: '',
+                Discount: '',
+                Refund: '',
+                Billed: '',
+                ReferralFee: obj.ReferralFee,
+                DeliveryDate: obj.Date,
+                DeliverTime:obj.ReportDeliveryTime
+            };*/
+        $scope.serviceItem.Id = item.Id;
+        $scope.serviceItem.PatientId = item.PatientID;
+        $scope.serviceItem.ItemID = item.ItemID;
+        $scope.serviceItem.InvoiceID = '';
+        $scope.serviceItem.ServiceListPrice = item.ServiceListPriceAfterDiscount;
+        $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
+        $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;
+        $scope.serviceItem.ServiceDate = parseJsonDate(item.ServiceDate);
+        $scope.serviceItem.UserId = '';
+        $scope.serviceItem.Discount = item.Discount;
+        $scope.serviceItem.Refund = '';
+        $scope.serviceItem.Billed = '';
+        $scope.serviceItem.ReferralFee = item.ReferralAfterDiscount;
+        $scope.serviceItem.DeliveryDate = parseJsonDate(item.DeliveryDate);
+        $scope.serviceItem.DeliveryTime = item.DeliveryTime;
+
+        $scope.PatientServiceItem.push($scope.serviceItem);
+    }
+
+
     angular.forEach(billingItems, function (item, key) {
         $scope.Invoice.TotalAmount += item.ServiceListPriceAfterDiscount * item.ServiceQuantity;
         $scope.Invoice.TotalDiscount += item.Discount * item.ServiceQuantity;
+        $scope.GenerateServiceItem(item);
+
     });
+
+  
+
+    BillingService.SaveInvoice($scope.Invoice, $scope.PatientServiceItem)
+     .success(function (data) {
+
+                console.log(data);
+                $scope.Invoice.push(data);
+
+            })
+        .error(function (error) {
+            $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+            console.log($scope.status);
+        });
+
+
 
     $scope.ok = function () {
         $modalInstance.close({ Invoice: $scope.Invoice,  });

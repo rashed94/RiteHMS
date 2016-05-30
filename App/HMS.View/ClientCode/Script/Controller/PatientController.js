@@ -178,7 +178,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
            
         })
         .error(function (error) {
-            $scope.status = 'Unable to save Patient data: ' + error.message;
+            $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
             console.log($scope.status);
         });
 

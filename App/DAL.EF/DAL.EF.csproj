@@ -66,9 +66,11 @@
     <Compile Include="Repository\Base\IRepository.cs" />
     <Compile Include="Repository\Base\IServiceProviderRepository.cs" />
     <Compile Include="Repository\Base\IUserRepository.cs" />
+    <Compile Include="Repository\Base\IPatientInvoiceRepository.cs" />
     <Compile Include="Repository\Impl\ItemRepository.cs" />
     <Compile Include="Repository\Impl\ContactRepository.cs" />
     <Compile Include="Repository\Impl\MedicalTypeRepository.cs" />
+    <Compile Include="Repository\Impl\PatientInvoiceRepository.cs" />
     <Compile Include="Repository\Impl\PatientRepository.cs" />
     <Compile Include="Repository\Impl\PatientServiceRepository.cs" />
     <Compile Include="Repository\Impl\ReferralRepository.cs" />

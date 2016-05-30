@@ -104,7 +104,7 @@
                         <td>{{serviceitem.Name}}</td>
                         <td>{{serviceitem.GenericName}}</td>
                         <td>
-                            <input type="text" width="50" ng-model="serviceitem.Quantity" ng-change="updateItem(serviceitem)" name="quantity" class="quantity"></td>
+                            <input type="text" width="50" ng-model="serviceitem.Quantity" ng-disabled="serviceitem.ReferralAllowed" ng-change="updateItem(serviceitem)" name="quantity" class="quantity"></td>
                         <td>
                             <input type="text" width="100" ng-model="serviceitem.ReferralFee" ng-show="serviceitem.ReferralAllowed" name="referrer" class="referrer"></td>
                         <td>

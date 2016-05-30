@@ -116,6 +116,11 @@ input[type="text"]
 	background:#fff;
 	 border-radius:4px;
 }
+
+input[type="text"]:disabled{
+    background-color:#ced1d7;
+
+}
 select
 {
  border: 1px solid #ced1d7;

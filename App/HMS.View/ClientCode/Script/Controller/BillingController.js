@@ -50,6 +50,8 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $filter, 
                 
                 billingitem.ReferralAfterDiscount = billingitem.ReferralFee - discount;
                 billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
+               
+
             }
             else
             {
@@ -73,6 +75,9 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $filter, 
 
            
         }
+
+       // billingitem.ServiceListPriceAfterDiscountWithQuantity = billingitem.ServiceListPriceAfterDiscount * billingitem.ServiceQuantity
+
         $scope.CalculateTotalDiscount();
 
 
@@ -111,9 +116,9 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $filter, 
 
     };
 
-    $scope.SaveInvoice = function () {
-        BillingService.SaveInvoice($scope.Invoice);
-    };
+    //$scope.SaveInvoice = function () {
+    //    BillingService.SaveInvoice($scope.Invoice);
+    //};
 
     $scope.InvoiceModal = function (size, isEdit) {
         var billingItems = [];

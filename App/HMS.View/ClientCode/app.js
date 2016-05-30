@@ -50,3 +50,7 @@ HmsApp.controller("TypeaheadCtrl", function ($scope, States) {
     $scope.states = States;
 
 });
+
+HmsApp.run(['$route', function ($route) {
+    $route.reload();
+}]);

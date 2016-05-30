@@ -5,8 +5,15 @@
         return $http.get('/Billing/GetBillingIemByPatientId?id=' + patientid);
     };
 
-    BillingService.SaveInvoice = function (invoice) {
-        return $http.post('/Billing/CreateInvoice', patientInvoice);
+    BillingService.SaveInvoice = function (invoice,patientServices) {
+        invoice.PatientServices = patientServices;
+        return $http.post('/Billing/CreateInvoice', invoice);
+
+        //$http.post(url, JSON.stringify({ issue: issueDetails, 
+        //    lstMembersToNotify: arrMembersToNotifyNew 
+        //});
+
+  
     }
 
     return BillingService;

@@ -22,6 +22,40 @@ namespace HMS.Controllers
            // _Repository = new Repository<Patient>(new Context());
         }
 
+        public void CreatePatientService(long invoiceID,IList<PatientService> patientServices)
+        {
+
+          
+            {
+                using (PatientServiceRepository repository = new PatientServiceRepository())
+                {
+                    foreach (PatientService patientervice in patientServices)
+                    {
+                        patientervice.InvoiceID = invoiceID;
+                        repository.Insert(patientervice);
+
+                    }
+                    repository.Commit();
+  
+                }
+            }
+            
+        }
+
+
+        
+        public JsonResult SaveInvoice(PatientInvoice invoice, IList<PatientService> patientServices)
+        {
+            using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
+            {
+
+                invoice = repository.Insert(invoice);
+                repository.Commit();
+                CreatePatientService(invoice.Id, patientServices);
+            }
+
+            return Json("222");
+        }
 
         public JsonResult GetBillingIemByPatientId(long id)
         {
@@ -57,6 +91,7 @@ namespace HMS.Controllers
                     patientstitem.DeliveryTime = c.DeliveryTime;
                     patientstitem.Item.Name = c.Item.Name;
                     patientstitem.Item.GenericName = c.Item.GenericName;
+                    patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
                     onlypatientServiceItems.Add(patientstitem);
 
                 }
@@ -93,19 +128,40 @@ namespace HMS.Controllers
             return Json(onlypatientServiceItems, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult CreateInvoice(PatientInvoice patientInvoice)
+
+        [HttpPost]
+        public JsonResult CreateInvoice(PatientInvoice pinvoice)
         {
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
-            var userId = claims.Where(r => r.Type == ClaimTypes.SerialNumber).FirstOrDefault().Value;
+           // var userId = claims.Where(r => r.Type == ClaimTypes.SerialNumber).FirstOrDefault().Value;
 
             using (Repository<PatientInvoice> repository = new Repository<PatientInvoice>())
             {
-                patientInvoice.UserId = Convert.ToInt32(userId);
-                patientInvoice.StatusId = 0;
-                patientInvoice = repository.Insert(patientInvoice);
-                return Json(patientInvoice);
+               // patientInvoice.UserId = Convert.ToInt32(userId);
+               // patientInvoice.InvoiceStatusId = 1;
+                repository.Insert(pinvoice);
+                repository.Commit();
+
+
+               // repository.Commit();
+                
             }
+
+            //using (PatientServiceRepository repository = new PatientServiceRepository())
+            //{
+
+            //    foreach (PatientService patientervice in patientServices)
+            //    {
+            //        patientervice.InvoiceID = pinvoice.Id;
+            //        repository.Update(patientervice);
+
+            //    }
+            //    repository.Commit();
+            //}
+
+
+            return Json("200");
         }
 
         protected override void Dispose(bool disposing)

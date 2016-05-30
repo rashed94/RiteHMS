@@ -15,9 +15,9 @@ namespace HMS.Model.Core
     
         public long PatientID { get; set; }
         public System.DateTime InvoiceDate { get; set; }
-        public System.DateTime? DueDate { get; set; }
+        public System.DateTime DueDate { get; set; }
         public long? UserId { get; set; }
-        public long StatusId { get; set; }
+        public long InvoiceStatusId { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal? TotalDiscount { get; set; }
         public decimal? ItemDiscount { get; set; }
