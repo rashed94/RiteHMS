@@ -10,14 +10,16 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, 
     };
 });
 
-HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance,$filter, billingItems, BillingService) {
+HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance,$filter,$window, billingItems, BillingService) {
 
     $scope.PatientServiceItem = [];
+    $scope.InvoicePayments = [];
+
     $scope.Invoice = {
         Id: null,
         InvoiceDate: $filter('date')(new Date(), 'MM/dd/yy'),
         DueDate: $filter('date')(new Date(), 'MM/dd/yy'),
-        PatientId: $scope.Patient.Id,
+        PatientID: $scope.Patient.Id,
         TotalAmount: 0.0,
         //PaidAmount: 0.0,
         //PaymentAmount: 0.0,
@@ -31,15 +33,39 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance,$fi
     };
 
     $scope.InvoicePayment = {
+        InvoiceId:0,
         Amount: 0.0,
-        Payment: {
-            Amount: 0.0,
-            DeductionAmount: 0.0,
-            PaymentTypeId: null,
-            PatientID: null,
-            UserId: null,
-            Date: new Date()
-        }
+        PaymentID: null,
+        UserId:null
+
+
+    };
+    $scope.Payment = {
+
+        Amount:0.0, 
+        DeductionAmount:0.0,
+        PaymentTypeId :101,
+        PatientID:$scope.Patient.Id, 
+        UserId:null,
+        Date : $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss')
+       
+
+    };
+
+    function ConvertJsonDateString(jsonDate) {  
+        var shortDate = null;    
+        if (jsonDate) {  
+            var regex = /-?\d+/;  
+            var matches = regex.exec(jsonDate);  
+            var dt = new Date(parseInt(matches[0]));  
+            var month = dt.getMonth() + 1;  
+            var monthString = month > 9 ? month : '0' + month;  
+            var day = dt.getDate();  
+            var dayString = day > 9 ? day : '0' + day;  
+            var year = dt.getFullYear();  
+            shortDate = monthString + '/' + dayString + '/' + year;  
+        }  
+        return shortDate;  
     };
 
     function parseJsonDate(jsonDateString) {
@@ -72,13 +98,13 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance,$fi
         $scope.serviceItem.ServiceListPrice = item.ServiceListPriceAfterDiscount;
         $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
         $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;
-        $scope.serviceItem.ServiceDate = parseJsonDate(item.ServiceDate);
+        $scope.serviceItem.ServiceDate = ToJavaScriptDate(item.ServiceDate);
         $scope.serviceItem.UserId = '';
         $scope.serviceItem.Discount = item.Discount;
         $scope.serviceItem.Refund = '';
         $scope.serviceItem.Billed = '';
         $scope.serviceItem.ReferralFee = item.ReferralAfterDiscount;
-        $scope.serviceItem.DeliveryDate = parseJsonDate(item.DeliveryDate);
+        $scope.serviceItem.DeliveryDate = ToJavaScriptDate(item.DeliveryDate);
         $scope.serviceItem.DeliveryTime = item.DeliveryTime;
 
         $scope.PatientServiceItem.push($scope.serviceItem);
@@ -98,7 +124,8 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance,$fi
      .success(function (data) {
 
                 console.log(data);
-                $scope.Invoice.push(data);
+                $scope.Invoice = data;
+                $scope.Invoice.InvoiceDate = ConvertJsonDateString($scope.Invoice.InvoiceDate);
 
             })
         .error(function (error) {
@@ -109,7 +136,36 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance,$fi
 
 
     $scope.ok = function () {
-        $modalInstance.close({ Invoice: $scope.Invoice,  });
+
+
+
+
+
+        $scope.Payment.Amount = $scope.Invoice.PaymentAmount;
+
+        $scope.InvoicePayment.PatientInvoiceId = $scope.Invoice.Id;
+        $scope.InvoicePayment.Amount = $scope.Invoice.PaymentAmount;
+        $scope.InvoicePayments.push($scope.InvoicePayment);
+        $scope.Payment.InvoicePayments = $scope.InvoicePayments;
+
+        BillingService.SavePayment($scope.Payment)
+        .success(function (data) {
+
+            console.log(data);
+            // $scope.Invoice.Id = data;
+            $modalInstance.close({ Invoice: $scope.Invoice, });
+            $window.location.href = '#/billing/invoices';
+
+        })
+        .error(function (error) {
+             $scope.status = 'Unable to save Payment data: ' + error.message;
+             console.log($scope.status);
+        });
+
+
+
+
+       
     };
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');

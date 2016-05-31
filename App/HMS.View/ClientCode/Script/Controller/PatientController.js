@@ -152,7 +152,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
             };*/
             $scope.serviceItem.PatientID = $scope.Patient.Id;
             $scope.serviceItem.ItemID = obj.Id;
-            $scope.serviceItem.InvoiceID = '';
+            $scope.serviceItem.InvoiceID = 0;
             $scope.serviceItem.ServiceListPrice = obj.Amount;
             $scope.serviceItem.ServiceActualPrice = obj.SalePrice;
             $scope.serviceItem.ServiceQuantity = obj.Quantity;
@@ -288,14 +288,14 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         $('.site_navigation li a').removeClass('selected');
         $('.site_navigation li.patientinfo a').addClass('selected');
             // $location.path = $location.path(link);
-        $window.location.href = '#/patient';
+      //  $window.location.href = '#/patient';
         }
         if(link=='billing')
         {
             $('.site_navigation li a').removeClass('selected');
             $('.site_navigation li.billing a').addClass('selected');
           
-            $window.location.href = '#/billing';
+          //  $window.location.href = '#/billing';
         }
 
     }

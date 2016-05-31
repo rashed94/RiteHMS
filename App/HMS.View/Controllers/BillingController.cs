@@ -10,6 +10,7 @@ using HMS.DAL;
 using HMS.Model.Core;
 using HMS.DAL.Repository;
 using System.Security.Claims;
+using System.Linq.Expressions;
 
 namespace HMS.Controllers
 {
@@ -51,10 +52,143 @@ namespace HMS.Controllers
 
                 invoice = repository.Insert(invoice);
                 repository.Commit();
-                CreatePatientService(invoice.Id, patientServices);
+               // CreatePatientService(invoice.Id, patientServices);
             }
 
-            return Json("222");
+            return Json(invoice.Id, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CreatePayment(Payment payment)
+        {
+            using (PaymentRepository repository = new PaymentRepository())
+            {
+
+                payment = repository.Insert(payment);
+                repository.Commit();
+               // CreatePatientService(invoice.Id, patientServices);
+            }
+
+            return Json("Payment successfull");
+        }
+
+        //public JsonResult GetInvoicesByPatientID(long id)
+        //{
+        //    using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
+        //    {
+        //        List<PatientInvoice> patientInvoice = repository.GetByQuery().ToList();
+
+        //    }
+
+        //    return Json("invoice loaded success fully");
+
+        //}
+        public JsonResult GetInvoicesByPatientId(long id)
+        {
+            List<PatientInvoice> onlypatientInvoices = new List<PatientInvoice>();
+            List<PatientInvoice> patientInvoices;
+            using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
+            {
+                ParameterExpression argParam = Expression.Parameter(typeof(PatientInvoice), "s");
+                Expression patientProperty = Expression.Property(argParam, "PatientID");
+               // Expression namespaceProperty = Expression.Property(argParam, "Namespace");
+
+                var val1 = Expression.Constant(id);
+              //  var val2 = Expression.Constant("Namespace");
+
+                Expression e1 = Expression.Equal(patientProperty, val1);
+              //  Expression e2 = Expression.Equal(namespaceProperty, val2);
+              //  var andExp = Expression.AndAlso(e1, e2);
+                var andExp = e1;
+
+                var lambda = Expression.Lambda<Func<PatientInvoice, bool>>(andExp, argParam);
+
+                if (id != 0)
+                {
+                   patientInvoices = repository.GetByQuery(lambda).ToList();
+                }else
+                {
+                  patientInvoices = repository.GetByQuery().ToList();
+                }
+
+
+
+                foreach (PatientInvoice pinvoice in patientInvoices)
+                {
+                    PatientInvoice onlyPatientInvoice = new PatientInvoice();
+                    Patient patient = new Patient();
+                    onlyPatientInvoice.Patient = patient;
+
+                    onlyPatientInvoice.Id = pinvoice.Id;
+                    onlyPatientInvoice.InvoiceDate = pinvoice.InvoiceDate;
+                    onlyPatientInvoice.DueDate = pinvoice.DueDate;
+                    onlyPatientInvoice.PatientID = pinvoice.PatientID;
+                    onlyPatientInvoice.TotalAmount = pinvoice.TotalAmount;
+                    onlyPatientInvoice.TotalDiscount = pinvoice.TotalDiscount;
+                    onlyPatientInvoice.InvoiceStatusId = pinvoice.InvoiceStatusId;
+                    onlyPatientInvoice.ItemDiscount = pinvoice.ItemDiscount;
+                    onlyPatientInvoice.UserId = pinvoice.UserId;
+                    onlyPatientInvoice.Patient.FatherName = pinvoice.Patient.FirstName;
+                    onlyPatientInvoice.Patient.LastName = pinvoice.Patient.LastName;
+
+                    foreach (InvoicePayment invoicepayment in pinvoice.InvoicePayments)
+                    {
+                        InvoicePayment invoicePayment = new InvoicePayment();
+                        
+                        invoicePayment.Id = invoicepayment.Id;
+                        invoicePayment.PatientInvoiceId = invoicepayment.PatientInvoiceId;
+                        invoicePayment.Amount = invoicepayment.Amount;
+                        invoicePayment.PaymentID = invoicepayment.PaymentID;
+                        invoicePayment.UserId = invoicepayment.UserId;
+                        onlyPatientInvoice.InvoicePayments.Add(invoicePayment);
+                        
+                    }
+
+                    foreach (PatientService c in pinvoice.PatientServices)
+                    {
+                        PatientService patientstitem = new PatientService();
+                        Item item = new Item();
+                        patientstitem.Item = item;
+
+
+                        patientstitem.Id = c.Id;
+                        patientstitem.PatientID = c.PatientID;
+                        patientstitem.ItemID = c.ItemID;
+                        patientstitem.InvoiceID = c.InvoiceID;
+                        patientstitem.ServiceListPrice = c.ServiceListPrice;
+                        patientstitem.ServiceActualPrice = c.ServiceActualPrice;
+                        patientstitem.ServiceQuantity = c.ServiceQuantity;
+                        patientstitem.ServiceDate = c.ServiceDate;
+                        patientstitem.UserId = c.UserId;
+                        patientstitem.Discount = c.Discount;
+                        patientstitem.Refund = c.Refund;
+                        patientstitem.Billed = c.Billed;
+                        patientstitem.ReferralFee = c.ReferralFee;
+                        patientstitem.DeliveryDate = c.DeliveryDate;
+                        patientstitem.DeliveryTime = c.DeliveryTime;
+                        patientstitem.Item.Name = c.Item.Name;
+                        patientstitem.Item.GenericName = c.Item.GenericName;
+                        patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
+                        onlyPatientInvoice.PatientServices.Add(patientstitem);
+
+                    }
+                    onlypatientInvoices.Add(onlyPatientInvoice);
+
+
+
+                }
+
+                if (onlypatientInvoices == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+
+
+
+                return Json(onlypatientInvoices, JsonRequestBehavior.AllowGet);
+
+            }
+           
         }
 
         public JsonResult GetBillingIemByPatientId(long id)
@@ -134,13 +268,15 @@ namespace HMS.Controllers
         {
             var identity = (ClaimsIdentity)User.Identity;
             IEnumerable<Claim> claims = identity.Claims;
+            PatientInvoice patientInvoice = new PatientInvoice();
+            PatientInvoice onlyPatientInvoice = new PatientInvoice();
            // var userId = claims.Where(r => r.Type == ClaimTypes.SerialNumber).FirstOrDefault().Value;
 
             using (Repository<PatientInvoice> repository = new Repository<PatientInvoice>())
             {
                // patientInvoice.UserId = Convert.ToInt32(userId);
                // patientInvoice.InvoiceStatusId = 1;
-                repository.Insert(pinvoice);
+                patientInvoice=repository.Insert(pinvoice);
                 repository.Commit();
 
 
@@ -160,8 +296,17 @@ namespace HMS.Controllers
             //    repository.Commit();
             //}
 
+            onlyPatientInvoice.Id = patientInvoice.Id;
+            onlyPatientInvoice.InvoiceDate = patientInvoice.InvoiceDate;
+            onlyPatientInvoice.DueDate = patientInvoice.DueDate;
+            onlyPatientInvoice.PatientID = patientInvoice.PatientID;
+            onlyPatientInvoice.TotalAmount = patientInvoice.TotalAmount;
+            onlyPatientInvoice.TotalDiscount = patientInvoice.TotalDiscount;
+            onlyPatientInvoice.InvoiceStatusId = patientInvoice.InvoiceStatusId;
+            onlyPatientInvoice.ItemDiscount = patientInvoice.ItemDiscount;
+            onlyPatientInvoice.UserId = patientInvoice.UserId;
 
-            return Json("200");
+            return Json(onlyPatientInvoice, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

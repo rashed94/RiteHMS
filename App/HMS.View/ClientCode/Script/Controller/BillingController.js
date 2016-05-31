@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-HmsApp.controller("BillingController", function ($scope, $routeParams, $filter, $modal, BillingService) {
+HmsApp.controller("BillingController", function ($scope, $routeParams, $window, $filter, $modal, BillingService) {
 
     $scope.TotalDiscount = 0;
     $scope.TotalAmount = 0;
@@ -149,19 +149,77 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $filter, 
             }
         });
         modalInstance.result.then(function (result) {
-            $scope.Invoice = result.Invoice;
-            $scope.SaveInvoice();
+           // $scope.Invoice = result.Invoice;
+           // $scope.SaveInvoice();
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
+            
         });
     };
 
+
+
+    $scope.toggleDetail = function ($index) {
+        //$scope.isVisible = $scope.isVisible == 0 ? true : false;
+        $scope.activePosition = $scope.activePosition == $index ? -1 : $index;
+    };
 
     //$scope.GetBillingItemByPatientId($scope.Patiend.Id);
     var tabClass = ".summary";
     if ($routeParams.tab != null) {
         tabClass = "." + $routeParams.tab;
     }
+
+    function prepareInvoiceDataModel()
+    {
+        angular.forEach($scope.invocieslist, function (item) {
+
+            item.Paid = 0;
+            item.InvoiceDate = ToJavaScriptDate(item.InvoiceDate);
+           
+            angular.forEach(item.InvoicePayments, function (paymentitem) {
+
+                item.Paid = paymentitem.Amount + item.Paid;
+
+            });
+        });
+        console.log($scope.invocieslist);
+    }
+    $scope.reloadInvoice=function()
+    {
+        //console.log($scope.patientSelection);
+        if($scope.patientSelection==0)
+        {
+            $scope.GetInvoices(0);
+        }else
+        {
+            $scope.GetInvoices($scope.Patient.Id);
+        }
+    }
+    $scope.GetInvoices = function (patientId) {
+        BillingService.GetInvoicesByPatientId(patientId)
+            .success(function (pt) {
+                $scope.invocieslist = pt;
+                prepareInvoiceDataModel();
+                console.log(pt);
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load invoices data: ' + error.message;
+                console.log($scope.status);
+            });
+    }
+
+    if ($routeParams.tab == "invoices") {
+
+        $scope.GetInvoices($scope.Patient.Id);
+
+       
+    }
+
+
+
+
+
     $('.tabs li').removeClass('active');
     $(tabClass).addClass('active');
     $(tabClass).removeClass('hide');

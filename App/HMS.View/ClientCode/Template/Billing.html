@@ -179,8 +179,8 @@
                 <input type="text" width="110" placeholder="click to show datepicker" name="reportdeliverydate" class="reportdeliverydate">
             </div>
             <div class="select_all_patient">
-                <input type="radio" value="all" name="patient" class="all_patient_checkbox"><h2>all patient</h2>
-                <input type="radio" value="selected" name="patient" class="selected_patient_checkbox"><h2>selected patient</h2>
+                <input type="radio" value="0" ng-model="patientSelection" ng-change="reloadInvoice()" name="patient" class="all_patient_checkbox"><h2>all patient</h2>
+                <input type="radio" value="1" ng-model="patientSelection" ng-change="reloadInvoice()" ng-checked="true" name="patient" class="selected_patient_checkbox"><h2>selected patient</h2>
             </div>
             <select name="status" class="invoice_status">
                 <option value="open">OPEN</option>
@@ -192,7 +192,7 @@
         <div class="invoices_grid">
 
             <div class="item_grid">
-                <table width="100%" border="1" align="center" class="bordered evencolor">
+                <table width="100%" border="1" align="center" class="bordered evencolor" ng-model="invocieslist">
                     <thead>
                         <tr>
                             <th width="5%">&nbsp;</th>
@@ -206,20 +206,20 @@
                             <th width="11%">&nbsp;</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody ng-repeat="singleinvoice in invocieslist">
                         <tr>
-                            <td><a class="fa fa-arrow-circle-down fa-2x" aria-hidden="true" href="#"></a></td>
-                            <td>23-ARPL-2016 </td>
-                            <td>12  </td>
-                            <td>Delwar Hossain</td>
-                            <td>4500.00</td>
-                            <td>2000.00</td>
+                            <td><a class="fa fa-arrow-circle-right fa-2x" aria-hidden="true" href="#" ng-click="$event.preventDefault();toggleDetail($index)"></a></td>
+                            <td>{{singleinvoice.InvoiceDate}} </td>
+                            <td>{{singleinvoice.Id}}</td>
+                            <td>{{singleinvoice.Patient.FirstName}} {{singleinvoice.Patient.LastName}}</td>
+                            <td>{{singleinvoice.TotalAmount}}</td>
+                            <td>{{singleinvoice.Paid}}</td>
                             <td>
-                            0.00
+                                0.00
                             <td><span class="status_green">Open</span></td>
-                            <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="link_brown" href="#">payment</a></td>
+                            <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#" ng-click="$event.preventDefault();"></a>&nbsp;<a class="link_brown" href="#" ng-click="$event.preventDefault();">payment</a></td>
                         </tr>
-                        <tr>
+                        <tr ng-show="activePosition == $index">
                             <td colspan="9" align="center" class="padding_left60">
 
                                 <table width="90%" border="1" align="center" class="bordered small_header">
@@ -236,53 +236,28 @@
                                             <th width="21%">&nbsp;</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody ng-repeat="patientservice in singleinvoice.PatientServices">
                                         <tr>
-                                            <td>USG - HBS (Liver) </td>
-                                            <td>Haematology Clinic  </td>
-                                            <td>1</td>
-                                            <td>1200</td>
-                                            <td>120</td>
+                                            <td>{{patientservice.Item.Name}}</td>
+                                            <td>{{patientservice.Item.GenericName}}</td>
+                                            <td>{{patientservice.ServiceQuantity}}</td>
+                                            <td>{{patientservice.ServiceActualPrice}}</td>
+                                            <td>{{patientservice.Discount}}</td>
                                             <td>
-                                            by Amount
-                                            <td>1200</td>
-                                            <td>100</td>
+                                                by Amount
+                                            <td>{{patientservice.ServiceListPrice}}</td>
+                                            <td>{{patientservice.ReferralFee}}</td>
                                             <td>
-                                                <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" href="#"></a>
+                                                <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();"></a>
                                                 <span class="status_green">refund request sent</span>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>USG - HBS (Liver) </td>
-                                            <td>Haematology Clinic  </td>
-                                            <td>1</td>
-                                            <td>1400</td>
-                                            <td>
-                                                <input type="text" width="100" name="amount" class="amount"></td>
-                                            <td>by Amount</td>
-                                            <td>1400</td>
-                                            <td>200</td>
-                                            <td>
-                                                <a class="fa fa-floppy-o fa-1_5x" aria-hidden="true" href="#"></a>
-                                                <a href="#" class="link_brown">refund</a>
-                                            </td>
-                                        </tr>
+
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
-                        <tr>
-                            <td><a class="fa fa-arrow-circle-right fa-2x" aria-hidden="true" href="#"></a></td>
-                            <td>23-ARPL-2016 </td>
-                            <td>12 </td>
-                            <td>Delwar Hossain</td>
-                            <td>4500.00</td>
-                            <td>2000.00</td>
-                            <td>
-                            0.00
-                            <td><span class="status_blue">Close</span></td>
-                            <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a></td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>

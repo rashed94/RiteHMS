@@ -5,7 +5,7 @@ namespace HMS.Model.Core
     [Table("InvoicePayment")]
     public partial class InvoicePayment : EntityBase
     {
-        public long InvoiceId { get; set; }
+        public long PatientInvoiceId { get; set; }
         public decimal Amount { get; set; }
         public long? PaymentID { get; set; }
         public long UserId { get; set; }

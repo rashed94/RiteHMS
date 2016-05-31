@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="HMSContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Base\IInvoiceStatusRepository.cs" />
     <Compile Include="Repository\Base\IItemRepository.cs" />
     <Compile Include="Repository\Base\IMedicalTypeRepository.cs" />
     <Compile Include="Repository\Base\IContactRepository.cs" />
@@ -67,16 +68,19 @@
     <Compile Include="Repository\Base\IServiceProviderRepository.cs" />
     <Compile Include="Repository\Base\IUserRepository.cs" />
     <Compile Include="Repository\Base\IPatientInvoiceRepository.cs" />
+    <Compile Include="Repository\Impl\InvoiceStatusRepository.cs" />
     <Compile Include="Repository\Impl\ItemRepository.cs" />
     <Compile Include="Repository\Impl\ContactRepository.cs" />
     <Compile Include="Repository\Impl\MedicalTypeRepository.cs" />
     <Compile Include="Repository\Impl\PatientInvoiceRepository.cs" />
     <Compile Include="Repository\Impl\PatientRepository.cs" />
     <Compile Include="Repository\Impl\PatientServiceRepository.cs" />
+    <Compile Include="Repository\Impl\PaymentRepository.cs" />
     <Compile Include="Repository\Impl\ReferralRepository.cs" />
     <Compile Include="Repository\Impl\Repository.cs" />
     <Compile Include="Repository\Impl\ServiceProviderRepository.cs" />
     <Compile Include="Repository\Impl\UserRepository.cs" />
+    <Compile Include="Repository\Base\IPaymentRepository.cs" />
     <Compile Include="SessionFactory\Impl\SessionFactory.cs" />
     <Compile Include="SessionFactory\ISessionFactory.cs" />
   </ItemGroup>
