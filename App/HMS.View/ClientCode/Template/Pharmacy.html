@@ -13,10 +13,122 @@
 <div class="content" ng-controller="PharmacyController">
 
     <div class="summary hide">
-        pharmacy summary
+
+        <div class="criteria_box">
+            <div class="search_container">
+                <!-- <input type="text" width="50" maxlength="20" name="search" class="search" ><a href="#" class="fa fa-search"></a>-->
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+
+            </div>
+
+
+            <select name="status" class="invoice_status">
+                <option value="open">DEMO CATEGORY</option>
+                <option value="close">DEMO CATEGORY1</option>
+                <option value="refunded">DEMO CATEGORY2</option>
+            </select>
+        </div>
+
+        <table width="100%" border="1" align="center" class="bordered">
+            <thead>
+                <tr>
+                    <th width="36%">Item Name</th>
+                    <th colspan="6">Category</th>
+                    <th width="17%">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Napa</td>
+                    <td colspan="6">Demo      </td>
+                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a><a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" href="#"></a></td>
+                </tr>
+                <tr>
+                    <td>Maxpro</td>
+                    <td colspan="6">Demo</td>
+                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a><a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" href="#"></a></td>
+                </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+       
     </div>
     <div class="addpharmacy hide">
-        pharmacy add/edit
+
+        <div class="round_box box_general">
+            <table width="95%" border="1">
+                <tr>
+                    <td width="14%" height="39">&nbsp;</td>
+                    <td width="19%">NAME</td>
+                    <td width="19%"><input type="text"></td>
+                    <td width="48%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td height="39">&nbsp;</td>
+                    <td>CODE</td>
+                    <td colspan="2"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td height="39">&nbsp;</td>
+                    <td>CATEGORY</td>
+                    <td colspan="2">
+                        <select name="palnType" class="distype">
+                            <option value="amount">X-Ray</option>
+                            <option value="percentage">BODY FLUID</option>
+                        </select>
+                        <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="39">&nbsp;</td>
+                    <td>MEASURE UNIT</td>
+                    <td colspan="2">
+                        <select name="palnType3" class="distype">
+                            <option value="amount">TAKA</option>
+                            <option value="percentage">KG</option>
+                        </select>
+                        <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="39">&nbsp;</td>
+                    <td>CHARGE PRICE</td>
+                    <td colspan="2"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td height="39">&nbsp;</td>
+                    <td>BUY PRICE</td>
+                    <td colspan="2"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td height="39">&nbsp;</td>
+                    <td>TOTAL STOCK</td>
+                    <td colspan="2">
+                        <input type="text">
+                        &nbsp;&nbsp; <a class="arrow_head" href="#"> ADD STOCK</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="39">&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td height="39">&nbsp;</td>
+                    <td colspan="3">
+                        <input name="save" type="button" value="save" class="md_button">
+                        <input name="cancel" type="button" value="cancel" class="md_button">
+                    </td>
+                </tr>
+            </table>
+        </div>
+       
     </div>
 
 </div>

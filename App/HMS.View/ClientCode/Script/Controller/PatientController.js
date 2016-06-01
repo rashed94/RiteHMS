@@ -335,7 +335,10 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         }
 
     }
-
+    $scope.isEmpty = function (obj) {
+        for (var i in obj) if (obj.hasOwnProperty(i)) return false;
+        return true;
+    };
 
     if ($location.path() != null) {
 
