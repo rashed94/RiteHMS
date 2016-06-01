@@ -110,6 +110,26 @@ color:#424342;
 
 	text-decoration:none;
 }
+
+
+a.arrow_head
+{
+	color:#1d5a13;
+	text-transform:uppercase;
+	text-decoration:underline;
+	font-family:SansSemiBold;
+	font-size:11px;
+	background:url(../images/arrow_green.gif) no-repeat top left;
+	
+	padding-left:18px;
+	
+}
+a.arrow_head:hover
+{
+
+	text-decoration:none;
+}
+
 input[type="text"]
 {
 	border:1px solid #ced1d7;
@@ -161,7 +181,7 @@ input[type=text]:focus, textarea:focus {
 	color: #ff45f;
 	text-transform: uppercase;
     margin:0 auto;
-	width:665px;
+	width:810px;
 	
 	
 	
@@ -209,17 +229,17 @@ background: url(../images/sitemenu_patieninfo.gif) no-repeat 4px 2px #80b24a;
 padding-left:30px;	
 }
 
-.site_navigation li.lab a.selected 
+.site_navigation li.labtest a.selected 
 {
 	background: url(../images/sitemenu_lab_hover.gif) no-repeat 6px 2px #538e4a;
 	padding-left:32px;	
 }
-.site_navigation li.lab a:hover
+.site_navigation li.labtest a:hover
 {
 background: url(../images/sitemenu_lab_hover.gif) no-repeat 6px 2px #538e4a;	
 padding-left:32px;	
 }
-.site_navigation li.lab a
+.site_navigation li.labtest a
 {
 background: url(../images/sitemenu_lab.gif) no-repeat 6px 2px #80b24a;	
 padding-left:32px;	
@@ -260,17 +280,17 @@ padding-left:32px;
 }
 
 
-.site_navigation li.bed a.selected 
+.site_navigation li.bedsetup a.selected 
 {
 	background: url(../images/sitemenu_bed_hover.gif) no-repeat 6px 2px #538e4a;
 	padding-left:48px;	
 }
-.site_navigation li.bed a:hover
+.site_navigation li.bedsetup a:hover
 {
 background: url(../images/sitemenu_bed_hover.gif) no-repeat 6px 2px #538e4a;	
 	
 }
-.site_navigation li.bed a
+.site_navigation li.bedsetup a
 {
 background: url(../images/sitemenu_bed.gif) no-repeat 6px 2px #80b24a;	
 padding-left:48px;	
@@ -293,6 +313,26 @@ background: url(../images/sitemenu_billing_hover.gif) no-repeat 6px 2px #538e4a;
 background: url(../images/sitemenu_billing.gif) no-repeat 6px 2px #80b24a;	
 padding-left:32px;	
 }
+
+
+
+.site_navigation li.configuration a.selected 
+{
+	background: url(../images/sitemenu_billing_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:32px;	
+}
+.site_navigation li.configuration a:hover
+{
+background: url(../images/sitemenu_billing_hover.gif) no-repeat 6px 2px #538e4a;	
+	
+}
+.site_navigation li.configuration a
+{
+background: url(../images/sitemenu_billing.gif) no-repeat 6px 2px #80b24a;	
+padding-left:32px;	
+}
+
+
 #itemname
 {
 	margin-top:2px;

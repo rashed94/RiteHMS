@@ -442,6 +442,38 @@ table.bordered a.link_brown:hover
 {
 	text-decoration:none;
 }
+
+
+ a.link_brown
+{
+		color:#c66c1c;
+	font-size:11px;
+	font-family:SansSemiBold;
+	text-transform:uppercase;
+	text-decoration:underline;
+	padding-bottom:12px;
+	margin-left:12px;
+}
+a.link_brown:hover
+{
+	text-decoration:none;
+}
+
+ a.link_green
+{
+		color:#1d5a13;
+	font-size:11px;
+	font-family:SansSemiBold;
+	text-transform:uppercase;
+	text-decoration:underline;
+	padding-bottom:12px;
+	margin-left:12px;
+}
+a.link_green:hover
+{
+	text-decoration:none;
+}
+
 .fa-1_5x
 {
 	font-size:1.5em;
@@ -566,4 +598,8 @@ select.generaldropdown {
 .reportdeliverydate  input{
 
     width:120px;
+}
+.table_space td{
+   padding:6px;
+
 }

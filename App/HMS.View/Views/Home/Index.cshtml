@@ -42,6 +42,23 @@
     <script src="~/ClientCode/Script/Controller/AddItemController.js"></script>
     <script src="~/ClientCode/Script/Service/AddItemService.js"></script>
 
+    <script src="~/ClientCode/Script/Controller/LabTestController.js"></script>
+    <script src="~/ClientCode/Script/Service/LabTestLService.js"></script>
+
+    <script src="~/ClientCode/Script/Controller/AppointmentController.js"></script>
+    <script src="~/ClientCode/Script/Service/AppointmentService.js"></script>
+
+    <script src="~/ClientCode/Script/Controller/BedSetupController.js"></script>
+    <script src="~/ClientCode/Script/Service/BedSetupService.js"></script>
+
+    <script src="~/ClientCode/Script/Controller/PharmacyController.js"></script>
+    <script src="~/ClientCode/Script/Service/PharmacyService.js"></script>
+
+    <script src="~/ClientCode/Script/Controller/ConfigurationController.js"></script>
+    <script src="~/ClientCode/Script/Service/ConfigurationService.js"></script>
+    
+
+
     <script>
         function ToJavaScriptDate(value) {
             var pattern = /Date\(([^)]+)\)/;
@@ -140,11 +157,12 @@
 
                     <ul>
                         <li class="patientinfo"><a ng-href="#/patient" class="selected" ng-click="UpdateTopLink('patient')">Patient info</a></li>
-                        <li class="lab"><a href="#">Lab Test</a></li>
-                        <li class="pharmacy"><a href="#">Pharmacy</a></li>
-                        <li class="appointment"><a href="#">Appointemt</a></li>
-                        <li class="bed"><a href="#">Bed Setup</a></li>
+                        <li class="labtest"><a ng-href="#/labtest" ng-click="UpdateTopLink('labtest')">Lab Test</a></li>
+                        <li class="pharmacy"><a ng-href="#/pharmacy" ng-click="UpdateTopLink('pharmacy')">Pharmacy</a></li>
+                        <li class="appointment"><a ng-href="#/appointment" ng-click="UpdateTopLink('appointment')">Appointment</a></li>
+                        <li class="bedsetup"><a ng-href="#/bedsetup" ng-click="UpdateTopLink('bedsetup')">Bed Setup</a></li>
                         <li class="billing"><a ng-href="#/billing" ng-click="UpdateTopLink('billing')">Billing</a></li>
+                        <li class="configuration"><a ng-href="#/configuration" ng-click="UpdateTopLink('configuration')">Configuration</a></li>
 
                     </ul>
 

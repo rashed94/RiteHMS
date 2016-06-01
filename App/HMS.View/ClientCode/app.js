@@ -14,13 +14,52 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload']).
         when('/patientResistration/:id', {
             templateUrl: '/ClientCode/Template/EditPatient.html',
         }).
+        when('/bedsetup', {
+            templateUrl: '/ClientCode/Template/BedSetup.html',
+
+                  }).
+        when('/bedsetup/:tab', {
+            templateUrl: '/ClientCode/Template/BedSetup.html',
+
+        }).
+
+        when('/pharmacy', {
+            templateUrl: '/ClientCode/Template/Pharmacy.html',
+
+        }).
+        when('/pharmacy/:tab', {
+            templateUrl: '/ClientCode/Template/Pharmacy.html',
+
+        }).
+
         when('/billing', {
             templateUrl: '/ClientCode/Template/Billing.html',
-           
+
         }).
         when('/billing/:tab', {
             templateUrl: '/ClientCode/Template/Billing.html',
-       
+
+        }).
+        when('/appointment', {
+            templateUrl: '/ClientCode/Template/Appointment.html',
+
+        }).
+        when('/labtest', {
+            templateUrl: '/ClientCode/Template/LabTest.html',
+
+        }).
+        when('/labtest/:tab', {
+            templateUrl: '/ClientCode/Template/LabTest.html',
+
+        }).
+
+        when('/configuration', {
+            templateUrl: '/ClientCode/Template/Configuration.html',
+
+        }).
+        when('/configuration/:tab', {
+            templateUrl: '/ClientCode/Template/Configuration.html',
+
         }).
         when('/contact/:id', {
             templateUrl: '/ClientCode/Template/EditContact.html',

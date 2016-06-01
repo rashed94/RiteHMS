@@ -123,14 +123,28 @@
   <ItemGroup>
     <Content Include="ClientCode\app.js" />
     <Content Include="ClientCode\Script\Controller\AddItemController.js" />
+    <Content Include="ClientCode\Script\Controller\AppointmentController.js" />
+    <Content Include="ClientCode\Script\Controller\BedSetupController.js" />
+    <Content Include="ClientCode\Script\Controller\ConfigurationController.js" />
+    <Content Include="ClientCode\Script\Controller\LabTestController.js" />
+    <Content Include="ClientCode\Script\Controller\PharmacyController.js" />
     <Content Include="ClientCode\Script\Controller\UserController.js" />
     <Content Include="ClientCode\Script\Service\AddItemService.js" />
+    <Content Include="ClientCode\Script\Service\AppointmentService.js" />
+    <Content Include="ClientCode\Script\Service\BedSetupService.js" />
+    <Content Include="ClientCode\Script\Service\ConfigurationService.js" />
+    <Content Include="ClientCode\Script\Service\LabTestLService.js" />
+    <Content Include="ClientCode\Script\Service\PharmacyService.js" />
     <Content Include="ClientCode\Script\Service\UserService.js" />
+    <Content Include="ClientCode\Template\Appointment.html" />
+    <Content Include="ClientCode\Template\BedSetup.html" />
     <Content Include="ClientCode\Template\Billing.html" />
+    <Content Include="ClientCode\Template\Configuration.html" />
     <Content Include="ClientCode\Template\Contact.html" />
     <Content Include="ClientCode\Template\EditContact.html" />
     <Content Include="ClientCode\Template\EditPatient.html" />
     <Content Include="ClientCode\Template\Invoice.html" />
+    <Content Include="ClientCode\Template\LabTest.html" />
     <Content Include="ClientCode\Template\PatientInfo.html" />
     <Content Include="ClientCode\Script\Controller\BillingController.js" />
     <Content Include="ClientCode\Script\Service\BillingService.js" />
@@ -139,6 +153,7 @@
     <Content Include="ClientCode\Script\Controller\ModalController.js" />
     <Content Include="ClientCode\Script\Controller\PatientController.js" />
     <Content Include="ClientCode\Script\Service\PatientService.js" />
+    <Content Include="ClientCode\Template\Pharmacy.html" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\datepicker.css" />
@@ -153,6 +168,7 @@
     <Content Include="images\arrow_green.gif" />
     <Content Include="images\arrow_head.gif" />
     <Content Include="images\hospitalmanagement.gif" />
+    <Content Include="images\icon_arrow.gif" />
     <Content Include="images\ico_calender.gif" />
     <Content Include="images\ico_note.gif" />
     <Content Include="images\ico_patient.gif" />

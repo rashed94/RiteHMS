@@ -17,7 +17,7 @@
 //    };
 //});
 
-HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout, $window, $modal, $filter, $http, PatientService) {
+HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout, $window, $modal,$location, $filter, $http, PatientService) {
     //$scope.calculateAge = function (birthday) { // birthday is a date
     //    var ageDifMs = Date.now() - birthday.getTime();
     //    var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -284,23 +284,64 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     };
 
     $scope.UpdateTopLink = function (link) {
-        if (link == 'patient') {
+        if (link.indexOf("patient")>-1) {
         $('.site_navigation li a').removeClass('selected');
         $('.site_navigation li.patientinfo a').addClass('selected');
             // $location.path = $location.path(link);
       //  $window.location.href = '#/patient';
         }
-        if(link=='billing')
+        else if( link.indexOf("billing")>-1)
         {
             $('.site_navigation li a').removeClass('selected');
             $('.site_navigation li.billing a').addClass('selected');
           
           //  $window.location.href = '#/billing';
         }
+        else if (link.indexOf("labtest")>-1) {
+            $('.site_navigation li a').removeClass('selected');
+            $('.site_navigation li.labtest a').addClass('selected');
+
+            //  $window.location.href = '#/billing';
+        }
+        else if ( link.indexOf("appointment")>-1) {
+            $('.site_navigation li a').removeClass('selected');
+            $('.site_navigation li.appointment a').addClass('selected');
+
+            //  $window.location.href = '#/billing';
+        }
+        else if ( link.indexOf("configuration")>-1) {
+            $('.site_navigation li a').removeClass('selected');
+            $('.site_navigation li.configuration a').addClass('selected');
+
+            //  $window.location.href = '#/billing';
+        }
+        else if (link.indexOf("pharmacy") > -1) {
+            $('.site_navigation li a').removeClass('selected');
+            $('.site_navigation li.pharmacy a').addClass('selected');
+
+            //  $window.location.href = '#/billing';
+        }
+
+        else if (link.indexOf("bedsetup") > -1) {
+            $('.site_navigation li a').removeClass('selected');
+            $('.site_navigation li.bedsetup a').addClass('selected');
+
+            //  $window.location.href = '#/billing';
+        }
+        else {
+            $('.site_navigation li a').removeClass('selected');
+            $('.site_navigation li.patientinfo a').addClass('selected');
+
+        }
 
     }
-    $('.site_navigation li a').removeClass('selected');
-    $('.site_navigation li.patientinfo a').addClass('selected');
+
+
+    if ($location.path() != null) {
+
+        $scope.UpdateTopLink($location.path());
+    }
+
 
     if ($routeParams.id != null) {
         $scope.GetPatientById($routeParams.id);
