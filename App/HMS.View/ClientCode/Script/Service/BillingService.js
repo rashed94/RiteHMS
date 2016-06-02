@@ -6,7 +6,18 @@
     };
 
     BillingService.SaveInvoice = function (invoice, patientServices) {
-        invoice.PatientServices = patientServices;
+        if (invoice.Id == null) {
+            invoice.PatientServices = patientServices;
+            invoice.Refunds = null;
+            invoice.InvoicePayments = null;
+            invoice.Patient = null;
+        } else
+        {
+            invoice.PatientServices = null;
+            invoice.Refunds = null;
+            invoice.InvoicePayments = null;
+            invoice.Patient = null;
+        }
         return $http.post('/Billing/CreateInvoice', invoice);
 
         //$http.post(url, JSON.stringify({ issue: issueDetails, 
@@ -19,8 +30,9 @@
         return $http.post('/Billing/CreatePayment', payment);
 
     };
-    BillingService.GetInvoicesByPatientId = function (patientid) {
-        return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid);
+    BillingService.GetInvoicesByPatientId = function (patientid, invoicestatus) {
+        //return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + "&statusid=1" );
+        return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + '&statusid=' + invoicestatus);
     };
 
     //BillingService.GetInvoices = function (patientid) {

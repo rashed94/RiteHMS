@@ -82,34 +82,55 @@ namespace HMS.Controllers
         //    return Json("invoice loaded success fully");
 
         //}
-        public JsonResult GetInvoicesByPatientId(long id)
+        public JsonResult GetInvoicesByPatientId(long id, long statusid)
         {
             List<PatientInvoice> onlypatientInvoices = new List<PatientInvoice>();
             List<PatientInvoice> patientInvoices;
             using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
             {
-                ParameterExpression argParam = Expression.Parameter(typeof(PatientInvoice), "s");
+               /* ParameterExpression argParam = Expression.Parameter(typeof(PatientInvoice), "s");
                 Expression patientProperty = Expression.Property(argParam, "PatientID");
-               // Expression namespaceProperty = Expression.Property(argParam, "Namespace");
+                Expression statusProperty = Expression.Property(argParam, "InvoiceStatusId");
 
                 var val1 = Expression.Constant(id);
-              //  var val2 = Expression.Constant("Namespace");
+                var val2 = Expression.Constant(statusid);
 
                 Expression e1 = Expression.Equal(patientProperty, val1);
-              //  Expression e2 = Expression.Equal(namespaceProperty, val2);
-              //  var andExp = Expression.AndAlso(e1, e2);
-                var andExp = e1;
+                Expression e2 = Expression.Equal(statusProperty, val2);
 
-                var lambda = Expression.Lambda<Func<PatientInvoice, bool>>(andExp, argParam);
+                BinaryExpression andExp;*/
 
-                if (id != 0)
+     
+               // var andExp = e1;
+
+                //var lambda = Expression.Lambda<Func<PatientInvoice, bool>>(andExp, argParam);
+                Expression<Func<PatientInvoice, bool>> lambda;
+
+                if (id == 0)
                 {
-                   patientInvoices = repository.GetByQuery(lambda).ToList();
+                    if (statusid == 0)
+                    {
+                        lambda = (x => x.Active==true);
+                    }
+                    else
+                    {
+                        lambda = (x => x.InvoiceStatusId == statusid && x.Active == true);
+                    }
                 }else
                 {
-                  patientInvoices = repository.GetByQuery().ToList();
+                    if (statusid == 0)
+                    {
+                        lambda = (x => x.PatientID == id && x.Active == true);
+                    }else
+                    {
+                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceStatusId == statusid);
+                        
+                    }
                 }
 
+        
+                patientInvoices = repository.GetByQuery(lambda).ToList();
+           
 
 
                 foreach (PatientInvoice pinvoice in patientInvoices)
@@ -276,8 +297,17 @@ namespace HMS.Controllers
             {
                // patientInvoice.UserId = Convert.ToInt32(userId);
                // patientInvoice.InvoiceStatusId = 1;
-                patientInvoice=repository.Insert(pinvoice);
-                repository.Commit();
+                if (pinvoice.Id == 0)
+                {
+                   
+                    patientInvoice = repository.Insert(pinvoice);
+                    repository.Commit();
+                }
+                else
+                {
+                    patientInvoice = repository.Update(pinvoice);
+                    repository.Commit();
+                }
 
 
                // repository.Commit();

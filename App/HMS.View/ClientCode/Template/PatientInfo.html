@@ -3,7 +3,7 @@
     <div class="home_top">
         <div class="home_patient_details">
             <div class="patient_pic" >
-                <div ng-show="Patient != null"><img src="GetImage.ashx?Name={{Patient.Photo}}" width="115" height="146" alt="{{Patient.FirstName}} {{Patient.LastName}}"></div>
+                <div ng-show="Patient != null"><img ng-src="GetImage.ashx?Name={{Patient.Photo}}" width="115" height="146" alt="{{Patient.FirstName}} {{Patient.LastName}}"></div>
 
                 <input name="Admit to Hospital" type="button" value="Admit to Hospital" class="sm_button">
             </div>

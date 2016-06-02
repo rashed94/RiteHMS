@@ -36,7 +36,7 @@
             <div class="payment_detail_right line_height_small">
                 <p>
                     <h2>INVOICE DATE</h2>
-                    {{Invoice.InvoiceDate.getDate() + '/' + Invoice.InvoiceDate.getMonth() + '/' + Invoice.InvoiceDate.getFullYear()}}
+                    {{Invoice.InvoiceDate}}
                 </p>
                 <p>
                     <h2>INVOICE NO</h2>
@@ -46,7 +46,7 @@
                     <h2>TOTAL</h2>
                     {{Invoice.TotalAmount}}  BDT  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;            
                 <h2>PAID</h2>
-                    {{Invoice.PaidAmount}}  BDT
+                    {{TotalPaid}}  BDT
                 </p>
             </div>
             <div style="clear: both"></div>

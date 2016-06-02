@@ -6,7 +6,26 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.TotalAmount = 0;
     $scope.TotalAmountAfterDiscount = 0
     $scope.TotalReferralFee = 0;
-   
+    $scope.paymentType = false;//first payment
+    $scope.invoiceStatus = 0;
+
+    $scope.Invoice = {
+        Id: null,
+        InvoiceDate: "",
+        DueDate: "",
+        PatientID: $scope.Patient.Id,
+        TotalAmount: 0.0,
+        //PaidAmount: 0.0,
+        //PaymentAmount: 0.0,
+        //PaymentMethod: 'Cash',
+        //CoPayerAmount: 0.0,
+        //ReconcileAmount: 0.0,
+        TotalDiscount: 0.0,
+        InvoiceStatusId: 1,
+        ItemDiscount: "",
+        UserId: null
+    };
+
     $scope.CalculateTotalDiscount = function () {
         $scope.TotalAmount = 0;
         $scope.TotalDiscount = 0;
@@ -25,24 +44,27 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
 
     $scope.GetBillingItemByPatientId = function (patientId) {
-        BillingService.GetBillingItemByPatientId(patientId)
-            .success(function (pt) {
-                $scope.BillingItem = pt;
+        if ($scope.Patient.Id != null) {
+            BillingService.GetBillingItemByPatientId(patientId)
+                .success(function (pt) {
+                    $scope.BillingItem = pt;
 
-                $scope.adjustBillingData();
-                $scope.CalculateTotalDiscount();
+                    $scope.adjustBillingData();
+                    $scope.CalculateTotalDiscount();
 
-                console.log($scope.BillingItem);
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to load Billing data: ' + error.message;
-                console.log($scope.status);
-            });
+                    console.log($scope.BillingItem);
+                })
+                .error(function (error) {
+                    $scope.status = 'Unable to load Billing data: ' + error.message;
+                    console.log($scope.status);
+                });
+        }
     }
 
     $scope.adjustAfterDiscount = function (billingitem) {
 
         // if amount is selected
+        
         if (billingitem.DisCountTypeID == 0)
         {
             if (billingitem.Discount != "") {
@@ -75,6 +97,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
            
         }
+        billingitem.ServiceListPriceAfterDiscountSingleQuantity = billingitem.ServiceListPriceAfterDiscount / billingitem.ServiceQuantity;
 
        // billingitem.ServiceListPriceAfterDiscountWithQuantity = billingitem.ServiceListPriceAfterDiscount * billingitem.ServiceQuantity
 
@@ -96,6 +119,8 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             { id: '0', name: 'By Amount' },
             { id: '1', name: 'By Percentage' },
             ];
+            obj.OriginalAmountSingleQuantity = obj.ServiceListPrice / obj.ServiceQuantity;
+            obj.ServiceListPriceAfterDiscountSingleQuantity = obj.ServiceListPriceAfterDiscount / obj.ServiceQuantity;
 
         });
     }
@@ -120,13 +145,20 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     //    BillingService.SaveInvoice($scope.Invoice);
     //};
 
-    $scope.InvoiceModal = function (size, isEdit) {
+    $scope.InvoiceModal = function (size,isEdit, singleinvoice) {
         var billingItems = [];
-        angular.forEach($scope.BillingItem, function (item) {
-            if (item.Selected) {
-                billingItems.push(item);
-            }
-        });
+        var singleInvoice = {};
+
+        if (singleinvoice.Id == null) {
+            angular.forEach($scope.BillingItem, function (item) {
+                if (item.Selected) {
+                    billingItems.push(item);
+                }
+            });
+        } else
+        {
+            singleInvoice = singleinvoice;
+        }
         //var billingItems = [
         //    {
         //        ItemId: 112,
@@ -144,14 +176,21 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             scope: $scope,
             resolve: {
                 billingItems: function () {
-                    return isEdit ? $scope.BillingItems : billingItems;
+                    return billingItems;
+                },
+                // billingItems:billingItems
+                singleInvoice: function () {
+                    return singleInvoice;
                 }
+                
+          
             }
         });
         modalInstance.result.then(function (result) {
            // $scope.Invoice = result.Invoice;
            // $scope.SaveInvoice();
         }, function () {
+            $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
             console.log('Modal dismissed at: ' + new Date());
             
         });
@@ -159,15 +198,32 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
 
 
-    $scope.toggleDetail = function ($index) {
+    $scope.toggleDetail = function (item) {
         //$scope.isVisible = $scope.isVisible == 0 ? true : false;
-        $scope.activePosition = $scope.activePosition == $index ? -1 : $index;
+        var postion= !item.activePosition ;
+        if (postion)
+        {
+           // $(event.target).addClass('fa fa-arrow-down fa-2x');
+            item.selectedIcon = false;
+            item.activePosition = true;
+        } else {
+
+            // $(event.target).addClass('fa fa-arrow-circle-right fa-2x');
+            item.selectedIcon = true;
+            item.activePosition = false;
+
+        }
     };
 
     //$scope.GetBillingItemByPatientId($scope.Patiend.Id);
     var tabClass = ".summary";
     if ($routeParams.tab != null) {
         tabClass = "." + $routeParams.tab;
+    }
+    $scope.updateQuantityChange=function(item)
+    {
+        item.ServiceListPriceAfterDiscount = item.ServiceListPriceAfterDiscountSingleQuantity * item.ServiceQuantity;
+        item.ServiceListPrice = item.OriginalAmountSingleQuantity * item.ServiceQuantity;
     }
 
     function prepareInvoiceDataModel()
@@ -176,10 +232,27 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
             item.Paid = 0;
             item.InvoiceDate = ToJavaScriptDate(item.InvoiceDate);
+
+            item.ServiceListPriceAfterDiscount = item.ServiceListPrice;
+
+
+
+            if (item.InvoiceStatusId == 1)
+            {
+                item.Staus = "Open";
+            } else if (item.InvoiceStatusId == 2)
+            {
+                item.Staus = "Closed";
+            } else if (item.InvoiceStatusId == 3)
+            {
+                item.Staus = "Refunded";
+            }
            
             angular.forEach(item.InvoicePayments, function (paymentitem) {
 
                 item.Paid = paymentitem.Amount + item.Paid;
+                item.selectedIcon = true;
+                item.activePosition = false;
 
             });
         });
@@ -190,14 +263,14 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         //console.log($scope.patientSelection);
         if($scope.patientSelection==0)
         {
-            $scope.GetInvoices(0);
+            $scope.GetInvoices(0, $scope.invoiceStatus);
         }else
         {
-            $scope.GetInvoices($scope.Patient.Id);
+            $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
         }
     }
-    $scope.GetInvoices = function (patientId) {
-        BillingService.GetInvoicesByPatientId(patientId)
+    $scope.GetInvoices = function (patientId,invoicestatus) {
+        BillingService.GetInvoicesByPatientId(patientId, invoicestatus)
             .success(function (pt) {
                 $scope.invocieslist = pt;
                 prepareInvoiceDataModel();
@@ -211,12 +284,39 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
     if ($routeParams.tab == "invoices") {
 
-        $scope.GetInvoices($scope.Patient.Id);
+        if ($scope.Patient.Id != null) {
+            $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+        }
 
        
     }
 
 
+    //$scope.$watch($scope.Patient, function () {
+
+    //    if ($routeParams.tab == "invoices") {
+
+    //        $scope.GetInvoices($scope.Patient.Id);
+
+
+    //    }
+        
+    //});
+    $scope.$on('patientchange', function (event, args) {
+        // console.log("patient changes");
+            if ($routeParams.tab == "invoices") {
+
+                $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+                $scope.patientSelection = 1;
+
+            }
+
+            if ($routeParams.tab == "summary") {
+
+                $scope.GetBillingItemByPatientId($scope.Patient.Id);
+
+            }
+    });
 
 
 

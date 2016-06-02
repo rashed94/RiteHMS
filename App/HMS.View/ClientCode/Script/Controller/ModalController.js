@@ -10,10 +10,11 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, 
     };
 });
 
-HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance,$filter,$window, billingItems, BillingService) {
+HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $filter, $window, billingItems, singleInvoice, BillingService) {
 
     $scope.PatientServiceItem = [];
     $scope.InvoicePayments = [];
+    $scope.TotalPaid = 0.00;
 
     $scope.Invoice = {
         Id: null,
@@ -110,28 +111,49 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance,$fi
         $scope.PatientServiceItem.push($scope.serviceItem);
     }
 
+    $scope.saveInvoice = function () {
+        BillingService.SaveInvoice($scope.Invoice, $scope.PatientServiceItem)
+         .success(function (data) {
 
-    angular.forEach(billingItems, function (item, key) {
-        $scope.Invoice.TotalAmount += item.ServiceListPriceAfterDiscount * item.ServiceQuantity;
-        $scope.Invoice.TotalDiscount += item.Discount * item.ServiceQuantity;
-        $scope.GenerateServiceItem(item);
+             console.log(data);
+             $scope.Invoice = data;
+             $scope.Invoice.InvoiceDate = ToJavaScriptDate($scope.Invoice.InvoiceDate);
+             
 
-    });
+         })
+            .error(function (error) {
+                $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+                console.log($scope.status);
+            });
+    }
 
-  
+    // first payment while invoice is not there
+    if (singleInvoice.Id == null && billingItems.length>0) {
+        angular.forEach(billingItems, function (item, key) {
+            $scope.Invoice.TotalAmount += item.ServiceListPriceAfterDiscount * item.ServiceQuantity;
+            $scope.Invoice.TotalDiscount += item.Discount * item.ServiceQuantity;
+            $scope.GenerateServiceItem(item);
 
-    BillingService.SaveInvoice($scope.Invoice, $scope.PatientServiceItem)
-     .success(function (data) {
-
-                console.log(data);
-                $scope.Invoice = data;
-                $scope.Invoice.InvoiceDate = ConvertJsonDateString($scope.Invoice.InvoiceDate);
-
-            })
-        .error(function (error) {
-            $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
-            console.log($scope.status);
         });
+
+
+
+        $scope.saveInvoice();
+
+
+
+    } else // second payment while invoice is there
+    {
+        // console.log("need to load invoice");
+        $scope.Invoice = singleInvoice;
+        angular.forEach($scope.Invoice.InvoicePayments, function (item) {
+            
+            $scope.TotalPaid = $scope.TotalPaid + item.Amount;
+            $scope.Invoice.PaymentAmount = parseFloat($scope.Invoice.TotalAmount) - parseFloat($scope.TotalPaid);
+            
+        });
+
+    }
 
 
 
@@ -139,28 +161,53 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance,$fi
 
 
 
+        if ($scope.Invoice.Id != null) {
+
+            var paymentamount =0;
+            var total = parseFloat($scope.TotalPaid);
+            var recenpayment=parseFloat( $scope.Invoice.PaymentAmount);
 
 
-        $scope.Payment.Amount = $scope.Invoice.PaymentAmount;
+            paymentamount = (total + recenpayment);
 
-        $scope.InvoicePayment.PatientInvoiceId = $scope.Invoice.Id;
-        $scope.InvoicePayment.Amount = $scope.Invoice.PaymentAmount;
-        $scope.InvoicePayments.push($scope.InvoicePayment);
-        $scope.Payment.InvoicePayments = $scope.InvoicePayments;
+            if (paymentamount == $scope.Invoice.TotalAmount)
+            {
+                $scope.Invoice.InvoiceStatusId = "2";
 
-        BillingService.SavePayment($scope.Payment)
-        .success(function (data) {
+            } else if (paymentamount > $scope.Invoice.TotalAmount)
+            {
+                $scope.Invoice.PaymentAmount = parseFloat($scope.Invoice.TotalAmount) - total;
+                $scope.Invoice.InvoiceStatusId = "2";
+            }
 
-            console.log(data);
-            // $scope.Invoice.Id = data;
-            $modalInstance.close({ Invoice: $scope.Invoice, });
-            $window.location.href = '#/billing/invoices';
 
-        })
-        .error(function (error) {
-             $scope.status = 'Unable to save Payment data: ' + error.message;
-             console.log($scope.status);
-        });
+
+            $scope.Payment.Amount = $scope.Invoice.PaymentAmount;
+
+            $scope.InvoicePayment.PatientInvoiceId = $scope.Invoice.Id;
+            $scope.InvoicePayment.Amount = $scope.Invoice.PaymentAmount;
+            $scope.InvoicePayments.push($scope.InvoicePayment);
+            $scope.Payment.InvoicePayments = $scope.InvoicePayments;
+
+            BillingService.SavePayment($scope.Payment)
+            .success(function (data) {
+
+                console.log(data);
+                // $scope.Invoice.Id = data;
+                // $modalInstance.close({ Invoice: $scope.Invoice, });
+
+                $scope.Invoice.DueDate = ToJavaScriptDate($scope.Invoice.DueDate);
+                $scope.Invoice.InvoiceDate = ToJavaScriptDate($scope.Invoice.InvoiceDate);
+                $scope.saveInvoice();
+                $modalInstance.dismiss('cancel');
+                $window.location.href = '#/billing/invoices';
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to save Payment data: ' + error.message;
+                console.log($scope.status);
+            });
+        }
 
 
 

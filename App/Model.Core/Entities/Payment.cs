@@ -21,6 +21,7 @@ namespace HMS.Model.Core
     
         public virtual ICollection<InvoicePayment> InvoicePayments { get; set; }
         public virtual Patient Patient { get; set; }
+       
         public virtual PaymentType PaymentType { get; set; }
         public virtual ICollection<ReceiptPayment> ReceiptPayments { get; set; }
 

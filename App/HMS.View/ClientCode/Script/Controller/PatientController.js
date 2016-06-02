@@ -27,6 +27,23 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.Items = [];
     $scope.Patient = {};
     $scope.Patient.Photo = "";
+    $scope.IsPatientLoaded = "";
+
+
+    $scope.$watch('Patient', function () {
+
+        if ($scope.Patient) {
+
+            if ($scope.Patient.Id != null) {
+
+                sessionStorage.PatientService = angular.toJson($scope.Patient);
+            }
+        }
+        
+        $scope.$broadcast('patientchange', { "val": '' });
+    });
+
+    $scope.Patient = angular.fromJson(sessionStorage.PatientService);
 
     $scope.initDatePicker=function () {
         $('.reportdeliverydate').datepicker({
@@ -68,6 +85,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                 }
                 //$scope.$broadcast('update_child_controller', $scope.Patient);
                 console.log($scope.Patient);
+               // $scope.IsPatientLoaded = $scope.Patient.Id;
             })
             .error(function (error) {
                 $scope.status = 'Unable to load Patient data: ' + error.message;
@@ -81,6 +99,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                 $scope.Patient = pt;
                 $scope.Patient.Name = pt.FirstName + " " + pt.LastName;
                 console.log($scope.Patient);
+               // $scope.IsPatientLoaded = $scope.Patient.Id;
             })
             .error(function (error) {
                 $scope.status = 'Unable to load Patient data: ' + error.message;
@@ -93,6 +112,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
             .success(function (pt) {
                 $scope.Patients = pt;
                 console.log($scope.Patients);
+               // $scope.IsPatientLoaded = $scope.Patient.Id;
             })
             .error(function (error) {
                 $scope.status = 'Unable to load Patient data: ' + error.message;
@@ -350,6 +370,6 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         $scope.GetPatientById($routeParams.id);
     }
     else {
-        $scope.Patient = {};
+        //$scope.Patient = {};
     }
 });

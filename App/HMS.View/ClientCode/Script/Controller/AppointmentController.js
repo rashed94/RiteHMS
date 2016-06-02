@@ -1,5 +1,5 @@
 ﻿'use strict';
-HmsApp.controller("AddItemController", function ($scope, $routeParams, $window, $filter, $modal, BillingService) {
+HmsApp.controller("AppointmentController", function ($scope, $routeParams, $window, $filter, $modal, BillingService) {
 
     //var tabClass = ".copayer";
     //if ($routeParams.tab != null) {

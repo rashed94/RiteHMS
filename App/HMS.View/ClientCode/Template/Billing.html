@@ -49,7 +49,7 @@
         <div style="clear: both"></div>
         <div class="box_general_wihout_border margin_bottom_small">
 
-            <button type="button" class="sm_button modal_click" ng-click="InvoiceModal('lg')">build invoice</button>
+            <button type="button" class="sm_button modal_click" ng-click="InvoiceModal('lg',false,Invoice)">build invoice</button>
             <button type="button" class="sm_button modal_click" data-toggle="modal" data-target="#receiptView">build receipt</button>
 
         </div>
@@ -76,7 +76,7 @@
                             <td><input type="checkbox" name="lineitem" ng-model="billingitem.Selected" class="lineitem_check_box"></td>
                             <td>{{billingitem.Item.Name}}</td>
                             <td>{{billingitem.Item.GenericName}}</td>
-                            <td><input type="text" width="50" name="quantity" ng-disabled="billingitem.Item.ReferralAllowed" ng-model="billingitem.ServiceQuantity" class="quantity"></td>
+                            <td><input type="text" width="50" name="quantity" ng-change="updateQuantityChange(billingitem)" ng-disabled="billingitem.Item.ReferralAllowed" ng-model="billingitem.ServiceQuantity" class="quantity"></td>
                             <td><input type="text" width="100" name="cost" ng-model="billingitem.ServiceListPrice" class="cost"></td>
                             <td><input type="text" width="100" name="discount" ng-change="adjustAfterDiscount(billingitem)" ng-model="billingitem.Discount" class="discount"></td>
                             <td>
@@ -182,10 +182,12 @@
                 <input type="radio" value="0" ng-model="patientSelection" ng-change="reloadInvoice()" name="patient" class="all_patient_checkbox"><h2>all patient</h2>
                 <input type="radio" value="1" ng-model="patientSelection" ng-change="reloadInvoice()" ng-checked="true" name="patient" class="selected_patient_checkbox"><h2>selected patient</h2>
             </div>
-            <select name="status" class="invoice_status">
-                <option value="open">OPEN</option>
-                <option value="close">CLOSED</option>
-                <option value="refunded">REFUNDED</option>
+            <select name="status" class="invoice_status" ng-model="invoiceStatus" ng-change="reloadInvoice()">
+                <option value=" 0" ng-selected="true">
+                ALL</option>
+                <option value="1">OPEN</option>
+                <option value="2">CLOSED</option>
+                <option value="3">REFUNDED</option>
             </select>
         </div>
         <div style="clear: both;"></div>
@@ -208,7 +210,7 @@
                     </thead>
                     <tbody ng-repeat="singleinvoice in invocieslist">
                         <tr>
-                            <td><a class="fa fa-arrow-circle-right fa-2x" aria-hidden="true" href="#" ng-click="$event.preventDefault();toggleDetail($index)"></a></td>
+                            <td><a ng-class="{'fa fa-arrow-circle-right fa-2x' : singleinvoice.selectedIcon==true,'fa fa-arrow-circle-down fa-2x':singleinvoice.selectedIcon==false}" aria-hidden="true" href="#" ng-click="$event.preventDefault();toggleDetail(singleinvoice)"></a></td>
                             <td>{{singleinvoice.InvoiceDate}} </td>
                             <td>{{singleinvoice.Id}}</td>
                             <td>{{singleinvoice.Patient.FirstName}} {{singleinvoice.Patient.LastName}}</td>
@@ -216,10 +218,10 @@
                             <td>{{singleinvoice.Paid}}</td>
                             <td>
                                 0.00
-                            <td><span class="status_green">Open</span></td>
-                            <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#" ng-click="$event.preventDefault();"></a>&nbsp;<a class="link_brown" href="#" ng-click="$event.preventDefault();">payment</a></td>
+                            <td><span class="status_green">{{singleinvoice.Staus}}</span></td>
+                            <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#" ng-click="$event.preventDefault();"></a>&nbsp;<a class="link_brown" ng-show="singleinvoice.InvoiceStatusId == 1;" href="#" ng-click="$event.preventDefault();InvoiceModal('lg',true,singleinvoice)">payment</a></td>
                         </tr>
-                        <tr ng-show="activePosition == $index">
+                        <tr ng-show="singleinvoice.activePosition">
                             <td colspan="9" align="center" class="padding_left60">
 
                                 <table width="90%" border="1" align="center" class="bordered small_header">
