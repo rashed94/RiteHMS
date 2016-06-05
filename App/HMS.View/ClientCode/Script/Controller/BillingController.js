@@ -13,7 +13,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         Id: null,
         InvoiceDate: "",
         DueDate: "",
-        PatientID: $scope.Patient.Id,
+        PatientID: null,
         TotalAmount: 0.0,
         //PaidAmount: 0.0,
         //PaymentAmount: 0.0,
@@ -44,20 +44,22 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
 
     $scope.GetBillingItemByPatientId = function (patientId) {
-        if ($scope.Patient.Id != null) {
-            BillingService.GetBillingItemByPatientId(patientId)
-                .success(function (pt) {
-                    $scope.BillingItem = pt;
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
+                BillingService.GetBillingItemByPatientId(patientId)
+                    .success(function (pt) {
+                        $scope.BillingItem = pt;
 
-                    $scope.adjustBillingData();
-                    $scope.CalculateTotalDiscount();
+                        $scope.adjustBillingData();
+                        $scope.CalculateTotalDiscount();
 
-                    console.log($scope.BillingItem);
-                })
-                .error(function (error) {
-                    $scope.status = 'Unable to load Billing data: ' + error.message;
-                    console.log($scope.status);
-                });
+                        console.log($scope.BillingItem);
+                    })
+                    .error(function (error) {
+                        $scope.status = 'Unable to load Billing data: ' + error.message;
+                        console.log($scope.status);
+                    });
+            }
         }
     }
 
@@ -311,11 +313,11 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
             }
 
-            if ($routeParams.tab == "summary") {
+            //if ($routeParams.tab == "summary") {
 
                 $scope.GetBillingItemByPatientId($scope.Patient.Id);
 
-            }
+            //}
     });
 
 

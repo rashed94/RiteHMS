@@ -215,6 +215,7 @@
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LabTestController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="GetImage.ashx.cs">
@@ -243,6 +244,7 @@
     <Folder Include="ClientCode\Script\Directive\" />
     <Folder Include="Models\" />
     <Folder Include="Uploads\Photos\" />
+    <Folder Include="Views\LabTest\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL.EF\DAL.EF.csproj">

@@ -258,10 +258,12 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         if ($scope.Patient.DOB != null) {
             $scope.AgeCalculate();
         }
+       // $scope.$broadcast('patientchange', { "val": '' });
     };
 
     $scope.SearchPatientsByPartialName = function (name) {
         return $http.get('/Patient/SearchPatientByPartialName?name=' + name).then(function (response) {
+           // $scope.Patient = response.data;
             return response.data;
         });
     }

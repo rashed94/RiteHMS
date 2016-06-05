@@ -32,17 +32,18 @@
                 <input type="text" width="110" placeholder="click to show datepicker" name="reportdeliverydate" class="reportdeliverydate">
             </div>
             <div class="select_all_patient">
-                <input type="radio" value="0"  name="patient" class="all_patient_checkbox"><h2>all patient</h2>
-                <input type="radio" value="1"  ng-checked="true" name="patient" class="selected_patient_checkbox"><h2>selected patient</h2>
+                <input type="radio" value="0" ng-model="patientSelection" ng-change="loadLabTest()" name="patient" class="all_patient_checkbox"><h2>all patient</h2>
+                <input type="radio" value="1" ng-model="patientSelection" ng-change="loadLabTest()" ng-checked="true" name="patient" class="selected_patient_checkbox"><h2>selected patient</h2>
             </div>
-            <select name="status" class="invoice_status">
-                <option value="open">PENDING</option>
-                <option value="close">COMPLETED</option>
-                <option value="refunded">REFUNDED</option>
+            <select name="status" class="invoice_status" ng-model="labTestItems" ng-change="loadLabTest()">
+                <option value=" 0" ng-selected="true"> ALL</option>
+                <option value="1">PENDING</option>
+                <option value="2">COMPLETED</option>
+                <option value="3">REFUNDED</option>
             </select>
         </div>
         
-        <table width="100%" border="1" align="center" class="bordered evencolor">
+        <table width="100%" border="1" align="center" class="bordered evencolor" ng-model="labTestItems" ng-init="loadLabTest()">
             <thead>
                 <tr>
                     <th width="3%">&nbsp;</th>
@@ -54,11 +55,11 @@
                     <th width="12%">&nbsp;</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody ng-repeat="labTestitem in labTestItems">
                 <tr>
                     <td><a class="fa fa-arrow-circle-right fa-2x" aria-hidden="true" href="#"></a></td>
-                    <td>11/11/2016 </td>
-                    <td>Demo Name</td>
+                    <td>{{labTestitem.InvoiceDate}}</td>
+                    <td>{{labTestitem.Patient.FirstName}} {{labTestitem.Patient.LastName}}</td>
                     <td>Alimuddin Vuiya</td>
                     <td>rashed</td>
                     <td><span class="status_red">Pending (due)</span></td>
@@ -78,25 +79,17 @@
                                     <th width="21%">&nbsp;</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody ng-repeat="patientservice in labTestitem.PatientServices">
                                 <tr>
-                                    <td>Denatal X-Ray</td>
-                                    <td>Dental</td>
+                                    <td>{{patientservice.Item.Name}}</td>
+                                    <td>{{patientservice.Item.GenericName}}</td>
                                     <td><span class="status_red">Pending</span></td>
                                     <td>
                                         <a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>
-                                       <a href="#" class="link_brown">ENTER RESULT</a>
+                                        <a href="#" class="link_brown">ENTER RESULT</a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>Denatal X-Ray</td>
-                                    <td>Dental</td>
-                                    <td><span class="status_green">Complete</span></td>
-                                    <td>
-                                        <a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>
-                                        <span class="status_green"><a href="#" class="link_brown">ENTER RESULT</a></span>
-                                    </td>
-                                </tr>
+
 
                             </tbody>
                         </table>
