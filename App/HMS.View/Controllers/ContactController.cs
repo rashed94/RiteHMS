@@ -14,7 +14,7 @@ using System.Configuration;
 
 namespace HMS.Controllers
 {
-    public class ContactController : Controller
+    public class ContactController : BaseController
     {
         static readonly string _PhotoLocation = ConfigurationManager.AppSettings["PhotoLocation"];
         //private Repository<Contact> _Repository;

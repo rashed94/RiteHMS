@@ -12,9 +12,9 @@ using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 
-namespace HMS.View.Controllers
+namespace HMS.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : BaseController
     {
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)

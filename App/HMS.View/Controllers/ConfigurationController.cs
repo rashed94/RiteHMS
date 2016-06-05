@@ -94,5 +94,14 @@ namespace HMS.Controllers
                 return Json(serviceProvider, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult DeleteServiceProvider(int Id)
+        {
+            using (Repository<ServiceProvider> repo = new Repository<ServiceProvider>())
+            {
+                repo.DeleteByID(Id);
+            }
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
     }
 }

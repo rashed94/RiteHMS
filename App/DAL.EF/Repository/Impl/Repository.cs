@@ -56,7 +56,7 @@ namespace HMS.DAL.Repository
             //If there is a query, execute it against the dbset
             if (query != null)
             {
-                queryResult = queryResult.Where(query);
+                queryResult = queryResult.Where(query).Where(c => c.Active == true);
             }
 
             //get the include requests for the navigation properties and add them to the query result
@@ -106,7 +106,7 @@ namespace HMS.DAL.Repository
 
         //    _DbSet.Remove(entity);
         //}
-        private void Delete(T entity)
+        public void Delete(T entity)
         {
             if (_DbContext.Entry(entity).State == EntityState.Detached)
                 _DbSet.Attach(entity);
@@ -119,7 +119,7 @@ namespace HMS.DAL.Repository
         //    T entity = _DbSet.Find(id);
         //    _DbSet.Remove(entity);
         //}
-        private void DeleteByID(long id)
+        public void DeleteByID(long id)
         {
             T entity = _DbSet.Find(id);
             entity.Active = false;

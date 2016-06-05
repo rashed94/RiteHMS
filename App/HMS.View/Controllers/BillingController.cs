@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 
 namespace HMS.Controllers
 {
-    public class BillingController : Controller
+    public class BillingController : BaseController
     {
         //private IRepository<Patient> _Repository;
 

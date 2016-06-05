@@ -10,6 +10,10 @@
         return $http.get('/Configuration/GetDepartments');
     };
 
+    ConfigurationService.DeleteServiceProvider = function (id) {
+        return $http.get('/Configuration/DeleteServiceProvider?id=' + id);
+    };
+
     ConfigurationService.SaveServiceProvider = function ($scope, file) {
         var apiUrl = "/Configuration/SaveServiceProvider";
 

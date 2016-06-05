@@ -85,16 +85,18 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
         });
     };
 
-    $scope.SaveServiceProviders = function () {
-        ConfigurationService.SaveServiceProvider()
-        .success(function (serviceProviders) {
-            $scope.ServiceProviders = serviceProviders;
-            console.log($scope.ServiceProviders);
-        })
-        .error(function (error) {
-            $scope.status = 'Unable to load ServiceProviderTypes data: ' + error.message;
-            console.log($scope.status);
-        });
-    }
+    $scope.DeleteServiceProvider = function (serviceProvider) {
+        var reallyDelete = confirm('Really delete this provider?');
+        if (reallyDelete) {
+            ConfigurationService.DeleteServiceProvider(serviceProvider.Id)
+            .success(function (serviceProvider) {
+                // TODO: Remove from collection
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load ServiceProviderTypes data: ' + error.message;
+                console.log($scope.status);
+            });
+        }
+    };
 
 });

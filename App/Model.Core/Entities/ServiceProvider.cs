@@ -18,8 +18,8 @@ namespace HMS.Model.Core
         public long DepartmentId { get; set; }
         public string Speciality { get; set; }
         public string Code { get; set; }
-        public bool? AssignedToAllUsers { get; set; }
-        public bool? IsReferer { get; set; }
+        public bool AssignedToAllUsers { get; set; }
+        public bool IsReferer { get; set; }
     
         public virtual Contact Contact { get; set; }
      
