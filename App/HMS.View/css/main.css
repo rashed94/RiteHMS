@@ -13,6 +13,11 @@ body
 	font-size:12px;
 	color:#6b6c6b;
 }
+
+a {
+    cursor: pointer;
+}
+
 .round_box_title
 {
 	background:url(../images/arrow_head.gif) no-repeat right ;

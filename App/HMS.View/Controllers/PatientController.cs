@@ -16,10 +16,9 @@ using System.Configuration;
 
 namespace HMS.Controllers
 {
-    public class PatientController : Controller
+    public class PatientController : BaseController
     {
         //private IRepository<Patient> _Repository;
-        static readonly string _PhotoLocation = ConfigurationManager.AppSettings["PhotoLocation"];
 
         public PatientController()
         {

@@ -143,6 +143,7 @@
     <Content Include="ClientCode\Template\Contact.html" />
     <Content Include="ClientCode\Template\EditContact.html" />
     <Content Include="ClientCode\Template\EditPatient.html" />
+    <Content Include="ClientCode\Template\EditServiceProvider.html" />
     <Content Include="ClientCode\Template\Invoice.html" />
     <Content Include="ClientCode\Template\LabTest.html" />
     <Content Include="ClientCode\Template\PatientInfo.html" />
@@ -168,7 +169,6 @@
     <Content Include="images\arrow_green.gif" />
     <Content Include="images\arrow_head.gif" />
     <Content Include="images\hospitalmanagement.gif" />
-    <Content Include="images\icon_arrow.gif" />
     <Content Include="images\ico_calender.gif" />
     <Content Include="images\ico_note.gif" />
     <Content Include="images\ico_patient.gif" />
@@ -210,6 +210,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\BillingController.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\ContactController.cs" />

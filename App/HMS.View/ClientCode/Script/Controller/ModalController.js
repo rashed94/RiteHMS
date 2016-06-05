@@ -10,6 +10,17 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, 
     };
 });
 
+HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInstance, serviceProvider, ConfigurationService) {
+    $scope.ServiceProvider = serviceProvider;
+    $scope.ok = function (file) {
+        $modalInstance.close({ ServiceProvider: $scope.ServiceProvider, File: file });
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
 HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $filter, $window, billingItems, singleInvoice, BillingService) {
 
     $scope.PatientServiceItem = [];

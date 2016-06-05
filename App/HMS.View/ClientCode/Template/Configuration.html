@@ -161,7 +161,7 @@
 
             </div>
             <div class="select_all_patient">
-                <input name="Admit to Hospital" type="button" value="ADD SERVICE PROVIDER" class="sm_button">
+                <input name="Admit to Hospital" type="button" value="ADD SERVICE PROVIDER" class="sm_button" ng-click="ServiceProviderModal('lg')">
             </div>
 
             <select name="ServiceProviderType"
@@ -194,7 +194,10 @@
                     <td>{{ServiceProvider.Department.Name}}</td>
                     <td>{{ServiceProvider.Contact.PhoneNumber}}</td>
                     <td>Yes</td>
-                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" href="#"></a></td>
+                    <td>
+                        <a class="fa fa-trash fa-2x" aria-hidden="true" title="Delete" href="#" ng-click=""></a>
+                        <a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" title="Edit" ng-click="ServiceProviderModal('lg', ServiceProvider)"></a>
+                    </td>
                 </tr>
             </tbody>
             <tfoot>
