@@ -35,8 +35,10 @@
                 <input type="radio" value="0" ng-model="patientSelection" ng-change="loadLabTest()" name="patient" class="all_patient_checkbox"><h2>all patient</h2>
                 <input type="radio" value="1" ng-model="patientSelection" ng-change="loadLabTest()" ng-checked="true" name="patient" class="selected_patient_checkbox"><h2>selected patient</h2>
             </div>
-            <select name="status" class="invoice_status" ng-model="labTestItems" ng-change="loadLabTest()">
-                <option value=" 0" ng-selected="true"> ALL</option>
+            <select name="status" class="invoice_status" ng-model="LabTestStatus" ng-change="reloadlabtest()">
+                <option value=" 0" ng-selected="true">
+                    ALL
+                </option>
                 <option value="1">PENDING</option>
                 <option value="2">COMPLETED</option>
                 <option value="3">REFUNDED</option>

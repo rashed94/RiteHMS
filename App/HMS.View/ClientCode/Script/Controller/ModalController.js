@@ -106,7 +106,7 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.Id = item.Id;
         $scope.serviceItem.PatientId = item.PatientID;
         $scope.serviceItem.ItemID = item.ItemID;
-        $scope.serviceItem.InvoiceID = '';
+        $scope.serviceItem.InvoiceID = 0;
         $scope.serviceItem.ServiceListPrice = item.ServiceListPriceAfterDiscount;
         $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
         $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;
@@ -118,6 +118,8 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.ReferralFee = item.ReferralAfterDiscount;
         $scope.serviceItem.DeliveryDate = ToJavaScriptDate(item.DeliveryDate);
         $scope.serviceItem.DeliveryTime = item.DeliveryTime;
+        $scope.serviceItem.ReferralFeePaid = item.ReferralFeePaid;
+        $scope.serviceItem.ServiceProviderId = item.ServiceProviderId;
 
         $scope.PatientServiceItem.push($scope.serviceItem);
     }

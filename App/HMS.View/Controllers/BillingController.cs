@@ -189,6 +189,8 @@ namespace HMS.Controllers
                         patientstitem.Item.Name = c.Item.Name;
                         patientstitem.Item.GenericName = c.Item.GenericName;
                         patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
+                        patientstitem.ReferralFeePaid = c.ReferralFeePaid;
+                        patientstitem.ServiceProviderId = c.ServiceProviderId;
                         onlyPatientInvoice.PatientServices.Add(patientstitem);
 
                     }
@@ -244,6 +246,9 @@ namespace HMS.Controllers
                     patientstitem.ReferralFee = c.ReferralFee;
                     patientstitem.DeliveryDate = c.DeliveryDate;
                     patientstitem.DeliveryTime = c.DeliveryTime;
+                    patientstitem.ReferralFeePaid = c.ReferralFeePaid;
+                    patientstitem.ServiceProviderId = c.ServiceProviderId;
+
                     patientstitem.Item.Name = c.Item.Name;
                     patientstitem.Item.GenericName = c.Item.GenericName;
                     patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
@@ -299,9 +304,20 @@ namespace HMS.Controllers
                // patientInvoice.InvoiceStatusId = 1;
                 if (pinvoice.Id == 0)
                 {
-                   
+                    List<PatientService> patientServiceItems = pinvoice.PatientServices.ToList();
+                    pinvoice.PatientServices = null;
                     patientInvoice = repository.Insert(pinvoice);
                     repository.Commit();
+                    foreach (PatientService item in patientServiceItems)
+                    {
+                        item.InvoiceID = pinvoice.Id;
+                        using (PatientServiceRepository patientservicerepository = new PatientServiceRepository())
+                        {
+                            patientservicerepository.Update(item);
+                            patientservicerepository.Commit();
+                        }
+
+                    }
                 }
                 else
                 {

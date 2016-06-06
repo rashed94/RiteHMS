@@ -121,7 +121,7 @@
 
                             <input name="doctorName" id="doctorName" type="text" ng-show="serviceitem.ReferralAllowed" ng-change="updateReferrerItem(serviceitem,Doctor)" placeholder="Type Doctor's name"
                                 ng-model="Doctor"
-                                typeahead="item as (item.ServiceProvider.Contact.FirstName + ' ' + item.ServiceProvider.Contact.LastName) for item in GetServiceProviderPartialName($viewValue,serviceitem.Id)"
+                                typeahead="item as (item.Contact.FirstName + ' ' + item.Contact.LastName) for item in GetServiceProviderPartialName($viewValue,serviceitem.Id)"
                                 typeahead-on-select="OnDocotorSelect($item,serviceitem)"
                                 typeahead-min-length="1"
                                 typeahead-wait-ms="1"

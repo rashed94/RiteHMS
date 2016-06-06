@@ -15,11 +15,11 @@ namespace HMS.DAL.Repository
 
         }
 
-        public IList<ServiceProvider> GetServiceProviderPartialName(string name, long itemid)
+        public IList<ServiceProvider> GetServiceProviderPartialName(string name,long typeid)
         {
             IQueryable<ServiceProvider> queryResult = _DbSet;
             //  bool active = true;
-            return queryResult.Where(c => c.Contact.FirstName.StartsWith(name) && c.ContactId == c.Contact.Id).ToList();
+            return queryResult.Where(c => c.Contact.FirstName.StartsWith(name) && c.ContactId == c.Contact.Id && c.ServiceProviderTypeId==typeid && c.IsReferer==true && c.Active==true).ToList();
         }
     }
 }

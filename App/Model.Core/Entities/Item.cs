@@ -29,6 +29,7 @@ namespace HMS.Model.Core
         public long? ServiceProviderId { get; set; }
         public bool ReferralAllowed { get; set; }
         public decimal DefaultReferrarFee { get; set; }
+        public long? LabReportGroupId { get; set; }
     
         public virtual ICollection<BedOccupancy> BedOccupancies { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
