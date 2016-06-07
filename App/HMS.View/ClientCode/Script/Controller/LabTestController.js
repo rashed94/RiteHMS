@@ -32,14 +32,16 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     $scope.loadLabTest=function()
     {
         if ($scope.Patient) {
-            if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+            if ($scope.Patient.Id != null) {
+                if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
 
-            if ($scope.patientSelection == 0) {
-                $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, 62);
+                if ($scope.patientSelection == 0) {
+                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, 62);
 
-            } else {
-                $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, 62);
+                } else {
+                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, 62);
 
+                }
             }
         }
 
@@ -49,12 +51,14 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     $scope.reloadlabtest = function () {
        // if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
         if ($scope.Patient) {
-            if ($scope.patientSelection == 0) {
-                $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, 62);
+            if ($scope.Patient.Id != null) {
+                if ($scope.patientSelection == 0) {
+                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, 62);
 
-            } else {
-                $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, 62);
+                } else {
+                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, 62);
 
+                }
             }
         }
 

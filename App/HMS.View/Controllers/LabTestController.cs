@@ -32,7 +32,7 @@ namespace HMS.Controllers
             using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
             {
 
-                patientInvoices = repository.GetPatientInvoicebyMedicalType(id, statusid, medicalTypeID).ToList();
+                patientInvoices = repository.GetPatientInvoicebyMedicalTypeLabTestOnly(id, statusid, medicalTypeID).ToList();
 
                foreach (PatientInvoice pinvoice in patientInvoices)
                {
@@ -47,23 +47,13 @@ namespace HMS.Controllers
                    onlyPatientInvoice.TotalAmount = pinvoice.TotalAmount;
                    onlyPatientInvoice.TotalDiscount = pinvoice.TotalDiscount;
                    onlyPatientInvoice.InvoiceStatusId = pinvoice.InvoiceStatusId;
+                   onlyPatientInvoice.LabStatusId = pinvoice.LabStatusId;
                    onlyPatientInvoice.ItemDiscount = pinvoice.ItemDiscount;
                    onlyPatientInvoice.UserId = pinvoice.UserId;
-                   onlyPatientInvoice.Patient.FatherName = pinvoice.Patient.FirstName;
+                   onlyPatientInvoice.Patient.FirstName = pinvoice.Patient.FirstName;
                    onlyPatientInvoice.Patient.LastName = pinvoice.Patient.LastName;
 
-                   foreach (InvoicePayment invoicepayment in pinvoice.InvoicePayments)
-                   {
-                       InvoicePayment invoicePayment = new InvoicePayment();
 
-                       invoicePayment.Id = invoicepayment.Id;
-                       invoicePayment.PatientInvoiceId = invoicepayment.PatientInvoiceId;
-                       invoicePayment.Amount = invoicepayment.Amount;
-                       invoicePayment.PaymentID = invoicepayment.PaymentID;
-                       invoicePayment.UserId = invoicepayment.UserId;
-                       onlyPatientInvoice.InvoicePayments.Add(invoicePayment);
-
-                   }
 
                    foreach (PatientService c in pinvoice.PatientServices)
                    {

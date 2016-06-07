@@ -148,6 +148,7 @@ namespace HMS.Controllers
                     onlyPatientInvoice.InvoiceStatusId = pinvoice.InvoiceStatusId;
                     onlyPatientInvoice.ItemDiscount = pinvoice.ItemDiscount;
                     onlyPatientInvoice.UserId = pinvoice.UserId;
+                   onlyPatientInvoice.LabStatusId = pinvoice.LabStatusId; 
                     onlyPatientInvoice.Patient.FatherName = pinvoice.Patient.FirstName;
                     onlyPatientInvoice.Patient.LastName = pinvoice.Patient.LastName;
 
@@ -248,6 +249,7 @@ namespace HMS.Controllers
                     patientstitem.DeliveryTime = c.DeliveryTime;
                     patientstitem.ReferralFeePaid = c.ReferralFeePaid;
                     patientstitem.ServiceProviderId = c.ServiceProviderId;
+                    patientstitem.LabStatusId = c.LabStatusId;
 
                     patientstitem.Item.Name = c.Item.Name;
                     patientstitem.Item.GenericName = c.Item.GenericName;
@@ -311,6 +313,7 @@ namespace HMS.Controllers
                     foreach (PatientService item in patientServiceItems)
                     {
                         item.InvoiceID = pinvoice.Id;
+                        
                         using (PatientServiceRepository patientservicerepository = new PatientServiceRepository())
                         {
                             patientservicerepository.Update(item);
@@ -349,6 +352,8 @@ namespace HMS.Controllers
             onlyPatientInvoice.TotalAmount = patientInvoice.TotalAmount;
             onlyPatientInvoice.TotalDiscount = patientInvoice.TotalDiscount;
             onlyPatientInvoice.InvoiceStatusId = patientInvoice.InvoiceStatusId;
+            onlyPatientInvoice.InvoiceStatusId = patientInvoice.InvoiceStatusId;
+            onlyPatientInvoice.LabStatusId = patientInvoice.LabStatusId;
             onlyPatientInvoice.ItemDiscount = patientInvoice.ItemDiscount;
             onlyPatientInvoice.UserId = patientInvoice.UserId;
 

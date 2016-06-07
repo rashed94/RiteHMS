@@ -179,13 +179,16 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
             $scope.serviceItem.ServiceQuantity = obj.Quantity;
             $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');
             $scope.serviceItem.ServiceProviderId = obj.ServiceProviderId;
-            $scope.serviceItem.ReferralFeePaid = 0;
+
+          
             if (obj.MedicalTypeId == "62") {
                 $scope.serviceItem.LabStatusId = 1;
+                $scope.serviceItem.ReferralFeePaid = 0;
             }
             else
             {
-                $scope.serviceItem.LabStatusId =null;
+                $scope.serviceItem.LabStatusId = null;
+                $scope.serviceItem.ReferralFeePaid =null;
             }
             $scope.serviceItem.UserId = '';
             $scope.serviceItem.Discount = '';

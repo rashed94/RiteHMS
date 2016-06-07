@@ -43,7 +43,7 @@ namespace HMS.DAL.Repository
                     
                     //return queryResult.Include(c => c.PatientServices.Select(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();
                     //return queryResult.Where(c => c.PatientServices.Select(i => i.Item.MedicalTypeId)).ToList();
-                    return queryResult.Where(c => c.Active == true && c.PatientID == id && c.PatientServices.Any(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();
+                    return queryResult.Where(c => c.Active == true && c.PatientID == id && c.PatientServices.Any(i => i.LabStatusId!=null)).ToList();
                 }
                 else
                 {

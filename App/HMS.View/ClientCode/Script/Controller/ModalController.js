@@ -26,6 +26,7 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
     $scope.PatientServiceItem = [];
     $scope.InvoicePayments = [];
     $scope.TotalPaid = 0.00;
+    $scope.isLabItem = false;
 
     $scope.Invoice = {
         Id: null,
@@ -120,6 +121,11 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.DeliveryTime = item.DeliveryTime;
         $scope.serviceItem.ReferralFeePaid = item.ReferralFeePaid;
         $scope.serviceItem.ServiceProviderId = item.ServiceProviderId;
+        $scope.serviceItem.LabStatusId = item.LabStatusId;
+        if (item.LabStatusId == 1)
+        {
+            $scope.isLabItem = true;
+        }
 
         $scope.PatientServiceItem.push($scope.serviceItem);
     }
@@ -149,7 +155,12 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
 
         });
 
-
+        if ($scope.isLabItem) {
+            $scope.Invoice.LabStatusId = 1;
+        }
+        else {
+            $scope.Invoice.LabStatusId = null;
+        }
 
         $scope.saveInvoice();
 
@@ -211,6 +222,7 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
 
                 $scope.Invoice.DueDate = ToJavaScriptDate($scope.Invoice.DueDate);
                 $scope.Invoice.InvoiceDate = ToJavaScriptDate($scope.Invoice.InvoiceDate);
+
                 $scope.saveInvoice();
                 $modalInstance.dismiss('cancel');
                 $window.location.href = '#/billing/invoices';
