@@ -29,6 +29,7 @@ namespace HMS.Model.Core
         public virtual Item Item { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual PatientInvoice PatientInvoice { get; set; }
+        public virtual ServiceProvider ServiceProvider { get; set; }
 
         protected override void RegisterValidationMethods()
         {

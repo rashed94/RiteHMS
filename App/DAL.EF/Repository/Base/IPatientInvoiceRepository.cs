@@ -9,6 +9,6 @@ namespace HMS.DAL.Repository
 {
     public interface IPatientInvoiceRepository
     {
-        IList<PatientInvoice> GetPatientInvoicebyMedicalType(long id, long statusid, long medicalTypeID);
+        IList<PatientInvoice> GetPatientInvoicebyMedicalTypeOnlyLabItem(long id, long statusid, long medicalTypeID);
     }
 }

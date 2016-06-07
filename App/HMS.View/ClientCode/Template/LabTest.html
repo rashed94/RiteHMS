@@ -2,6 +2,7 @@
     <div class="container_secondary_tab_abs">
         <ul class="tabs group">
             <li class="summary active"><a href="#/labtest/summary">SUMMARY</a></li>
+            <li class="listlabtest"><a href="#/labtest/listlabtest">LAB TEST LIST</a></li>
             <li class="addlabtest"><a href="#/labtest/addlabtest">ADD/EDIT LAB TEST</a></li>
 
         </ul>
@@ -50,8 +51,8 @@
                 <tr>
                     <th width="3%">&nbsp;</th>
                     <th width="10%">DATE</th>
+                    <th width="17%">Invoice No.</th>
                     <th width="17%">Patient</th>
-                    <th width="21%">MEDIC</th>
                     <th width="14%">created by</th>
                     <th width="23%">Status</th>
                     <th width="12%">&nbsp;</th>
@@ -59,16 +60,16 @@
             </thead>
             <tbody ng-repeat="labTestitem in labTestItems">
                 <tr>
-                    <td><a class="fa fa-arrow-circle-right fa-2x" aria-hidden="true" href="#"></a></td>
+                    <td><a ng-class="{'fa fa-arrow-circle-right fa-2x' : labTestitem.selectedIcon==true,'fa fa-arrow-circle-down fa-2x':labTestitem.selectedIcon==false}" aria-hidden="true" href="#" ng-click="$event.preventDefault();toggleDetail(labTestitem)"></a></td>
                     <td>{{labTestitem.InvoiceDate}}</td>
+                    <td>{{labTestitem.Id}}</td>
                     <td>{{labTestitem.Patient.FirstName}} {{labTestitem.Patient.LastName}}</td>
-                    <td>Alimuddin Vuiya</td>
                     <td>rashed</td>
-                    <td><span class="status_red">Pending (due)</span></td>
+                    <td><span class="status_red">{{labTestitem.Staus}}</span></td>
 
                     <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-check fa-2x" aria-hidden="true" href="#"></a></td>
                 </tr>
-                <tr>
+                <tr ng-show="labTestitem.activePosition">
                     <td>&nbsp;</td>
                     <td colspan="5">
 
@@ -77,6 +78,7 @@
                                 <tr>
                                     <th width="16%">teST  NAME</th>
                                     <th width="13%">CATEGORY</th>
+                                    <th width="7%">Medic</th>
                                     <th width="7%">STATUS</th>
                                     <th width="21%">&nbsp;</th>
                                 </tr>
@@ -85,7 +87,8 @@
                                 <tr>
                                     <td>{{patientservice.Item.Name}}</td>
                                     <td>{{patientservice.Item.GenericName}}</td>
-                                    <td><span class="status_red">Pending</span></td>
+                                    <td>{{patientservice.ServiceProvider.Contact.FirstName}}  {{patientservice.ServiceProvider.Contact.LastName}}</td>
+                                    <td><span class="status_red">{{patientservice.Staus}}</span></td>
                                     <td>
                                         <a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>
                                         <a href="#" class="link_brown">ENTER RESULT</a>
@@ -104,7 +107,41 @@
             </tfoot>
         </table>
 
+
+
     </div>
+
+    <div class="listlabtest hide">
+        <div class="round_box box_general">
+
+            <table width="90%" border="1" align="center" class="bordered">
+                <thead>
+                    <tr>
+                        <th width="36%">Test Name</th>
+                        <th colspan="6">Category</th>
+                        <th width="17%">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>USG - HBS (Liver) </td>
+                        <td colspan="6">USG    </td>
+                        <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" href="#"></a></td>
+                    </tr>
+                    <tr>
+                        <td>USG - HBS (Liver) </td>
+                        <td colspan="6">USG</td>
+                        <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" href="#"></a></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+
+        </div>
+
+    </div>
+
     <div class="addlabtest hide">
 
 
@@ -195,29 +232,7 @@
             </table>
         </div>
 
-        <table width="90%" border="1" align="center" class="bordered">
-            <thead>
-                <tr>
-                    <th width="36%">Test Name</th>
-                    <th colspan="6">Category</th>
-                    <th width="17%">&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>USG - HBS (Liver) </td>
-                    <td colspan="6">USG    </td>
-                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" href="#"></a></td>
-                </tr>
-                <tr>
-                    <td>USG - HBS (Liver) </td>
-                    <td colspan="6">USG</td>
-                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" href="#"></a></td>
-                </tr>
-            </tbody>
-            <tfoot>
-            </tfoot>
-        </table>       
+               
     </div>
 
 </div>

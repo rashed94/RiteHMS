@@ -28,11 +28,12 @@ namespace HMS.Controllers
 
             List<PatientInvoice> onlypatientInvoices = new List<PatientInvoice>();
             List<PatientInvoice> patientInvoices;
+            List<PatientService> PatientServices;
 
             using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
             {
 
-                patientInvoices = repository.GetPatientInvoicebyMedicalTypeLabTestOnly(id, statusid, medicalTypeID).ToList();
+                patientInvoices = repository.GetPatientInvoicebyMedicalTypeOnlyLabItem(id, statusid, medicalTypeID).ToList();
 
                foreach (PatientInvoice pinvoice in patientInvoices)
                {
@@ -53,35 +54,66 @@ namespace HMS.Controllers
                    onlyPatientInvoice.Patient.FirstName = pinvoice.Patient.FirstName;
                    onlyPatientInvoice.Patient.LastName = pinvoice.Patient.LastName;
 
-
-
-                   foreach (PatientService c in pinvoice.PatientServices)
+                   foreach (InvoicePayment invoicepayment in pinvoice.InvoicePayments)
                    {
-                       PatientService patientstitem = new PatientService();
-                       Item item = new Item();
-                       patientstitem.Item = item;
+                       InvoicePayment invoicePayment = new InvoicePayment();
+
+                       invoicePayment.Id = invoicepayment.Id;
+                       invoicePayment.PatientInvoiceId = invoicepayment.PatientInvoiceId;
+                       invoicePayment.Amount = invoicepayment.Amount;
+                       invoicePayment.PaymentID = invoicepayment.PaymentID;
+                       invoicePayment.UserId = invoicepayment.UserId;
+                       onlyPatientInvoice.InvoicePayments.Add(invoicePayment);
+
+                   }
+                   using (PatientServiceRepository srepository = new PatientServiceRepository())
+                   {
+                       PatientServices = srepository.GetServiceItemsLabtestOnlyByPatientId(pinvoice.PatientID, pinvoice.Id).ToList();
+                       foreach (PatientService c in PatientServices)
+                       {
+                           PatientService patientstitem = new PatientService();
+                           Item item = new Item();
+                           ServiceProvider serviceProdier = new ServiceProvider();
+                           Contact contact = new Contact();
+                           serviceProdier.Contact = contact;
+                           patientstitem.Item = item;
+                           patientstitem.ServiceProvider = serviceProdier;
 
 
-                       patientstitem.Id = c.Id;
-                       patientstitem.PatientID = c.PatientID;
-                       patientstitem.ItemID = c.ItemID;
-                       patientstitem.InvoiceID = c.InvoiceID;
-                       patientstitem.ServiceListPrice = c.ServiceListPrice;
-                       patientstitem.ServiceActualPrice = c.ServiceActualPrice;
-                       patientstitem.ServiceQuantity = c.ServiceQuantity;
-                       patientstitem.ServiceDate = c.ServiceDate;
-                       patientstitem.UserId = c.UserId;
-                       patientstitem.Discount = c.Discount;
-                       patientstitem.Refund = c.Refund;
-                       patientstitem.Billed = c.Billed;
-                       patientstitem.ReferralFee = c.ReferralFee;
-                       patientstitem.DeliveryDate = c.DeliveryDate;
-                       patientstitem.DeliveryTime = c.DeliveryTime;
-                       patientstitem.Item.Name = c.Item.Name;
-                       patientstitem.Item.GenericName = c.Item.GenericName;
-                       patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
-                       onlyPatientInvoice.PatientServices.Add(patientstitem);
+                           patientstitem.Id = c.Id;
+                           patientstitem.PatientID = c.PatientID;
+                           patientstitem.ItemID = c.ItemID;
+                           patientstitem.InvoiceID = c.InvoiceID;
+                           patientstitem.ServiceListPrice = c.ServiceListPrice;
+                           patientstitem.ServiceActualPrice = c.ServiceActualPrice;
+                           patientstitem.ServiceQuantity = c.ServiceQuantity;
+                           patientstitem.ServiceDate = c.ServiceDate;
+                           patientstitem.UserId = c.UserId;
+                           patientstitem.Discount = c.Discount;
+                           patientstitem.Refund = c.Refund;
+                           patientstitem.Billed = c.Billed;
+                           patientstitem.ReferralFee = c.ReferralFee;
+                           patientstitem.DeliveryDate = c.DeliveryDate;
+                           patientstitem.DeliveryTime = c.DeliveryTime;
 
+                           patientstitem.ServiceProviderId = c.ServiceProviderId;
+                           patientstitem.ReferralFeePaid = c.ReferralFeePaid;
+                           patientstitem.ReportFormatName = c.ReportFormatName;
+                           patientstitem.LabStatusId = c.LabStatusId;
+
+                           patientstitem.Item.Name = c.Item.Name;
+                           patientstitem.Item.GenericName = c.Item.GenericName;
+                           patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
+
+
+                           patientstitem.ServiceProvider.Contact.FirstName = c.ServiceProvider.Contact.FirstName;
+                           patientstitem.ServiceProvider.Contact.LastName = c.ServiceProvider.Contact.LastName;
+
+             
+
+                           onlyPatientInvoice.PatientServices.Add(patientstitem);
+
+                       }
                    }
                    onlypatientInvoices.Add(onlyPatientInvoice);
 
