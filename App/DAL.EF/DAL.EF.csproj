@@ -58,6 +58,7 @@
     <Compile Include="HMSContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Base\IInvoiceStatusRepository.cs" />
+    <Compile Include="Repository\Base\IItemCategoryRepository.cs" />
     <Compile Include="Repository\Base\IItemRepository.cs" />
     <Compile Include="Repository\Base\IMedicalTypeRepository.cs" />
     <Compile Include="Repository\Base\IContactRepository.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Repository\Base\IUserRepository.cs" />
     <Compile Include="Repository\Base\IPatientInvoiceRepository.cs" />
     <Compile Include="Repository\Impl\InvoiceStatusRepository.cs" />
+    <Compile Include="Repository\Impl\ItemCategoryRepository.cs" />
     <Compile Include="Repository\Impl\ItemRepository.cs" />
     <Compile Include="Repository\Impl\ContactRepository.cs" />
     <Compile Include="Repository\Impl\MedicalTypeRepository.cs" />

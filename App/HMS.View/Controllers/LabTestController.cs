@@ -23,6 +23,58 @@ namespace HMS.Controllers
         {
             // _Repository = new Repository<Patient>(new Context());
         }
+
+        public JsonResult GetLabItemsByMedicalType(long medicalTypeID)
+        {
+            List<Item> onlyItemsforLabTest = new List<Item>();
+            List<Item> itemsforLabTest;
+
+            using (ItemRepository repository = new ItemRepository())
+            {
+                Expression<Func<Item, bool>> lambda;
+
+                lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true);
+
+                itemsforLabTest = repository.GetByQuery(lambda).ToList();
+
+                foreach (Item c in itemsforLabTest)
+                {
+                    Item LabTestItem = new Item();
+                    ItemCategory LabTestItemCategory = new ItemCategory();
+                    LabTestItem.ItemCategory = LabTestItemCategory;
+
+                    LabTestItem.Id = c.Id;
+                    LabTestItem.Name = c.Name;
+                    LabTestItem.GenericName = c.GenericName;
+                    LabTestItem.Code=c.Code;
+                    LabTestItem.ItemTypeId=c.ItemTypeId;
+                    LabTestItem.MedicalTypeId=c.MedicalTypeId;
+                    LabTestItem.ItemCategoryId=c.ItemCategoryId;
+                    LabTestItem.MeasurementUnitId = c.MeasurementUnitId;
+                    LabTestItem.SalePrice = c.SalePrice;
+                    LabTestItem.BuyPrice = c.BuyPrice;
+                    LabTestItem.DefaultReferrarFee = c.DefaultReferrarFee;
+                    LabTestItem.ReferralAllowed = c.ReferralAllowed;
+                    LabTestItem.ServiceProviderId = c.ServiceProviderId;
+                    LabTestItem.LabReportGroupId = c.LabReportGroupId;
+                    LabTestItem.ItemCategory.Name = c.ItemCategory.Name;
+                    onlyItemsforLabTest.Add(LabTestItem);
+                }
+
+                if (onlyItemsforLabTest == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+
+
+
+                return Json(onlyItemsforLabTest, JsonRequestBehavior.AllowGet);
+
+            }
+
+            
+        }
         public JsonResult GetPatientInvoicebyMedicalType(long id, long statusid, long medicalTypeID)
         {
 

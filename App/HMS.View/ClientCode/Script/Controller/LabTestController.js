@@ -10,14 +10,20 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
         if ($routeParams.tab == "listlabtest") {
 
-            $scope.GetLabItems(62);
+            $scope.GetLabItemsByMedicalType(62);
         }
 
 
         if ($routeParams.tab == "summary") {
 
-            if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
-            $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, 62);
+
+            if ($scope.Patient) {
+                if ($scope.Patient.Id != null) {
+                    if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+
+                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, 62);
+                }
+            }
 
         }
     });
@@ -90,6 +96,34 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         }
     };
 
+    $scope.loadLabItems = function () {
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
+
+
+
+                $scope.GetLabItemsByMedicalType(62);
+
+
+
+            }
+
+        }
+    }
+
+    $scope.GetLabItemsByMedicalType = function (medicalType) {
+        LabTestService.GetLabItemsByMedicalType(medicalType)
+            .success(function (pt) {
+                $scope.Labitems = pt;
+               // preparelabtestDataModel();
+                console.log(pt);
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load lab item data: ' + error.message;
+                console.log($scope.status);
+            });
+    }
+
     $scope.GetInvoicesByMedicalType = function (patientId, labStatus,medicalType) {
         LabTestService.GetInvoicesByMedicalType(patientId, labStatus, medicalType)
             .success(function (pt) {
@@ -98,10 +132,14 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load invoices data: ' + error.message;
+                $scope.status = 'Unable to load invoices for lab test only data: ' + error.message;
                 console.log($scope.status);
             });
     }
+
+
+
+
 
     $scope.loadLabTest=function()
     {

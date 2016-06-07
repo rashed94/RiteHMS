@@ -17,8 +17,13 @@ namespace HMS.DAL.Repository
         public IList<Item> GetItembyMedicalPartialName(long id, string name)
         {
             IQueryable<Item> queryResult = _DbSet;
-          //  bool active = true;
+            //  bool active = true;
             return queryResult.Where(c => c.MedicalTypeId == id && c.Name.StartsWith(name)).ToList();
+        }
+        public IList<Item> GetLabItemsByMedicalType(long medicalTypeID)
+        {
+            IQueryable<Item> queryResult = _DbSet;
+            return queryResult.Where(c => c.MedicalTypeId == medicalTypeID).ToList();
         }
     }
 }
