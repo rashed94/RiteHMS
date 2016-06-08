@@ -75,10 +75,10 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
         });
         modalInstance.result.then(function (result) {
             $scope.ServiceProvider = result.ServiceProvider;
-            $scope.ServiceProvider.DepartmentId = $scope.ServiceProvider.Department.Id;
-            $scope.ServiceProvider.Department = null;
-            $scope.ServiceProvider.ServiceProviderTypeId = $scope.ServiceProvider.ServiceProviderType.Id;
-            $scope.ServiceProvider.ServiceProviderType = null;
+            //$scope.ServiceProvider.DepartmentId = $scope.ServiceProvider.Department.Id;
+            //$scope.ServiceProvider.Department = null;
+            //$scope.ServiceProvider.ServiceProviderTypeId = $scope.ServiceProvider.ServiceProviderType.Id;
+            //$scope.ServiceProvider.ServiceProviderType = null;
             $scope.SaveServiceProvider(result.File);
         }, function () {
             console.log('Modal dismissed at: ' + new Date());

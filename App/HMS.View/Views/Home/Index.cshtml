@@ -101,10 +101,10 @@
                         <div><img src="~/images/hospitalmanagement.gif" width="260" height="63" alt="hospital management system"></div>
                         <div class="login_info">You are loged in as {{User.Name}}   |   <a href="/Login/LogOff">SIGN OUT</a></div>
                         <div class="register">
-                            <a data-toggle="modal" class="modal_registration_click" href="#" ng-click="PatientModal('lg')">Register new patient </a>
+                            <a data-toggle="modal" class="modal_registration_click" ng-click="PatientModal('lg')">Register new patient </a>
                         </div>
                         <div class="register" ng-show="Patient != null && Patient.Id != null">
-                            <a data-toggle="modal" class="modal_registration_click" href="#" ng-click="PatientModal('lg', true);">Edit patient</a>
+                            <a data-toggle="modal" class="modal_registration_click" ng-click="PatientModal('lg', true);">Edit patient</a>
                         </div>
                     </div>
 

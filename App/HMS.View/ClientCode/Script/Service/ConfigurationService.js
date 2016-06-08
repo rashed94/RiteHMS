@@ -18,16 +18,21 @@
         var apiUrl = "/Configuration/SaveServiceProvider";
 
         if (!file) {
-            file = null;
+            file = {};
         }
+
+        if ($scope.ServiceProvider.Contact.Id)
+            $scope.ServiceProvider.ContactId = $scope.ServiceProvider.Contact.Id;
+        if ($scope.ServiceProvider.Department.Id)
+            $scope.ServiceProvider.DepartmentId = $scope.ServiceProvider.Department.Id;
+        if ($scope.ServiceProvider.ServiceProviderType.Id)
+            $scope.ServiceProvider.ServiceProviderTypeId = $scope.ServiceProvider.ServiceProviderType.Id;
 
         file.upload = Upload.upload({
             url: apiUrl,
             data: { serviceProvider: $scope.ServiceProvider, file: file },
         }).then(function (response) {
             $scope.ServiceProvider = response.data;
-            $scope.ServiceProviders.push($scope.ServiceProvider);
-            console.log('Error status: ' + resp.status);
             if (response.status > 0) {
                 $scope.errorMsg = response.status + ': ' + response.data;
             }

@@ -30,8 +30,8 @@
             <div class="title">gender</div>
             <div class="inputbox">
                 <select name="gender" class="generaldropdown" ng-model="Patient.Gender">
-                    <option value="false">MALE</option>
-                    <option value="true">Female</option>
+                    <option value="false" ng-selected="{{ Patient.Gender == false }}">MALE</option>
+                    <option value="true" ng-selected="{{ Patient.Gender == true }}">Female</option>
                 </select>
             </div>
         </div>
@@ -81,7 +81,6 @@
         </div>
 
         <div class="input_containter">
-
             <form name="form">
                 <div class="title">Picture</div>
                 <input type="file"
@@ -94,19 +93,25 @@
                        style="opacity:0; position: absolute; top: 0px;">
 
                 <input type="button"
-                       ng-show="picFile == null"
+                       ng-show="!picFile && (!Patient.Photo || Patient.Photo == 'null')"
                        class="_s_SelectFile md_button"
                        style="width: 100px; float: left;"
                        onclick="document.getElementById('PatientFileInput').click()"
                        value="Select file">
                 
                 <i ng-show="form.file.$error.maxSize" class="text-danger">
-                    File too large({{errorFile.size / 1000000|number:1}}MB). Maximum file size is 2MB.
+                    File too large({{errorFile.size / 1000000|number:2}}MB). Maximum file size is 2MB.
                 </i>
 
                 <div>
-                    <img ng-show="form.file.$valid" ngf-thumbnail="picFile" class="thumb" style="width: 200px;">
-                    <button ng-click="picFile = null" ng-show="picFile" class="md_button">Remove</button>
+                    <div ng-show="form.file.$valid">
+                        <img ngf-thumbnail="picFile" class="thumb" style="width: 200px;">
+                        <button ng-click="picFile = null" ng-show="picFile" class="md_button">Remove</button>
+                    </div>
+                    <div ng-show="Patient.Photo != null && Patient.Photo != 'null'">
+                        <img ng-src="GetImage.ashx?Name={{Patient.Photo && Patient.Photo != 'null' ? Patient.Photo : ''}}" style="width: 200px" alt="{{Patient.FirstName}} {{Patient.LastName}}">
+                        <button ng-click="Patient.Photo = null" class="md_button">Remove</button>
+                    </div>
                 </div>
             </form>
             <span class="progress" ng-show="picFile.progress >= 0">
