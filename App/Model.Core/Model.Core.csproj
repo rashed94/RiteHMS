@@ -80,6 +80,7 @@
     <Compile Include="Entities\ReceiptPayment.cs" />
     <Compile Include="Entities\Referral.cs" />
     <Compile Include="Entities\Refund.cs" />
+    <Compile Include="Entities\ServiceProvidedWithReferrerFee.cs" />
     <Compile Include="Entities\ServiceProvider.cs" />
     <Compile Include="Entities\ServiceProviderType.cs" />
     <Compile Include="Entities\Store.cs" />

@@ -18,6 +18,7 @@ namespace HMS.Model.Core
         public System.DateTime DueDate { get; set; }
         public long? UserId { get; set; }
         public long InvoiceStatusId { get; set; }
+        public long? LabStatusId { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal? TotalDiscount { get; set; }
         public decimal? ItemDiscount { get; set; }

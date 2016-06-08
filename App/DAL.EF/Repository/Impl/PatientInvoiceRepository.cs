@@ -14,7 +14,7 @@ namespace HMS.DAL.Repository
         {
             _DbSet = _DbContext.Set<PatientInvoice>();
         }
-        public IList<PatientInvoice> GetPatientInvoicebyMedicalType(long id, long statusid, long medicalTypeID)
+        public IList<PatientInvoice> GetPatientInvoicebyMedicalTypeOnlyLabItem(long id, long statusid, long medicalTypeID)
         {
             IQueryable<PatientInvoice> queryResult = _DbSet;
             //  bool active = true;
@@ -26,13 +26,15 @@ namespace HMS.DAL.Repository
                 if (statusid == 0)
                 {
                     //return queryResult.Where(c => c.Active == true).Include(c => c.PatientServices.Select(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();  
-                    return queryResult.Where(c => c.Active == true && c.PatientServices.Any(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();
+                   // return queryResult.Where(c => c.Active == true && c.PatientServices.Any(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();
+                    return queryResult.Where(c => c.Active == true && c.LabStatusId!=null).ToList();
                 }
                 else
                 {
                    // lambda = (x => x.InvoiceStatusId == statusid && x.Active == true);
                    // return queryResult.Where(c => c.Active == true && c.InvoiceStatusId == statusid).Include(c => c.PatientServices.Select(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();
-                    return queryResult.Where(c => c.Active == true && c.PatientServices.Any(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();
+                   // return queryResult.Where(c => c.Active == true && c.PatientServices.Any(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();
+                    return queryResult.Where(c => c.Active == true  &&c.LabStatusId==statusid).ToList();
                 }
             }
             else
@@ -43,7 +45,8 @@ namespace HMS.DAL.Repository
                     
                     //return queryResult.Include(c => c.PatientServices.Select(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();
                     //return queryResult.Where(c => c.PatientServices.Select(i => i.Item.MedicalTypeId)).ToList();
-                    return queryResult.Where(c => c.Active==true && c.PatientID==id && c.PatientServices.Any(i=>i.Item.MedicalTypeId==medicalTypeID)).ToList();
+                   // return queryResult.Where(c => c.Active == true && c.PatientID == id &&  c.LabStatusId!=null && c.PatientServices.Any(i => i.LabStatusId>0)).ToList();
+                    return queryResult.Where(c => c.Active == true && c.PatientID == id && c.LabStatusId !=null).ToList();
                 }
                 else
                 {
@@ -51,7 +54,8 @@ namespace HMS.DAL.Repository
 
                   //  return queryResult.Where(c => c.Active == true && c.InvoiceStatusId == statusid && c.PatientID==id).Include(c => c.PatientServices.Select(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();
 
-                    return queryResult.Where(c => c.Active == true && c.PatientID == id && c.PatientServices.Any(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();
+                   // return queryResult.Where(c => c.Active == true && c.PatientID == id && c.PatientServices.Any(i => i.Item.MedicalTypeId == medicalTypeID)).ToList();
+                    return queryResult.Where(c => c.Active == true && c.PatientID == id && c.LabStatusId == statusid).ToList();
 
 
                 }

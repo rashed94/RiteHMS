@@ -148,6 +148,7 @@ namespace HMS.Controllers
                     onlyPatientInvoice.InvoiceStatusId = pinvoice.InvoiceStatusId;
                     onlyPatientInvoice.ItemDiscount = pinvoice.ItemDiscount;
                     onlyPatientInvoice.UserId = pinvoice.UserId;
+                   onlyPatientInvoice.LabStatusId = pinvoice.LabStatusId; 
                     onlyPatientInvoice.Patient.FatherName = pinvoice.Patient.FirstName;
                     onlyPatientInvoice.Patient.LastName = pinvoice.Patient.LastName;
 
@@ -189,6 +190,8 @@ namespace HMS.Controllers
                         patientstitem.Item.Name = c.Item.Name;
                         patientstitem.Item.GenericName = c.Item.GenericName;
                         patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
+                        patientstitem.ReferralFeePaid = c.ReferralFeePaid;
+                        patientstitem.ServiceProviderId = c.ServiceProviderId;
                         onlyPatientInvoice.PatientServices.Add(patientstitem);
 
                     }
@@ -244,6 +247,10 @@ namespace HMS.Controllers
                     patientstitem.ReferralFee = c.ReferralFee;
                     patientstitem.DeliveryDate = c.DeliveryDate;
                     patientstitem.DeliveryTime = c.DeliveryTime;
+                    patientstitem.ReferralFeePaid = c.ReferralFeePaid;
+                    patientstitem.ServiceProviderId = c.ServiceProviderId;
+                    patientstitem.LabStatusId = c.LabStatusId;
+
                     patientstitem.Item.Name = c.Item.Name;
                     patientstitem.Item.GenericName = c.Item.GenericName;
                     patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
@@ -299,9 +306,21 @@ namespace HMS.Controllers
                // patientInvoice.InvoiceStatusId = 1;
                 if (pinvoice.Id == 0)
                 {
-                   
+                    List<PatientService> patientServiceItems = pinvoice.PatientServices.ToList();
+                    pinvoice.PatientServices = null;
                     patientInvoice = repository.Insert(pinvoice);
                     repository.Commit();
+                    foreach (PatientService item in patientServiceItems)
+                    {
+                        item.InvoiceID = pinvoice.Id;
+                        
+                        using (PatientServiceRepository patientservicerepository = new PatientServiceRepository())
+                        {
+                            patientservicerepository.Update(item);
+                            patientservicerepository.Commit();
+                        }
+
+                    }
                 }
                 else
                 {
@@ -333,6 +352,8 @@ namespace HMS.Controllers
             onlyPatientInvoice.TotalAmount = patientInvoice.TotalAmount;
             onlyPatientInvoice.TotalDiscount = patientInvoice.TotalDiscount;
             onlyPatientInvoice.InvoiceStatusId = patientInvoice.InvoiceStatusId;
+            onlyPatientInvoice.InvoiceStatusId = patientInvoice.InvoiceStatusId;
+            onlyPatientInvoice.LabStatusId = patientInvoice.LabStatusId;
             onlyPatientInvoice.ItemDiscount = patientInvoice.ItemDiscount;
             onlyPatientInvoice.UserId = patientInvoice.UserId;
 

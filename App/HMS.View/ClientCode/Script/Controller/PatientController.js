@@ -135,6 +135,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.updateReferrerItem = function ($item,doctor) {
         if (doctor == '')
         {
+            $item.ServiceProviderId = 0;
             angular.forEach($scope.Items, function (obj) {
                 // obj.push($item);
                 if (obj.Id == $item.Id) {
@@ -176,7 +177,19 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
             $scope.serviceItem.ServiceListPrice = obj.Amount;
             $scope.serviceItem.ServiceActualPrice = obj.SalePrice;
             $scope.serviceItem.ServiceQuantity = obj.Quantity;
-            $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');;
+            $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');
+            $scope.serviceItem.ServiceProviderId = obj.ServiceProviderId;
+
+          
+            if (obj.MedicalTypeId == "62") {
+                $scope.serviceItem.LabStatusId = 1;
+                $scope.serviceItem.ReferralFeePaid = 0;
+            }
+            else
+            {
+                $scope.serviceItem.LabStatusId = null;
+                $scope.serviceItem.ReferralFeePaid =null;
+            }
             $scope.serviceItem.UserId = '';
             $scope.serviceItem.Discount = '';
             $scope.serviceItem.Refund = '';
@@ -226,30 +239,24 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.OnDocotorSelect = function ($item,serviceitem) {
 
 
+        if ($item.ReferralFee > 0) {
+            serviceitem.ReferralFee = $item.ReferralFee;
 
-        serviceitem.ReferralFee = $item.ReferralFee;
-        var found = $filter('filter')($scope.Items, { Id: serviceitem.Id }, true);
-        if (!found.length) {
-            $scope.Items.push(serviceitem);
+            var found = $filter('filter')($scope.Items, { Id: serviceitem.Id }, true);
+            if (!found.length) {
+                $scope.Items.push(serviceitem);
+            }
+        }else
+        {
+            serviceitem.ReferralFee = serviceitem.DefaultReferrarFee;
         }
+        serviceitem.ServiceProviderId = $item.Id;
 
         //  console.log($item.Id);
 
     }
 
-    $scope.OnItemSelect=function ($item)
-    {
-        $item.Quantity = 1;
-        $item.Amount = $item.SalePrice;
-        $item.ReferralFee = $item.DefaultReferrarFee;
-        var found = $filter('filter')($scope.Items, { Id: $item.Id }, true);
-        if (!found.length) {
-            $scope.Items.push($item);
-        }
-        //angular.forEach($scope.Items, function(obj){
-        //    obj.push($item);
-        //});
-    }
+
 
     $scope.OnPatientSelect = function ($item, $model, $label) {
         $scope.Patient = $item;

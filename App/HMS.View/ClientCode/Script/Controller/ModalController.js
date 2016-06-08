@@ -26,6 +26,7 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
     $scope.PatientServiceItem = [];
     $scope.InvoicePayments = [];
     $scope.TotalPaid = 0.00;
+    $scope.isLabItem = false;
 
     $scope.Invoice = {
         Id: null,
@@ -106,7 +107,7 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.Id = item.Id;
         $scope.serviceItem.PatientId = item.PatientID;
         $scope.serviceItem.ItemID = item.ItemID;
-        $scope.serviceItem.InvoiceID = '';
+        $scope.serviceItem.InvoiceID = 0;
         $scope.serviceItem.ServiceListPrice = item.ServiceListPriceAfterDiscount;
         $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
         $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;
@@ -118,6 +119,13 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.ReferralFee = item.ReferralAfterDiscount;
         $scope.serviceItem.DeliveryDate = ToJavaScriptDate(item.DeliveryDate);
         $scope.serviceItem.DeliveryTime = item.DeliveryTime;
+        $scope.serviceItem.ReferralFeePaid = item.ReferralFeePaid;
+        $scope.serviceItem.ServiceProviderId = item.ServiceProviderId;
+        $scope.serviceItem.LabStatusId = item.LabStatusId;
+        if (item.LabStatusId == 1)
+        {
+            $scope.isLabItem = true;
+        }
 
         $scope.PatientServiceItem.push($scope.serviceItem);
     }
@@ -147,7 +155,12 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
 
         });
 
-
+        if ($scope.isLabItem) {
+            $scope.Invoice.LabStatusId = 1;
+        }
+        else {
+            $scope.Invoice.LabStatusId = null;
+        }
 
         $scope.saveInvoice();
 
@@ -209,6 +222,7 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
 
                 $scope.Invoice.DueDate = ToJavaScriptDate($scope.Invoice.DueDate);
                 $scope.Invoice.InvoiceDate = ToJavaScriptDate($scope.Invoice.InvoiceDate);
+
                 $scope.saveInvoice();
                 $modalInstance.dismiss('cancel');
                 $window.location.href = '#/billing/invoices';

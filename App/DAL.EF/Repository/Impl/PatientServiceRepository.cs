@@ -21,5 +21,13 @@ namespace HMS.DAL.Repository
             return queryResult.Where(c => c.PatientID == id && c.ItemID == c.Item.Id && c.InvoiceID == invoiceid).ToList();
         }
 
+        public IList<PatientService> GetServiceItemsLabtestOnlyByPatientId(long patientid,long invoiceid)
+        {
+            IQueryable<PatientService> queryResult = _DbSet;
+            //  bool active = true;
+           // long invoiceid = 0;
+            return queryResult.Where(c => c.PatientID == patientid && c.ItemID == c.Item.Id && c.InvoiceID == invoiceid &&c.LabStatusId!=null).ToList();
+        }
+
     }
 }

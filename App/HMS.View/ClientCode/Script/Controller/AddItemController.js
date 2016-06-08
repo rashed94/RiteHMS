@@ -22,15 +22,36 @@ HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemS
 
 
   
-
+    $scope.OnItemSelect = function ($item) {
+        $item.Quantity = 1;
+        $item.Amount = $item.SalePrice;
+        $item.ReferralFee = $item.DefaultReferrarFee;
+        
+        var found = $filter('filter')($scope.Items, { Id: $item.Id }, true);
+        if (!found.length) {
+            $scope.Items.push($item);
+        }
+        //angular.forEach($scope.Items, function(obj){
+        //    obj.push($item);
+        //});
+    }
 
     $scope.GetServiceProviderPartialName = function (name, itemid) {
 
         
-        return $http.get('/patient/getserviceproviderpartialname?name=' + name + "&itemid=" + itemid).then(function (response) {
+        //return $http.get('/patient/getserviceproviderpartialname?name=' + name + "&itemid=" + itemid).then(function (response) {
+        //    var data = response.data;
+        //    return response.data;
+        //});
+
+        /*----------------------------  TypeId 56 means doctor --------------------------------------------------*/
+
+        return $http.get('/patient/getdoctorpartialname?name=' + name + "&typeId=" + 56 + "&itemId=" + itemid).then(function (response) {
             var data = response.data;
             return response.data;
         });
+
+
     }
 
      $scope.GetItembyMedicalPartialName = function (name) {

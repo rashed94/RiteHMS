@@ -53,7 +53,8 @@ namespace HMS.Controllers
                 SalePrice=c.SalePrice,
                 BuyPrice=c.BuyPrice,
                 DefaultReferrarFee=c.DefaultReferrarFee,
-                ReferralAllowed=c.ReferralAllowed
+                ReferralAllowed=c.ReferralAllowed,
+                ServiceProviderId=c.ServiceProviderId
                 
 
 
@@ -173,6 +174,51 @@ namespace HMS.Controllers
 
             return new CustomJsonResult {Data=patients} ;
         }
+
+
+
+        public JsonResult getdoctorpartialname(string name, long typeId, long itemid)
+        {
+           // long typid = 56; // retturn only doctor
+
+            List<ServiceProvider> serviceProviders = null;
+            List<ServiceProvidedWithReferrerFee> onlyserviceProviders = new List<ServiceProvidedWithReferrerFee>();
+
+            using (ServiceProviderRepository repository = new ServiceProviderRepository())
+            {
+                serviceProviders = repository.GetServiceProviderPartialName(name, typeId).ToList();
+
+                foreach (ServiceProvider item in serviceProviders)
+                {
+                 
+                    ServiceProvidedWithReferrerFee serviceProvider = new ServiceProvidedWithReferrerFee();
+                    Contact contact = new Contact();
+                    serviceProvider.Contact = contact;
+
+                    serviceProvider.Contact.FirstName = item.Contact.FirstName;
+                    serviceProvider.Contact.LastName = item.Contact.LastName;
+                    serviceProvider.Id = item.Id;
+                    serviceProvider.Speciality = item.Speciality;
+
+                    Referral referral = new Referral();
+
+                    using (ReferralRepository referrerrepository = new ReferralRepository())
+                    {
+                        referral = referrerrepository.GetReferrer(serviceProvider.Id, itemid);
+             
+                        serviceProvider.ReferralFee = referral.ReferralFee;
+                      
+                    }
+
+                    onlyserviceProviders.Add(serviceProvider);
+
+                }
+            }
+
+            return Json(onlyserviceProviders, JsonRequestBehavior.AllowGet);
+        }
+
+
         public JsonResult GetServiceProviderPartialName(string name,long itemid)
         {
             //List<ServiceProvider> serviceProviders = null;

@@ -12,6 +12,7 @@ namespace HMS.DAL.Repository
 
         //  IList<ServiceProvider> GetAll();
         IList<Referral> GetServiceProviderPartialName(string name, long itemid);
+        Referral GetReferrer(long serviceproviderid, long itemid);
 
     }
 }
