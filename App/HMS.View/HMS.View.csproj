@@ -189,6 +189,7 @@
     <Content Include="images\sitemenu_pharmacy_hover.gif" />
     <Content Include="images\sm_button_bg.gif" />
     <Content Include="images\stethoscope.gif" />
+    <Content Include="Scripts\angular-loading-spinner.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -198,11 +199,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="GetImage.ashx" />
+    <Content Include="Scripts\angular-spinner.min.js" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\ng-file-upload-shim.js" />
     <Content Include="Scripts\ng-file-upload.js" />
+    <Content Include="Scripts\Spin.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
