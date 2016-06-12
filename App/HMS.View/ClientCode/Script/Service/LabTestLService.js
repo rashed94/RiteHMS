@@ -12,6 +12,30 @@
         return $http.get('/LabTest/GetLabItemsByMedicalType?medicalTypeID=' + medicalType);
     };
 
+    LabTestService.loadItembyId = function (itemID) {
+       
+        return $http.get('/LabTest/loadItembyId?itemID=' + itemID);
+    };
+
+    LabTestService.loadLabTestCategories = function (medicalTypeID) {
+
+        return $http.get('/LabTest/loadLabTestCategories?medicalTypeID=' +medicalTypeID);
+    };
+
+    LabTestService.loadMeasureMentUnits = function () {
+
+        return $http.get('/LabTest/loadMeasureMentUnits');
+    };
+
+    LabTestService.loadLabTestGroups = function () {
+
+        return $http.get('/LabTest/loadLabTestGroups');
+    };
+
+    
+
+
+
     return LabTestService;
 
 }]);

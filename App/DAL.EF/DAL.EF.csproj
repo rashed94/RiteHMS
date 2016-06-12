@@ -60,6 +60,8 @@
     <Compile Include="Repository\Base\IInvoiceStatusRepository.cs" />
     <Compile Include="Repository\Base\IItemCategoryRepository.cs" />
     <Compile Include="Repository\Base\IItemRepository.cs" />
+    <Compile Include="Repository\Base\ILabReportGroupRepository.cs" />
+    <Compile Include="Repository\Base\IMeasurementUnitRepository.cs" />
     <Compile Include="Repository\Base\IMedicalTypeRepository.cs" />
     <Compile Include="Repository\Base\IContactRepository.cs" />
     <Compile Include="Repository\Base\IPatientRepository.cs" />
@@ -73,6 +75,8 @@
     <Compile Include="Repository\Impl\ItemCategoryRepository.cs" />
     <Compile Include="Repository\Impl\ItemRepository.cs" />
     <Compile Include="Repository\Impl\ContactRepository.cs" />
+    <Compile Include="Repository\Impl\LabReportGroupRepository.cs" />
+    <Compile Include="Repository\Impl\MeasurementUnitRepository.cs" />
     <Compile Include="Repository\Impl\MedicalTypeRepository.cs" />
     <Compile Include="Repository\Impl\PatientInvoiceRepository.cs" />
     <Compile Include="Repository\Impl\PatientRepository.cs" />

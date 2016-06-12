@@ -52,7 +52,10 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
             templateUrl: '/ClientCode/Template/LabTest.html',
 
         }).
+        when('/labtest/:tab/:id', {
+                      templateUrl: '/ClientCode/Template/LabTest.html',
 
+                  }).
         when('/configuration', {
             templateUrl: '/ClientCode/Template/Configuration.html',
 

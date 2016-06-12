@@ -33,6 +33,8 @@ namespace HMS.DAL
         protected virtual DbSet<ItemReorder> ItemReorders { get; set; }
         protected virtual DbSet<ItemType> ItemTypes { get; set; }
         protected virtual DbSet<MeasurementUnit> MeasurementUnits { get; set; }
+        protected virtual DbSet<LabReportGroup> LabReportGroup { get; set; }
+        protected virtual DbSet<LabReportFormat> LabReportFormat { get; set; }
         protected virtual DbSet<MedicalType> MedicalTypes { get; set; }
         protected virtual DbSet<Membership> Memberships { get; set; }
         protected virtual DbSet<Patient> Patients { get; set; }

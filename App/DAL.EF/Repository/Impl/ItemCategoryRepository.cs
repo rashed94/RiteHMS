@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace HMS.DAL.Repository
 {
-    public class ItemCategoryRepository : Repository<ItemCategory>, IItemCategoryRepository
+    public class ItemCategoryRepository : Repository<ItemCategory>, ILabReportGroupReoitory
     {
         public ItemCategoryRepository()
         {

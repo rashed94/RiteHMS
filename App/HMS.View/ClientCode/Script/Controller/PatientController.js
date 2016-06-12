@@ -37,6 +37,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
             if ($scope.Patient.Id != null) {
 
                 sessionStorage.PatientService = angular.toJson($scope.Patient);
+                $scope.Patient.Name = $scope.Patient.FirstName + " " + $scope.Patient.LastName;
             }
         }
         
@@ -306,6 +307,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         });
         modalInstance.result.then(function (result) {
             $scope.Patient = result.Patient;
+           
             $scope.SavePatient(result.File);
         }, function () {
             console.log('Modal dismissed at: ' + new Date());

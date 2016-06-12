@@ -603,3 +603,4 @@ select.generaldropdown {
    padding:6px;
 
 }
+select option:empty { display:none }

@@ -58,6 +58,8 @@
     <Compile Include="Entities\DrugAdministration.cs" />
     <Compile Include="Entities\DrugDosage.cs" />
     <Compile Include="Entities\DrugFrequency.cs" />
+    <Compile Include="Entities\LabReportFormat.cs" />
+    <Compile Include="Entities\LabReportGroup.cs" />
     <Compile Include="Entities\Inventory.cs" />
     <Compile Include="Entities\InvoicePayment.cs" />
     <Compile Include="Entities\InvoiceStatus.cs" />

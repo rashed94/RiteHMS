@@ -24,6 +24,167 @@ namespace HMS.Controllers
             // _Repository = new Repository<Patient>(new Context());
         }
 
+
+
+
+        public JsonResult loadLabTestGroups()
+        {
+            List<LabReportGroup> onlyLabTestGroup = new List<LabReportGroup>();
+            List<LabReportGroup> labTestGroup;
+
+            using (LabReportGroupRepository repository = new LabReportGroupRepository())
+            {
+
+                Expression<Func<LabReportGroup, bool>> lambda;
+
+                lambda = (x => x.Active == true);
+
+                labTestGroup = repository.GetByQuery(lambda).ToList();
+
+                foreach (LabReportGroup item in labTestGroup)
+                {
+                    LabReportGroup itemlabgroup = new LabReportGroup();
+
+
+                    itemlabgroup.Id = item.Id;
+                    itemlabgroup.Name = item.Name;
+
+                    onlyLabTestGroup.Add(itemlabgroup);
+
+                }
+
+                if (onlyLabTestGroup == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+
+
+
+                return Json(onlyLabTestGroup, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        public JsonResult loadMeasureMentUnits()
+        {
+            List<MeasurementUnit> onlyMeasurementUnits = new List<MeasurementUnit>();
+            List<MeasurementUnit> measurementUnits;
+
+            using (MeasurementUnitRepository repository = new MeasurementUnitRepository())
+            {
+
+                Expression<Func<MeasurementUnit, bool>> lambda;
+
+                lambda = (x => x.Active == true);
+
+                measurementUnits = repository.GetByQuery(lambda).ToList();
+
+                foreach (MeasurementUnit item in measurementUnits)
+                {
+                    MeasurementUnit itemMUnit = new MeasurementUnit();
+
+
+                    itemMUnit.Id = item.Id;
+                    itemMUnit.Name = item.Name;
+
+                    onlyMeasurementUnits.Add(itemMUnit);
+
+                }
+
+                if (onlyMeasurementUnits == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+
+
+
+                return Json(onlyMeasurementUnits, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
+        public JsonResult loadLabTestCategories(long  medicalTypeID)
+        {
+            List<ItemCategory> onlyItemCategories = new List<ItemCategory>();
+            List<ItemCategory> ItemCategories;
+
+            using (ItemCategoryRepository repository = new ItemCategoryRepository())
+            {
+               
+                 Expression<Func<ItemCategory, bool>> lambda;
+
+                 lambda = (x => x.Active == true && x.MedicalTypeId == medicalTypeID);
+
+                ItemCategories= repository.GetByQuery(lambda).ToList();
+
+                foreach (ItemCategory catogry in ItemCategories)
+                {
+                    ItemCategory itemCategory = new ItemCategory();
+
+
+                    itemCategory.Id = catogry.Id;
+                    itemCategory.Name = catogry.Name;
+
+                    onlyItemCategories.Add(itemCategory);
+                  
+                }
+
+                if (onlyItemCategories == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+
+
+
+                return Json(onlyItemCategories, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult loadItembyId(long itemID)
+        {
+            Item LabTestItem = new Item();
+            Item Item = new Item();
+              using (ItemRepository repository = new ItemRepository())
+              {
+
+
+                  Item=repository.GetById(itemID);
+
+                  LabTestItem.Id = Item.Id;
+                  LabTestItem.Name = Item.Name;
+                  LabTestItem.GenericName = Item.GenericName;
+                  LabTestItem.Code = Item.Code;
+                  LabTestItem.ItemTypeId = Item.ItemTypeId;
+                  LabTestItem.MedicalTypeId = Item.MedicalTypeId;
+                  LabTestItem.ItemCategoryId = Item.ItemCategoryId;
+                  LabTestItem.MeasurementUnitId = Item.MeasurementUnitId;
+                  LabTestItem.SalePrice = Item.SalePrice;
+                  LabTestItem.BuyPrice = Item.BuyPrice;
+                  LabTestItem.DefaultReferrarFee = Item.DefaultReferrarFee;
+                  LabTestItem.ReferralAllowed = Item.ReferralAllowed;
+                  LabTestItem.ServiceProviderId = Item.ServiceProviderId;
+                  LabTestItem.LabReportGroupId = Item.LabReportGroupId;
+                  //LabTestItem.ItemCategory.Name = Item.ItemCategory.Name;
+
+
+
+
+                  if (LabTestItem == null)
+                  {
+                      return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                  }
+
+
+
+
+                  return Json(LabTestItem, JsonRequestBehavior.AllowGet);
+
+              }
+        }
         public JsonResult GetLabItemsByMedicalType(long medicalTypeID)
         {
             List<Item> onlyItemsforLabTest = new List<Item>();

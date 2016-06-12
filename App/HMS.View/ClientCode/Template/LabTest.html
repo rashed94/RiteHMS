@@ -1,14 +1,50 @@
-﻿<div class="container_secondary_tab" style="">
+﻿<script>
+    $(document).ready(function() {
+
+
+        $('#categoryPop').click(function (event) {
+            alert("test");
+            event.preventDefault();
+            $('#popup1').css("visibility", "visible");
+            $('#popup1').css("opacity", 1);
+
+    });
+
+
+
+  
+
+  $( ".close" ).click(function() {
+
+       $('#popup1').css("visibility", "hidden");
+       $('#popup1').css("opacity", 0);
+    });
+});
+</script>
+
+<div class="container_secondary_tab" style="">
     <div class="container_secondary_tab_abs">
         <ul class="tabs group">
-            <li class="summary active"><a href="#/labtest/summary">SUMMARY</a></li>
-            <li class="listlabtest"><a href="#/labtest/listlabtest">LAB TEST LIST</a></li>
-            <li class="addlabtest"><a href="#/labtest/addlabtest">ADD/EDIT LAB TEST</a></li>
+            <li class="summary active"><a ng-href="#/labtest/summary">SUMMARY</a></li>
+            <li class="listlabtest"><a ng-href="#/labtest/listlabtest">LAB TEST LIST</a></li>
+            <li class="addlabtest"><a ng-href="#/labtest/addlabtest">ADD/EDIT LAB TEST</a></li>
 
         </ul>
         <div style="clear: both"></div>
     </div>
     <div style="clear: both"></div>
+</div>
+
+
+
+<div id="popup1" class="overlay">
+    <div class="popup">
+        <h2>Here i am</h2>
+        <a class="close" href="#">×</a>
+        <div class="content">
+            Thank to pop me out of that button, but now i'm done so you can close this window.
+        </div>
+    </div>
 </div>
 
 <div class="content" ng-controller="LabTestController">
@@ -114,7 +150,7 @@
     <div class="listlabtest hide">
         <div class="round_box box_general">
 
-            <table width="90%" border="1" align="center" class="bordered" ng-model="labItems" ng-init="loadLabItems()">
+            <table width="90%" border="1" align="center" class="bordered" ng-model="Labitems" ng-init="loadLabItems()">
                 <thead>
                     <tr>
                         <th width="36%">Test Name</th>
@@ -123,16 +159,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>USG - HBS (Liver) </td>
-                        <td colspan="6">USG    </td>
-                        <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" href="#"></a></td>
+                    <tr ng-repeat="labitem in Labitems">
+                        <td>{{labitem.Name}} </td>
+                        <td colspan="6">{{labitem.ItemCategory.Name}}   </td>
+                        <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/labtest/addlabtest/{{labitem.Id}}" ></a></td>
                     </tr>
-                    <tr>
-                        <td>USG - HBS (Liver) </td>
-                        <td colspan="6">USG</td>
-                        <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" href="#"></a></td>
-                    </tr>
+
                 </tbody>
                 <tfoot>
                 </tfoot>
@@ -146,11 +178,11 @@
 
 
         <div class="round_box box_general">
-            <table width="95%" border="1">
+            <table width="95%" border="1" ng-model="SingleLabItem">
                 <tr>
                     <td width="14%" height="39">&nbsp;</td>
                     <td width="19%">NAME</td>
-                    <td width="19%"><input type="text"></td>
+                    <td width="19%"><input type="text"  ng-model="SingleLabItem.Name"></td>
                     <td width="48%"><input name="Admit to Hospital" type="button" value="ADD NEW REPORT FORMAT" class="sm_button"></td>
                 </tr>
                 <tr>
@@ -161,61 +193,82 @@
                         2.  X-Ray PNS - Detail Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a>
                     </td>
                 </tr>
-                <tr>
-                    <td height="39">&nbsp;</td>
-                    <td>BILL COVERAGE LIMIT</td>
-                    <td colspan="2">
-                        <input type="text">
-                        <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#"></a>
-                    </td>
-                </tr>
+
+
                 <tr>
                     <td height="39">&nbsp;</td>
                     <td>CODE</td>
-                    <td colspan="2"><input type="text"></td>
+                    <td colspan="2"><input type="text" ng-model="SingleLabItem.Code"></td>
                 </tr>
+
+                <tr>
+                    <td height="39">&nbsp;</td>
+                    <td>GENERIC NAME</td>
+                    <td colspan="2"><input type="text" ng-model="SingleLabItem.GenericName"></td>
+                </tr>
+
                 <tr>
                     <td height="39">&nbsp;</td>
                     <td>CATEGORY</td>
                     <td colspan="2">
-                        <select name="palnType" class="distype">
-                            <option value="amount">X-Ray</option>
-                            <option value="percentage">BODY FLUID</option>
+
+                        <select ng-model="SingleLabItem.ItemCategoryId">
+                           
+                            <option ng-repeat="category in LabTestCategories" value="{{category.Id}}" ng-selected="category.Id==SingleLabItem.ItemCategoryId">
+                                {{category.Name}}
+                            </option>
+
                         </select>
-                        <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#"></a>
+                        <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
+
+
                     </td>
                 </tr>
                 <tr>
                     <td height="39">&nbsp;</td>
                     <td>LAB REPORT GROUP</td>
                     <td colspan="2">
-                        <select name="palnType2" class="distype">
-                            <option value="amount">X-Ray</option>
-                            <option value="percentage">BODY FLUID</option>
+                        <select ng-model="SingleLabItem.LabReportGroupId">
+
+                            <option ng-repeat="labTestGroup in LabTestGroups" value="{{labTestGroup.Id}}" ng-selected="{{labTestGroup.Id === SingleLabItem.LabReportGroupId}}">
+                                {{labTestGroup.Name}}
+                            </option>
+
                         </select>
-                        <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#"></a>
+
+
+                        <a class="fa fa-plus-circle fa-2x" id aria-hidden="true" href="#"></a>
                     </td>
                 </tr>
                 <tr>
                     <td height="39">&nbsp;</td>
                     <td>MEASURE UNIT</td>
                     <td colspan="2">
-                        <select name="palnType3" class="distype">
-                            <option value="amount">TAKA</option>
-                            <option value="percentage">KG</option>
+
+                        <select name="palnType3" class="distype" ng-model="SingleLabItem.MeasurementUnitId">
+
+
+                            <option ng-repeat="measureMentUnit in MeasureMentUnits" value="{{measureMentUnit.Id}}" ng-selected="{{measureMentUnit.Id === SingleLabItem.MeasurementUnitId}}">
+                                {{measureMentUnit.Name}}
+                            </option>
+
+
+
                         </select>
                         <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#"></a>
+
+
                     </td>
                 </tr>
                 <tr>
                     <td height="39">&nbsp;</td>
                     <td>CHARGE PRICE</td>
-                    <td colspan="2"><input type="text"></td>
+                    <td colspan="2"><input type="text" ng-model="SingleLabItem.SalePrice"></td>
                 </tr>
                 <tr>
                     <td height="39">&nbsp;</td>
                     <td>REFERRAR'S COMISSIOM</td>
-                    <td colspan="2"><input type="text"> &nbsp;&nbsp; <a class="arrow_head" href="#"> Set Comission by Doctor's Name</a></td>
+                    <td colspan="2"><input type="text" ng-model="SingleLabItem.DefaultReferrarFee"> &nbsp;&nbsp; <a class="arrow_head" href="#"> Set Comission by Doctor's Name</a></td>
                 </tr>
                 <tr>
                     <td height="39">&nbsp;</td>

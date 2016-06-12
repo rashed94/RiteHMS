@@ -2,7 +2,7 @@
 
 namespace HMS.DAL.Repository
 {
-    public interface ILabReportGroupReoitory
+    public interface IMeasurementUnitRepository
     {
 
     }
