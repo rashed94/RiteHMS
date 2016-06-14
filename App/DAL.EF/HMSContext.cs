@@ -50,5 +50,7 @@ namespace HMS.DAL
         protected virtual DbSet<Store> Stores { get; set; }
         protected virtual DbSet<Referral> Referrals { get; set; }
         protected virtual DbSet<User> Users { get; set; }
+        protected virtual DbSet<Appointment> Appointments { get; set; }
+        protected virtual DbSet<ServiceProviderAppointment> ServiceProviderAppointments { get; set; }
     }
 }

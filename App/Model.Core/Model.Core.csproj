@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Appointment.cs" />
     <Compile Include="Entities\Base\EntityBase.cs" />
     <Compile Include="Entities\Base\ISetProperty.cs" />
     <Compile Include="Entities\BedOccupancy.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Entities\Refund.cs" />
     <Compile Include="Entities\ServiceProvidedWithReferrerFee.cs" />
     <Compile Include="Entities\ServiceProvider.cs" />
+    <Compile Include="Entities\ServiceProviderAppointment.cs" />
     <Compile Include="Entities\ServiceProviderType.cs" />
     <Compile Include="Entities\Store.cs" />
     <Compile Include="Entities\User.cs" />
