@@ -36,7 +36,7 @@
         </div>
         <p>&nbsp;</p>
         <div class="home_appointment_details">
-            <p>
+            <!--<p>
                 <h2>APPOINTMENT (04/22/2016)</h2>
             </p>
             <p>
@@ -46,7 +46,20 @@
             <p><strong>Dr. Alim Akhtar Bhuiyan</strong></p>
             <p>MBBS, DTM & H (UK), MD (USA), Board Certified in Neurology (USA), </p>
             <p>Post Doctoral Fellowship in Epilepsy (USA)</p>
-            <p>Senior Consultant</p>
+            <p>Senior Consultant</p>-->
+
+            <div ng-repeat="DoctorAppointment in DoctorAppointments">
+                <p>
+                    <h2>APPOINTMENT ({{DoctorAppointment.AppointmentDate}})</h2>
+                </p>
+                <p>
+                    <h2>
+                        {{DoctorAppointment.ServiceProvider.Department.Name}}
+                    </h2>
+                </p>
+                <p><strong>{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}</strong></p>
+            </div>
+
             <div class="home_appointment_bt">
                 <input name="Confirm appointment" type="button" value="Confirm appointment" class="sm_button">
                 <input name="CANCEL appointment" type="button" value="CANCEL appointment" class="sm_button">

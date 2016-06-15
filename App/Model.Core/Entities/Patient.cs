@@ -12,6 +12,7 @@ namespace HMS.Model.Core
             this.PatientInvoices = new List<PatientInvoice>();
             this.PatientServices = new List<PatientService>();
             this.Payments = new List<Payment>();
+            this.DoctorAppointments = new List<ServiceProviderAppointment>();
         }
     
         public string FirstName { get; set; }
@@ -34,6 +35,7 @@ namespace HMS.Model.Core
         public virtual ICollection<PatientInvoice> PatientInvoices { get; set; }
         public virtual ICollection<PatientService> PatientServices { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
+        public virtual ICollection<ServiceProviderAppointment> DoctorAppointments { get; set; }
 
         protected override void RegisterValidationMethods()
         {

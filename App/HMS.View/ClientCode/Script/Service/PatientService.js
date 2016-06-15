@@ -73,5 +73,8 @@
     PatientService.SearchPatientsByPartialName = function (name) {
         return $http.get('/Patient/SearchPatientByPartialName?name=' + name);
     };
+    PatientService.GetDoctorAppointmentsByPatientId = function (patientId) {
+        return $http.get('/Appointment/GetDoctorAppointmentsByPatientId?patientId=' + patientId);
+    };
     return PatientService;
 }]);
