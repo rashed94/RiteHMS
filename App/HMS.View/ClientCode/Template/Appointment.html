@@ -2,8 +2,6 @@
     <div class="container_secondary_tab_abs">
         <ul class="tabs group">
             <li class="summary active"><a href="#/labtest/summary" ng-click="$event.preventDefault();">View / Setup Appointment</a></li>
-            
-
         </ul>
         <div style="clear: both"></div>
     </div>
@@ -11,11 +9,52 @@
 </div>
 
 <div class="content" ng-controller="AppointmentController">
-
-    <div class="summary ">
-        Appointment summary
-
+    <div class="setup">
+        <div style="float:left; width: 50%;">
+            <div class="input_containter">
+                <div class="title">Appointment date</div>
+                <div class="inputbox">
+                    <input type="text" width="110" placeholder="click to show datepicker" name="dob" class="dob" ng-model="DoctorAppointment.Date">
+                </div>
+            </div>
+            <div class="input_containter">
+                <div class="title">Department</div>
+                <div class="inputbox">
+                    <select name="ServiceProviderDepartment"
+                            class="_s_ServiceProviderDepartment"
+                            ng-model="ServiceProvider.DepartmentId"
+                            ng-change="GetDoctors(ServiceProvider.DepartmentId)"
+                            ng-init="ServiceProvider.DepartmentId = Departments[0].Id"
+                            ng-options="department.Id as department.Name for department in Departments"></select>
+                </div>
+            </div>
+            <div class="input_containter">
+                <div class="title">Doctor</div>
+                <div class="inputbox">
+                    <select name="Doctor"
+                            data-ng-model="Doctor"
+                            ng-change="GetAppointments()"
+                            data-ng-options="(doctor.Contact.FirstName + ' ' + doctor.Contact.LastName) for doctor in Doctors">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="slots" ng-show="Appointments.length > 0" style="float: left; border: 1px solid #CCC; height: 300px; width: 150px; overflow-y: scroll;">
+            <table width="100%" border="1" align="center" class="bordered">
+                <tr ng-repeat="appointment in Appointments">
+                    <td ng-click="SelectAppointment(appointment);"
+                        ng-class="{selected:appointment.Selected}" class="appointment">{{appointment.Name}}</td>
+                </tr>
+            </table>
+            <!--<select multiple
+                name="Appointments"
+                data-ng-model="SelectedAppointments"
+                data-ng-options="appointment.Name for appointment in Appointments"
+                style="height: 400px;">
+            </select>-->
+</div>
     </div>
-
-
+    <div class="summary">
+        
+    </div>
 </div>

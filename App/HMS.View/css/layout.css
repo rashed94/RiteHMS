@@ -604,3 +604,12 @@ select.generaldropdown {
 
 }
 select option:empty { display:none }
+
+.appointment {
+    cursor: pointer;
+}
+.appointment.selected, .appointment:hover {
+    background-color: #538e4a;
+    color: white;
+    font-weight: bold;
+}
