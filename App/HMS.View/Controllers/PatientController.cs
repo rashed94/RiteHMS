@@ -177,6 +177,42 @@ namespace HMS.Controllers
 
 
 
+        public JsonResult getdoctorbyname(string name, long typeId)
+        {
+            // long typid = 56; // retturn only doctor
+
+            List<ServiceProvider> serviceProviders = null;
+            List<ServiceProvidedWithReferrerFee> onlyserviceProviders = new List<ServiceProvidedWithReferrerFee>();
+
+            using (ServiceProviderRepository repository = new ServiceProviderRepository())
+            {
+                serviceProviders = repository.GetServiceProviderPartialName(name, typeId).ToList();
+
+                foreach (ServiceProvider item in serviceProviders)
+                {
+
+                    ServiceProvidedWithReferrerFee serviceProvider = new ServiceProvidedWithReferrerFee();
+                    Contact contact = new Contact();
+                    serviceProvider.Contact = contact;
+
+                    serviceProvider.Contact.FirstName = item.Contact.FirstName;
+                    serviceProvider.Contact.LastName = item.Contact.LastName;
+                    serviceProvider.Id = item.Id;
+                    serviceProvider.Speciality = item.Speciality;
+
+                    
+
+                    onlyserviceProviders.Add(serviceProvider);
+
+                }
+            }
+
+            return Json(onlyserviceProviders, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
         public JsonResult getdoctorpartialname(string name, long typeId, long itemid)
         {
            // long typid = 56; // retturn only doctor

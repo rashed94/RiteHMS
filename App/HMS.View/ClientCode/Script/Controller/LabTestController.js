@@ -1,10 +1,10 @@
 ﻿'use strict';
 
 HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, $filter, $modal, LabTestService) {
-
+   
 
     $scope.SingleLabItem = {
-
+       id:0,
         Name: "",
         GenericName:"",
         Code:"",
@@ -12,15 +12,16 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         MedicalTypeId:62,
         ItemCategoryId:41,
         MeasurementUnitId:62,
-        SalePrice:0.00,
+        SalePrice:"",
         BuyPrice:0.00,
-        ServiceProviderId:0,
+        ServiceProviderId:"",
         ReferralAllowed:1,
-        DefaultReferrarFee:0.00,
-        LabReportGroupId:0,
+        DefaultReferrarFee:"",
+        LabReportGroupId:"",
 
 
     };
+    $scope.saveSuccess = 0;
     $scope.LabTestCategories = {};
     $scope.LabTestGroups = {};
     $scope.MeasureMentUnits = {};
@@ -275,6 +276,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         LabTestService.loadItembyId(itemid)
             .success(function (pt) {
                 $scope.SingleLabItem = pt;
+                $scope.LoadFilterCondition();
 
             console.log(pt);
             })
@@ -283,6 +285,152 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             console.log($scope.status);
             });
     }
+
+
+    $scope.resetpopupFiled=function()
+    {
+        
+        $scope.categoryName = "";
+        $scope.reportGroupName = "";
+        $scope.measurementUnitName = "";
+    }
+
+    /******************************* save portion ***********************************************/
+
+
+
+    $scope.saveCategory=function()
+    {
+        LabTestService.CreateCategory($scope.categoryName, $scope.medicalTypeID)
+        .success(function (data) {
+
+            $scope.loadLabTestCategories();
+            $scope.resetpopupFiled();
+
+            $('#popupCategory').css("visibility", "hidden");
+            $('#popupCategory').css("opacity", 0);
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+    }
+
+
+
+
+    $scope.saveReportGroup = function () {
+        LabTestService.CreateReportGroup($scope.reportGroupName)
+        .success(function (data) {
+
+            $scope.loadLabTestGroups();
+            $scope.resetpopupFiled();
+
+            $('#popupLabReportGroup').css("visibility", "hidden");
+            $('#popupLabReportGroup').css("opacity", 0);
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+    }
+    $scope.filterCondition = {
+        MeasurementUnitId: '62',
+        ItemCategoryId: '41',
+        LabReportGroupId:""
+      
+
+    }
+   
+    $scope.LoadFilterCondition=function()
+    {
+        $scope.filterCondition.MeasurementUnitId = $scope.SingleLabItem.MeasurementUnitId.toString();
+        $scope.filterCondition.ItemCategoryId = $scope.SingleLabItem.ItemCategoryId.toString();
+        if ($scope.SingleLabItem.LabReportGroupId != null) {
+            $scope.filterCondition.LabReportGroupId = $scope.SingleLabItem.LabReportGroupId.toString()
+        };
+    }
+
+    $scope.saveMeasurementUnit = function () {
+        LabTestService.CreateMeasurementUnit($scope.measurementUnitName)
+        .success(function (data) {
+
+            $scope.loadMeasureMentUnits();
+            $scope.resetpopupFiled();
+
+            $('#popupMeasurementUnit').css("visibility", "hidden");
+            $('#popupMeasurementUnit').css("opacity", 0);
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+    }
+
+
+    $scope.saveItem = function () {
+
+        $scope.SingleLabItem.MeasurementUnitId= $scope.filterCondition.MeasurementUnitId;
+        $scope.SingleLabItem.ItemCategoryId=  $scope.filterCondition.ItemCategoryId;
+        $scope.SingleLabItem.LabReportGroupId = $scope.filterCondition.LabReportGroupId;
+
+
+        LabTestService.SaveItem($scope.SingleLabItem)
+        .success(function (data) {
+
+            $scope.loadItembyId( data);
+            $scope.saveSuccess = 1;
+            console.log("Save successfull");
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+    }
+
+
+
+    /*----------------------------- save end ----------------------------------------------------*/
+
+
+    /*---------------------------------------- delete ------------------------------------------------*/
+
+
+
+    /*----------------------------------------delete end -----------------------------------------------*/
+
+    //------------------------------- Modal open portion -------------------------------------------------------------
+
+
+    $scope.CommissionModal = function (size,isEdit) {
+
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/DoctorCommission.html',
+            size: size,
+            controller: 'CommissionModalController',
+            scope: $scope
+        });
+        modalInstance.result.then(function (result) {
+  
+        }, function () {
+           
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+
+    };
+
+
+    //----------------------------------------------------------------------------------------------------
 
 
 

@@ -141,6 +141,7 @@
     <Content Include="ClientCode\Template\Billing.html" />
     <Content Include="ClientCode\Template\Configuration.html" />
     <Content Include="ClientCode\Template\Contact.html" />
+    <Content Include="ClientCode\Template\DoctorCommission.html" />
     <Content Include="ClientCode\Template\EditContact.html" />
     <Content Include="ClientCode\Template\EditPatient.html" />
     <Content Include="ClientCode\Template\EditServiceProvider.html" />
@@ -218,7 +219,7 @@
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LabTestController.cs" />
+    <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="GetImage.ashx.cs">

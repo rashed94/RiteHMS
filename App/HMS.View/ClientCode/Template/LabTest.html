@@ -1,25 +1,68 @@
 ﻿<script>
+
+
     $(document).ready(function() {
 
 
         $('#categoryPop').click(function (event) {
-            alert("test");
+          //  alert("test");
             event.preventDefault();
-            $('#popup1').css("visibility", "visible");
-            $('#popup1').css("opacity", 1);
+            $('#popupCategory').css("visibility", "visible");
+            $('#popupCategory').css("opacity", 1);
 
-    });
+        });
+
+
+        $('#LabReportGroup').click(function (event) {
+            //  alert("test");
+            event.preventDefault();
+            $('#popupLabReportGroup').css("visibility", "visible");
+            $('#popupLabReportGroup').css("opacity", 1);
+
+        });
+
+
+
+        $('#MeasurementUnit').click(function (event) {
+            //  alert("test");
+            event.preventDefault();
+            $('#popupMeasurementUnit').css("visibility", "visible");
+            $('#popupMeasurementUnit').css("opacity", 1);
+
+        });
+
 
 
 
   
 
-  $( ".close" ).click(function() {
+   $("#popupCategory .close").click(function () {
+      
+      $('#popupCategory').css("visibility", "hidden");
+      $('#popupCategory').css("opacity", 0);
+   });
 
-       $('#popup1').css("visibility", "hidden");
-       $('#popup1').css("opacity", 0);
-    });
+
+   $("#popupLabReportGroup .close").click(function () {
+
+       $('#popupLabReportGroup').css("visibility", "hidden");
+       $('#popupLabReportGroup').css("opacity", 0);
+   });
+
+
+   $("#popupMeasurementUnit .close").click(function () {
+
+       $('#popupMeasurementUnit').css("visibility", "hidden");
+       $('#popupMeasurementUnit').css("opacity", 0);
+   });
+
+
+
+
 });
+
+
+
 </script>
 
 <div class="container_secondary_tab" style="">
@@ -37,17 +80,56 @@
 
 
 
-<div id="popup1" class="overlay">
-    <div class="popup">
-        <h2>Here i am</h2>
-        <a class="close" href="#">×</a>
-        <div class="content">
-            Thank to pop me out of that button, but now i'm done so you can close this window.
-        </div>
-    </div>
-</div>
+
 
 <div class="content" ng-controller="LabTestController">
+
+    <div id="popupCategory" class="overlay">
+        <div class="popup">
+            <h2>Enter Category</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">×</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Category Name</div>
+                    <div><input type="text" ng-model="categoryName"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="saveCategory()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="popupLabReportGroup" class="overlay">
+        <div class="popup">
+            <h2>Enter LabReportGroup</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">×</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Lab Report Group Name</div>
+                    <div><input type="text" ng-model="reportGroupName"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="saveReportGroup()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="popupMeasurementUnit" class="overlay">
+        <div class="popup">
+            <h2>Enter Measurement Unit</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">×</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Measurement Unit Name</div>
+                    <div><input type="text" ng-model="measurementUnitName"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="saveMeasurementUnit()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
     <div class="summary hide">
 
@@ -176,116 +258,117 @@
 
     <div class="addlabtest hide">
 
+        <div class="round_box box_general" ng-show="saveSuccess>0">
 
-        <div class="round_box box_general">
-            <table width="95%" border="1" ng-model="SingleLabItem">
-                <tr>
-                    <td width="14%" height="39">&nbsp;</td>
-                    <td width="19%">NAME</td>
-                    <td width="19%"><input type="text"  ng-model="SingleLabItem.Name"></td>
-                    <td width="48%"><input name="Admit to Hospital" type="button" value="ADD NEW REPORT FORMAT" class="sm_button"></td>
-                </tr>
-                <tr>
-                    <td height="39">&nbsp;</td>
-                    <td>REPORT FORMAT</td>
-                    <td colspan="2">
-                        1. X-Ray PNS - Normal Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a><br>
-                        2.  X-Ray PNS - Detail Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a>
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td height="39">&nbsp;</td>
-                    <td>CODE</td>
-                    <td colspan="2"><input type="text" ng-model="SingleLabItem.Code"></td>
-                </tr>
-
-                <tr>
-                    <td height="39">&nbsp;</td>
-                    <td>GENERIC NAME</td>
-                    <td colspan="2"><input type="text" ng-model="SingleLabItem.GenericName"></td>
-                </tr>
-
-                <tr>
-                    <td height="39">&nbsp;</td>
-                    <td>CATEGORY</td>
-                    <td colspan="2">
-
-                        <select ng-model="SingleLabItem.ItemCategoryId">
-                           
-                            <option ng-repeat="category in LabTestCategories" value="{{category.Id}}" ng-selected="category.Id==SingleLabItem.ItemCategoryId">
-                                {{category.Name}}
-                            </option>
-
-                        </select>
-                        <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
+            <div class="success_message">Successfully save the Item</div>
+            </div>
+        <div style="clear:both;"></div>
+            <div class="round_box box_general">
+                <table width="95%" border="1" ng-model="SingleLabItem">
+                    <tr>
+                        <td width="14%" height="39">&nbsp;</td>
+                        <td width="19%">NAME</td>
+                        <td width="19%"><input type="text" ng-model="SingleLabItem.Name"></td>
+                        <td width="48%"><input ng-show="SingleLabItem.Id>0" name="report format" type="button" value="ADD NEW REPORT FORMAT" class="sm_button"></td>
+                    </tr>
+                    <tr ng-show="SingleLabItem.Id>0">
+                        <td height="39">&nbsp;</td>
+                        <td>REPORT FORMAT</td>
+                        <td colspan="2">
+                            1. X-Ray PNS - Normal Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a><br>
+                            2.  X-Ray PNS - Detail Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a>
+                        </td>
+                    </tr>
 
 
-                    </td>
-                </tr>
-                <tr>
-                    <td height="39">&nbsp;</td>
-                    <td>LAB REPORT GROUP</td>
-                    <td colspan="2">
-                        <select ng-model="SingleLabItem.LabReportGroupId">
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CODE</td>
+                        <td colspan="2"><input type="text" ng-model="SingleLabItem.Code"></td>
+                    </tr>
 
-                            <option ng-repeat="labTestGroup in LabTestGroups" value="{{labTestGroup.Id}}" ng-selected="{{labTestGroup.Id === SingleLabItem.LabReportGroupId}}">
-                                {{labTestGroup.Name}}
-                            </option>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>GENERIC NAME</td>
+                        <td colspan="2"><input type="text" ng-model="SingleLabItem.GenericName"></td>
+                    </tr>
 
-                        </select>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CATEGORY</td>
+                        <td colspan="2">
+
+                            <select ng-model="filterCondition.ItemCategoryId">
+
+                                <option ng-repeat="category in LabTestCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+                            </select>
+                            <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
 
 
-                        <a class="fa fa-plus-circle fa-2x" id aria-hidden="true" href="#"></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td height="39">&nbsp;</td>
-                    <td>MEASURE UNIT</td>
-                    <td colspan="2">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>LAB REPORT GROUP</td>
+                        <td colspan="2">
 
-                        <select name="palnType3" class="distype" ng-model="SingleLabItem.MeasurementUnitId">
-
-
-                            <option ng-repeat="measureMentUnit in MeasureMentUnits" value="{{measureMentUnit.Id}}" ng-selected="{{measureMentUnit.Id === SingleLabItem.MeasurementUnitId}}">
-                                {{measureMentUnit.Name}}
-                            </option>
+                            <select ng-model="filterCondition.LabReportGroupId">
+                                <option value=""></option>
+                                <option ng-repeat="LabReportGroupId in LabTestGroups" value="{{LabReportGroupId.Id}}">{{LabReportGroupId.Name}}</option>
+                            </select>
 
 
 
-                        </select>
-                        <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#"></a>
 
 
-                    </td>
-                </tr>
-                <tr>
-                    <td height="39">&nbsp;</td>
-                    <td>CHARGE PRICE</td>
-                    <td colspan="2"><input type="text" ng-model="SingleLabItem.SalePrice"></td>
-                </tr>
-                <tr>
-                    <td height="39">&nbsp;</td>
-                    <td>REFERRAR'S COMISSIOM</td>
-                    <td colspan="2"><input type="text" ng-model="SingleLabItem.DefaultReferrarFee"> &nbsp;&nbsp; <a class="arrow_head" href="#"> Set Comission by Doctor's Name</a></td>
-                </tr>
-                <tr>
-                    <td height="39">&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td height="39">&nbsp;</td>
-                    <td colspan="3">
-                        <input name="save" type="button" value="save" class="md_button">
-                        <input name="cancel" type="button" value="cancel" class="md_button">
-                    </td>
-                </tr>
-            </table>
+                            <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="LabReportGroup" href="#"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>MEASURE UNIT</td>
+                        <td colspan="2">
+
+                            <select name="palnType3" class="distype" ng-model="filterCondition.MeasurementUnitId">
+
+
+                                <option ng-repeat="measureMentUnit in MeasureMentUnits" value="{{measureMentUnit.Id}}">{{measureMentUnit.Name}}</option>
+
+
+
+                            </select>
+                            <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#" id="MeasurementUnit"></a>
+
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CHARGE PRICE</td>
+                        <td colspan="2"><input type="text" ng-model="SingleLabItem.SalePrice"></td>
+                    </tr>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>REFERRAR'S COMISSIOM</td>
+                        <td colspan="2"><input type="text" ng-model="SingleLabItem.DefaultReferrarFee"> &nbsp;&nbsp; <a class="arrow_head" href="#" ng-click="$event.preventDefault();CommissionModal('lg',true)" ng-show="SingleLabItem.Id>0"> Set Comission by Doctor's Name</a></td>
+                    </tr>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td colspan="3">
+                            <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();">
+                            <input name="cancel" type="button" value="cancel" class="md_button">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        <div style="clear:both;"></div>
         </div>
-
-               
-    </div>
 
 </div>

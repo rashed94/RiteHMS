@@ -15,17 +15,58 @@ using System.Data.Entity;
 
 namespace HMS.Controllers
 {
-    public class LabTestController : Controller
+    public class ItemController : Controller
     {
         //private IRepository<Patient> _Repository;
 
-        public LabTestController()
+        public ItemController()
         {
             // _Repository = new Repository<Patient>(new Context());
         }
 
 
 
+        public JsonResult getDoctorWithReferrel(long itemid)
+        {
+            List<Referral> referrals = null;
+            List<Referral> onlyReferrals = new List<Referral>();
+
+
+
+
+
+            using (ReferralRepository repository = new ReferralRepository())
+            {
+                referrals = repository.GetReferrers(itemid).ToList();
+
+
+
+
+
+                foreach (Referral item in referrals)
+                {
+                    Referral referral = new Referral();
+                    ServiceProvider serviceProvider = new ServiceProvider();
+                    Contact contact = new Contact();
+                    serviceProvider.Contact = contact;
+                    referral.ServiceProvider = serviceProvider;
+
+                    referral.Id = item.Id;
+                    referral.ItemId = item.ItemId;
+                    referral.ReferralFee = item.ReferralFee;
+                    referral.ServiceProviderId = item.ServiceProviderId;
+                    referral.ServiceProvider.Contact.FirstName = item.ServiceProvider.Contact.FirstName;
+                    referral.ServiceProvider.Contact.LastName = item.ServiceProvider.Contact.LastName;
+                    referral.ServiceProvider.Speciality = item.ServiceProvider.Speciality;
+                    onlyReferrals.Add(referral);
+
+                }
+                return Json(onlyReferrals, JsonRequestBehavior.AllowGet);
+            }
+
+
+
+        }
 
         public JsonResult loadLabTestGroups()
         {
@@ -64,6 +105,108 @@ namespace HMS.Controllers
                 return Json(onlyLabTestGroup, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult deleteCommission(long referralId)
+        {
+
+            using (ReferralRepository repository = new ReferralRepository())
+            {
+                repository.DeleteByID(referralId);
+                repository.Commit();
+                return Json("referall delete successfull");
+            }
+
+        }
+        public JsonResult saveDoctorsCommission(Referral referral)
+        {
+            using (ReferralRepository repository = new ReferralRepository())
+            {
+                repository.Insert(referral);
+                repository.Commit();
+                return Json("referall save successfull");
+            }
+
+        }
+
+        public JsonResult SaveItem(Item item)
+        {
+            Item LabTestItem = new Item();
+            using (ItemRepository repository = new ItemRepository())
+            {
+                if (item.Id > 0)
+                {
+                   LabTestItem= repository.Update(item);
+                    repository.Commit();
+                }
+                else
+                {
+                    LabTestItem=repository.Insert(item);
+                    repository.Commit();
+                }
+
+            }
+
+            return Json(LabTestItem.Id);
+        }
+        public JsonResult CreateCategory(string categoryName, long medicalTypeId)
+        {
+            ItemCategory category = new ItemCategory();
+            ItemCategory outPutCategory = new ItemCategory();
+            category.Name = categoryName;
+            category.MedicalTypeId = medicalTypeId;
+
+            using (ItemCategoryRepository repository = new ItemCategoryRepository())
+            {
+
+                repository.Insert(category);
+                repository.Commit();
+                // CreatePatientService(invoice.Id, patientServices);
+            }
+
+            return Json("Category Insert successfull");
+
+        }
+
+        public JsonResult CreateReportGroup(string reportGroupName)
+        {
+            LabReportGroup LabReportGroup = new LabReportGroup();
+
+            LabReportGroup.Name = reportGroupName;
+
+
+            using (Repository<LabReportGroup> repository = new Repository<LabReportGroup>())
+            {
+
+                repository.Insert(LabReportGroup);
+                repository.Commit();
+                // CreatePatientService(invoice.Id, patientServices);
+            }
+
+            return Json("Report Group Insert successfull");
+
+        }
+
+
+        public JsonResult CreateMeasurementUnit(string measurementUnitName)
+        {
+            MeasurementUnit MeasurementUnit = new MeasurementUnit();
+
+            MeasurementUnit.Name = measurementUnitName;
+
+
+            using (Repository<MeasurementUnit> repository = new Repository<MeasurementUnit>())
+            {
+
+                repository.Insert(MeasurementUnit);
+                repository.Commit();
+                // CreatePatientService(invoice.Id, patientServices);
+            }
+
+            return Json("MeasurementUnit Insert successfull");
+
+        }
+
+
 
 
         public JsonResult loadMeasureMentUnits()

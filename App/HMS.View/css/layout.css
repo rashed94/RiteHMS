@@ -269,6 +269,8 @@ table.bordered th
 	border-bottom:1px solid #d4d4d4;
 }
 
+
+
 table.bordered .small_header th
 {
 	background:#f0f0f0;
@@ -309,6 +311,24 @@ table.bordered a
 	color:#5D5D5D;
 	text-decoration:none;
 	
+}
+
+table.flatTable th
+{
+	background:#f0f0f0;
+	height:25px;
+	font-family:SansSemiBold;
+	font-size:11px;
+	text-transform:uppercase;
+	color:#424342;
+	padding-top:12px;
+	border-bottom:1px solid #d4d4d4;
+}
+
+table.flatTable  td
+{
+	padding-top:10px;
+	padding-bottom:10px;
 }
 
 
@@ -603,4 +623,4 @@ select.generaldropdown {
    padding:6px;
 
 }
-select option:empty { display:none }
+/*select option:empty { display:none }*/

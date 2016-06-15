@@ -36,5 +36,16 @@ namespace HMS.DAL.Repository
                  return empty;
             }
         }
+
+        public IList<Referral> GetReferrers(long itemid)
+        {
+            IQueryable<Referral> queryResult = _DbSet;
+            //  bool active = true;
+            var result = queryResult.Where(c => c.ItemId == itemid && c.Active == true).ToList();
+
+            return result;
+        }
+
+
     }
 }
