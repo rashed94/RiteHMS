@@ -38,8 +38,11 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                 $scope.Patient.Name = $scope.Patient.FirstName + " " + $scope.Patient.LastName;
 
                 PatientService.GetDoctorAppointmentsByPatientId($scope.Patient.Id)
-                    .success(function (da) {
-                        $scope.DoctorAppointments = da;
+                    .success(function (doctorAppointments) {
+                        $.each(doctorAppointments, function (index, doctorAppointment) {
+                            doctorAppointment.AppointmentDate = new Date(parseInt(doctorAppointment.AppointmentDate.substring(6, doctorAppointment.AppointmentDate.length - 2)));
+                        });
+                        $scope.DoctorAppointments = doctorAppointments;
                     })
                     .error(function (error) {
                         $scope.status = 'Unable to load Patient data: ' + error.message;

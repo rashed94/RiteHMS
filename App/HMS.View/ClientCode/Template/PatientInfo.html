@@ -36,31 +36,27 @@
         </div>
         <p>&nbsp;</p>
         <div class="home_appointment_details">
-            <!--<p>
-                <h2>APPOINTMENT (04/22/2016)</h2>
-            </p>
-            <p>
-                <h2>DEPARTMENT</h2>
-                Neurology
-            </p>
-            <p><strong>Dr. Alim Akhtar Bhuiyan</strong></p>
-            <p>MBBS, DTM & H (UK), MD (USA), Board Certified in Neurology (USA), </p>
-            <p>Post Doctoral Fellowship in Epilepsy (USA)</p>
-            <p>Senior Consultant</p>-->
 
-            <div ng-repeat="DoctorAppointment in DoctorAppointments">
-                <p>
-                    <h2>APPOINTMENT ({{DoctorAppointment.AppointmentDate}})</h2>
-                </p>
-                <p>
-                    <h2>
-                        {{DoctorAppointment.ServiceProvider.Department.Name}}
-                    </h2>
-                </p>
-                <p><strong>{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}</strong></p>
+            <div ng-repeat="DoctorAppointment in DoctorAppointments" style="clear: both;">
+                <div ng-show="DoctorAppointment != null" style="width: 150px;float: left;">
+                    <img ng-src="GetImage.ashx?Name={{DoctorAppointment.ServiceProvider.Contact.Photo != null && DoctorAppointment.ServiceProvider.Contact.Photo != 'null' ? DoctorAppointment.ServiceProvider.Contact.Photo : ''}}" width="115" height="146" alt="{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}">
+                </div>
+                <div style="margin-left: 160px;">
+                    <p>
+                        <h2>APPOINTMENT ({{DoctorAppointment.AppointmentDate | date }})</h2>
+                    </p>
+                    <p><strong>{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}</strong></p>
+                    <p>
+                        <h2>
+                            Department - {{DoctorAppointment.ServiceProvider.Department.Name}}
+                        </h2>
+                    <p ng-bind-html="DoctorAppointment.ServiceProvider.Speciality">
+                        {{DoctorAppointment.ServiceProvider.Speciality}}
+                    </p>
+                </div>
             </div>
 
-            <div class="home_appointment_bt">
+            <div class="home_appointment_bt" style="clear: both;">
                 <input name="Confirm appointment" type="button" value="Confirm appointment" class="sm_button">
                 <input name="CANCEL appointment" type="button" value="CANCEL appointment" class="sm_button">
                 <input name="Add appointment" type="button" value="Add appointment" class="sm_button" onclick="location.href='#/appointment'">

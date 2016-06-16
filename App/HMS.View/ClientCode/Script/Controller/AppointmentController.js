@@ -47,11 +47,11 @@ HmsApp.controller("AppointmentController", function ($scope, $routeParams, $wind
             $scope.Appointments[i].Selected = false;
         }
         appointment.Selected = !appointment.Selected;
-        $scope.SelectAppointment = appointment;
+        $scope.SelectedAppointment = appointment;
     };
 
     $scope.ConfirmAppointment = function () {
-        $scope.DoctorAppointment.AppointmentId = $scope.SelectAppointment.Id;
+        $scope.DoctorAppointment.AppointmentId = $scope.SelectedAppointment.Id;
         $scope.DoctorAppointment.PatientId = $scope.Patient.Id;
         $scope.DoctorAppointment.ServiceProviderId = $scope.Doctor.Id;
         AppointmentService.SaveAppointment($scope.DoctorAppointment)
