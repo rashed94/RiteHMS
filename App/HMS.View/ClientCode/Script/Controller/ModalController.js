@@ -20,7 +20,171 @@ HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInst
     };
 });
 
-HmsApp.controller("CommissionModalController", function ($scope, $http, $modalInstance, $filter, $window, LabTestService) {
+
+HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $http, $modalInstance, $filter, $window, isEdit, PatientServiceItem, LabTestItem, LabTestService) {
+
+    $scope.InvoiceStatusUpdate=true;
+
+
+    $scope.loadSavedData=function()
+    {
+        if (CKEDITOR.instances.editor1) {
+
+            if(PatientServiceItem.ReportFormatName === null)
+            {
+                CKEDITOR.instances.editor1.setData("");
+
+
+            }else
+            {
+                CKEDITOR.instances.editor1.setData(PatientServiceItem.ReportFormatName);
+            }
+
+        } 
+    }
+    $scope.LoadData=function()
+    {
+        if ($scope.labreportTemplates != null) {
+            $scope.labreportSingleTemplate = $scope.labreportTemplates[0];
+
+            richTextData = $scope.labreportSingleTemplate.RichContent;
+            CKEDITOR.instances.editor1.setData(richTextData);
+        }
+    }
+
+
+    if (isEdit=="false") {
+        LabTestService.LoadLabReportbyId(PatientServiceItem.Item.Id)
+            .success(function (pt) {
+                console.log(pt);
+                $scope.labreportTemplates = pt;
+                $scope.LoadData();
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load  lab report  ' + error.message;
+                console.log($scope.status);
+            });
+
+    }
+
+
+
+    $scope.ok = function (richTextData) {
+
+        PatientServiceItem.LabStatusId = "2";
+        PatientServiceItem.ReportFormatName = richTextData;
+        PatientServiceItem.Staus = "Completed";
+
+        angular.forEach(LabTestItem.PatientServices, function (item) {
+
+            if (PatientServiceItem.Id != item.Id) {
+                if (item.LabStatusId == "1") {
+                    $scope.InvoiceStatusUpdate = false;
+                } 
+            }
+        });
+
+        if ($scope.InvoiceStatusUpdate) {
+            LabTestItem.Staus = "Completed";
+            LabTestItem.LabStatusId = "2";
+
+        }
+
+        LabTestService.UpdateLabStatus(PatientServiceItem, $scope.InvoiceStatusUpdate, PatientServiceItem.InvoiceID)
+            .success(function (pt) {
+            console.log(pt);
+            $scope.labreportTemplates = pt;
+            //$scope.LoadData();
+
+            })
+            .error(function (error) {
+            $scope.status = 'Unable to load  lab report  ' + error.message;
+            console.log($scope.status);
+            });
+
+
+        $modalInstance.dismiss('cancel');
+    };
+
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+
+});
+
+HmsApp.controller("LabReportTemplateModalController", function ($scope, $http, $modalInstance, $filter, $window, isEdit, labReportID, LabTestService) {
+
+    $scope.templateData = {};
+
+
+        $scope.LoadLabReport=function()
+        {
+            LabTestService.LoadLabReport(labReportID)
+            .success(function (data) {
+
+                console.log(data);
+                //$modalInstance.dismiss('cancel');
+                $scope.templateData = data;
+                $scope.reportName = $scope.templateData.Name;
+                richTextData = $scope.templateData.RichContent;
+                CKEDITOR.instances.editor1.setData(richTextData);
+               
+
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load LabReportTemplate data: ' + error.message;
+                console.log($scope.status);
+            });
+
+        }
+
+        if (isEdit=='true') {
+            $scope.LoadLabReport();
+    }
+
+    $scope.ok = function (richTextData) {
+
+        console.log(richTextData);
+  
+
+        $scope.templateData.Name = $scope.reportName;
+        $scope.templateData.RichContent = richTextData;
+        $scope.templateData.ItemId = $scope.SingleLabItem.Id;
+        if (isEdit) {
+            $scope.templateData.Id = labReportID;
+        }
+
+        LabTestService.SaveLabReportTemplate($scope.templateData)
+            .success(function (data) {
+
+            console.log(data);
+            $modalInstance.dismiss('cancel');
+
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to save LabReportTemplate data: ' + error.message;
+                console.log($scope.status);
+            });
+
+
+
+    };
+
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+});
+
+HmsApp.controller("CommissionModalController", function ($scope, $http, $modalInstance, $filter, $window,LabTestService) {
 
 
 

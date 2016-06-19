@@ -90,6 +90,15 @@ namespace HMS.DAL.Repository
             return updatedEntity;
         }
 
+        public T UpdateByField (T entity,string fieldName)
+        {
+            var updatedEntity = _DbSet.Attach(entity);
+           // _DbContext.Entry(entity).State = EntityState.Modified;
+            _DbContext.Entry(entity).Property(fieldName).IsModified = true;
+            _DbContext.SaveChanges();
+            return updatedEntity;
+        }
+
         public T UpdateById(long id)
         {
             T entity = _DbSet.Find(id);

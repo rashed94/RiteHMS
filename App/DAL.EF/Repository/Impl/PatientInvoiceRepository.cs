@@ -14,6 +14,15 @@ namespace HMS.DAL.Repository
         {
             _DbSet = _DbContext.Set<PatientInvoice>();
         }
+
+        public PatientInvoice updateInvoiceStatus(PatientInvoice pinvoice)
+        {
+            var updatedEntity = _DbSet.Attach(pinvoice);
+            // _DbContext.Entry(entity).State = EntityState.Modified;
+            _DbContext.Entry(pinvoice).Property(x=>x.LabStatusId).IsModified = true;
+            _DbContext.SaveChanges();
+            return updatedEntity;
+        }
         public IList<PatientInvoice> GetPatientInvoicebyMedicalTypeOnlyLabItem(long id, long statusid, long medicalTypeID)
         {
             IQueryable<PatientInvoice> queryResult = _DbSet;

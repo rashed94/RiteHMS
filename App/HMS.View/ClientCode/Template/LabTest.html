@@ -183,7 +183,7 @@
                     <td>{{labTestitem.Id}}</td>
                     <td>{{labTestitem.Patient.FirstName}} {{labTestitem.Patient.LastName}}</td>
                     <td>rashed</td>
-                    <td><span class="status_red">{{labTestitem.Staus}}</span></td>
+                    <td><span ng-class="{'status_red':labTestitem.LabStatusId==1, 'status_green':labTestitem.LabStatusId==2}">{{labTestitem.Staus}}</span></td>
 
                     <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-check fa-2x" aria-hidden="true" href="#"></a></td>
                 </tr>
@@ -206,10 +206,11 @@
                                     <td>{{patientservice.Item.Name}}</td>
                                     <td>{{patientservice.Item.GenericName}}</td>
                                     <td>{{patientservice.ServiceProvider.Contact.FirstName}}  {{patientservice.ServiceProvider.Contact.LastName}}</td>
-                                    <td><span class="status_red">{{patientservice.Staus}}</span></td>
+                                    <td><span ng-class="{'status_red':patientservice.LabStatusId==1, 'status_green':patientservice.LabStatusId==2}">{{patientservice.Staus}}</span></td>
                                     <td>
                                         <a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>
-                                        <a href="#" class="link_brown">ENTER RESULT</a>
+                                        <a href="#" ng-show="patientservice.LabStatusId<2" ng-click="$event.preventDefault();openResultTemplate('lg','false',patientservice,labTestitem);" class="link_brown">ENTER RESULT</a>
+                                        <a href="#" ng-show="patientservice.LabStatusId>1"  ng-click="$event.preventDefault();openResultTemplate('lg','true',patientservice,labTestitem);" class="link_brown">VIEW/EDIT RESULT</a>
                                     </td>
                                 </tr>
 
@@ -269,14 +270,17 @@
                         <td width="14%" height="39">&nbsp;</td>
                         <td width="19%">NAME</td>
                         <td width="19%"><input type="text" ng-model="SingleLabItem.Name"></td>
-                        <td width="48%"><input ng-show="SingleLabItem.Id>0" name="report format" type="button" value="ADD NEW REPORT FORMAT" class="sm_button"></td>
+                        <td width="48%"><input ng-show="SingleLabItem.Id>0" name="report format" type="button" value="ADD NEW REPORT FORMAT" ng-click="openTemplate('lg','false',labreportformat.Id)" class="sm_button"></td>
                     </tr>
                     <tr ng-show="SingleLabItem.Id>0">
                         <td height="39">&nbsp;</td>
                         <td>REPORT FORMAT</td>
                         <td colspan="2">
-                            1. X-Ray PNS - Normal Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a><br>
-                            2.  X-Ray PNS - Detail Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a>
+                            <!--1. X-Ray PNS - Normal Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a><br>
+                             2.  X-Ray PNS - Detail Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a>-->
+                            <div ng-repeat="labreportformat in LabReportFormats">
+                                <span>{{labreportformat.Name}}</span><a class="link_green" href="#" ng-click="$event.preventDefault();openTemplate('lg','true',labreportformat.Id)">EDIT</a> <a class="link_brown" href="#" ng-click="$event.preventDefault();DeleteReportFormat(labreportformat.Id);">DELETE</a><br>
+                            </div>
                         </td>
                     </tr>
 

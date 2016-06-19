@@ -2,7 +2,7 @@
 
 HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, $filter, $modal, LabTestService) {
    
-
+    $scope.LabReportFormats = {};
     $scope.SingleLabItem = {
        id:0,
         Name: "",
@@ -85,6 +85,8 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 } else if (PatientService.LabStatusId == 3) {
                     PatientService.Staus = "Refunded";
                 }
+                PatientService.DeliveryDate = ToJavaScriptDate(PatientService.DeliveryDate);
+                PatientService.ServiceDate = ToJavaScriptDate(PatientService.ServiceDate);
 
             });
 
@@ -269,6 +271,32 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 console.log($scope.status);
             });
     }
+    $scope.LoadReportFomart=function(itemId)
+    {
+
+        LabTestService.LoadLabReportbyId(itemId)
+            .success(function (pt) {
+                $scope.LabReportFormats = pt;
+                console.log(pt);
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load  lab report  ' + error.message;
+                console.log($scope.status);
+            });
+    }
+
+    $scope.LoadReportFomartByItemId = function (itemId) {
+
+        LabTestService.LoadLabReportbyId(itemId)
+            .success(function (pt) {
+                console.log(pt);
+                return pt;
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load  lab report  ' + error.message;
+                console.log($scope.status);
+            });
+    }
 
     $scope.loadItembyId= function(itemid)
     {
@@ -277,6 +305,8 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             .success(function (pt) {
                 $scope.SingleLabItem = pt;
                 $scope.LoadFilterCondition();
+
+                $scope.LoadReportFomart($scope.SingleLabItem.Id);
 
             console.log(pt);
             })
@@ -404,12 +434,100 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
 
 
+
+    $scope.DeleteReportFormat=function(labReportFormatID)
+    {
+
+        LabTestService.DeleteReportFormat(labReportFormatID)
+            .success(function (data) {
+
+                $scope.loadItembyId($scope.SingleLabItem.Id);
+           
+            console.log("delete lab report format successfull");
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to lab report format  data: ' + error.message;
+
+});
+
+    }
     /*----------------------------------------delete end -----------------------------------------------*/
 
     //------------------------------- Modal open portion -------------------------------------------------------------
 
 
-    $scope.CommissionModal = function (size,isEdit) {
+    $scope.openResultTemplate=function(size, isEdit,PatientServiceItem,labTestitem)
+    {
+
+
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/ReportTemplateResult.html',
+            size: size,
+            controller: 'LabReportTemplateResultModalController',
+            scope: $scope,
+            resolve: 
+            {
+                isEdit: function () {
+                    return isEdit;
+                },
+                PatientServiceItem: function () {
+                    return PatientServiceItem;
+                },
+                LabTestItem: function () {
+                    return labTestitem;
+                }
+            }
+        });
+
+
+
+
+        modalInstance.result.then(function (result) {
+
+        }, function () {
+
+
+           
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+    };
+
+
+    $scope.openTemplate = function (size, isEdit,labReportID) {
+
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/ReportTemplate.html',
+            size: size,
+            controller: 'LabReportTemplateModalController',
+            scope: $scope,
+            resolve: 
+            {
+                isEdit: function () {
+                    return isEdit;
+                },
+                labReportID: function () {
+                    return labReportID;
+                }
+            }
+        });
+        modalInstance.result.then(function (result) {
+
+        }, function () {
+
+            $scope.loadItembyId($scope.SingleLabItem.Id);
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+
+    };
+
+    $scope.CommissionModal = function (size, isEdit) {
 
 
         var modalInstance = $modal.open({

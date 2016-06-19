@@ -24,7 +24,51 @@ namespace HMS.Controllers
             // _Repository = new Repository<Patient>(new Context());
         }
 
+        public JsonResult LoadLabReport(long labReportId)
+        {
+            LabReportFormat labReport = null;
 
+            using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
+            {
+                labReport = repository.GetById(labReportId);
+
+            }
+            return Json(labReport, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadLabReportbyId(long itemID)
+        {
+            List<LabReportFormat> labReports = null;
+            List<LabReportFormat> onlylabReports = new List<LabReportFormat>();
+
+                using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
+                {
+
+                    Expression<Func<LabReportFormat, bool>> lambda;
+
+                    lambda = (x => x.Active == true && x.ItemId == itemID);
+
+                     labReports = repository.GetByQuery(lambda).ToList();
+
+                     labReports.ForEach(c => onlylabReports.Add(new LabReportFormat
+                     {
+                         Id=c.Id,
+                         Name = c.Name,
+                         RichContent = c.RichContent,
+                         ItemId=c.ItemId
+
+                     }));
+
+                  
+
+                    if (onlylabReports == null)
+                    {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                    }
+
+                    return Json(onlylabReports, JsonRequestBehavior.AllowGet);
+                }
+        }
 
         public JsonResult getDoctorWithReferrel(long itemid)
         {
@@ -126,6 +170,34 @@ namespace HMS.Controllers
                 return Json("referall save successfull");
             }
 
+        }
+
+        public JsonResult DeleteReportFormat(long labReportId)
+        {
+            using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
+            {
+                repository.DeleteByID(labReportId);           
+                repository.Commit();
+                return Json("delete succussfull");
+            }
+        }
+
+        public JsonResult SaveLabReportTemplate(LabReportFormat labReportFormat)
+        {
+
+            using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
+            {
+                if (labReportFormat.Id > 0)
+                {
+                    repository.Update(labReportFormat);
+                }
+                else
+                {
+                    repository.Insert(labReportFormat);
+                }
+                repository.Commit();
+                return Json("lab Report Format save successfull");
+            }
         }
 
         public JsonResult SaveItem(Item item)
@@ -379,6 +451,35 @@ namespace HMS.Controllers
 
             
         }
+
+        public JsonResult UpdateLabStatus(PatientService PatientServiceItem,bool InvoiceStatusUpdate,long InvoiceID)
+        {
+            using (PatientServiceRepository repository = new PatientServiceRepository())
+            {
+                PatientServiceItem.Item = null;
+                PatientServiceItem.ServiceProvider = null;
+               
+
+                repository.Update(PatientServiceItem);
+                repository.Commit();
+            }
+            if (InvoiceStatusUpdate)
+            {
+                using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
+                {
+                   
+
+                     string field = "LabStatusId";
+                     PatientInvoice pinvoice = new PatientInvoice();
+                     pinvoice.LabStatusId = 2;
+                     pinvoice.Id = InvoiceID;
+                    // repository.updateInvoiceStatus(pinvoice);
+                     repository.UpdateByField(pinvoice, field);
+                }
+            }
+
+            return Json("Status update successfull");
+        }
         public JsonResult GetPatientInvoicebyMedicalType(long id, long statusid, long medicalTypeID)
         {
 
@@ -457,6 +558,7 @@ namespace HMS.Controllers
                            patientstitem.ReportFormatName = c.ReportFormatName;
                            patientstitem.LabStatusId = c.LabStatusId;
 
+                           patientstitem.Item.Id = c.Item.Id;
                            patientstitem.Item.Name = c.Item.Name;
                            patientstitem.Item.GenericName = c.Item.GenericName;
                            patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;

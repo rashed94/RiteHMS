@@ -1,0 +1,69 @@
+﻿
+<script>
+    var richTextData;
+    function ok(event) {
+        richTextData = CKEDITOR.instances.editor1.getData();
+        if ($("#Name").val() == "") {
+            alert("Enter a Report Format Name")
+        } else {
+            angular.element(event).scope().ok(richTextData);
+        }
+        
+    }
+    $(document).ready(function () {
+        //CKEDITOR.instances.editor1.getData(richTextData);
+       // CKEDITOR.instances.editor1.setData(richTextData);
+        //alert(richTextData);
+    });
+
+
+</script>
+
+<div class="modal-header rite_modal_header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title" id="myModalLabel">
+        Build Report Template
+    </h2>
+</div>
+<div class="modal-body">
+    
+
+
+        <div class="payment">
+
+            <div class="title">Report Format Name</div>
+            <div class="inputbox">
+                <input type="text" id="Name" ng-model="reportName">
+            </div>
+            <div style="clear: both"></div>
+            <div class="space"></div>
+            <div class="space"></div>
+
+
+            <textarea name="editor1" id="editor1" ng-model="reportFomrat" rows="10" cols="80">
+                This is my textarea to be replaced with CKEditor.
+            </textarea>
+
+            <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace('editor1');
+            </script>
+
+
+            <div style="clear: both"></div>
+            <div class="space"></div>
+
+            <div class="inputbox">
+                <input name="save" type="button" value="save" class="md_button" onclick="ok(this);">
+                <input name="cancel" type="button" value="cancel" class="md_button cancel" ng-click="cancel()">
+                <div style="clear: both"></div>
+                <div class="space"></div>
+
+
+            </div>
+
+            <div style="clear: both"></div>
+        </div>
+
+</div>

@@ -6,6 +6,13 @@
         return $http.get('/Item/GetPatientInvoicebyMedicalType?id=' + patientId + '&statusid=' + labStatus + "&medicalTypeID=" + medicalType);
     };
 
+    
+
+    LabTestService.LoadLabReport = function (labReportId) {
+
+        return $http.get('/Item/LoadLabReport?labReportId=' + labReportId);
+    };
+
 
     LabTestService.getDoctorWithReferrel = function (itemID) {
 
@@ -37,6 +44,12 @@
         return $http.get('/Item/loadLabTestGroups');
     };
 
+    LabTestService.LoadLabReportbyId = function (itemId) {
+
+        return $http.get('/Item/LoadLabReportbyId?itemId=' + itemId);
+    };
+
+    
     
     LabTestService.CreateCategory = function (categoryName, medicalTypeID) {
 
@@ -67,6 +80,17 @@
 
     };
 
+
+    LabTestService.UpdateLabStatus = function (PatientServiceItem, InvoiceStatusUpdate,InvoiceID) {
+
+        //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
+
+        return $http.post('/Item/UpdateLabStatus', { PatientServiceItem: PatientServiceItem, InvoiceStatusUpdate: InvoiceStatusUpdate, InvoiceID: InvoiceID });
+
+    };
+
+
+
     LabTestService.SaveItem = function (Item) {
 
         //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
@@ -84,7 +108,20 @@
 
     };
 
+    LabTestService.SaveLabReportTemplate = function (templateData) {
 
+        //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
+
+        return $http.post('/Item/SaveLabReportTemplate', templateData);
+
+    };
+
+    LabTestService.DeleteReportFormat = function (labReportId) {
+
+       
+        return $http.post('/Item/DeleteReportFormat', { labReportId: labReportId });
+    };
+    
 
 
     return LabTestService;
