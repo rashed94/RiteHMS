@@ -14,6 +14,7 @@ HmsApp.controller("AppointmentController", function ($scope, $routeParams, $wind
         .success(function (departments) {
             $scope.Departments = departments;
             $scope.SelectedDepartment = $scope.Departments[0];
+            $scope.SelectedAppointment = {};
         })
         .error(function (error) {
             $scope.status = 'Unable to load Departments data: ' + error.message;
@@ -24,6 +25,7 @@ HmsApp.controller("AppointmentController", function ($scope, $routeParams, $wind
         ConfigurationService.GetDoctorsByDepartment(departmentId)
         .success(function (doctors) {
             $scope.Doctors = doctors;
+            $scope.SelectedAppointment = {};
         })
         .error(function (error) {
             $scope.status = 'Unable to load DoctorsByDepartment data: ' + error.message;
@@ -35,6 +37,8 @@ HmsApp.controller("AppointmentController", function ($scope, $routeParams, $wind
         var doctorId = $scope.Doctor.Id;
         var oDate = new Date(Date.parse($scope.DoctorAppointment.AppointmentDate));
         var date = oDate.getFullYear() + '-' + (oDate.getMonth() + 1) + '-' + oDate.getDate();
+
+        $scope.SelectedAppointment = {};
 
         AppointmentService.GetAppointments(doctorId, date)
             .success(function (data) {

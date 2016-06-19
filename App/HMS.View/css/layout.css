@@ -218,7 +218,8 @@ margin-left:50px;
 }
 .home_appointment_bt
 {
-	margin-top:30px;
+    margin-top: 20px;
+    overflow: auto;
 }
 .md_button:hover
 {
@@ -639,4 +640,14 @@ select option:empty { display:none }
 .appointment.disabled {
     pointer-events: none;
     background-color: #CCC;
+}
+
+.patient-appointments {
+    border-radius: 5px;
+    border: 1px solid #CCC;
+    background-color: #FFF;
+    box-shadow: #CCC 2px 2px 2px;
+    padding: 5px;
+    margin-bottom: 5px;
+    overflow: auto;
 }

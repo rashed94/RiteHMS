@@ -45,7 +45,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                         $scope.DoctorAppointments = doctorAppointments;
                     })
                     .error(function (error) {
-                        $scope.status = 'Unable to load Patient data: ' + error.message;
+                        $scope.status = 'Unable to load Patient Appointment data: ' + error.message;
                         console.log($scope.status);
                     });
             }
