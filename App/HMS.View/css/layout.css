@@ -218,7 +218,7 @@ margin-left:50px;
 }
 .home_appointment_bt
 {
-	margin-top:30px;
+	margin-top: 20px;
 }
 .md_button:hover
 {
@@ -608,8 +608,12 @@ select option:empty { display:none }
 .appointment {
     cursor: pointer;
 }
-.appointment.selected, .appointment:hover {
-    background-color: #538e4a;
-    color: white;
-    font-weight: bold;
-}
+    .appointment.selected, .appointment:hover {
+        background-color: #538e4a;
+        color: white;
+        font-weight: bold;
+    }
+    .appointment.disabled {
+        pointer-events: none;
+        background-color: #CCC;    
+    }

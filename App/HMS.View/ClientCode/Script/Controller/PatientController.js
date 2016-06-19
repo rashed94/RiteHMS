@@ -54,6 +54,21 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         $scope.$broadcast('patientchange', { "val": '' });
     });
 
+    $scope.CancelAppointment = function (doctorAppointmentId) {
+        PatientService.CancelAppointment(doctorAppointmentId)
+            .success(function (doctorAppointments) {
+                $.each(doctorAppointments, function (index, doctorAppointment) {
+                    if (doctorAppointment.Id == doctorAppointmentId) {
+                        doctorAppointment.remove();
+                    }
+                });
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load Appointment data: ' + error.message;
+                console.log($scope.status);
+            });
+    };
+
     $scope.Patient = angular.fromJson(sessionStorage.PatientService);
 
     $scope.initDatePicker=function () {

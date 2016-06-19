@@ -37,7 +37,9 @@
         <p>&nbsp;</p>
         <div class="home_appointment_details">
 
-            <div ng-repeat="DoctorAppointment in DoctorAppointments" style="clear: both;">
+            <input name="Add appointment" type="button" value="Add appointment" class="sm_button" style="margin-bottom: 20px;" onclick="location.href='#/appointment'">
+
+            <div ng-repeat="DoctorAppointment in DoctorAppointments" style="clear: both; margin-bottom: 20px;">
                 <div ng-show="DoctorAppointment != null" style="width: 150px;float: left;">
                     <img ng-src="GetImage.ashx?Name={{DoctorAppointment.ServiceProvider.Contact.Photo != null && DoctorAppointment.ServiceProvider.Contact.Photo != 'null' ? DoctorAppointment.ServiceProvider.Contact.Photo : ''}}" width="115" height="146" alt="{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}">
                 </div>
@@ -53,13 +55,10 @@
                     <p ng-bind-html="DoctorAppointment.ServiceProvider.Speciality">
                         {{DoctorAppointment.ServiceProvider.Speciality}}
                     </p>
+                    <div class="home_appointment_bt">
+                        <input name="CANCEL appointment" type="button" value="Cancel appointment" class="sm_button" ng-click="CancelAppointment(DoctorAppointment.Id)">
+                    </div>
                 </div>
-            </div>
-
-            <div class="home_appointment_bt" style="clear: both;">
-                <input name="Confirm appointment" type="button" value="Confirm appointment" class="sm_button">
-                <input name="CANCEL appointment" type="button" value="CANCEL appointment" class="sm_button">
-                <input name="Add appointment" type="button" value="Add appointment" class="sm_button" onclick="location.href='#/appointment'">
             </div>
 
         </div>
@@ -120,17 +119,6 @@
                         <td>
                             <input type="text" width="100" ng-model="serviceitem.ReferralFee" ng-show="serviceitem.ReferralAllowed" name="referrer" class="referrer"></td>
                         <td>
-                            <!--<input type="text" width="100" name="doctor" class="doctor">-->
-
-                            <!--<input name="doctorName" id="doctorName" type="text" placeholder="Type Doctor's name"
-                                   ng-model="Doctor"
-                                   typeahead="doctor as (doctor.Contact.FirstName+' '+ doctor.Contact.LastName+' '+doctor.ID) for doctor in GetServiceProviderPartialName($viewValue)"
-                                   typeahead-on-select="OnDocotorSelect(doctor.Contact.FirstName)"
-                                   typeahead-min-length="1"
-                                   typeahead-wait-ms="1"
-                                   class="form-control">-->
-
-
                             <input name="doctorName" id="doctorName" type="text" ng-show="serviceitem.ReferralAllowed" ng-change="updateReferrerItem(serviceitem,Doctor)" placeholder="Type Doctor's name"
                                 ng-model="Doctor"
                                 typeahead="item as (item.Contact.FirstName + ' ' + item.Contact.LastName) for item in GetServiceProviderPartialName($viewValue,serviceitem.Id)"

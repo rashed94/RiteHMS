@@ -32,9 +32,14 @@ HmsApp.controller("AppointmentController", function ($scope, $routeParams, $wind
     };
 
     $scope.GetAppointments = function () {
-        AppointmentService.GetAppointments()
-            .success(function (appointments) {
-                $scope.Appointments = appointments;
+        var doctorId = $scope.Doctor.Id;
+        var oDate = new Date(Date.parse($scope.DoctorAppointment.AppointmentDate));
+        var date = oDate.getFullYear() + '-' + (oDate.getMonth() + 1) + '-' + oDate.getDate();
+
+        AppointmentService.GetAppointments(doctorId, date)
+            .success(function (data) {
+                $scope.Appointments = data.AppointmentSlots;
+                $scope.DoctorAppointments = data.DoctorAppointments;
             })
             .error(function (error) {
                 $scope.status = 'Unable to load Appointment data: ' + error.message;

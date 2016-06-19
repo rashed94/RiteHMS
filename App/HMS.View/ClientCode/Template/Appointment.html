@@ -14,7 +14,9 @@
             <div class="input_containter">
                 <div class="title">Appointment date</div>
                 <div class="inputbox">
-                    <input type="date" width="110" placeholder="click to show datepicker" name="appointmentDate" class="appointmentDate" ng-model="DoctorAppointment.AppointmentDate">
+                    <!--<input type="date" width="110" placeholder="click to show datepicker" name="appointmentDate" class="appointmentDate" ng-model="DoctorAppointment.AppointmentDate">-->
+                    <input type="text" id="txtAppointmentDate" ng-model="DoctorAppointment.AppointmentDate | date: 'dd/MM/yyyy'" />
+                    <label for="txtAppointmentDate">(dd/MM/yyyy)</label>
                 </div>
             </div>
             <div class="input_containter">
@@ -40,15 +42,18 @@
                     </select>
                 </div>
             </div>
-            <div>
-                <input type="button" value="Confirm Appointment" ng-click="ConfirmAppointment()" />
+            <div class="input_containter">
+                <div class="title"></div>
+                <div class="inputbox" ng-show="SelectedAppointment.Id">
+                    <input type="button" class="sm_button" value="Confirm Appointment" ng-click="ConfirmAppointment()" />
+                </div>
             </div>
         </div>
         <div class="slots" ng-show="Appointments.length > 0" style="float: left; border: 1px solid #CCC; height: 300px; width: 150px; overflow-y: scroll;">
             <table width="100%" border="1" align="center" class="bordered">
                 <tr ng-repeat="appointment in Appointments">
                     <td ng-click="SelectAppointment(appointment);"
-                        ng-class="{selected:appointment.Selected}" class="appointment">{{appointment.Name}}</td>
+                        ng-class="{selected:appointment.Selected, disabled:appointment.IsBooked}" class="appointment">{{appointment.Name}}</td>
                 </tr>
             </table>
         </div>

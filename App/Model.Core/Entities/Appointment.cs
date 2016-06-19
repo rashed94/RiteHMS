@@ -9,6 +9,13 @@ namespace HMS.Model.Core
         public string Name { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
+        [NotMapped]
+        public bool IsBooked { get; set; }
+
+        public Appointment()
+        {
+            IsBooked = false;
+        }
 
         protected override void RegisterValidationMethods()
         {
