@@ -15,17 +15,102 @@ using System.Data.Entity;
 
 namespace HMS.Controllers
 {
-    public class LabTestController : Controller
+    public class ItemController : Controller
     {
         //private IRepository<Patient> _Repository;
 
-        public LabTestController()
+        public ItemController()
         {
             // _Repository = new Repository<Patient>(new Context());
         }
 
+        public JsonResult LoadLabReport(long labReportId)
+        {
+            LabReportFormat labReport = null;
+
+            using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
+            {
+                labReport = repository.GetById(labReportId);
+
+            }
+            return Json(labReport, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadLabReportbyId(long itemID)
+        {
+            List<LabReportFormat> labReports = null;
+            List<LabReportFormat> onlylabReports = new List<LabReportFormat>();
+
+                using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
+                {
+
+                    Expression<Func<LabReportFormat, bool>> lambda;
+
+                    lambda = (x => x.Active == true && x.ItemId == itemID);
+
+                     labReports = repository.GetByQuery(lambda).ToList();
+
+                     labReports.ForEach(c => onlylabReports.Add(new LabReportFormat
+                     {
+                         Id=c.Id,
+                         Name = c.Name,
+                         RichContent = c.RichContent,
+                         ItemId=c.ItemId
+
+                     }));
+
+                  
+
+                    if (onlylabReports == null)
+                    {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                    }
+
+                    return Json(onlylabReports, JsonRequestBehavior.AllowGet);
+                }
+        }
+
+        public JsonResult getDoctorWithReferrel(long itemid)
+        {
+            List<Referral> referrals = null;
+            List<Referral> onlyReferrals = new List<Referral>();
 
 
+
+
+
+            using (ReferralRepository repository = new ReferralRepository())
+            {
+                referrals = repository.GetReferrers(itemid).ToList();
+
+
+
+
+
+                foreach (Referral item in referrals)
+                {
+                    Referral referral = new Referral();
+                    ServiceProvider serviceProvider = new ServiceProvider();
+                    Contact contact = new Contact();
+                    serviceProvider.Contact = contact;
+                    referral.ServiceProvider = serviceProvider;
+
+                    referral.Id = item.Id;
+                    referral.ItemId = item.ItemId;
+                    referral.ReferralFee = item.ReferralFee;
+                    referral.ServiceProviderId = item.ServiceProviderId;
+                    referral.ServiceProvider.Contact.FirstName = item.ServiceProvider.Contact.FirstName;
+                    referral.ServiceProvider.Contact.LastName = item.ServiceProvider.Contact.LastName;
+                    referral.ServiceProvider.Speciality = item.ServiceProvider.Speciality;
+                    onlyReferrals.Add(referral);
+
+                }
+                return Json(onlyReferrals, JsonRequestBehavior.AllowGet);
+            }
+
+
+
+        }
 
         public JsonResult loadLabTestGroups()
         {
@@ -64,6 +149,150 @@ namespace HMS.Controllers
                 return Json(onlyLabTestGroup, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult deleteCommission(long referralId)
+        {
+
+            using (ReferralRepository repository = new ReferralRepository())
+            {
+                repository.DeleteByID(referralId);
+                repository.Commit();
+                return Json("referall delete successfull");
+            }
+
+        }
+        // Code added by zaber
+        public JsonResult deleteLabTest(long labitemId)
+        {
+
+            using (ItemRepository repository = new ItemRepository())
+            {
+                repository.DeleteByID(labitemId);
+                repository.Commit();
+                return Json("Labitem delete successfull");
+            }
+
+        }
+        
+        //end by zaber
+        public JsonResult saveDoctorsCommission(Referral referral)
+        {
+            using (ReferralRepository repository = new ReferralRepository())
+            {
+                repository.Insert(referral);
+                repository.Commit();
+                return Json("referall save successfull");
+            }
+
+        }
+
+        public JsonResult DeleteReportFormat(long labReportId)
+        {
+            using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
+            {
+                repository.DeleteByID(labReportId);           
+                repository.Commit();
+                return Json("delete succussfull");
+            }
+        }
+
+        public JsonResult SaveLabReportTemplate(LabReportFormat labReportFormat)
+        {
+
+            using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
+            {
+                if (labReportFormat.Id > 0)
+                {
+                    repository.Update(labReportFormat);
+                }
+                else
+                {
+                    repository.Insert(labReportFormat);
+                }
+                repository.Commit();
+                return Json("lab Report Format save successfull");
+            }
+        }
+
+        public JsonResult SaveItem(Item item)
+        {
+            Item LabTestItem = new Item();
+            using (ItemRepository repository = new ItemRepository())
+            {
+                if (item.Id > 0)
+                {
+                   LabTestItem= repository.Update(item);
+                    repository.Commit();
+                }
+                else
+                {
+                    LabTestItem=repository.Insert(item);
+                    repository.Commit();
+                }
+
+            }
+
+            return Json(LabTestItem.Id);
+        }
+        public JsonResult CreateCategory(string categoryName, long medicalTypeId)
+        {
+            ItemCategory category = new ItemCategory();
+            ItemCategory outPutCategory = new ItemCategory();
+            category.Name = categoryName;
+            category.MedicalTypeId = medicalTypeId;
+
+            using (ItemCategoryRepository repository = new ItemCategoryRepository())
+            {
+
+                repository.Insert(category);
+                repository.Commit();
+                // CreatePatientService(invoice.Id, patientServices);
+            }
+
+            return Json("Category Insert successfull");
+
+        }
+
+        public JsonResult CreateReportGroup(string reportGroupName)
+        {
+            LabReportGroup LabReportGroup = new LabReportGroup();
+
+            LabReportGroup.Name = reportGroupName;
+
+
+            using (Repository<LabReportGroup> repository = new Repository<LabReportGroup>())
+            {
+
+                repository.Insert(LabReportGroup);
+                repository.Commit();
+                // CreatePatientService(invoice.Id, patientServices);
+            }
+
+            return Json("Report Group Insert successfull");
+
+        }
+
+
+        public JsonResult CreateMeasurementUnit(string measurementUnitName)
+        {
+            MeasurementUnit MeasurementUnit = new MeasurementUnit();
+
+            MeasurementUnit.Name = measurementUnitName;
+
+
+            using (Repository<MeasurementUnit> repository = new Repository<MeasurementUnit>())
+            {
+
+                repository.Insert(MeasurementUnit);
+                repository.Commit();
+                // CreatePatientService(invoice.Id, patientServices);
+            }
+
+            return Json("MeasurementUnit Insert successfull");
+
+        }
+
+
 
 
         public JsonResult loadMeasureMentUnits()
@@ -236,6 +465,35 @@ namespace HMS.Controllers
 
             
         }
+
+        public JsonResult UpdateLabStatus(PatientService PatientServiceItem,bool InvoiceStatusUpdate,long InvoiceID)
+        {
+            using (PatientServiceRepository repository = new PatientServiceRepository())
+            {
+                PatientServiceItem.Item = null;
+                PatientServiceItem.ServiceProvider = null;
+               
+
+                repository.Update(PatientServiceItem);
+                repository.Commit();
+            }
+            if (InvoiceStatusUpdate)
+            {
+                using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
+                {
+                   
+
+                     string field = "LabStatusId";
+                     PatientInvoice pinvoice = new PatientInvoice();
+                     pinvoice.LabStatusId = 2;
+                     pinvoice.Id = InvoiceID;
+                    // repository.updateInvoiceStatus(pinvoice);
+                     repository.UpdateByField(pinvoice, field);
+                }
+            }
+
+            return Json("Status update successfull");
+        }
         public JsonResult GetPatientInvoicebyMedicalType(long id, long statusid, long medicalTypeID)
         {
 
@@ -314,6 +572,7 @@ namespace HMS.Controllers
                            patientstitem.ReportFormatName = c.ReportFormatName;
                            patientstitem.LabStatusId = c.LabStatusId;
 
+                           patientstitem.Item.Id = c.Item.Id;
                            patientstitem.Item.Name = c.Item.Name;
                            patientstitem.Item.GenericName = c.Item.GenericName;
                            patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;

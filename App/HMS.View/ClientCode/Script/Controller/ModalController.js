@@ -21,6 +21,281 @@ HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInst
 });
 
 
+HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $http, $modalInstance, $filter, $window, isEdit, PatientServiceItem, LabTestItem, LabTestService) {
+
+    $scope.InvoiceStatusUpdate=true;
+
+
+    $scope.loadSavedData=function()
+    {
+        if (CKEDITOR.instances.editor1) {
+
+            if(PatientServiceItem.ReportFormatName === null)
+            {
+                CKEDITOR.instances.editor1.setData("");
+
+
+            }else
+            {
+                CKEDITOR.instances.editor1.setData(PatientServiceItem.ReportFormatName);
+            }
+
+        } 
+    }
+    $scope.LoadData=function()
+    {
+        if ($scope.labreportTemplates != null) {
+            $scope.labreportSingleTemplate = $scope.labreportTemplates[0];
+
+            richTextData = $scope.labreportSingleTemplate.RichContent;
+            CKEDITOR.instances.editor1.setData(richTextData);
+        }
+    }
+
+
+    if (isEdit=="false") {
+        LabTestService.LoadLabReportbyId(PatientServiceItem.Item.Id)
+            .success(function (pt) {
+                console.log(pt);
+                $scope.labreportTemplates = pt;
+                $scope.LoadData();
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load  lab report  ' + error.message;
+                console.log($scope.status);
+            });
+
+    }
+
+
+
+    $scope.ok = function (richTextData) {
+
+        PatientServiceItem.LabStatusId = "2";
+        PatientServiceItem.ReportFormatName = richTextData;
+        PatientServiceItem.Staus = "Completed";
+
+        angular.forEach(LabTestItem.PatientServices, function (item) {
+
+            if (PatientServiceItem.Id != item.Id) {
+                if (item.LabStatusId == "1") {
+                    $scope.InvoiceStatusUpdate = false;
+                } 
+            }
+        });
+
+        if ($scope.InvoiceStatusUpdate) {
+            LabTestItem.Staus = "Completed";
+            LabTestItem.LabStatusId = "2";
+
+        }
+
+        LabTestService.UpdateLabStatus(PatientServiceItem, $scope.InvoiceStatusUpdate, PatientServiceItem.InvoiceID)
+            .success(function (pt) {
+            console.log(pt);
+            $scope.labreportTemplates = pt;
+            //$scope.LoadData();
+
+            })
+            .error(function (error) {
+            $scope.status = 'Unable to load  lab report  ' + error.message;
+            console.log($scope.status);
+            });
+
+
+        $modalInstance.dismiss('cancel');
+    };
+
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+
+});
+
+HmsApp.controller("LabReportTemplateModalController", function ($scope, $http, $modalInstance, $filter, $window, isEdit, labReportID, LabTestService) {
+
+    $scope.templateData = {};
+
+
+        $scope.LoadLabReport=function()
+        {
+            LabTestService.LoadLabReport(labReportID)
+            .success(function (data) {
+
+                console.log(data);
+                //$modalInstance.dismiss('cancel');
+                $scope.templateData = data;
+                $scope.reportName = $scope.templateData.Name;
+                richTextData = $scope.templateData.RichContent;
+                CKEDITOR.instances.editor1.setData(richTextData);
+               
+
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load LabReportTemplate data: ' + error.message;
+                console.log($scope.status);
+            });
+
+        }
+
+        if (isEdit=='true') {
+            $scope.LoadLabReport();
+    }
+
+    $scope.ok = function (richTextData) {
+
+        console.log(richTextData);
+  
+
+        $scope.templateData.Name = $scope.reportName;
+        $scope.templateData.RichContent = richTextData;
+        $scope.templateData.ItemId = $scope.SingleLabItem.Id;
+        if (isEdit) {
+            $scope.templateData.Id = labReportID;
+        }
+
+        LabTestService.SaveLabReportTemplate($scope.templateData)
+            .success(function (data) {
+
+            console.log(data);
+            $modalInstance.dismiss('cancel');
+
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to save LabReportTemplate data: ' + error.message;
+                console.log($scope.status);
+            });
+
+
+
+    };
+
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+});
+
+HmsApp.controller("CommissionModalController", function ($scope, $http, $modalInstance, $filter, $window,LabTestService) {
+
+
+
+    $scope.Referral ={};
+    
+
+    $scope.saveCommission = function () {
+        LabTestService.saveDoctorsCommission($scope.Referral)
+        .success(function (data) {
+
+        console.log(data);
+        $scope.getDoctorWithReferrel();
+
+
+        })
+        .error(function (error) {
+        $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+        console.log($scope.status);
+        });
+    }
+
+
+    $scope.getDoctorWithReferrel = function () {
+        LabTestService.getDoctorWithReferrel($scope.SingleLabItem.Id)
+         .success(function (data) {
+
+             $scope.Referrals = data;
+             console.log(data);
+
+
+
+         })
+            .error(function (error) {
+                $scope.status = 'Unable to load reffer doctor for this item: ' + error.message;
+                console.log($scope.status);
+            });
+    }
+
+
+
+    $scope.ok = function () {
+
+ 
+            $scope.Referral.itemId= $scope.SingleLabItem.Id;
+            $scope.Referral.ServiceProviderId=  $scope.Doctor.Id;
+            $scope.Referral.ReferralFee=$scope.CommissionAmount;
+      
+
+            $scope.saveCommission();
+           
+      // $modalInstance.dismiss('cancel');
+       
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+
+    $scope.OnDocotorSelect=function($item)
+    {
+        $scope.Doctor.Name = $item.Contact.FirstName + " " + $item.Contact.LastName;
+        $scope.Doctor.Id=$item.Id;
+    }
+
+    $scope.GetDoctorPartialName = function (name) {
+
+
+        //return $http.get('/patient/getserviceproviderpartialname?name=' + name + "&itemid=" + itemid).then(function (response) {
+        //    var data = response.data;
+        //    return response.data;
+        //});
+
+        /*----------------------------  TypeId 56 means doctor --------------------------------------------------*/
+
+        return $http.get('/patient/getdoctorbyname?name=' + name + "&typeId=" + 56).then(function (response) {
+            var data = response.data;
+            return response.data;
+        });
+
+
+    }
+
+    $scope.deleteCommission = function (referralId) {
+
+
+                 LabTestService.deleteCommission(referralId)
+                .success(function (data) {
+
+                    $scope.getDoctorWithReferrel();
+
+
+
+                })
+                .error(function (error) {
+                $scope.status = 'Unable to delete referral comission: ' + error.message;
+                console.log($scope.status);
+                });
+
+
+            
+
+    
+
+    }
+
+
+    $scope.getDoctorWithReferrel();
+});
+
 HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $filter, $window, billingItems, singleInvoice, BillingService) {
 
     $scope.PatientServiceItem = [];

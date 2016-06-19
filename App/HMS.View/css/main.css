@@ -559,16 +559,6 @@ input[type="text"]#doctorName
 
 
 
-.box {
-  width: 20%;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.2);
-  padding: 35px;
-  border: 2px solid #fff;
-  border-radius: 20px/50px;
-  background-clip: padding-box;
-  text-align: center;
-}
 
 .button {
   font-size: 1em;
@@ -601,13 +591,13 @@ input[type="text"]#doctorName
 }
 
 .popup {
-  margin: 70px auto;
+  margin: 170px auto;
   padding: 20px;
   background: #fff;
   border-radius: 5px;
   width: 30%;
   position: relative;
-  transition: all 5s ease-in-out;
+
 }
 
 .popup h2 {
@@ -628,7 +618,15 @@ input[type="text"]#doctorName
 .popup .close:hover {
   color: orange;
 }
-.popup .content {
-  max-height: 30%;
-  overflow: auto;
+.popup .content_text {
+
+
+  overflow: hidden;
+}
+.padding40
+{
+    padding:40px;
+}
+.padding40 div{
+    padding:4px;
 }

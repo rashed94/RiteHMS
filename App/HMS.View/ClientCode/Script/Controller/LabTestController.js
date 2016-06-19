@@ -1,10 +1,10 @@
 ﻿'use strict';
 
 HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, $filter, $modal, LabTestService) {
-
-
+   
+    $scope.LabReportFormats = {};
     $scope.SingleLabItem = {
-
+       id:0,
         Name: "",
         GenericName:"",
         Code:"",
@@ -12,15 +12,16 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         MedicalTypeId:62,
         ItemCategoryId:41,
         MeasurementUnitId:62,
-        SalePrice:0.00,
+        SalePrice:"",
         BuyPrice:0.00,
-        ServiceProviderId:0,
+        ServiceProviderId:"",
         ReferralAllowed:1,
-        DefaultReferrarFee:0.00,
-        LabReportGroupId:0,
+        DefaultReferrarFee:"",
+        LabReportGroupId:"",
 
 
     };
+    $scope.saveSuccess = 0;
     $scope.LabTestCategories = {};
     $scope.LabTestGroups = {};
     $scope.MeasureMentUnits = {};
@@ -84,6 +85,8 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 } else if (PatientService.LabStatusId == 3) {
                     PatientService.Staus = "Refunded";
                 }
+                PatientService.DeliveryDate = ToJavaScriptDate(PatientService.DeliveryDate);
+                PatientService.ServiceDate = ToJavaScriptDate(PatientService.ServiceDate);
 
             });
 
@@ -268,6 +271,32 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 console.log($scope.status);
             });
     }
+    $scope.LoadReportFomart=function(itemId)
+    {
+
+        LabTestService.LoadLabReportbyId(itemId)
+            .success(function (pt) {
+                $scope.LabReportFormats = pt;
+                console.log(pt);
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load  lab report  ' + error.message;
+                console.log($scope.status);
+            });
+    }
+
+    $scope.LoadReportFomartByItemId = function (itemId) {
+
+        LabTestService.LoadLabReportbyId(itemId)
+            .success(function (pt) {
+                console.log(pt);
+                return pt;
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load  lab report  ' + error.message;
+                console.log($scope.status);
+            });
+    }
 
     $scope.loadItembyId= function(itemid)
     {
@@ -275,6 +304,9 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         LabTestService.loadItembyId(itemid)
             .success(function (pt) {
                 $scope.SingleLabItem = pt;
+                $scope.LoadFilterCondition();
+
+                $scope.LoadReportFomart($scope.SingleLabItem.Id);
 
             console.log(pt);
             })
@@ -283,6 +315,261 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             console.log($scope.status);
             });
     }
+
+
+    $scope.resetpopupFiled=function()
+    {
+        
+        $scope.categoryName = "";
+        $scope.reportGroupName = "";
+        $scope.measurementUnitName = "";
+    }
+
+    /******************************* save portion ***********************************************/
+
+
+
+    $scope.saveCategory=function()
+    {
+        LabTestService.CreateCategory($scope.categoryName, $scope.medicalTypeID)
+        .success(function (data) {
+
+            $scope.loadLabTestCategories();
+            $scope.resetpopupFiled();
+
+            $('#popupCategory').css("visibility", "hidden");
+            $('#popupCategory').css("opacity", 0);
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+    }
+
+
+
+
+    $scope.saveReportGroup = function () {
+        LabTestService.CreateReportGroup($scope.reportGroupName)
+        .success(function (data) {
+
+            $scope.loadLabTestGroups();
+            $scope.resetpopupFiled();
+
+            $('#popupLabReportGroup').css("visibility", "hidden");
+            $('#popupLabReportGroup').css("opacity", 0);
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+    }
+    $scope.filterCondition = {
+        MeasurementUnitId: '62',
+        ItemCategoryId: '41',
+        LabReportGroupId:""
+      
+
+    }
+   
+    $scope.LoadFilterCondition=function()
+    {
+        $scope.filterCondition.MeasurementUnitId = $scope.SingleLabItem.MeasurementUnitId.toString();
+        $scope.filterCondition.ItemCategoryId = $scope.SingleLabItem.ItemCategoryId.toString();
+        if ($scope.SingleLabItem.LabReportGroupId != null) {
+            $scope.filterCondition.LabReportGroupId = $scope.SingleLabItem.LabReportGroupId.toString()
+        };
+    }
+
+    $scope.saveMeasurementUnit = function () {
+        LabTestService.CreateMeasurementUnit($scope.measurementUnitName)
+        .success(function (data) {
+
+            $scope.loadMeasureMentUnits();
+            $scope.resetpopupFiled();
+
+            $('#popupMeasurementUnit').css("visibility", "hidden");
+            $('#popupMeasurementUnit').css("opacity", 0);
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+    }
+
+
+    $scope.saveItem = function () {
+
+        $scope.SingleLabItem.MeasurementUnitId= $scope.filterCondition.MeasurementUnitId;
+        $scope.SingleLabItem.ItemCategoryId=  $scope.filterCondition.ItemCategoryId;
+        $scope.SingleLabItem.LabReportGroupId = $scope.filterCondition.LabReportGroupId;
+
+
+        LabTestService.SaveItem($scope.SingleLabItem)
+        .success(function (data) {
+
+            $scope.loadItembyId( data);
+            $scope.saveSuccess = 1;
+            console.log("Save successfull");
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+    }
+
+
+
+    /*----------------------------- save end ----------------------------------------------------*/
+
+
+    /*---------------------------------------- delete ------------------------------------------------*/
+
+
+
+
+    $scope.DeleteReportFormat=function(labReportFormatID)
+    {
+
+        LabTestService.DeleteReportFormat(labReportFormatID)
+            .success(function (data) {
+
+                $scope.loadItembyId($scope.SingleLabItem.Id);
+           
+            console.log("delete lab report format successfull");
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to lab report format  data: ' + error.message;
+
+});
+
+    }
+    // code added by zaber
+    $scope.deleteLabTest = function (labitemId) {
+
+
+        LabTestService.deleteLabTest(labitemId)
+       .success(function (data) {
+
+           //$scope.getDoctorWithReferrel();
+           $scope.GetLabItemsByMedicalType($scope.medicalTypeID);
+           $scope.status = 'Delete Successful';
+           //$window.alert("Delete Successful!");
+           //return;
+
+       })
+       .error(function (error) {
+           $scope.status = 'Unable to delete referral comission: ' + error.message;
+           console.log($scope.status);
+       });
+
+    }
+    // end by zaber
+    /*----------------------------------------delete end -----------------------------------------------*/
+
+    //------------------------------- Modal open portion -------------------------------------------------------------
+
+
+    $scope.openResultTemplate=function(size, isEdit,PatientServiceItem,labTestitem)
+    {
+
+
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/ReportTemplateResult.html',
+            size: size,
+            controller: 'LabReportTemplateResultModalController',
+            scope: $scope,
+            resolve: 
+            {
+                isEdit: function () {
+                    return isEdit;
+                },
+                PatientServiceItem: function () {
+                    return PatientServiceItem;
+                },
+                LabTestItem: function () {
+                    return labTestitem;
+                }
+            }
+        });
+
+
+
+
+        modalInstance.result.then(function (result) {
+
+        }, function () {
+
+
+           
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+    };
+
+
+    $scope.openTemplate = function (size, isEdit,labReportID) {
+
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/ReportTemplate.html',
+            size: size,
+            controller: 'LabReportTemplateModalController',
+            scope: $scope,
+            resolve: 
+            {
+                isEdit: function () {
+                    return isEdit;
+                },
+                labReportID: function () {
+                    return labReportID;
+                }
+            }
+        });
+        modalInstance.result.then(function (result) {
+
+        }, function () {
+
+            $scope.loadItembyId($scope.SingleLabItem.Id);
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+
+    };
+
+    $scope.CommissionModal = function (size, isEdit) {
+
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/DoctorCommission.html',
+            size: size,
+            controller: 'CommissionModalController',
+            scope: $scope
+        });
+        modalInstance.result.then(function (result) {
+  
+        }, function () {
+           
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+
+    };
+
+
+    //----------------------------------------------------------------------------------------------------
 
 
 

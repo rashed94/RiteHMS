@@ -218,7 +218,7 @@ margin-left:50px;
 }
 .home_appointment_bt
 {
-	margin-top: 20px;
+	margin-top:30px;
 }
 .md_button:hover
 {
@@ -269,6 +269,8 @@ table.bordered th
 	border-bottom:1px solid #d4d4d4;
 }
 
+
+
 table.bordered .small_header th
 {
 	background:#f0f0f0;
@@ -309,6 +311,24 @@ table.bordered a
 	color:#5D5D5D;
 	text-decoration:none;
 	
+}
+
+table.flatTable th
+{
+	background:#f0f0f0;
+	height:25px;
+	font-family:SansSemiBold;
+	font-size:11px;
+	text-transform:uppercase;
+	color:#424342;
+	padding-top:12px;
+	border-bottom:1px solid #d4d4d4;
+}
+
+table.flatTable  td
+{
+	padding-top:10px;
+	padding-bottom:10px;
 }
 
 
@@ -603,17 +623,20 @@ select.generaldropdown {
    padding:6px;
 
 }
+
+/*select option:empty { display:none }*/
+
 select option:empty { display:none }
 
 .appointment {
     cursor: pointer;
 }
-    .appointment.selected, .appointment:hover {
-        background-color: #538e4a;
-        color: white;
-        font-weight: bold;
-    }
-    .appointment.disabled {
-        pointer-events: none;
-        background-color: #CCC;    
-    }
+.appointment.selected, .appointment:hover {
+    background-color: #538e4a;
+    color: white;
+    font-weight: bold;
+}
+.appointment.disabled {
+    pointer-events: none;
+    background-color: #CCC;
+}

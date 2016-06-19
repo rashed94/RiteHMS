@@ -129,6 +129,7 @@
     <Content Include="ClientCode\Script\Controller\LabTestController.js" />
     <Content Include="ClientCode\Script\Controller\PharmacyController.js" />
     <Content Include="ClientCode\Script\Controller\UserController.js" />
+    <Content Include="ClientCode\Script\Directive\ConfirmationBox.js" />
     <Content Include="ClientCode\Script\Service\AddItemService.js" />
     <Content Include="ClientCode\Script\Service\AppointmentService.js" />
     <Content Include="ClientCode\Script\Service\BedSetupService.js" />
@@ -136,11 +137,13 @@
     <Content Include="ClientCode\Script\Service\LabTestLService.js" />
     <Content Include="ClientCode\Script\Service\PharmacyService.js" />
     <Content Include="ClientCode\Script\Service\UserService.js" />
+    <Content Include="ClientCode\Template\AddStock.html" />
     <Content Include="ClientCode\Template\Appointment.html" />
     <Content Include="ClientCode\Template\BedSetup.html" />
     <Content Include="ClientCode\Template\Billing.html" />
     <Content Include="ClientCode\Template\Configuration.html" />
     <Content Include="ClientCode\Template\Contact.html" />
+    <Content Include="ClientCode\Template\DoctorCommission.html" />
     <Content Include="ClientCode\Template\EditContact.html" />
     <Content Include="ClientCode\Template\EditPatient.html" />
     <Content Include="ClientCode\Template\EditServiceProvider.html" />
@@ -155,6 +158,8 @@
     <Content Include="ClientCode\Script\Controller\PatientController.js" />
     <Content Include="ClientCode\Script\Service\PatientService.js" />
     <Content Include="ClientCode\Template\Pharmacy.html" />
+    <Content Include="ClientCode\Template\ReportTemplateResult.html" />
+    <Content Include="ClientCode\Template\ReportTemplate.html" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\datepicker.css" />
@@ -201,6 +206,7 @@
     <Content Include="GetImage.ashx" />
     <Content Include="Scripts\angular-spinner.min.js" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="Scripts\ckeditor.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\ng-file-upload-shim.js" />
@@ -219,7 +225,7 @@
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LabTestController.cs" />
+    <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="GetImage.ashx.cs">
@@ -246,7 +252,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="ClientCode\Script\Directive\" />
     <Folder Include="Models\" />
     <Folder Include="Uploads\Photos\" />
     <Folder Include="Views\LabTest\" />
