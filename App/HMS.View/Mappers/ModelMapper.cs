@@ -69,5 +69,57 @@ namespace HMS.View.Mappers
             };
             return mappedServiceProviderType;
         }
+
+        public static Appointment MapToClient(Appointment appointment)
+        {
+            Appointment mappedAppointment = new Appointment
+            {
+                Id = appointment.Id,
+                Active = appointment.Active,
+                EndTime = appointment.EndTime,
+                Name = appointment.Name,
+                StartTime = appointment.StartTime
+            };
+            return mappedAppointment;
+        }
+
+        public static Patient MapToClient(Patient patient)
+        {
+            Patient mappedPatient = new Patient
+            {
+                Active = patient.Active,
+                BloodGroup = patient.BloodGroup,
+                City = patient.City,
+                Country = patient.Country,
+                DOB = patient.DOB,
+                Email = patient.Email,
+                FatherName = patient.FatherName,
+                FirstName = patient.FirstName,
+                Gender = patient.Gender,
+                Id = patient.Id,
+                LastName = patient.LastName,
+                NationalId = patient.NationalId,
+                Occupation = patient.Occupation,
+                PhoneNumber = patient.PhoneNumber,
+                Photo = patient.Photo,
+                Street = patient.Street,
+                Zip = patient.Zip
+            };
+            return mappedPatient;
+        }
+
+        public static ServiceProviderAppointment MapToClient(ServiceProviderAppointment serviceProviderAppointment)
+        {
+            ServiceProviderAppointment mappedServiceProviderAppointment = new ServiceProviderAppointment
+            {
+                Id = serviceProviderAppointment.Id,
+                AppointmentAllowed = serviceProviderAppointment.AppointmentAllowed,
+                AppointmentDate = serviceProviderAppointment.AppointmentDate,
+                Patient = serviceProviderAppointment.Patient != null ? MapToClient(serviceProviderAppointment.Patient) : null,
+                Appointment = serviceProviderAppointment.Appointment != null ? MapToClient(serviceProviderAppointment.Appointment) : null,
+                ServiceProvider = serviceProviderAppointment.ServiceProvider != null ? MapToClient(serviceProviderAppointment.ServiceProvider) : null
+            };
+            return mappedServiceProviderAppointment;
+        }
     }
 }

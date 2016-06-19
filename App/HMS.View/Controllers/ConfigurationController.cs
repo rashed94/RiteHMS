@@ -101,5 +101,22 @@ namespace HMS.Controllers
             }
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetDoctorsByDepartment(int departmentId)
+        {
+            using (Repository<ServiceProvider> repo = new Repository<ServiceProvider>())
+            {
+                List<ServiceProvider> providers = repo.GetByQuery(p => (p.ServiceProviderTypeId == 56 && p.DepartmentId == departmentId)).ToList();
+
+                List<ServiceProvider> cProviders = new List<ServiceProvider>();
+                providers.ForEach(p => 
+                {
+                    ServiceProvider sp = ModelMapper.MapToClient(p);
+                    cProviders.Add(sp);
+                });
+
+                return Json(cProviders, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

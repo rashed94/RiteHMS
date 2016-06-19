@@ -17,12 +17,12 @@
             if ($scope.Patient.DOB != null) {
                 $scope.AgeCalculate();
             }
-            console.log('Error status: ' + resp.status);
+            console.log('Error status: ' + response.status);
             if (response.status > 0) {
                 $scope.errorMsg = response.status + ': ' + response.data;
             }
             else {
-                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+                console.log('Success ' + response.config.data.file.name + 'uploaded. Response: ' + response.data);
             }
         }, function (response) {
 
@@ -72,6 +72,9 @@
     };
     PatientService.SearchPatientsByPartialName = function (name) {
         return $http.get('/Patient/SearchPatientByPartialName?name=' + name);
+    };
+    PatientService.GetDoctorAppointmentsByPatientId = function (patientId) {
+        return $http.get('/Appointment/GetDoctorAppointmentsByPatientId?patientId=' + patientId);
     };
     return PatientService;
 }]);

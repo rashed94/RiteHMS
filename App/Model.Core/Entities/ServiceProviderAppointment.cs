@@ -12,6 +12,10 @@ namespace HMS.Model.Core
         public long PatientId { get; set; }
         public bool AppointmentAllowed { get; set; }
 
+        public virtual ServiceProvider ServiceProvider { get; set; }
+        public virtual Appointment Appointment { get; set; }
+        public virtual Patient Patient { get; set; }
+
         protected override void RegisterValidationMethods()
         {
 

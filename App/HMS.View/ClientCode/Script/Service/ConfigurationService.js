@@ -48,5 +48,9 @@
         });
     };
 
+    ConfigurationService.GetDoctorsByDepartment = function (departmentId) {
+        return $http.get('/Configuration/GetDoctorsByDepartment?departmentId=' + departmentId);
+    };
+
     return ConfigurationService;
 }]);

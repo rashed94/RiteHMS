@@ -33,11 +33,21 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.$watch('Patient', function () {
 
         if ($scope.Patient) {
-
             if ($scope.Patient.Id != null) {
-
                 sessionStorage.PatientService = angular.toJson($scope.Patient);
                 $scope.Patient.Name = $scope.Patient.FirstName + " " + $scope.Patient.LastName;
+
+                PatientService.GetDoctorAppointmentsByPatientId($scope.Patient.Id)
+                    .success(function (doctorAppointments) {
+                        $.each(doctorAppointments, function (index, doctorAppointment) {
+                            doctorAppointment.AppointmentDate = new Date(parseInt(doctorAppointment.AppointmentDate.substring(6, doctorAppointment.AppointmentDate.length - 2)));
+                        });
+                        $scope.DoctorAppointments = doctorAppointments;
+                    })
+                    .error(function (error) {
+                        $scope.status = 'Unable to load Patient data: ' + error.message;
+                        console.log($scope.status);
+                    });
             }
         }
         
