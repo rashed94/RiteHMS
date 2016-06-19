@@ -452,6 +452,27 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 });
 
     }
+    // code added by zaber
+    $scope.deleteLabTest = function (labitemId) {
+
+
+        LabTestService.deleteLabTest(labitemId)
+       .success(function (data) {
+
+           //$scope.getDoctorWithReferrel();
+           $scope.GetLabItemsByMedicalType($scope.medicalTypeID);
+           $scope.status = 'Delete Successful';
+           //$window.alert("Delete Successful!");
+           //return;
+
+       })
+       .error(function (error) {
+           $scope.status = 'Unable to delete referral comission: ' + error.message;
+           console.log($scope.status);
+       });
+
+    }
+    // end by zaber
     /*----------------------------------------delete end -----------------------------------------------*/
 
     //------------------------------- Modal open portion -------------------------------------------------------------

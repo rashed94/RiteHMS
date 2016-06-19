@@ -161,6 +161,20 @@ namespace HMS.Controllers
             }
 
         }
+        // Code added by zaber
+        public JsonResult deleteLabTest(long labitemId)
+        {
+
+            using (ItemRepository repository = new ItemRepository())
+            {
+                repository.DeleteByID(labitemId);
+                repository.Commit();
+                return Json("Labitem delete successfull");
+            }
+
+        }
+        
+        //end by zaber
         public JsonResult saveDoctorsCommission(Referral referral)
         {
             using (ReferralRepository repository = new ReferralRepository())

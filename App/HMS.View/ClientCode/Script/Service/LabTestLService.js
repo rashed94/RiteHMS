@@ -63,6 +63,13 @@
 
         return $http.post('/Item/deleteCommission', { referralId: referralId });
     };
+    //Add by zaber
+    LabTestService.deleteLabTest = function (labitemId) {
+
+        return $http.post('/Item/deleteLabTest', { labitemId: labitemId });
+    };
+    
+    //zaber ended the code
    
     LabTestService.CreateReportGroup = function (reportGroupName) {
 

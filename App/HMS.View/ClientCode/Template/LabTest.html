@@ -245,7 +245,8 @@
                     <tr ng-repeat="labitem in Labitems">
                         <td>{{labitem.Name}} </td>
                         <td colspan="6">{{labitem.ItemCategory.Name}}   </td>
-                        <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/labtest/addlabtest/{{labitem.Id}}" ></a></td>
+                        <!--<td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/labtest/addlabtest/{{labitem.Id}}" ></a></td>-->
+                        <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteLabTest(labitem.Id);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/labtest/addlabtest/{{labitem.Id}}"></a></td>
                     </tr>
 
                 </tbody>

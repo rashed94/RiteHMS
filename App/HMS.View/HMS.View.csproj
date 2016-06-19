@@ -129,6 +129,7 @@
     <Content Include="ClientCode\Script\Controller\LabTestController.js" />
     <Content Include="ClientCode\Script\Controller\PharmacyController.js" />
     <Content Include="ClientCode\Script\Controller\UserController.js" />
+    <Content Include="ClientCode\Script\Directive\ConfirmationBox.js" />
     <Content Include="ClientCode\Script\Service\AddItemService.js" />
     <Content Include="ClientCode\Script\Service\AppointmentService.js" />
     <Content Include="ClientCode\Script\Service\BedSetupService.js" />
@@ -136,6 +137,7 @@
     <Content Include="ClientCode\Script\Service\LabTestLService.js" />
     <Content Include="ClientCode\Script\Service\PharmacyService.js" />
     <Content Include="ClientCode\Script\Service\UserService.js" />
+    <Content Include="ClientCode\Template\AddStock.html" />
     <Content Include="ClientCode\Template\Appointment.html" />
     <Content Include="ClientCode\Template\BedSetup.html" />
     <Content Include="ClientCode\Template\Billing.html" />
@@ -250,7 +252,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="ClientCode\Script\Directive\" />
     <Folder Include="Models\" />
     <Folder Include="Uploads\Photos\" />
     <Folder Include="Views\LabTest\" />
