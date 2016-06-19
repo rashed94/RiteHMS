@@ -35,6 +35,12 @@
         return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + '&statusid=' + invoicestatus);
     };
 
+    BillingService.GetTotalDebit = function (patientid) {
+
+        return $http.get('/Billing/GetTotalDebit?patientId=' + patientid);
+
+    };
+
     //BillingService.GetInvoices = function (patientid) {
        
     //    return $http.get('/Billing/GetInvoicesByPatientID?patientId=' + patientid);

@@ -11,6 +11,7 @@ using HMS.Model.Core;
 using HMS.DAL.Repository;
 using System.Security.Claims;
 using System.Linq.Expressions;
+using System.Collections;
 
 namespace HMS.Controllers
 {
@@ -43,6 +44,35 @@ namespace HMS.Controllers
             
         }
 
+
+        public JsonResult GetTotalDebit(long patientId)
+        {
+            int Totaldebit;
+            int TotalCredit;
+            ArrayList debitcredit = new ArrayList();
+            
+                using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
+     
+                {
+
+                Totaldebit = repository.GetTotalDebit(patientId);
+                
+                  
+                }
+
+                using (PaymentRepository repository = new PaymentRepository())
+                {
+
+                    TotalCredit = repository.GetTotalCredit(patientId);
+
+
+                }
+                debitcredit.Add(Totaldebit);
+                debitcredit.Add(TotalCredit);
+
+                return Json(debitcredit, JsonRequestBehavior.AllowGet);
+
+        }
 
         
         public JsonResult SaveInvoice(PatientInvoice invoice, IList<PatientService> patientServices)

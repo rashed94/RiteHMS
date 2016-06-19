@@ -260,6 +260,30 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         });
         console.log($scope.invocieslist);
     }
+
+    $scope.GetTotalDebitCredit=function()
+
+    {
+
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
+                BillingService.GetTotalDebit($scope.Patient.Id)
+                    .success(function (pt) {
+
+                        $scope.debitcredit = pt;
+                        $scope.Debit = $scope.debitcredit[0];
+                        $scope.Credit = $scope.debitcredit[1];
+                        $scope.Balance = $scope.Debit - $scope.Credit;
+
+                    })
+                    .error(function (error) {
+                        $scope.status = 'Unable to load invoices data: ' + error.message;
+                        console.log($scope.status);
+                    });
+            }
+        }
+    }
+
     $scope.reloadInvoice=function()
     {
         //console.log($scope.patientSelection);
@@ -315,11 +339,12 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
             //if ($routeParams.tab == "summary") {
 
-                $scope.GetBillingItemByPatientId($scope.Patient.Id);
+            $scope.GetBillingItemByPatientId($scope.Patient.Id);
+            $scope.GetTotalDebitCredit();
 
             //}
     });
-
+    $scope.GetTotalDebitCredit();
 
 
     $('.tabs li').removeClass('active');

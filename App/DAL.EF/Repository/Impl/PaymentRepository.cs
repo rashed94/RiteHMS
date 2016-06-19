@@ -11,5 +11,13 @@ namespace HMS.DAL.Repository
             _DbSet = _DbContext.Set<Payment>();
         }
 
+        public int GetTotalCredit(long patientId)
+        {
+            IQueryable<Payment> queryResult = _DbSet;
+      //      decimal TotalCredit = queryResult.Where(s => s.PatientID == patientId).Select(s => s.Amount).Sum();
+            int TotalCredit = queryResult.Where(s => s.PatientID == patientId).Sum(x => (int?)x.Amount) ?? 0;
+            return TotalCredit;
+        }
+
     }
 }
