@@ -147,127 +147,133 @@
 
             <div class="success_message">Successfully Saved the Item</div>
         </div>
-        <!--<div class="round_box box_general" ng-messages="form1.name.$error">
+        <div class="round_box box_general" ng-show="valid=false">
 
-            <div class="success_message" ng-message="required">Required !</div>
-        </div>-->
+            <div class="success_message" >Plz filup the required fields !</div>
+        </div>
 
         <div style="clear:both;"></div>
 
-        <form name="form1">
-            <div class="round_box box_general">
-                <table width="95%" border="1" ng-model="SingleLabItem">
-                    <tr>
-                        <td width="14%" height="39">&nbsp;</td>
-                        <td width="19%">NAME</td>
-                        <td width="19%"><input type="text" ng-model="SingleLabItem.Name" required name="name">
-                            <div ng-show="form1.$invalid">
-                                <div ng-message="required">This field is required</div>
-                            </div>
-                        </td>
-                        <td width="48%"></td>
-                        <!--<td><span ng-show="!SingleLabItem.Name.length">Please enter something!</span></td>-->                        
-                    </tr>
-                    <tr ng-show="SingleLabItem.Id>0">
-                        <td height="39">&nbsp;</td>
-                        <td>REPORT FORMAT</td>
-                        <td colspan="2">
-                            <!--1. X-Ray PNS - Normal Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a><br>
-                            2.  X-Ray PNS - Detail Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a>-->
-                            <div ng-repeat="labreportformat in LabReportFormats">
-                                <span>{{labreportformat.Name}}</span><a class="link_green" href="#" ng-click="$event.preventDefault();openTemplate('lg','true',labreportformat.Id)">EDIT</a> <a class="link_brown" href="#" ng-click="$event.preventDefault();DeleteReportFormat(labreportformat.Id);">DELETE</a><br>
-                            </div>
-                        </td>
-                    </tr>
+        <form name="form1" >
+            <!--<form name="loginform" novalidate ng-submit="login.submit(loginForm)" class="css-form">-->
+                <div class="round_box box_general" ng-class="{true: 'error'}[submitted && form1.name.$invalid]">
+                    <table width="95%" border="1" ng-model="SingleLabItem">
+                        <tr>
+                            <td width="14%" height="39">&nbsp;</td>
+                            <td width="19%">NAME</td>
+                            <td width="19%">
+                                <input type="text" ng-model="SingleLabItem.Name" required name="name">
+                                <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
+                                <div ng-show="form1.name.$invalid">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </td>
+                            <td width="48%"></td>
+                            <!--<td><span ng-show="!SingleLabItem.Name.length">Please enter something!</span></td>-->
+                        </tr>
+                        <tr ng-show="SingleLabItem.Id>0">
+                            <td height="39">&nbsp;</td>
+                            <td>REPORT FORMAT</td>
+                            <td colspan="2">
+                                <!--1. X-Ray PNS - Normal Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a><br>
+                        2.  X-Ray PNS - Detail Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a>-->
+                                <div ng-repeat="labreportformat in LabReportFormats">
+                                    <span>{{labreportformat.Name}}</span><a class="link_green" href="#" ng-click="$event.preventDefault();openTemplate('lg','true',labreportformat.Id)">EDIT</a> <a class="link_brown" href="#" ng-click="$event.preventDefault();DeleteReportFormat(labreportformat.Id);">DELETE</a><br>
+                                </div>
+                            </td>
+                        </tr>
 
 
-                    <tr>
-                        <td height="39">&nbsp;</td>
-                        <td>CODE</td>
-                        <td colspan="2"><input type="text" ng-model="SingleLabItem.Code" required>
-                            <div ng-show="form1.$invalid">
-                                <div ng-message="required">This field is required</div>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td height="39">&nbsp;</td>
+                            <td>CODE</td>
+                            <td colspan="2">
+                                <input type="text" ng-model="SingleLabItem.Code" required name="code">
+                                <div ng-show="form1.code.$invalid">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td height="39">&nbsp;</td>
-                        <td>GENERIC NAME</td>
-                        <td colspan="2"><input type="text" ng-model="SingleLabItem.GenericName" required>
-                            <div ng-show="form1.$invalid">
-                                <div ng-message="required">This field is required</div>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td height="39">&nbsp;</td>
+                            <td>GENERIC NAME</td>
+                            <td colspan="2">
+                                <input type="text" ng-model="SingleLabItem.GenericName" required name="genericName">
+                                <div ng-show="form1.genericName.$invalid">
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td height="39">&nbsp;</td>
-                        <td>CATEGORY</td>
-                        <td colspan="2">
+                        <tr>
+                            <td height="39">&nbsp;</td>
+                            <td>CATEGORY</td>
+                            <td colspan="2">
 
-                            <select ng-model="filterCondition.ItemCategoryId">
+                                <select ng-model="filterCondition.ItemCategoryId">
 
-                                <option ng-repeat="category in LabTestCategories" value="{{category.Id}}"> {{category.Name}}</option>
+                                    <option ng-repeat="category in LabTestCategories" value="{{category.Id}}"> {{category.Name}}</option>
 
-                            </select>
-                            <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
-
-
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td height="39">&nbsp;</td>
-                        <td>MEASURE UNIT</td>
-                        <td colspan="2">
-
-                            <select name="palnType3" class="distype" ng-model="filterCondition.MeasurementUnitId">
+                                </select>
+                                <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
 
 
-                                <option ng-repeat="measureMentUnit in MeasureMentUnits" value="{{measureMentUnit.Id}}">{{measureMentUnit.Name}}</option>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td height="39">&nbsp;</td>
+                            <td>MEASURE UNIT</td>
+                            <td colspan="2">
+
+                                <select name="palnType3" class="distype" ng-model="filterCondition.MeasurementUnitId">
+
+
+                                    <option ng-repeat="measureMentUnit in MeasureMentUnits" value="{{measureMentUnit.Id}}">{{measureMentUnit.Name}}</option>
 
 
 
-                            </select>
-                            <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#" id="MeasurementUnit"></a>
+                                </select>
+                                <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#" id="MeasurementUnit"></a>
 
 
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td height="39">&nbsp;</td>
-                        <td>BUY PRICE</td>
-                        <td colspan="2">
-                            <input type="text" ng-model="SingleLabItem.BuyPrice">
+                        <tr>
+                            <td height="39">&nbsp;</td>
+                            <td>BUY PRICE</td>
+                            <td colspan="2">
+                                <input type="text" ng-model="SingleLabItem.BuyPrice">
 
-                            &nbsp;&nbsp;  <a ng-show="SingleLabItem.Id>0" class="arrow_head" href="#" ng-click="$event.preventDefault();CommissionModal('lg',true)"> ADD STOCK</a>
-                        </td>
+                                &nbsp;&nbsp;  <a ng-show="SingleLabItem.Id>0" class="arrow_head" href="#" ng-click="$event.preventDefault();CommissionModal('lg',true)"> ADD STOCK</a>
+                            </td>
 
-                    </tr>
+                        </tr>
 
-                    <tr>
-                        <td height="39">&nbsp;</td>
-                        <td>CHARGE PRICE</td>
-                        <td colspan="2"><input type="text" ng-model="SingleLabItem.SalePrice"></td>
-                    </tr>
+                        <tr>
+                            <td height="39">&nbsp;</td>
+                            <td>CHARGE PRICE</td>
+                            <td colspan="2"><input type="text" ng-model="SingleLabItem.SalePrice"></td>
+                        </tr>
 
-                    <tr>
-                        <td height="39">&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td colspan="2">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td height="39">&nbsp;</td>
-                        <td colspan="3">
-                            <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();" ng-disabled="form1.$invalid">
-                            <input name="cancel" type="button" value="cancel" class="md_button">
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </form>
+                        <tr>
+                            <td height="39">&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td height="39">&nbsp;</td>
+                            <td colspan="3">
+                                <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();" ng-disabled="form1.$invalid">
+                                <!--<input name="save" type="submit" value="save" class="md_button" ng-click="submitted = true;saveItem();">-->
+                                <input name="cancel" type="button" value="cancel" class="md_button">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
 
     </div>
 

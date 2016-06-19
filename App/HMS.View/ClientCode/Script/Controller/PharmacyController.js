@@ -463,6 +463,13 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
        });
 
     }
+    $scope.validateInput = {
+        submit: function (form) {
+            if (form.$valid) {
+                $scope.valid = true;
+            }
+        }
+    }
     // end by zaber
     /*----------------------------------------delete end -----------------------------------------------*/
 
