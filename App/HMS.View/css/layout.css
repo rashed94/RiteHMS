@@ -651,3 +651,8 @@ select option:empty { display:none }
     margin-bottom: 5px;
     overflow: auto;
 }
+
+.doctor-bio {
+    width: 500px;
+    margin: 25px;
+}

@@ -57,11 +57,15 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.CancelAppointment = function (doctorAppointmentId) {
         PatientService.CancelAppointment(doctorAppointmentId)
             .success(function (doctorAppointments) {
-                $.each(doctorAppointments, function (index, doctorAppointment) {
+                var index = -1;
+                $.each(doctorAppointments, function (i, doctorAppointment) {
                     if (doctorAppointment.Id == doctorAppointmentId) {
-                        doctorAppointment.remove();
+                        index = i;
                     }
                 });
+                if (index > -1) {
+                    $scope.DoctorAppointments.splice(index, 1);
+                }
             })
             .error(function (error) {
                 $scope.status = 'Unable to load Appointment data: ' + error.message;

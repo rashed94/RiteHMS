@@ -19,6 +19,7 @@ namespace HMS.View.Mappers
                 Contact = MapToClient(serviceProvider.Contact),
                 DepartmentId = serviceProvider.DepartmentId,
                 Department = serviceProvider.Department != null ? MapToClient(serviceProvider.Department) : null,
+                Description = serviceProvider.Description,
                 IsReferer = serviceProvider.IsReferer,
                 ServiceProviderTypeId = serviceProvider.ServiceProviderTypeId,
                 ServiceProviderType = serviceProvider.ServiceProviderType != null ? MapToClient(serviceProvider.ServiceProviderType) : null,

@@ -40,10 +40,11 @@
             <input name="Add appointment" type="button" value="Add appointment" class="sm_button" style="margin-bottom: 20px;" onclick="location.href='#/appointment'">
 
             <div ng-repeat="DoctorAppointment in DoctorAppointments" class="patient-appointments" style="clear: both;">
-                <div ng-show="DoctorAppointment != null" style="width: 150px;float: left;">
+                <!--<div ng-show="DoctorAppointment != null" style="width: 150px;float: left;">
                     <img ng-src="GetImage.ashx?Name={{DoctorAppointment.ServiceProvider.Contact.Photo != null && DoctorAppointment.ServiceProvider.Contact.Photo != 'null' ? DoctorAppointment.ServiceProvider.Contact.Photo : ''}}" width="115" height="146" alt="{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}">
-                </div>
-                <div style="margin-left: 160px;">
+                </div>-->
+                <!--<div style="margin-left: 160px;">-->
+                <div>
                     <p>
                         <h2>APPOINTMENT ({{DoctorAppointment.AppointmentDate | date }})</h2>
                     </p>

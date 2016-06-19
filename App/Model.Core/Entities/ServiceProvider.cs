@@ -17,6 +17,7 @@ namespace HMS.Model.Core
         public long ServiceProviderTypeId { get; set; }
         public long DepartmentId { get; set; }
         public string Speciality { get; set; }
+        public string Description { get; set; }
         public string Code { get; set; }
         public bool ?AssignedToAllUsers { get; set; }
         public bool IsReferer { get; set; }
