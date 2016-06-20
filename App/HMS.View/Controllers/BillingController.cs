@@ -178,8 +178,8 @@ namespace HMS.Controllers
                     onlyPatientInvoice.InvoiceStatusId = pinvoice.InvoiceStatusId;
                     onlyPatientInvoice.ItemDiscount = pinvoice.ItemDiscount;
                     onlyPatientInvoice.UserId = pinvoice.UserId;
-                   onlyPatientInvoice.LabStatusId = pinvoice.LabStatusId; 
-                    onlyPatientInvoice.Patient.FatherName = pinvoice.Patient.FirstName;
+                   onlyPatientInvoice.LabStatusId = pinvoice.LabStatusId;
+                   onlyPatientInvoice.Patient.FirstName = pinvoice.Patient.FirstName;
                     onlyPatientInvoice.Patient.LastName = pinvoice.Patient.LastName;
 
                     foreach (InvoicePayment invoicepayment in pinvoice.InvoicePayments)
