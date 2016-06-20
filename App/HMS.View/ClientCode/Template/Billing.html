@@ -77,11 +77,11 @@
                             <td>{{billingitem.Item.Name}}</td>
                             <td>{{billingitem.Item.GenericName}}</td>
                             <td><input type="text" width="50" name="quantity" ng-change="updateQuantityChange(billingitem)" ng-disabled="billingitem.Item.ReferralAllowed" ng-model="billingitem.ServiceQuantity" class="quantity"></td>
-                            <td><input type="text" width="100" name="cost" ng-model="billingitem.ServiceListPrice" class="cost"></td>
-                            <td><input type="text" width="100" name="discount" ng-change="adjustAfterDiscount(billingitem)" ng-model="billingitem.Discount" class="discount"></td>
+                            <td><input type="text" width="100" name="cost" ng-model="billingitem.ServiceListPrice" class="cost" ng-disabled="billingitem.referralfull"></td>
+                            <td><input type="text" width="100" name="discount" ng-change="adjustAfterDiscount(billingitem)" ng-model="billingitem.Discount" class="discount" ng-disabled="billingitem.referralfull"></td>
                             <td>
-                                <select class="distype" ng-model="billingitem.DisCountTypeID" ng-change="adjustAfterDiscount(billingitem)">
-                                    
+                                <select class="distype" ng-model="billingitem.DisCountTypeID" ng-change="adjustAfterDiscount(billingitem)" ng-disabled="billingitem.referralfull">
+
                                     <option ng-repeat="discounttype in billingitem.DiscountTypes"
                                             value="{{discounttype.id}}"
                                             ng-selected="{{discounttype.id === billingitem.DisCountTypeID }}">
@@ -89,9 +89,9 @@
                                     </option>
                                 </select>
                             <td>
-                                <input type="text" width="50" name="costafterdiscount" ng-model="billingitem.ServiceListPriceAfterDiscount" class="cost_after_discount">
+                                <input type="text" width="50" name="costafterdiscount" ng-model="billingitem.ServiceListPriceAfterDiscount" class="cost_after_discount" ng-disabled="billingitem.referralfull">
                             </td>
-                            <td><input type="text" width="50" name="referrerafterdiscount" ng-show="billingitem.Item.ReferralAllowed" ng-model="billingitem.ReferralAfterDiscount" class="referrer_after_discount"></td>
+                            <td><input type="text" width="50" name="referrerafterdiscount" ng-show="billingitem.Item.ReferralAllowed" ng-model="billingitem.ReferralAfterDiscount" ng-disabled="billingitem.referralfull" class="referrer_after_discount"></td>
                             <td><!--<a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>--></td>
                         </tr>
 
@@ -120,7 +120,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="checkbox" name="referral" ng-checked="adjustRefferalDiscount()" id="referral">
+                            <input type="checkbox" ng-click="referralFullDiscount()" ng-model="FullDiscount">
                            
                         </td>
                         <td>

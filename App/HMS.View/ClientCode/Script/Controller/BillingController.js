@@ -8,6 +8,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.TotalReferralFee = 0;
     $scope.paymentType = false;//first payment
     $scope.invoiceStatus = 0;
+    $scope.FullDiscount = false;
 
     $scope.Invoice = {
         Id: null,
@@ -40,6 +41,42 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             $scope.TotalReferralFee = $scope.TotalReferralFee + obj.ReferralAfterDiscount;
         });
 
+    }
+
+    $scope.referralFullDiscount=function()
+    {
+     
+        if ($scope.FullDiscount) {
+            angular.forEach($scope.BillingItem, function (billingitem) {
+                if (billingitem.LabStatusId == 1) {
+                    billingitem.Discount = billingitem.ReferralFee;
+                    billingitem.ReferralAfterDiscount = 0;
+                    billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
+                    billingitem.referralfull = true;
+                }
+            });
+        }
+        else
+        {
+            angular.forEach($scope.BillingItem, function (obj) {
+                if (obj.LabStatusId == 1) {
+                    obj.ServiceListPriceAfterDiscount = obj.ServiceListPrice;
+                    obj.ReferralAfterDiscount = obj.ReferralFee;
+                    obj.DisCountTypeID = '0';
+                    obj.DiscountTypes = [
+                    { id: '0', name: 'By Amount' },
+                    { id: '1', name: 'By Percentage' },
+                    ];
+                    obj.OriginalAmountSingleQuantity = obj.ServiceListPrice / obj.ServiceQuantity;
+                    obj.ServiceListPriceAfterDiscountSingleQuantity = obj.ServiceListPriceAfterDiscount / obj.ServiceQuantity;
+                    obj.Discount = 0;
+                    obj.referralfull = false;
+                }
+
+            });
+           
+        }
+        $scope.CalculateTotalDiscount();
     }
 
 
