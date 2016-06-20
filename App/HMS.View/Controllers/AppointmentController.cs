@@ -22,13 +22,14 @@ namespace HMS.Controllers
 
             using (Repository<Appointment> repo = new Repository<Appointment>())
             {
+               
                 IList<Appointment> appointments = (IList<Appointment>)repo.GetByQuery();
                 appointments.ToList().ForEach(a => mappedAppointments.Add(new Appointment { Id = a.Id, Name = a.Name, StartTime = a.StartTime, EndTime = a.EndTime }));
             }
 
             using (Repository<ServiceProviderAppointment> repo = new Repository<ServiceProviderAppointment>())
             {
-                List<ServiceProviderAppointment> spAppointments = repo.GetByQuery(p => p.ServiceProviderId == doctorId && p.AppointmentDate == date).ToList();
+                List<ServiceProviderAppointment> spAppointments = repo.GetByQuery(p => p.ServiceProviderId == doctorId && p.AppointmentDate == date && p.Active==true).ToList();
 
                 appointmentDectionary = mappedAppointments.ToDictionary(a => a.Id);
                 spAppointments.ForEach(x => {

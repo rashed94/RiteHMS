@@ -29,43 +29,46 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.Patient.Photo = "";
     $scope.IsPatientLoaded = "";
 
-
+    $scope.getAppointment = function () {
+        PatientService.GetDoctorAppointmentsByPatientId($scope.Patient.Id)
+        .success(function (doctorAppointments) {
+            $.each(doctorAppointments, function (index, doctorAppointment) {
+                doctorAppointment.AppointmentDate = new Date(parseInt(doctorAppointment.AppointmentDate.substring(6, doctorAppointment.AppointmentDate.length - 2)));
+            });
+            $scope.DoctorAppointments = doctorAppointments;
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to load Patient Appointment data: ' + error.message;
+            console.log($scope.status);
+        });
+    }
     $scope.$watch('Patient', function () {
 
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
                 sessionStorage.PatientService = angular.toJson($scope.Patient);
                 $scope.Patient.Name = $scope.Patient.FirstName + " " + $scope.Patient.LastName;
+                $scope.getAppointment();
 
-                PatientService.GetDoctorAppointmentsByPatientId($scope.Patient.Id)
-                    .success(function (doctorAppointments) {
-                        $.each(doctorAppointments, function (index, doctorAppointment) {
-                            doctorAppointment.AppointmentDate = new Date(parseInt(doctorAppointment.AppointmentDate.substring(6, doctorAppointment.AppointmentDate.length - 2)));
-                        });
-                        $scope.DoctorAppointments = doctorAppointments;
-                    })
-                    .error(function (error) {
-                        $scope.status = 'Unable to load Patient Appointment data: ' + error.message;
-                        console.log($scope.status);
-                    });
             }
         }
         
         $scope.$broadcast('patientchange', { "val": '' });
     });
 
-    $scope.CancelAppointment = function (doctorAppointmentId) {
+    $scope.CancelAppointment = function (ItemsAppointments,doctorAppointmentId,index) {
         PatientService.CancelAppointment(doctorAppointmentId)
             .success(function (doctorAppointments) {
-                var index = -1;
-                $.each(doctorAppointments, function (i, doctorAppointment) {
-                    if (doctorAppointment.Id == doctorAppointmentId) {
-                        index = i;
-                    }
-                });
-                if (index > -1) {
-                    $scope.DoctorAppointments.splice(index, 1);
-                }
+                ItemsAppointments.splice(index, 1);
+                //var index = -1;
+                //$.each(doctorAppointments, function (i, doctorAppointment) {
+                //    if (doctorAppointment.Id == doctorAppointmentId) {
+                //        index = i;
+                //    }
+                //});
+                //if (index > -1) {
+                //    $scope.DoctorAppointments.splice(index, 1);
+                //}
             })
             .error(function (error) {
                 $scope.status = 'Unable to load Appointment data: ' + error.message;
@@ -395,6 +398,13 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         }
 
     }
+
+    if ($scope.Patient) {
+        if ($scope.Patient.Id != null) {
+            $scope.getAppointment();
+        }
+    }
+
     $scope.isEmpty = function (obj) {
         for (var i in obj) if (obj.hasOwnProperty(i)) return false;
         return true;

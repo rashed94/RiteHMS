@@ -46,7 +46,7 @@
                 <!--<div style="margin-left: 160px;">-->
                 <div>
                     <p>
-                        <h2>APPOINTMENT ({{DoctorAppointment.AppointmentDate | date }})</h2>
+                        <h2>APPOINTMENT ({{DoctorAppointment.AppointmentDate | date }}) ({{DoctorAppointment.Appointment.Name}})</h2>
                     </p>
                     <p><strong>{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}</strong></p>
                     <p>
@@ -57,7 +57,7 @@
                         {{DoctorAppointment.ServiceProvider.Speciality}}
                     </p>
                     <div class="home_appointment_bt">
-                        <input name="CANCEL appointment" type="button" value="Cancel appointment" class="sm_button" ng-click="CancelAppointment(DoctorAppointment.Id)">
+                        <input name="CANCEL appointment" type="button" value="Cancel appointment" class="sm_button" ng-click="CancelAppointment(DoctorAppointments,DoctorAppointment.Id,$index)">
                     </div>
                 </div>
             </div>

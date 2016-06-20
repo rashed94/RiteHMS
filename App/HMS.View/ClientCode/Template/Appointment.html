@@ -1,4 +1,17 @@
-﻿<div class="container_secondary_tab" style="">
+﻿
+<script type="text/javascript">
+    // When the document is ready
+    $(document).ready(function () {
+        $('.txtAppointmentDate').datepicker({
+            format: "mm/dd/yyyy"
+        }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
+        });
+    });
+
+</script>
+<div class="container_secondary_tab" style="">
     <div class="container_secondary_tab_abs">
         <ul class="tabs group">
             <li class="setup active"><a href="#/appointment/setup" ng-click="$event.preventDefault();">View / Setup Appointment</a></li>
@@ -15,7 +28,7 @@
                 <div class="title">Appointment date</div>
                 <div class="inputbox">
                     <!--<input type="date" width="110" placeholder="click to show datepicker" name="appointmentDate" class="appointmentDate" ng-model="DoctorAppointment.AppointmentDate">-->
-                    <input type="text" id="txtAppointmentDate" ng-model="DoctorAppointment.AppointmentDate | date: 'dd/MM/yyyy'" />
+                    <input type="text" id="txtAppointmentDate" class="txtAppointmentDate" ng-model="DoctorAppointment.AppointmentDate" />
                     <label for="txtAppointmentDate">(dd/MM/yyyy)</label>
                 </div>
             </div>

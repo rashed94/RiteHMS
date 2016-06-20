@@ -5,9 +5,11 @@ HmsApp.controller("AppointmentController", function ($scope, $routeParams, $wind
     $scope.SelectedAppointment = {};
     $scope.Doctor = {};
 
+    var todayDate=$filter('date')(new Date(), 'MM/dd/yyyy');
+
     $scope.DoctorAppointment = {
         ServiceProviderId: 0,
-        AppointmentDate: new Date()
+        AppointmentDate: todayDate
     };
 
     ConfigurationService.GetDepartments()
@@ -63,9 +65,12 @@ HmsApp.controller("AppointmentController", function ($scope, $routeParams, $wind
         $scope.DoctorAppointment.AppointmentId = $scope.SelectedAppointment.Id;
         $scope.DoctorAppointment.PatientId = $scope.Patient.Id;
         $scope.DoctorAppointment.ServiceProviderId = $scope.Doctor.Id;
+        console.log($scope.DoctorAppointment.AppointmentDate);
         AppointmentService.SaveAppointment($scope.DoctorAppointment)
             .success(function (doctorAppointment) {
                 $scope.DoctorAppointment = doctorAppointment;
+                $scope.DoctorAppointment.AppointmentDate = ToJavaScriptDate($scope.DoctorAppointment.AppointmentDate);
+                $window.location.href = "#/patient";
             })
             .error(function (error) {
                 $scope.status = 'Unable to load DoctorAppointment data: ' + error.message;
