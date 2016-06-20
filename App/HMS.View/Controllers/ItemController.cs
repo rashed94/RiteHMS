@@ -577,9 +577,12 @@ namespace HMS.Controllers
                            patientstitem.Item.GenericName = c.Item.GenericName;
                            patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
 
+                           if (c.ServiceProvider != null)
+                           {
 
-                           patientstitem.ServiceProvider.Contact.FirstName = c.ServiceProvider.Contact.FirstName;
-                           patientstitem.ServiceProvider.Contact.LastName = c.ServiceProvider.Contact.LastName;
+                               patientstitem.ServiceProvider.Contact.FirstName = c.ServiceProvider.Contact.FirstName;
+                               patientstitem.ServiceProvider.Contact.LastName = c.ServiceProvider.Contact.LastName;
+                           }
 
              
 
