@@ -26,6 +26,7 @@ HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemS
         $item.Quantity = 1;
         $item.Amount = $item.SalePrice;
         $item.ReferralFee = $item.DefaultReferrarFee;
+        $scope.Item = "";
         
         var found = $filter('filter')($scope.Items, { Id: $item.Id }, true);
         if (!found.length) {
