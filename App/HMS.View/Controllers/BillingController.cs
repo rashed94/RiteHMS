@@ -397,5 +397,19 @@ namespace HMS.Controllers
             }
             base.Dispose(disposing);
         }
+        // Code added by zaber
+        public JsonResult deleteBillItem(long billId)
+        {
+
+            using (PatientServiceRepository bill = new PatientServiceRepository())
+            {
+                bill.DeleteByID(billId);
+                bill.Commit();
+                return Json("BillItem delete successfull");
+            }
+
+        }
+
+        //end by zaber
     }
 }

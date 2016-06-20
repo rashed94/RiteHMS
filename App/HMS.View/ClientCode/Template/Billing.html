@@ -92,7 +92,8 @@
                                 <input type="text" width="50" name="costafterdiscount" ng-model="billingitem.ServiceListPriceAfterDiscount" class="cost_after_discount">
                             </td>
                             <td><input type="text" width="50" name="referrerafterdiscount" ng-show="billingitem.Item.ReferralAllowed" ng-model="billingitem.ReferralAfterDiscount" class="referrer_after_discount"></td>
-                            <td><!--<a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>--></td>
+                            <!--<td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a></td>-->
+                            <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteBillItem(billingitem.Id,$index);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a></td>
                         </tr>
 
                     </tbody>
