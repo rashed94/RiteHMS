@@ -237,6 +237,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
            // $scope.SaveInvoice();
         }, function () {
             $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+            $scope.patientSelection = 1;
             console.log('Modal dismissed at: ' + new Date());
             
         });
