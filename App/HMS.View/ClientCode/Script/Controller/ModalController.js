@@ -15,6 +15,10 @@ HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInst
     if ($scope.ServiceProvider.Contact.Gender == null)
     {
         $scope.ServiceProvider.Contact.Gender = false;
+        $scope.ServiceProvider.ServiceProviderTypeId = 56;
+        $scope.ServiceProvider.ServiceProviderType = { Id: 56 };
+        $scope.ServiceProvider.DepartmentId = 205;
+        $scope.ServiceProvider.Department = { Id: 205 }
     }
 
     $scope.ok = function (file) {
