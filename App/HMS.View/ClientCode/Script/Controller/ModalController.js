@@ -12,6 +12,11 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, 
 
 HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInstance, serviceProvider, ConfigurationService) {
     $scope.ServiceProvider = serviceProvider;
+    if ($scope.ServiceProvider.Contact.Gender == null)
+    {
+        $scope.ServiceProvider.Contact.Gender = false;
+    }
+
     $scope.ok = function (file) {
         $modalInstance.close({ ServiceProvider: $scope.ServiceProvider, File: file });
     };

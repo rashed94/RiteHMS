@@ -30,17 +30,22 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.IsPatientLoaded = "";
 
     $scope.getAppointment = function () {
-        PatientService.GetDoctorAppointmentsByPatientId($scope.Patient.Id)
-        .success(function (doctorAppointments) {
-            $.each(doctorAppointments, function (index, doctorAppointment) {
-                doctorAppointment.AppointmentDate = new Date(parseInt(doctorAppointment.AppointmentDate.substring(6, doctorAppointment.AppointmentDate.length - 2)));
-            });
-            $scope.DoctorAppointments = doctorAppointments;
-        })
-        .error(function (error) {
-            $scope.status = 'Unable to load Patient Appointment data: ' + error.message;
-            console.log($scope.status);
-        });
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
+
+                PatientService.GetDoctorAppointmentsByPatientId($scope.Patient.Id)
+                .success(function (doctorAppointments) {
+                    $.each(doctorAppointments, function (index, doctorAppointment) {
+                        doctorAppointment.AppointmentDate = new Date(parseInt(doctorAppointment.AppointmentDate.substring(6, doctorAppointment.AppointmentDate.length - 2)));
+                    });
+                    $scope.DoctorAppointments = doctorAppointments;
+                })
+                .error(function (error) {
+                    $scope.status = 'Unable to load Patient Appointment data: ' + error.message;
+                    console.log($scope.status);
+                });
+            }
+        }
     }
     $scope.$watch('Patient', function () {
 

@@ -66,38 +66,45 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.adjustAfterDiscount = function (billingitem) {
 
         // if amount is selected
-        
-        if (billingitem.DisCountTypeID == 0)
-        {
-            if (billingitem.Discount != "") {
-                var discount = billingitem.Discount / 2;
-                
-                billingitem.ReferralAfterDiscount = billingitem.ReferralFee - discount;
-                billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
-               
+        if (billingitem.LabStatusId == 1) {
+
+            if (billingitem.DisCountTypeID == 0) {
+                if (billingitem.Discount != "") {
+                    var discount = billingitem.Discount / 2;
+
+
+                    billingitem.ReferralAfterDiscount = billingitem.ReferralFee - discount;
+
+
+                    billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
+
+
+                }
+                else {
+                    billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice;
+                    billingitem.ReferralAfterDiscount = billingitem.ReferralFee;
+                }
 
             }
-            else
-            {
-                billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice;
-                billingitem.ReferralAfterDiscount = billingitem.ReferralFee;
+            else if (billingitem.DisCountTypeID == 1) {
+
+                if (billingitem.Discount != "") {
+                    var discount = billingitem.Discount / 2;
+                    billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - (billingitem.Discount * billingitem.ServiceListPrice) / 100;
+                    billingitem.ReferralAfterDiscount = billingitem.ReferralFee - (discount * billingitem.ServiceListPrice) / 100;
+                }
+                else {
+                    billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice;
+                    billingitem.ReferralAfterDiscount = billingitem.ReferralFee;
+                }
+
+
             }
-            
         }
-        else if (billingitem.DisCountTypeID == 1)
+        else
         {
+            billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
 
-            if (billingitem.Discount != "") {
-                var discount = billingitem.Discount / 2;
-                billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - (billingitem.Discount * billingitem.ServiceListPrice) / 100;
-                billingitem.ReferralAfterDiscount = billingitem.ReferralFee - (discount * billingitem.ServiceListPrice) / 100;
-            }
-            else {
-                billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice;
-                billingitem.ReferralAfterDiscount = billingitem.ReferralFee;
-            }
-
-           
         }
         billingitem.ServiceListPriceAfterDiscountSingleQuantity = billingitem.ServiceListPriceAfterDiscount / billingitem.ServiceQuantity;
 
