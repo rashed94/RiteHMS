@@ -46,16 +46,15 @@
     //    return $http.get('/Billing/GetInvoicesByPatientID?patientId=' + patientid);
 
     //}
-    //zaber
 
+    //Code Added by Zaber
 
     BillingService.deleteBillItem = function (billID) {
-
-        //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
 
         return $http.post('/Billing/deleteBillItem', { billId: billID});
 
     };
+    // Code Ended by Zaber
 
     return BillingService;
 }]);
