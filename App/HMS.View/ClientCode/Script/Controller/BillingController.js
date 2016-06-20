@@ -399,4 +399,24 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $('.tabs li').removeClass('active');
     $(tabClass).addClass('active');
     $(tabClass).removeClass('hide');
+
+    // zaber
+    $scope.deleteBillItem = function (itemId,index) {
+
+        BillingService.deleteBillItem(itemId)
+       .success(function (data) {
+
+           $scope.GetBillingItemByPatientId($scope.Patient.Id);
+           $scope.status = 'Delete Successful';
+           //$window.alert("Delete Successful!");
+           //return;
+
+       })
+       .error(function (error) {
+           $scope.status = 'Unable to delete billing item : ' + error.message;
+           console.log($scope.status);
+       });
+
+    }
+    //zaber
 });
