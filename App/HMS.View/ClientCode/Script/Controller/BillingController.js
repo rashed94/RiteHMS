@@ -345,7 +345,12 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             //}
     });
     $scope.GetTotalDebitCredit();
+    if ($routeParams.tab == "invoices") {
 
+        $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+        $scope.patientSelection = 1;
+
+    }
 
     $('.tabs li').removeClass('active');
     $(tabClass).addClass('active');
