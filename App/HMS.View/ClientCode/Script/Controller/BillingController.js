@@ -236,8 +236,15 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
            // $scope.Invoice = result.Invoice;
            // $scope.SaveInvoice();
         }, function () {
-            $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
-            $scope.patientSelection = 1;
+          //  $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+            // prepareInvoiceDataModel();
+            if ($routeParams.tab != "invoices") {
+                $window.location.href = '#/billing/invoices';
+            } else
+            {
+                $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+            }
+
             console.log('Modal dismissed at: ' + new Date());
             
         });
@@ -343,7 +350,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.GetInvoices = function (patientId,invoicestatus) {
         BillingService.GetInvoicesByPatientId(patientId, invoicestatus)
             .success(function (pt) {
-                $scope.invocieslist = pt;
+               $scope.invocieslist = pt;
                 prepareInvoiceDataModel();
                 console.log(pt);
             })
@@ -357,6 +364,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
         if ($scope.Patient.Id != null) {
             $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+          
         }
 
        
@@ -378,7 +386,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             if ($routeParams.tab == "invoices") {
 
                 $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
-                $scope.patientSelection = 1;
+     
 
             }
 
@@ -390,12 +398,6 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             //}
     });
     $scope.GetTotalDebitCredit();
-    if ($routeParams.tab == "invoices") {
-
-        $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
-        $scope.patientSelection = 1;
-
-    }
 
     $('.tabs li').removeClass('active');
     $(tabClass).addClass('active');

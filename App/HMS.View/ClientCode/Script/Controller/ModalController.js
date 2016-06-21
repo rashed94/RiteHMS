@@ -509,7 +509,7 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
 
                 $scope.saveInvoice();
                 $modalInstance.dismiss('cancel');
-                $window.location.href = '#/billing/invoices';
+              
 
             })
             .error(function (error) {
