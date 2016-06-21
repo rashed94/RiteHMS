@@ -421,12 +421,14 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
              console.log(data);
              $scope.Invoice = data;
              $scope.Invoice.InvoiceDate = ToJavaScriptDate($scope.Invoice.InvoiceDate);
+             return data;
              
 
          })
             .error(function (error) {
                 $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
                 console.log($scope.status);
+                return error;
             });
     }
 
@@ -507,8 +509,29 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
                 $scope.Invoice.DueDate = ToJavaScriptDate($scope.Invoice.DueDate);
                 $scope.Invoice.InvoiceDate = ToJavaScriptDate($scope.Invoice.InvoiceDate);
 
-                $scope.saveInvoice();
-                $modalInstance.dismiss('cancel');
+                BillingService.SaveInvoice($scope.Invoice, $scope.PatientServiceItem)
+                    .success(function (data) {
+
+                    console.log(data);
+                    $scope.Invoice = data;
+                    $scope.Invoice.InvoiceDate = ToJavaScriptDate($scope.Invoice.InvoiceDate);
+                    $modalInstance.dismiss('cancel');
+
+
+                    })
+                    .error(function (error) {
+                        $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+                        console.log($scope.status);
+                        
+                    });
+
+
+             
+
+
+  
+                
+               
               
 
             })

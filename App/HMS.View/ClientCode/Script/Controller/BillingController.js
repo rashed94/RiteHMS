@@ -242,7 +242,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
                 $window.location.href = '#/billing/invoices';
             } else
             {
-                $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+            $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
             }
 
             console.log('Modal dismissed at: ' + new Date());
