@@ -125,25 +125,50 @@
 
         <div class="bed_setup_category_posiition">
 
-            <table width="95%" border="0">
+            <table width="100%" border="0">
                 <tr ng-repeat="item in items" ng-switch on="$index % 5">
-                    <td>
+                    <td ng-switch-when="0" ng-show="items[$index]">
                         <div class="bed_view">
                             <div> Empty</div>
-                            <div>Name : generic ward bed 200</div>
-                            <div>Charge : 200 TK.</div>
+                            <div>Name : {{items[$index].Name}}</div>
+                            <div>Charge : {{items[$index].SalePrice}}</div>
                             <div><a class="link_brown" href="#">Add Patient</a></div>
                         </div>
                     </td>
-                    <td>
+                    <td ng-switch-when="0" ng-show="items[$index+1]">
                         <div class="bed_view_patient">
-                            <h1> MD. Rashidul Alam</h1>
-                            <div>Name : generic ward bed 200</div>
+                            <h1> {{items[$index+1].GenericName}}</h1>
+                            <div>Name : {{items[$index+1].Name}}</div>
+                            <div>Charge : {{items[$index+1].SalePrice}}</div>
                             <div><a class="link_brown" href="#">Empty Bed</a></div>
                             <div><a class="link_brown" href="#">Patient Info</a></div>
                         </div>
                     </td>
-                    <td>
+                    <td ng-switch-when="0" ng-show="items[$index+2]">
+                        <div class="bed_view">
+                            
+                            <div>Name : {{items[$index+2].Name}}</div>
+                            <div>Charge : {{items[$index+2].SalePrice}}</div>
+                            <div><a class="link_brown" href="#">Add Patient</a></div>
+                        </div>
+                    </td>
+                    <td ng-switch-when="0" ng-show="items[$index+3]">
+                        <div class="bed_view">
+                            
+                            <div>Name : {{items[$index+3].Name}}</div>
+                            <div>Charge : {{items[$index+3].SalePrice}}</div>
+                            <div><a class="link_brown" href="#">Add Patient</a></div>
+                        </div>
+                    </td>
+                    <td ng-switch-when="0" ng-show="items[$index+4]">
+                        <div class="bed_view">
+                            
+                            <div>Name : {{items[$index+4].Name}}</div>
+                            <div>Charge : {{items[$index+4].SalePrice}}</div>
+                            <div><a class="link_brown" href="#">Add Patient</a></div>
+                        </div>
+                    </td>
+                    <!--<td>
                         <div class="bed_view">
                             <div> Empty</div>
                             <div>Name : generic ward bed 200</div>
@@ -166,7 +191,17 @@
                             <div>Charge : 200 TK.</div>
                             <div><a class="link_brown" href="#">Add Patient</a></div>
                         </div>
-                    </td>
+                    </td>-->
+                    
+                        <!--<td ng-switch-when="0" ng-show="items[$index+1]">
+                            {{items[$index+1].Name}}
+                        </td>
+                    
+                    <span ng-show="items[$index+2]">
+                        <td ng-switch-when="0">
+                            {{items[$index+2].Name}}
+                        </td>
+                    </span>-->
                 </tr>
 
 
