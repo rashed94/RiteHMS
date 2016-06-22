@@ -142,6 +142,7 @@
                             <div>Charge : {{items[$index+1].SalePrice}}</div>
                             <div><a class="link_brown" href="#">Empty Bed</a></div>
                             <div><a class="link_brown" href="#">Patient Info</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+1]);">Add Patient</a></div>
                         </div>
                     </td>
                     <td ng-switch-when="0" ng-show="items[$index+2]">
@@ -149,7 +150,7 @@
                             
                             <div>Name : {{items[$index+2].Name}}</div>
                             <div>Charge : {{items[$index+2].SalePrice}}</div>
-                            <div><a class="link_brown" href="#">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+2]);">Add Patient</a></div>
                         </div>
                     </td>
                     <td ng-switch-when="0" ng-show="items[$index+3]">
@@ -157,7 +158,7 @@
                             
                             <div>Name : {{items[$index+3].Name}}</div>
                             <div>Charge : {{items[$index+3].SalePrice}}</div>
-                            <div><a class="link_brown" href="#">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+3]);">Add Patient</a></div>
                         </div>
                     </td>
                     <td ng-switch-when="0" ng-show="items[$index+4]">
@@ -165,7 +166,7 @@
                             
                             <div>Name : {{items[$index+4].Name}}</div>
                             <div>Charge : {{items[$index+4].SalePrice}}</div>
-                            <div><a class="link_brown" href="#">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+4]);">Add Patient</a></div>
                         </div>
                     </td>
                     <!--<td>
