@@ -1,56 +1,56 @@
 ﻿HmsApp.factory('BedSetupService', ['$http', function ($http) {
-    var LabTestService = {};
-    LabTestService.GetInvoicesByMedicalType = function (patientId, labStatus, medicalType) {
+    var BedSetupService = {};
+    BedSetupService.GetInvoicesByMedicalType = function (patientId, labStatus, medicalType) {
         //return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + "&statusid=1" );
         return $http.get('/Item/GetPatientInvoicebyMedicalType?id=' + patientId + '&statusid=' + labStatus + "&medicalTypeID=" + medicalType);
     };
 
 
 
-    LabTestService.LoadLabReport = function (labReportId) {
+    BedSetupService.LoadLabReport = function (labReportId) {
 
         return $http.get('/Item/LoadLabReport?labReportId=' + labReportId);
     };
 
 
-    LabTestService.getDoctorWithReferrel = function (itemID) {
+    BedSetupService.getDoctorWithReferrel = function (itemID) {
 
         return $http.get('/Item/getDoctorWithReferrel?itemID=' + itemID);
     };
 
-    LabTestService.GetLabItemsByMedicalType = function (medicalType) {
+    BedSetupService.GetLabItemsByMedicalType = function (medicalType) {
         //return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + "&statusid=1" );
         return $http.get('/Item/GetLabItemsByMedicalType?medicalTypeID=' + medicalType);
     };
 
-    LabTestService.loadItembyId = function (itemID) {
+    BedSetupService.loadItembyId = function (itemID) {
 
         return $http.get('/Item/loadItembyId?itemID=' + itemID);
     };
 
-    LabTestService.loadLabTestCategories = function (medicalTypeID) {
+    BedSetupService.loadLabTestCategories = function (medicalTypeID) {
 
         return $http.get('/Item/loadLabTestCategories?medicalTypeID=' + medicalTypeID);
     };
 
-    LabTestService.loadMeasureMentUnits = function () {
+    BedSetupService.loadMeasureMentUnits = function () {
 
         return $http.get('/Item/loadMeasureMentUnits');
     };
 
-    LabTestService.loadLabTestGroups = function () {
+    BedSetupService.loadLabTestGroups = function () {
 
         return $http.get('/Item/loadLabTestGroups');
     };
 
-    LabTestService.LoadLabReportbyId = function (itemId) {
+    BedSetupService.LoadLabReportbyId = function (itemId) {
 
         return $http.get('/Item/LoadLabReportbyId?itemId=' + itemId);
     };
 
 
 
-    LabTestService.CreateCategory = function (categoryName, medicalTypeID) {
+    BedSetupService.CreateCategory = function (categoryName, medicalTypeID) {
 
         //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
 
@@ -58,19 +58,19 @@
 
     };
 
-    LabTestService.deleteCommission = function (referralId) {
+    BedSetupService.deleteCommission = function (referralId) {
 
         return $http.post('/Item/deleteCommission', { referralId: referralId });
     };
     //Add by zaber
-    LabTestService.deleteLabTest = function (labitemId) {
+    BedSetupService.deleteLabTest = function (labitemId) {
 
         return $http.post('/Item/deleteLabTest', { labitemId: labitemId });
     };
 
     //zaber ended the code
 
-    LabTestService.CreateReportGroup = function (reportGroupName) {
+    BedSetupService.CreateReportGroup = function (reportGroupName) {
 
         //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
 
@@ -78,7 +78,7 @@
 
     };
 
-    LabTestService.CreateMeasurementUnit = function (measurementUnitName) {
+    BedSetupService.CreateMeasurementUnit = function (measurementUnitName) {
 
         //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
 
@@ -87,7 +87,7 @@
     };
 
 
-    LabTestService.UpdateLabStatus = function (PatientServiceItem, InvoiceStatusUpdate, InvoiceID) {
+    BedSetupService.UpdateLabStatus = function (PatientServiceItem, InvoiceStatusUpdate, InvoiceID) {
 
         //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
 
@@ -97,7 +97,7 @@
 
 
 
-    LabTestService.SaveItem = function (Item) {
+    BedSetupService.SaveItem = function (Item) {
 
         //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
 
@@ -106,7 +106,7 @@
     };
 
 
-    LabTestService.saveDoctorsCommission = function (Referral) {
+    BedSetupService.saveDoctorsCommission = function (Referral) {
 
         //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
 
@@ -114,7 +114,7 @@
 
     };
 
-    LabTestService.SaveLabReportTemplate = function (templateData) {
+    BedSetupService.SaveLabReportTemplate = function (templateData) {
 
         //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
 
@@ -122,14 +122,20 @@
 
     };
 
-    LabTestService.DeleteReportFormat = function (labReportId) {
+    BedSetupService.DeleteReportFormat = function (labReportId) {
 
 
         return $http.post('/Item/DeleteReportFormat', { labReportId: labReportId });
     };
 
+    BedSetupService.SavePatientServiceItem = function (templateData) {
 
 
-    return LabTestService;
+        return $http.post('/Item/CreatePatientService', templateData);
+    };
+
+
+
+    return BedSetupService;
 
 }]);

@@ -173,6 +173,27 @@ namespace HMS.Controllers
             }
 
         }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public JsonResult CreatePatientService(IList<PatientService> patientServices)
+        {
+
+            //if (ModelState.IsValid)
+            {
+                using (PatientServiceRepository repository = new PatientServiceRepository())
+                {
+                    foreach (PatientService patientervice in patientServices)
+                    {
+                        repository.Insert(patientervice);
+
+                    }
+                    repository.Commit();
+                    // patient = repository.GetByPhoneNumber(patient.PhoneNumber);
+                }
+            }
+            return Json("200");
+        }
         
         //end by zaber
         public JsonResult saveDoctorsCommission(Referral referral)

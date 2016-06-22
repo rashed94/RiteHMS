@@ -132,7 +132,7 @@
                             <div> Empty</div>
                             <div>Name : {{items[$index].Name}}</div>
                             <div>Charge : {{items[$index].SalePrice}}</div>
-                            <div><a class="link_brown" href="#">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index]);">Add Patient</a></div>
                         </div>
                     </td>
                     <td ng-switch-when="0" ng-show="items[$index+1]">
