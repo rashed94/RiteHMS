@@ -194,6 +194,25 @@ namespace HMS.Controllers
             }
             return Json("200");
         }
+
+        [HttpPost]
+        public JsonResult CreateBedOccupancy(IList<BedOccupancy> BedOccupancy)
+        {
+
+            //if (ModelState.IsValid)
+            {
+                using (BedOccupancyRepository repository = new BedOccupancyRepository())
+                {
+                    foreach (BedOccupancy isBedOccupied in BedOccupancy)
+                    {
+                        repository.Insert(isBedOccupied);
+
+                    }
+                    repository.Commit();
+                }
+            }
+            return Json("200");
+        }
         
         //end by zaber
         public JsonResult saveDoctorsCommission(Referral referral)

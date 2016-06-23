@@ -134,6 +134,12 @@
         return $http.post('/Item/CreatePatientService', templateData);
     };
 
+    BedSetupService.SaveBedOccupancy = function (templateData) {
+
+
+        return $http.post('/Item/CreateBedOccupancy', templateData);
+    };
+
 
 
     return BedSetupService;

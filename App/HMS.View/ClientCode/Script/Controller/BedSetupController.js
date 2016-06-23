@@ -13,7 +13,7 @@
 //});
 
 'use strict';
-HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window, $filter, $modal, LabTestService, PatientService, BedSetupService) {
+HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window, $filter, $modal, BedSetupService, PatientService) {
     $scope.LabReportFormats = {};
     $scope.SingleLabItem = {
         id: 0,
@@ -170,7 +170,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     }
 
     $scope.GetLabItemsByMedicalType = function (medicalType) {
-        LabTestService.GetLabItemsByMedicalType(medicalType)
+        BedSetupService.GetLabItemsByMedicalType(medicalType)
             .success(function (pt) {
                 $scope.items = pt;
                 // preparelabtestDataModel();
@@ -183,7 +183,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     }
 
     $scope.GetInvoicesByMedicalType = function (patientId, labStatus, medicalType) {
-        LabTestService.GetInvoicesByMedicalType(patientId, labStatus, medicalType)
+        BedSetupService.GetInvoicesByMedicalType(patientId, labStatus, medicalType)
             .success(function (pt) {
                 $scope.labTestItems = pt;
                 preparelabtestDataModel();
@@ -241,7 +241,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
 
     $scope.loadLabTestCategories = function () {
-        LabTestService.loadLabTestCategories($scope.medicalTypeID)
+        BedSetupService.loadLabTestCategories($scope.medicalTypeID)
             .success(function (pt) {
                 //$scope.LabTestCategories = pt;
                 $scope.LabTestCategories = pt
@@ -257,7 +257,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
 
     $scope.loadLabTestGroups = function () {
-        LabTestService.loadLabTestGroups()
+        BedSetupService.loadLabTestGroups()
             .success(function (pt) {
                 $scope.LabTestGroups = pt;
 
@@ -271,7 +271,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
 
     $scope.loadMeasureMentUnits = function () {
-        LabTestService.loadMeasureMentUnits()
+        BedSetupService.loadMeasureMentUnits()
             .success(function (pt) {
                 $scope.MeasureMentUnits = pt;
 
@@ -284,7 +284,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     }
     $scope.LoadReportFomart = function (itemId) {
 
-        LabTestService.LoadLabReportbyId(itemId)
+        BedSetupService.LoadLabReportbyId(itemId)
             .success(function (pt) {
                 $scope.LabReportFormats = pt;
                 console.log(pt);
@@ -297,7 +297,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     $scope.LoadReportFomartByItemId = function (itemId) {
 
-        LabTestService.LoadLabReportbyId(itemId)
+        BedSetupService.LoadLabReportbyId(itemId)
             .success(function (pt) {
                 console.log(pt);
                 return pt;
@@ -310,7 +310,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     $scope.loadItembyId = function (itemid) {
 
-        LabTestService.loadItembyId(itemid)
+        BedSetupService.loadItembyId(itemid)
             .success(function (pt) {
                 $scope.SingleLabItem = pt;
                 $scope.LoadFilterCondition();
@@ -338,7 +338,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
 
     $scope.saveCategory = function () {
-        LabTestService.CreateCategory($scope.categoryName, $scope.medicalTypeID)
+        BedSetupService.CreateCategory($scope.categoryName, $scope.medicalTypeID)
         .success(function (data) {
 
             $scope.loadLabTestCategories();
@@ -359,7 +359,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
 
     $scope.saveReportGroup = function () {
-        LabTestService.CreateReportGroup($scope.reportGroupName)
+        BedSetupService.CreateReportGroup($scope.reportGroupName)
         .success(function (data) {
 
             $scope.loadLabTestGroups();
@@ -392,7 +392,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     }
 
     $scope.saveMeasurementUnit = function () {
-        LabTestService.CreateMeasurementUnit($scope.measurementUnitName)
+        BedSetupService.CreateMeasurementUnit($scope.measurementUnitName)
         .success(function (data) {
 
             $scope.loadMeasureMentUnits();
@@ -417,7 +417,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         $scope.SingleLabItem.LabReportGroupId = $scope.filterCondition.LabReportGroupId;
 
 
-        LabTestService.SaveItem($scope.SingleLabItem)
+        BedSetupService.SaveItem($scope.SingleLabItem)
         .success(function (data) {
 
             $scope.loadItembyId(data);
@@ -443,7 +443,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     $scope.DeleteReportFormat = function (labReportFormatID) {
 
-        LabTestService.DeleteReportFormat(labReportFormatID)
+        BedSetupService.DeleteReportFormat(labReportFormatID)
             .success(function (data) {
 
                 $scope.loadItembyId($scope.SingleLabItem.Id);
@@ -461,7 +461,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $scope.deletePharmacy = function (labitemId) {
 
 
-        LabTestService.deleteLabTest(labitemId)
+        BedSetupService.deleteLabTest(labitemId)
        .success(function (data) {
 
            //$scope.getDoctorWithReferrel();
@@ -672,8 +672,38 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
                 console.log($scope.status);
             });
+
+            $scope.occupyBed(bedItem);
         }
         
+    }
+
+    $scope.occupyBed=function(bedItem)
+    {
+        $scope.BedOccupancy = {};
+        $scope.BedOccupancyCollection = [];
+
+        $scope.BedOccupancy.ItemID = bedItem.Id;
+        $scope.BedOccupancy.PatientId = $scope.Patient.Id;
+        $scope.BedOccupancy.PatientName = $scope.Patient.Name;
+        $scope.BedOccupancy.Occupied = 1;
+        $scope.BedOccupancy.Active = 1;
+
+
+        $scope.BedOccupancyCollection.push($scope.BedOccupancy);
+
+        BedSetupService.SaveBedOccupancy($scope.BedOccupancyCollection)
+            .success(function (data) {
+
+                console.log(data);                
+                $scope.serviceItemEmpty();
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to save Bed Occupancy: ' + error.message;
+                console.log($scope.status);
+            });
+
     }
 
 
