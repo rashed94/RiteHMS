@@ -158,6 +158,7 @@
     <Content Include="ClientCode\Script\Controller\PatientController.js" />
     <Content Include="ClientCode\Script\Service\PatientService.js" />
     <Content Include="ClientCode\Template\Pharmacy.html" />
+    <Content Include="ClientCode\Template\PrintInvoice.html" />
     <Content Include="ClientCode\Template\ReportTemplateResult.html" />
     <Content Include="ClientCode\Template\ReportTemplate.html" />
     <Content Include="css\bootstrap.css" />
@@ -211,6 +212,7 @@
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\ng-file-upload-shim.js" />
     <Content Include="Scripts\ng-file-upload.js" />
+    <Content Include="Scripts\printThis.js" />
     <Content Include="Scripts\Spin.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

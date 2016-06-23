@@ -220,7 +220,7 @@
                             <td>
                                 0.00
                             <td><span class="status_green">{{singleinvoice.Staus}}</span></td>
-                            <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#" ng-click="$event.preventDefault();"></a>&nbsp;<a class="link_brown" ng-show="singleinvoice.InvoiceStatusId == 1;" href="#" ng-click="$event.preventDefault();InvoiceModal('lg',true,singleinvoice)">payment</a></td>
+                            <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#" ng-click="$event.preventDefault();InvoicePrintModal('lg',true,singleinvoice)"></a>&nbsp;<a class="link_brown" ng-show="singleinvoice.InvoiceStatusId == 1;" href="#" ng-click="$event.preventDefault();InvoiceModal('lg',true,singleinvoice)">payment</a></td>
                         </tr>
                         <tr ng-show="singleinvoice.activePosition">
                             <td colspan="9" align="center" class="padding_left60">
@@ -244,7 +244,7 @@
                                             <td>{{patientservice.Item.Name}}</td>
                                             <td>{{patientservice.Item.GenericName}}</td>
                                             <td>{{patientservice.ServiceQuantity}}</td>
-                                            <td>{{patientservice.ServiceActualPrice}}</td>
+                                            <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
                                             <td>{{patientservice.Discount}}</td>
                                             <td>
                                                 by Amount

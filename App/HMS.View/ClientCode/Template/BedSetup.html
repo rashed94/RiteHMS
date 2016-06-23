@@ -13,7 +13,95 @@
 <div class="content" ng-controller="BedSetupController">
 
     <div class="summary hide">
-        bedsetup summary
+
+        <div style="padding-left:60px;padding-top:60px;">
+            Select Category
+
+            <!--<select ng-model="filterCondition.ItemCategoryId">
+
+            <option ng-repeat="category in LabTestCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+        </select>-->
+            <select>
+
+                <option value="0">General Ward</option>
+                <option value="1">Cabin</option>
+
+            </select>
+
+
+        </div>
+
+        <!--<div ng-controller="MyCtrl">
+            <table>
+                <tr ng-repeat="item in items" ng-switch on="$index % 3">
+                    <td ng-switch-when="0">
+                        {{items[$index].id}} {{items[$index].name}}
+                    </td>
+                    <span ng-show="items[$index+1]">
+                        <td ng-switch-when="0">
+                            {{items[$index+1].id}} {{items[$index+1].name}}
+                        </td>
+                    </span>
+                    <span ng-show="items[$index+2]">
+                        <td ng-switch-when="0">
+                            {{items[$index+2].id}} {{items[$index+2].name}}
+                        </td>
+                    </span>
+                </tr>
+            </table>
+        </div>-->
+
+        <div class="bed_setup_category_posiition">
+
+            <table width="95%" border="0">
+                <tr ng-repeat="item in items" ng-switch on="$index % 5">
+                    <td>
+                        <div class="bed_view">
+                            <div> Empty</div>
+                            <div>Name : generic ward bed 200</div>
+                            <div>Charge : 200 TK.</div>
+                            <div><a class="link_brown" href="#">Add Patient</a></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="bed_view_patient">
+                            <h1> MD. Rashidul Alam</h1>
+                            <div>Name : generic ward bed 200</div>
+                            <div><a class="link_brown" href="#">Empty Bed</a></div>
+                            <div><a class="link_brown" href="#">Patient Info</a></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="bed_view">
+                            <div> Empty</div>
+                            <div>Name : generic ward bed 200</div>
+                            <div>Charge : 200 TK.</div>
+                            <div><a class="link_brown" href="#">Add Patient</a></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="bed_view">
+                            <div> Empty</div>
+                            <div>Name : generic ward bed 200</div>
+                            <div>Charge : 200 TK.</div>
+                            <div><a class="link_brown" href="#">Add Patient</a></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="bed_view">
+                            <div> Empty</div>
+                            <div>Name : generic ward bed 200</div>
+                            <div>Charge : 200 TK.</div>
+                            <div><a class="link_brown" href="#">Add Patient</a></div>
+                        </div>
+                    </td>
+                </tr>
+
+                
+            </table>
+
+        </div>
     </div>
     <div class="addbed hide">
         bedsetup add/edit
