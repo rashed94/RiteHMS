@@ -162,14 +162,14 @@ namespace HMS.Controllers
 
         }
         // Code added by zaber
-        public JsonResult deleteLabTest(long labitemId)
+        public JsonResult deleteBed(long beditem)
         {
 
             using (ItemRepository repository = new ItemRepository())
             {
-                repository.DeleteByID(labitemId);
+                repository.DeleteByID(beditem);
                 repository.Commit();
-                return Json("Labitem delete successfull");
+                return Json("BedItem delete successfull");
             }
 
         }
@@ -212,6 +212,35 @@ namespace HMS.Controllers
                 }
             }
             return Json("200");
+        }
+
+        public JsonResult loadBedOccupancyByItemId(long itemId)
+        {
+            IList<BedOccupancy> BedOccupancy = null;
+
+            using (BedOccupancyRepository repository = new BedOccupancyRepository())
+            {
+                BedOccupancy = repository.getBedOccupancyByItemId(itemId);
+
+            }
+            return Json(BedOccupancy, JsonRequestBehavior.AllowGet);
+            
+        }
+
+        public JsonResult emptyBed(BedOccupancy bedOccupancyItem)
+        {
+            using (BedOccupancyRepository repository = new BedOccupancyRepository())
+            {
+
+                bedOccupancyItem.Occupied = false;
+                bedOccupancyItem.PatientId = null;
+                bedOccupancyItem.PatientName = null;
+                repository.Update(bedOccupancyItem);
+
+                repository.Commit();                
+            }            
+
+            return Json("Item update successfull");
         }
         
         //end by zaber
@@ -454,6 +483,8 @@ namespace HMS.Controllers
 
               }
         }
+
+
         public JsonResult GetLabItemsByMedicalType(long medicalTypeID)
         {
             List<Item> onlyItemsforLabTest = new List<Item>();
@@ -462,8 +493,93 @@ namespace HMS.Controllers
             using (ItemRepository repository = new ItemRepository())
             {
                 Expression<Func<Item, bool>> lambda;
+                
+                    lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true);                
 
-                lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true);
+                    itemsforLabTest = repository.GetByQuery(lambda).ToList();
+
+                foreach (Item c in itemsforLabTest)
+                {
+                    Item LabTestItem = new Item();
+                    ItemCategory LabTestItemCategory = new ItemCategory();
+                    BedOccupancy bed = new BedOccupancy();
+                    List<BedOccupancy> beds = new List<BedOccupancy>();
+
+                    LabTestItem.ItemCategory = LabTestItemCategory;
+
+                    if (c.BedOccupancies.Count > 0)
+                    {
+                        foreach (BedOccupancy itembed in c.BedOccupancies)
+                        {
+                            bed.Id = itembed.Id;
+                            bed.ItemID = itembed.ItemID;
+                            bed.PatientId = itembed.PatientId;
+                            bed.PatientName = itembed.PatientName;
+                            bed.Occupied = itembed.Occupied;
+                            bed.Active = itembed.Active;
+                            beds.Add(bed);
+                        }
+
+
+                    }
+                    else
+                    {
+                        bed.Occupied = false;
+                        beds.Add(bed);
+                    }
+
+                    LabTestItem.BedOccupancies = beds;
+
+
+                    LabTestItem.Id = c.Id;
+                    LabTestItem.Name = c.Name;
+                    LabTestItem.GenericName = c.GenericName;
+                    LabTestItem.Code = c.Code;
+                    LabTestItem.ItemTypeId = c.ItemTypeId;
+                    LabTestItem.MedicalTypeId = c.MedicalTypeId;
+                    LabTestItem.ItemCategoryId = c.ItemCategoryId;
+                    LabTestItem.MeasurementUnitId = c.MeasurementUnitId;
+                    LabTestItem.SalePrice = c.SalePrice;
+                    LabTestItem.BuyPrice = c.BuyPrice;
+                    LabTestItem.DefaultReferrarFee = c.DefaultReferrarFee;
+                    LabTestItem.ReferralAllowed = c.ReferralAllowed;
+                    LabTestItem.ServiceProviderId = c.ServiceProviderId;
+                    LabTestItem.LabReportGroupId = c.LabReportGroupId;
+                    LabTestItem.ItemCategory.Name = c.ItemCategory.Name;
+                    onlyItemsforLabTest.Add(LabTestItem);
+                }
+
+                if (onlyItemsforLabTest == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+
+
+
+                return Json(onlyItemsforLabTest, JsonRequestBehavior.AllowGet);
+
+            }
+
+
+        }
+
+        public JsonResult GetLabItemsByMedicalTypeAndCategory(long medicalTypeID, long categoryId = 0)
+        {
+            List<Item> onlyItemsforLabTest = new List<Item>();
+            List<Item> itemsforLabTest;
+
+            using (ItemRepository repository = new ItemRepository())
+            {
+                Expression<Func<Item, bool>> lambda;
+
+                if (categoryId == 0 || categoryId==null)
+                {
+                    lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true);
+                }else
+                {
+                    lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true && x.ItemCategoryId==categoryId);
+                }
 
                 itemsforLabTest = repository.GetByQuery(lambda).ToList();
 
@@ -471,7 +587,33 @@ namespace HMS.Controllers
                 {
                     Item LabTestItem = new Item();
                     ItemCategory LabTestItemCategory = new ItemCategory();
+                    BedOccupancy bed = new BedOccupancy();
+                    List<BedOccupancy> beds =new List<BedOccupancy>();
+
                     LabTestItem.ItemCategory = LabTestItemCategory;
+
+                    if (c.BedOccupancies.Count > 0)
+                    {
+                        foreach (BedOccupancy itembed in c.BedOccupancies)
+                        {
+                            bed.Id = itembed.Id;
+                            bed.ItemID = itembed.ItemID;
+                            bed.PatientId = itembed.PatientId;
+                            bed.PatientName = itembed.PatientName;
+                            bed.Occupied = itembed.Occupied;
+                            bed.Active = itembed.Active;
+                            beds.Add(bed);
+                        }
+                        
+                       
+                    }else
+                    {
+                        bed.Occupied = false;
+                        beds.Add(bed);
+                    }
+
+                    LabTestItem.BedOccupancies = beds;
+                
 
                     LabTestItem.Id = c.Id;
                     LabTestItem.Name = c.Name;
