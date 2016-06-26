@@ -1,4 +1,4 @@
-﻿
+
 <script>
 
 
@@ -93,8 +93,8 @@
             Select Category
 
             <select ng-model="filterCondition.ItemCategoryId" ng-change="loaditembyCategory()">
-                
-                <option ng-selected="true"  value="0"> All</option>
+
+                <option ng-selected="true" value="0"> All</option>
                 <option ng-repeat="category in LabTestCategories" value="{{category.Id}}"> {{category.Name}}</option>
 
             </select>
@@ -165,7 +165,7 @@
                             <div><a class="link_brown" ng-click="$event.preventDefault();emptyBed(items[$index+4]);" ng-show="items[$index+4].BedOccupancies[0].Occupied==true">Empty Bed</a></div>
                         </div>
                     </td>
-                    
+
                 </tr>
 
 
@@ -173,124 +173,113 @@
 
         </div>
 
-        </div>
+    </div>
 
-        <div class="bedlist hide">
+    <div class="bedlist hide">
+       
 
-            <!--<div class="criteria_box">
+        <table width="100%" border="1" align="center" class="bordered" ng-model="items" ng-init="loadItems()">
+            <thead>
+                <tr>
+                    <th width="36%">Test Name</th>
+                    <th colspan="6">Category</th>
+                    <th width="17%">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in items">
+                    <td>{{item.Name}} </td>
+                    <td colspan="6">{{item.ItemCategory.Name}}   </td>
+                    
+                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteBed(item);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/bedsetup/addbed/{{item.Id}}"></a></td>
+                </tr>
 
-
-
-                <select name="status" class="invoice_status">
-                    <option value="open">DEMO CATEGORY</option>
-                    <option value="close">DEMO CATEGORY1</option>
-                    <option value="refunded">DEMO CATEGORY2</option>
-                </select>
-            </div>-->
-
-            <table width="100%" border="1" align="center" class="bordered" ng-model="items" ng-init="loadItems()">
-                <thead>
-                    <tr>
-                        <th width="36%">Test Name</th>
-                        <th colspan="6">Category</th>
-                        <th width="17%">&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="item in items">
-                        <td>{{item.Name}} </td>
-                        <td colspan="6">{{item.ItemCategory.Name}}   </td>
-                        <!--<td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/pharmacy/addpharmacy/{{labitem.Id}}"></a></td>-->
-                        <td><a class=
-                        <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteBed(item);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/bedsetup/addbed/{{item.Id}}"></a></td>
-                    </tr>
-
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-
-        </div>
-        <div class="addbed hide">
-
-            <div class="round_box box_general" ng-show="saveSuccess>0">
-
-                <div class="success_message">Successfully Saved the Item</div>
-            </div>
-            <div class="round_box box_general" ng-show="valid=false">
-
-                <div class="success_message">Plz filup the required fields !</div>
-            </div>
-
-            <div style="clear:both;"></div>
-
-            <form name="form1">
-                <!--<form name="loginform" novalidate ng-submit="login.submit(loginForm)" class="css-form">-->
-                <div class="round_box box_general" ng-class="{true: 'error'}[submitted && form1.name.$invalid]">
-                    <table width="95%" border="1" ng-model="SingleLabItem">
-                        <tr>
-                            <td width="14%" height="39">&nbsp;</td>
-                            <td width="19%">NAME</td>
-                            <td width="19%">
-                                <input type="text" ng-model="SingleLabItem.Name" required name="name">
-                                <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
-                                <div ng-show="form1.name.$invalid">
-                                    <div ng-message="required">This field is required</div>
-                                </div>
-                            </td>
-                            <td width="48%"></td>
-                            <!--<td><span ng-show="!SingleLabItem.Name.length">Please enter something!</span></td>-->
-                        </tr>
-                        
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td>CODE</td>
-                            <td colspan="2">
-                                <input type="text" ng-model="SingleLabItem.Code" required name="code">
-                                <div ng-show="form1.code.$invalid">
-                                    <div ng-message="required">This field is required</div>
-                                </div>
-                            </td>
-                        </tr>                       
-
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td>CATEGORY</td>
-                            <td colspan="2">
-
-                                <select ng-model="filterCondition.ItemCategoryId">
-
-                                    <option ng-repeat="category in LabTestCategories" value="{{category.Id}}"> {{category.Name}}</option>
-
-                                </select>
-                                <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
-
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td>CHARGE PRICE</td>
-                            <td colspan="2"><input type="text" ng-model="SingleLabItem.SalePrice"></td>
-                        </tr>
-
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td colspan="2">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td colspan="3">
-                                <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();" ng-disabled="form1.$invalid">
-                                <!--<input name="save" type="submit" value="save" class="md_button" ng-click="submitted = true;saveItem();">-->
-                                <input name="cancel" type="button" value="cancel" class="md_button" ng-click="cancel()">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </form>
-
-        </div>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
 
     </div>
+    <div class="addbed hide">
+
+        <div class="round_box box_general" ng-show="saveSuccess>0">
+
+            <div class="success_message">Successfully Saved the Item</div>
+        </div>
+        <div class="round_box box_general" ng-show="valid=false">
+
+            <div class="success_message">Plz filup the required fields !</div>
+        </div>
+
+        <div style="clear:both;"></div>
+
+        <form name="form1">
+            <!--<form name="loginform" novalidate ng-submit="login.submit(loginForm)" class="css-form">-->
+            <div class="round_box box_general" ng-class="{true: 'error'}[submitted && form1.name.$invalid]">
+                <table width="95%" border="1" ng-model="SingleLabItem">
+                    <tr>
+                        <td width="14%" height="39">&nbsp;</td>
+                        <td width="19%">NAME</td>
+                        <td width="19%">
+                            <input type="text" ng-model="SingleLabItem.Name" required name="name">
+                            <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
+                            <div ng-show="form1.name.$invalid">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </td>
+                        <td width="48%"></td>
+                        <!--<td><span ng-show="!SingleLabItem.Name.length">Please enter something!</span></td>-->
+                    </tr>
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CODE</td>
+                        <td colspan="2">
+                            <input type="text" ng-model="SingleLabItem.Code" required name="code">
+                            <div ng-show="form1.code.$invalid">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CATEGORY</td>
+                        <td colspan="2">
+
+                            <select ng-model="filterCondition.ItemCategoryId">
+
+                                <option ng-repeat="category in LabTestCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+                            </select>
+                            <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CHARGE PRICE</td>
+                        <td colspan="2"><input type="text" ng-model="SingleLabItem.SalePrice"></td>
+                    </tr>
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td colspan="3">
+                            <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();" ng-disabled="form1.$invalid">
+                            <!--<input name="save" type="submit" value="save" class="md_button" ng-click="submitted = true;saveItem();">-->
+                            <input name="cancel" type="button" value="cancel" class="md_button" ng-click="cancel()">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+
+    </div>
+
+</div>
