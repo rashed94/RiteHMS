@@ -284,6 +284,10 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         {
             $window.alert("Please Enter a Patient Name");
         }
+        else if ($scope.Patient.Id == bedItem.BedOccupancies[0].PatientId)
+        {
+            $window.alert("This Patient has already been bedded");
+        }
         else
         {
             $scope.serviceItem.PatientID = $scope.Patient.Id;
