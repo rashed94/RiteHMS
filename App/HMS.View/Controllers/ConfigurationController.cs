@@ -97,7 +97,7 @@ namespace HMS.Controllers
         {
             using (Repository<ServiceProvider> repo = new Repository<ServiceProvider>())
             {
-                repo.DeleteByID(Id);
+                repo.DeleteByID(Id, GetLoggedinUserInfo().UserId);
             }
             return Json("Success", JsonRequestBehavior.AllowGet);
         }

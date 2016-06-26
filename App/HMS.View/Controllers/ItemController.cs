@@ -11,11 +11,10 @@ using HMS.Model.Core;
 using HMS.DAL.Repository;
 using System.Security.Claims;
 using System.Linq.Expressions;
-using System.Data.Entity;
 
 namespace HMS.Controllers
 {
-    public class ItemController : Controller
+    public class ItemController : BaseController
     {
         //private IRepository<Patient> _Repository;
 
@@ -41,33 +40,31 @@ namespace HMS.Controllers
             List<LabReportFormat> labReports = null;
             List<LabReportFormat> onlylabReports = new List<LabReportFormat>();
 
-                using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
+            using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
+            {
+
+                Expression<Func<LabReportFormat, bool>> lambda;
+
+                lambda = (x => x.Active == true && x.ItemId == itemID);
+
+                labReports = repository.GetByQuery(lambda).ToList();
+
+                labReports.ForEach(c => onlylabReports.Add(new LabReportFormat
                 {
+                    Id = c.Id,
+                    Name = c.Name,
+                    RichContent = c.RichContent,
+                    ItemId = c.ItemId
 
-                    Expression<Func<LabReportFormat, bool>> lambda;
+                }));
 
-                    lambda = (x => x.Active == true && x.ItemId == itemID);
-
-                     labReports = repository.GetByQuery(lambda).ToList();
-
-                     labReports.ForEach(c => onlylabReports.Add(new LabReportFormat
-                     {
-                         Id=c.Id,
-                         Name = c.Name,
-                         RichContent = c.RichContent,
-                         ItemId=c.ItemId
-
-                     }));
-
-                  
-
-                    if (onlylabReports == null)
-                    {
+                if (onlylabReports == null)
+                {
                     return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
-                    }
-
-                    return Json(onlylabReports, JsonRequestBehavior.AllowGet);
                 }
+
+                return Json(onlylabReports, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public JsonResult getDoctorWithReferrel(long itemid)
@@ -75,17 +72,9 @@ namespace HMS.Controllers
             List<Referral> referrals = null;
             List<Referral> onlyReferrals = new List<Referral>();
 
-
-
-
-
             using (ReferralRepository repository = new ReferralRepository())
             {
                 referrals = repository.GetReferrers(itemid).ToList();
-
-
-
-
 
                 foreach (Referral item in referrals)
                 {
@@ -107,9 +96,6 @@ namespace HMS.Controllers
                 }
                 return Json(onlyReferrals, JsonRequestBehavior.AllowGet);
             }
-
-
-
         }
 
         public JsonResult loadLabTestGroups()
@@ -119,7 +105,6 @@ namespace HMS.Controllers
 
             using (LabReportGroupRepository repository = new LabReportGroupRepository())
             {
-
                 Expression<Func<LabReportGroup, bool>> lambda;
 
                 lambda = (x => x.Active == true);
@@ -129,7 +114,6 @@ namespace HMS.Controllers
                 foreach (LabReportGroup item in labTestGroup)
                 {
                     LabReportGroup itemlabgroup = new LabReportGroup();
-
 
                     itemlabgroup.Id = item.Id;
                     itemlabgroup.Name = item.Name;
@@ -143,9 +127,6 @@ namespace HMS.Controllers
                     return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
                 }
 
-
-
-
                 return Json(onlyLabTestGroup, JsonRequestBehavior.AllowGet);
             }
         }
@@ -155,7 +136,7 @@ namespace HMS.Controllers
 
             using (ReferralRepository repository = new ReferralRepository())
             {
-                repository.DeleteByID(referralId);
+                repository.DeleteByID(referralId, GetLoggedinUserInfo().UserId);
                 repository.Commit();
                 return Json("referall delete successfull");
             }
@@ -167,7 +148,7 @@ namespace HMS.Controllers
 
             using (ItemRepository repository = new ItemRepository())
             {
-                repository.DeleteByID(labitemId);
+                repository.DeleteByID(labitemId, GetLoggedinUserInfo().UserId);
                 repository.Commit();
                 return Json("Labitem delete successfull");
             }
@@ -213,15 +194,16 @@ namespace HMS.Controllers
             }
             return Json("200");
         }
-        
+
         //end by zaber
         public JsonResult saveDoctorsCommission(Referral referral)
         {
             using (ReferralRepository repository = new ReferralRepository())
             {
+                referral.UserId = GetLoggedinUserInfo().UserId;
                 repository.Insert(referral);
                 repository.Commit();
-                return Json("referall save successfull");
+                return Json("Referall saved successfully");
             }
 
         }
@@ -230,17 +212,17 @@ namespace HMS.Controllers
         {
             using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
             {
-                repository.DeleteByID(labReportId);           
+                repository.DeleteByID(labReportId, GetLoggedinUserInfo().UserId);
                 repository.Commit();
-                return Json("delete succussfull");
+                return Json("Delete succussful");
             }
         }
 
         public JsonResult SaveLabReportTemplate(LabReportFormat labReportFormat)
         {
-
             using (Repository<LabReportFormat> repository = new Repository<LabReportFormat>())
             {
+                labReportFormat.UserId = GetLoggedinUserInfo().UserId;
                 if (labReportFormat.Id > 0)
                 {
                     repository.Update(labReportFormat);
@@ -250,7 +232,7 @@ namespace HMS.Controllers
                     repository.Insert(labReportFormat);
                 }
                 repository.Commit();
-                return Json("lab Report Format save successfull");
+                return Json("Lab Report Format saved successfully");
             }
         }
 
@@ -259,17 +241,17 @@ namespace HMS.Controllers
             Item LabTestItem = new Item();
             using (ItemRepository repository = new ItemRepository())
             {
+                LabTestItem.UserId = GetLoggedinUserInfo().UserId;
                 if (item.Id > 0)
                 {
-                   LabTestItem= repository.Update(item);
+                    LabTestItem = repository.Update(item);
                     repository.Commit();
                 }
                 else
                 {
-                    LabTestItem=repository.Insert(item);
+                    LabTestItem = repository.Insert(item);
                     repository.Commit();
                 }
-
             }
 
             return Json(LabTestItem.Id);
@@ -283,7 +265,7 @@ namespace HMS.Controllers
 
             using (ItemCategoryRepository repository = new ItemCategoryRepository())
             {
-
+                category.UserId = GetLoggedinUserInfo().UserId;
                 repository.Insert(category);
                 repository.Commit();
                 // CreatePatientService(invoice.Id, patientServices);
@@ -299,10 +281,9 @@ namespace HMS.Controllers
 
             LabReportGroup.Name = reportGroupName;
 
-
             using (Repository<LabReportGroup> repository = new Repository<LabReportGroup>())
             {
-
+                LabReportGroup.UserId = GetLoggedinUserInfo().UserId;
                 repository.Insert(LabReportGroup);
                 repository.Commit();
                 // CreatePatientService(invoice.Id, patientServices);
@@ -322,7 +303,7 @@ namespace HMS.Controllers
 
             using (Repository<MeasurementUnit> repository = new Repository<MeasurementUnit>())
             {
-
+                MeasurementUnit.UserId = GetLoggedinUserInfo().UserId;
                 repository.Insert(MeasurementUnit);
                 repository.Commit();
                 // CreatePatientService(invoice.Id, patientServices);
@@ -375,19 +356,19 @@ namespace HMS.Controllers
 
 
 
-        public JsonResult loadLabTestCategories(long  medicalTypeID)
+        public JsonResult loadLabTestCategories(long medicalTypeID)
         {
             List<ItemCategory> onlyItemCategories = new List<ItemCategory>();
             List<ItemCategory> ItemCategories;
 
             using (ItemCategoryRepository repository = new ItemCategoryRepository())
             {
-               
-                 Expression<Func<ItemCategory, bool>> lambda;
 
-                 lambda = (x => x.Active == true && x.MedicalTypeId == medicalTypeID);
+                Expression<Func<ItemCategory, bool>> lambda;
 
-                ItemCategories= repository.GetByQuery(lambda).ToList();
+                lambda = (x => x.Active == true && x.MedicalTypeId == medicalTypeID);
+
+                ItemCategories = repository.GetByQuery(lambda).ToList();
 
                 foreach (ItemCategory catogry in ItemCategories)
                 {
@@ -398,7 +379,7 @@ namespace HMS.Controllers
                     itemCategory.Name = catogry.Name;
 
                     onlyItemCategories.Add(itemCategory);
-                  
+
                 }
 
                 if (onlyItemCategories == null)
@@ -417,42 +398,35 @@ namespace HMS.Controllers
         {
             Item LabTestItem = new Item();
             Item Item = new Item();
-              using (ItemRepository repository = new ItemRepository())
-              {
+            using (ItemRepository repository = new ItemRepository())
+            {
 
 
-                  Item=repository.GetById(itemID);
+                Item = repository.GetById(itemID);
 
-                  LabTestItem.Id = Item.Id;
-                  LabTestItem.Name = Item.Name;
-                  LabTestItem.GenericName = Item.GenericName;
-                  LabTestItem.Code = Item.Code;
-                  LabTestItem.ItemTypeId = Item.ItemTypeId;
-                  LabTestItem.MedicalTypeId = Item.MedicalTypeId;
-                  LabTestItem.ItemCategoryId = Item.ItemCategoryId;
-                  LabTestItem.MeasurementUnitId = Item.MeasurementUnitId;
-                  LabTestItem.SalePrice = Item.SalePrice;
-                  LabTestItem.BuyPrice = Item.BuyPrice;
-                  LabTestItem.DefaultReferrarFee = Item.DefaultReferrarFee;
-                  LabTestItem.ReferralAllowed = Item.ReferralAllowed;
-                  LabTestItem.ServiceProviderId = Item.ServiceProviderId;
-                  LabTestItem.LabReportGroupId = Item.LabReportGroupId;
-                  //LabTestItem.ItemCategory.Name = Item.ItemCategory.Name;
+                LabTestItem.Id = Item.Id;
+                LabTestItem.Name = Item.Name;
+                LabTestItem.GenericName = Item.GenericName;
+                LabTestItem.Code = Item.Code;
+                LabTestItem.ItemTypeId = Item.ItemTypeId;
+                LabTestItem.MedicalTypeId = Item.MedicalTypeId;
+                LabTestItem.ItemCategoryId = Item.ItemCategoryId;
+                LabTestItem.MeasurementUnitId = Item.MeasurementUnitId;
+                LabTestItem.SalePrice = Item.SalePrice;
+                LabTestItem.BuyPrice = Item.BuyPrice;
+                LabTestItem.DefaultReferrarFee = Item.DefaultReferrarFee;
+                LabTestItem.ReferralAllowed = Item.ReferralAllowed;
+                LabTestItem.ServiceProviderId = Item.ServiceProviderId;
+                LabTestItem.LabReportGroupId = Item.LabReportGroupId;
+                //LabTestItem.ItemCategory.Name = Item.ItemCategory.Name;
 
+                if (LabTestItem == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
 
-
-
-                  if (LabTestItem == null)
-                  {
-                      return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
-                  }
-
-
-
-
-                  return Json(LabTestItem, JsonRequestBehavior.AllowGet);
-
-              }
+                return Json(LabTestItem, JsonRequestBehavior.AllowGet);
+            }
         }
         public JsonResult GetLabItemsByMedicalType(long medicalTypeID)
         {
@@ -476,10 +450,10 @@ namespace HMS.Controllers
                     LabTestItem.Id = c.Id;
                     LabTestItem.Name = c.Name;
                     LabTestItem.GenericName = c.GenericName;
-                    LabTestItem.Code=c.Code;
-                    LabTestItem.ItemTypeId=c.ItemTypeId;
-                    LabTestItem.MedicalTypeId=c.MedicalTypeId;
-                    LabTestItem.ItemCategoryId=c.ItemCategoryId;
+                    LabTestItem.Code = c.Code;
+                    LabTestItem.ItemTypeId = c.ItemTypeId;
+                    LabTestItem.MedicalTypeId = c.MedicalTypeId;
+                    LabTestItem.ItemCategoryId = c.ItemCategoryId;
                     LabTestItem.MeasurementUnitId = c.MeasurementUnitId;
                     LabTestItem.SalePrice = c.SalePrice;
                     LabTestItem.BuyPrice = c.BuyPrice;
@@ -496,44 +470,36 @@ namespace HMS.Controllers
                     return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
                 }
 
-
-
-
                 return Json(onlyItemsforLabTest, JsonRequestBehavior.AllowGet);
-
             }
-
-            
         }
 
-        public JsonResult UpdateLabStatus(PatientService PatientServiceItem,bool InvoiceStatusUpdate,long InvoiceID)
+        public JsonResult UpdateLabStatus(PatientService patientServiceItem, bool InvoiceStatusUpdate, long InvoiceID)
         {
+            patientServiceItem.UserId = GetLoggedinUserInfo().UserId;
             using (PatientServiceRepository repository = new PatientServiceRepository())
             {
-                PatientServiceItem.Item = null;
-                PatientServiceItem.ServiceProvider = null;
-               
-
-                repository.Update(PatientServiceItem);
+                patientServiceItem.Item = null;
+                patientServiceItem.ServiceProvider = null;
+                repository.Update(patientServiceItem);
                 repository.Commit();
             }
             if (InvoiceStatusUpdate)
             {
                 using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
                 {
-                   
-
-                     string field = "LabStatusId";
-                     PatientInvoice pinvoice = new PatientInvoice();
-                     pinvoice.LabStatusId = 2;
-                     pinvoice.Id = InvoiceID;
+                    string field = "LabStatusId";
+                    PatientInvoice pinvoice = new PatientInvoice();
+                    pinvoice.LabStatusId = 2;
+                    pinvoice.Id = InvoiceID;
                     // repository.updateInvoiceStatus(pinvoice);
-                     repository.UpdateByField(pinvoice, field);
+                    repository.UpdateByField(pinvoice, field);
                 }
             }
 
             return Json("Status update successfull");
         }
+
         public JsonResult GetPatientInvoicebyMedicalType(long id, long statusid, long medicalTypeID)
         {
 
@@ -543,112 +509,100 @@ namespace HMS.Controllers
 
             using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
             {
-
                 patientInvoices = repository.GetPatientInvoicebyMedicalTypeOnlyLabItem(id, statusid, medicalTypeID).ToList();
 
-               foreach (PatientInvoice pinvoice in patientInvoices)
-               {
-                   PatientInvoice onlyPatientInvoice = new PatientInvoice();
-                   Patient patient = new Patient();
-                   onlyPatientInvoice.Patient = patient;
+                foreach (PatientInvoice pinvoice in patientInvoices)
+                {
+                    PatientInvoice onlyPatientInvoice = new PatientInvoice();
+                    Patient patient = new Patient();
+                    onlyPatientInvoice.Patient = patient;
 
-                   onlyPatientInvoice.Id = pinvoice.Id;
-                   onlyPatientInvoice.InvoiceDate = pinvoice.InvoiceDate;
-                   onlyPatientInvoice.DueDate = pinvoice.DueDate;
-                   onlyPatientInvoice.PatientID = pinvoice.PatientID;
-                   onlyPatientInvoice.TotalAmount = pinvoice.TotalAmount;
-                   onlyPatientInvoice.TotalDiscount = pinvoice.TotalDiscount;
-                   onlyPatientInvoice.InvoiceStatusId = pinvoice.InvoiceStatusId;
-                   onlyPatientInvoice.LabStatusId = pinvoice.LabStatusId;
-                   onlyPatientInvoice.ItemDiscount = pinvoice.ItemDiscount;
-                   onlyPatientInvoice.UserId = pinvoice.UserId;
-                   onlyPatientInvoice.Patient.FirstName = pinvoice.Patient.FirstName;
-                   onlyPatientInvoice.Patient.LastName = pinvoice.Patient.LastName;
+                    onlyPatientInvoice.Id = pinvoice.Id;
+                    onlyPatientInvoice.InvoiceDate = pinvoice.InvoiceDate;
+                    onlyPatientInvoice.DueDate = pinvoice.DueDate;
+                    onlyPatientInvoice.PatientID = pinvoice.PatientID;
+                    onlyPatientInvoice.TotalAmount = pinvoice.TotalAmount;
+                    onlyPatientInvoice.TotalDiscount = pinvoice.TotalDiscount;
+                    onlyPatientInvoice.InvoiceStatusId = pinvoice.InvoiceStatusId;
+                    onlyPatientInvoice.LabStatusId = pinvoice.LabStatusId;
+                    onlyPatientInvoice.ItemDiscount = pinvoice.ItemDiscount;
+                    onlyPatientInvoice.UserId = pinvoice.UserId;
+                    onlyPatientInvoice.Patient.FirstName = pinvoice.Patient.FirstName;
+                    onlyPatientInvoice.Patient.LastName = pinvoice.Patient.LastName;
 
-                   foreach (InvoicePayment invoicepayment in pinvoice.InvoicePayments)
-                   {
-                       InvoicePayment invoicePayment = new InvoicePayment();
+                    foreach (InvoicePayment invoicepayment in pinvoice.InvoicePayments)
+                    {
+                        InvoicePayment invoicePayment = new InvoicePayment();
 
-                       invoicePayment.Id = invoicepayment.Id;
-                       invoicePayment.PatientInvoiceId = invoicepayment.PatientInvoiceId;
-                       invoicePayment.Amount = invoicepayment.Amount;
-                       invoicePayment.PaymentID = invoicepayment.PaymentID;
-                       invoicePayment.UserId = invoicepayment.UserId;
-                       onlyPatientInvoice.InvoicePayments.Add(invoicePayment);
+                        invoicePayment.Id = invoicepayment.Id;
+                        invoicePayment.PatientInvoiceId = invoicepayment.PatientInvoiceId;
+                        invoicePayment.Amount = invoicepayment.Amount;
+                        invoicePayment.PaymentID = invoicepayment.PaymentID;
+                        invoicePayment.UserId = invoicepayment.UserId;
+                        onlyPatientInvoice.InvoicePayments.Add(invoicePayment);
 
-                   }
-                   using (PatientServiceRepository srepository = new PatientServiceRepository())
-                   {
-                       PatientServices = srepository.GetServiceItemsLabtestOnlyByPatientId(pinvoice.PatientID, pinvoice.Id).ToList();
-                       foreach (PatientService c in PatientServices)
-                       {
-                           PatientService patientstitem = new PatientService();
-                           Item item = new Item();
-                           ServiceProvider serviceProdier = new ServiceProvider();
-                           Contact contact = new Contact();
-                           serviceProdier.Contact = contact;
-                           patientstitem.Item = item;
-                           patientstitem.ServiceProvider = serviceProdier;
-
-
-                           patientstitem.Id = c.Id;
-                           patientstitem.PatientID = c.PatientID;
-                           patientstitem.ItemID = c.ItemID;
-                           patientstitem.InvoiceID = c.InvoiceID;
-                           patientstitem.ServiceListPrice = c.ServiceListPrice;
-                           patientstitem.ServiceActualPrice = c.ServiceActualPrice;
-                           patientstitem.ServiceQuantity = c.ServiceQuantity;
-                           patientstitem.ServiceDate = c.ServiceDate;
-                           patientstitem.UserId = c.UserId;
-                           patientstitem.Discount = c.Discount;
-                           patientstitem.Refund = c.Refund;
-                           patientstitem.Billed = c.Billed;
-                           patientstitem.ReferralFee = c.ReferralFee;
-                           patientstitem.DeliveryDate = c.DeliveryDate;
-                           patientstitem.DeliveryTime = c.DeliveryTime;
-
-                           patientstitem.ServiceProviderId = c.ServiceProviderId;
-                           patientstitem.ReferralFeePaid = c.ReferralFeePaid;
-                           patientstitem.ReportFormatName = c.ReportFormatName;
-                           patientstitem.LabStatusId = c.LabStatusId;
-
-                           patientstitem.Item.Id = c.Item.Id;
-                           patientstitem.Item.Name = c.Item.Name;
-                           patientstitem.Item.GenericName = c.Item.GenericName;
-                           patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
-
-                           if (c.ServiceProvider != null)
-                           {
-
-                               patientstitem.ServiceProvider.Contact.FirstName = c.ServiceProvider.Contact.FirstName;
-                               patientstitem.ServiceProvider.Contact.LastName = c.ServiceProvider.Contact.LastName;
-                           }
-
-             
-
-                           onlyPatientInvoice.PatientServices.Add(patientstitem);
-
-                       }
-                   }
-                   onlypatientInvoices.Add(onlyPatientInvoice);
+                    }
+                    using (PatientServiceRepository srepository = new PatientServiceRepository())
+                    {
+                        PatientServices = srepository.GetServiceItemsLabtestOnlyByPatientId(pinvoice.PatientID, pinvoice.Id).ToList();
+                        foreach (PatientService c in PatientServices)
+                        {
+                            PatientService patientstitem = new PatientService();
+                            Item item = new Item();
+                            ServiceProvider serviceProdier = new ServiceProvider();
+                            Contact contact = new Contact();
+                            serviceProdier.Contact = contact;
+                            patientstitem.Item = item;
+                            patientstitem.ServiceProvider = serviceProdier;
 
 
+                            patientstitem.Id = c.Id;
+                            patientstitem.PatientID = c.PatientID;
+                            patientstitem.ItemID = c.ItemID;
+                            patientstitem.InvoiceID = c.InvoiceID;
+                            patientstitem.ServiceListPrice = c.ServiceListPrice;
+                            patientstitem.ServiceActualPrice = c.ServiceActualPrice;
+                            patientstitem.ServiceQuantity = c.ServiceQuantity;
+                            patientstitem.ServiceDate = c.ServiceDate;
+                            patientstitem.UserId = c.UserId;
+                            patientstitem.Discount = c.Discount;
+                            patientstitem.Refund = c.Refund;
+                            patientstitem.Billed = c.Billed;
+                            patientstitem.ReferralFee = c.ReferralFee;
+                            patientstitem.DeliveryDate = c.DeliveryDate;
+                            patientstitem.DeliveryTime = c.DeliveryTime;
 
-               }
+                            patientstitem.ServiceProviderId = c.ServiceProviderId;
+                            patientstitem.ReferralFeePaid = c.ReferralFeePaid;
+                            patientstitem.ReportFormatName = c.ReportFormatName;
+                            patientstitem.LabStatusId = c.LabStatusId;
 
-               if (onlypatientInvoices == null)
-               {
-                   return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
-               }
+                            patientstitem.Item.Id = c.Item.Id;
+                            patientstitem.Item.Name = c.Item.Name;
+                            patientstitem.Item.GenericName = c.Item.GenericName;
+                            patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
 
+                            if (c.ServiceProvider != null)
+                            {
 
+                                patientstitem.ServiceProvider.Contact.FirstName = c.ServiceProvider.Contact.FirstName;
+                                patientstitem.ServiceProvider.Contact.LastName = c.ServiceProvider.Contact.LastName;
+                            }
+                            
+                            onlyPatientInvoice.PatientServices.Add(patientstitem);
+                        }
+                    }
+                    onlypatientInvoices.Add(onlyPatientInvoice);                    
+                }
 
+                if (onlypatientInvoices == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
 
-               return Json(onlypatientInvoices, JsonRequestBehavior.AllowGet);
-               
-
+                return Json(onlypatientInvoices, JsonRequestBehavior.AllowGet);
             }
-           
+
         }
     }
 }

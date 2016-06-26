@@ -16,7 +16,6 @@ namespace HMS.Controllers
 {
     public class ContactController : BaseController
     {
-        static readonly string _PhotoLocation = ConfigurationManager.AppSettings["PhotoLocation"];
         //private Repository<Contact> _Repository;
         //private ContactRepository _Repository;
 
@@ -120,6 +119,7 @@ namespace HMS.Controllers
             {
                 using (ContactRepository repository = new ContactRepository())
                 {
+                    contact.UserId = GetLoggedinUserInfo().UserId;
                     repository.Insert(contact);
                 }
             }
@@ -154,6 +154,7 @@ namespace HMS.Controllers
                     {
                         contact.Photo = Path.GetFileName(filePath);
                     }
+                    contact.UserId = GetLoggedinUserInfo().UserId;
                     repository.Update(contact);
                 }
             }

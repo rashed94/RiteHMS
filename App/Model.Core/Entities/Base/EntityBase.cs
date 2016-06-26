@@ -15,6 +15,7 @@ namespace HMS.Model.Core
         }
         public long Id { get; set; }
         public bool? Active { get; set; }
+        public long? UserId { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

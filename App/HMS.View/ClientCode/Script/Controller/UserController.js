@@ -1,8 +1,8 @@
 ﻿'use strict';
 
 HmsApp.controller("UserController", function ($scope, $routeParams, UserService) {
-    $scope.GetLoggedInUser = function () {
-        UserService.GetLoggedInUser()
+    $scope.GetLoggedinUser = function () {
+        UserService.GetLoggedinUser()
             .success(function (user) {
                 $scope.User = user;
                 console.log($scope.User);
@@ -13,5 +13,5 @@ HmsApp.controller("UserController", function ($scope, $routeParams, UserService)
             });
     }
 
-    $scope.GetLoggedInUser();
+    $scope.GetLoggedinUser();
 });

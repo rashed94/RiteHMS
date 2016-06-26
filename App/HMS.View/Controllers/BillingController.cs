@@ -21,27 +21,22 @@ namespace HMS.Controllers
 
         public BillingController()
         {
-           // _Repository = new Repository<Patient>(new Context());
+            // _Repository = new Repository<Patient>(new Context());
         }
 
-        public void CreatePatientService(long invoiceID,IList<PatientService> patientServices)
+        public void CreatePatientService(long invoiceID, IList<PatientService> patientServices)
         {
-
-          
+            using (PatientServiceRepository repository = new PatientServiceRepository())
             {
-                using (PatientServiceRepository repository = new PatientServiceRepository())
+                foreach (PatientService patientervice in patientServices)
                 {
-                    foreach (PatientService patientervice in patientServices)
-                    {
-                        patientervice.InvoiceID = invoiceID;
-                        repository.Insert(patientervice);
+                    patientervice.InvoiceID = invoiceID;
+                    repository.Insert(patientervice);
 
-                    }
-                    repository.Commit();
-  
                 }
+                repository.Commit();
+
             }
-            
         }
 
 
@@ -50,39 +45,32 @@ namespace HMS.Controllers
             int Totaldebit;
             int TotalCredit;
             ArrayList debitcredit = new ArrayList();
-            
-                using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
-     
-                {
 
+            using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
+            {
                 Totaldebit = repository.GetTotalDebit(patientId);
-                
-                  
-                }
+            }
 
-                using (PaymentRepository repository = new PaymentRepository())
-                {
+            using (PaymentRepository repository = new PaymentRepository())
+            {
+                TotalCredit = repository.GetTotalCredit(patientId);
+            }
 
-                    TotalCredit = repository.GetTotalCredit(patientId);
+            debitcredit.Add(Totaldebit);
+            debitcredit.Add(TotalCredit);
 
-
-                }
-                debitcredit.Add(Totaldebit);
-                debitcredit.Add(TotalCredit);
-
-                return Json(debitcredit, JsonRequestBehavior.AllowGet);
-
+            return Json(debitcredit, JsonRequestBehavior.AllowGet);
         }
 
-        
+
         public JsonResult SaveInvoice(PatientInvoice invoice, IList<PatientService> patientServices)
         {
             using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
             {
-
+                invoice.UserId = GetLoggedinUserInfo().UserId;
                 invoice = repository.Insert(invoice);
                 repository.Commit();
-               // CreatePatientService(invoice.Id, patientServices);
+                // CreatePatientService(invoice.Id, patientServices);
             }
 
             return Json(invoice.Id, JsonRequestBehavior.AllowGet);
@@ -92,10 +80,10 @@ namespace HMS.Controllers
         {
             using (PaymentRepository repository = new PaymentRepository())
             {
-
+                payment.UserId = GetLoggedinUserInfo().UserId;
                 payment = repository.Insert(payment);
                 repository.Commit();
-               // CreatePatientService(invoice.Id, patientServices);
+                // CreatePatientService(invoice.Id, patientServices);
             }
 
             return Json("Payment successfull");
@@ -118,20 +106,20 @@ namespace HMS.Controllers
             List<PatientInvoice> patientInvoices;
             using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
             {
-               /* ParameterExpression argParam = Expression.Parameter(typeof(PatientInvoice), "s");
-                Expression patientProperty = Expression.Property(argParam, "PatientID");
-                Expression statusProperty = Expression.Property(argParam, "InvoiceStatusId");
+                /* ParameterExpression argParam = Expression.Parameter(typeof(PatientInvoice), "s");
+                 Expression patientProperty = Expression.Property(argParam, "PatientID");
+                 Expression statusProperty = Expression.Property(argParam, "InvoiceStatusId");
 
-                var val1 = Expression.Constant(id);
-                var val2 = Expression.Constant(statusid);
+                 var val1 = Expression.Constant(id);
+                 var val2 = Expression.Constant(statusid);
 
-                Expression e1 = Expression.Equal(patientProperty, val1);
-                Expression e2 = Expression.Equal(statusProperty, val2);
+                 Expression e1 = Expression.Equal(patientProperty, val1);
+                 Expression e2 = Expression.Equal(statusProperty, val2);
 
-                BinaryExpression andExp;*/
+                 BinaryExpression andExp;*/
 
-     
-               // var andExp = e1;
+
+                // var andExp = e1;
 
                 //var lambda = Expression.Lambda<Func<PatientInvoice, bool>>(andExp, argParam);
                 Expression<Func<PatientInvoice, bool>> lambda;
@@ -140,27 +128,29 @@ namespace HMS.Controllers
                 {
                     if (statusid == 0)
                     {
-                        lambda = (x => x.Active==true);
+                        lambda = (x => x.Active == true);
                     }
                     else
                     {
                         lambda = (x => x.InvoiceStatusId == statusid && x.Active == true);
                     }
-                }else
+                }
+                else
                 {
                     if (statusid == 0)
                     {
                         lambda = (x => x.PatientID == id && x.Active == true);
-                    }else
+                    }
+                    else
                     {
                         lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceStatusId == statusid);
-                        
+
                     }
                 }
 
-        
+
                 patientInvoices = repository.GetByQuery(lambda).ToList();
-           
+
 
 
                 foreach (PatientInvoice pinvoice in patientInvoices)
@@ -178,21 +168,21 @@ namespace HMS.Controllers
                     onlyPatientInvoice.InvoiceStatusId = pinvoice.InvoiceStatusId;
                     onlyPatientInvoice.ItemDiscount = pinvoice.ItemDiscount;
                     onlyPatientInvoice.UserId = pinvoice.UserId;
-                   onlyPatientInvoice.LabStatusId = pinvoice.LabStatusId;
-                   onlyPatientInvoice.Patient.FirstName = pinvoice.Patient.FirstName;
+                    onlyPatientInvoice.LabStatusId = pinvoice.LabStatusId;
+                    onlyPatientInvoice.Patient.FirstName = pinvoice.Patient.FirstName;
                     onlyPatientInvoice.Patient.LastName = pinvoice.Patient.LastName;
+                    onlyPatientInvoice.UserId = GetLoggedinUserInfo().UserId;
 
                     foreach (InvoicePayment invoicepayment in pinvoice.InvoicePayments)
                     {
                         InvoicePayment invoicePayment = new InvoicePayment();
-                        
+
                         invoicePayment.Id = invoicepayment.Id;
                         invoicePayment.PatientInvoiceId = invoicepayment.PatientInvoiceId;
                         invoicePayment.Amount = invoicepayment.Amount;
                         invoicePayment.PaymentID = invoicepayment.PaymentID;
                         invoicePayment.UserId = invoicepayment.UserId;
                         onlyPatientInvoice.InvoicePayments.Add(invoicePayment);
-                        
                     }
 
                     foreach (PatientService c in pinvoice.PatientServices)
@@ -222,13 +212,11 @@ namespace HMS.Controllers
                         patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
                         patientstitem.ReferralFeePaid = c.ReferralFeePaid;
                         patientstitem.ServiceProviderId = c.ServiceProviderId;
+                        patientstitem.UserId = GetLoggedinUserInfo().UserId;
                         onlyPatientInvoice.PatientServices.Add(patientstitem);
-
                     }
+
                     onlypatientInvoices.Add(onlyPatientInvoice);
-
-
-
                 }
 
                 if (onlypatientInvoices == null)
@@ -236,13 +224,8 @@ namespace HMS.Controllers
                     return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
                 }
 
-
-
-
                 return Json(onlypatientInvoices, JsonRequestBehavior.AllowGet);
-
             }
-           
         }
 
         public JsonResult GetBillingIemByPatientId(long id)
@@ -294,7 +277,7 @@ namespace HMS.Controllers
                 return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
             }
 
-           
+
             //  patients.ForEach(corePatient => onlyPatients.Add(MapToClientObject(corePatient)));
             //patientServiceItems.ForEach(c => onlypatientServiceItems.Add(new PatientService
             //{
@@ -328,12 +311,12 @@ namespace HMS.Controllers
             IEnumerable<Claim> claims = identity.Claims;
             PatientInvoice patientInvoice = new PatientInvoice();
             PatientInvoice onlyPatientInvoice = new PatientInvoice();
-           // var userId = claims.Where(r => r.Type == ClaimTypes.SerialNumber).FirstOrDefault().Value;
+            // var userId = claims.Where(r => r.Type == ClaimTypes.SerialNumber).FirstOrDefault().Value;
 
             using (Repository<PatientInvoice> repository = new Repository<PatientInvoice>())
             {
-               // patientInvoice.UserId = Convert.ToInt32(userId);
-               // patientInvoice.InvoiceStatusId = 1;
+                // patientInvoice.UserId = Convert.ToInt32(userId);
+                // patientInvoice.InvoiceStatusId = 1;
                 if (pinvoice.Id == 0)
                 {
                     List<PatientService> patientServiceItems = pinvoice.PatientServices.ToList();
@@ -343,7 +326,8 @@ namespace HMS.Controllers
                     foreach (PatientService item in patientServiceItems)
                     {
                         item.InvoiceID = pinvoice.Id;
-                        
+                        item.UserId = GetLoggedinUserInfo().UserId;
+
                         using (PatientServiceRepository patientservicerepository = new PatientServiceRepository())
                         {
                             patientservicerepository.Update(item);
@@ -359,8 +343,8 @@ namespace HMS.Controllers
                 }
 
 
-               // repository.Commit();
-                
+                // repository.Commit();
+
             }
 
             //using (PatientServiceRepository repository = new PatientServiceRepository())
@@ -403,7 +387,7 @@ namespace HMS.Controllers
 
             using (PatientServiceRepository bill = new PatientServiceRepository())
             {
-                bill.DeleteByID(billId);
+                bill.DeleteByID(billId, GetLoggedinUserInfo().UserId);
                 bill.Commit();
                 return Json("BillItem delete successfull");
             }

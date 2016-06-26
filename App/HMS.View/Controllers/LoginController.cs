@@ -1,6 +1,7 @@
 ﻿using HMS.CryptoHelper;
 using HMS.DAL.Repository;
 using HMS.Model.Core;
+using HMS.Controllers.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -69,15 +70,8 @@ namespace HMS.Controllers
         }
 
         public ActionResult GetLoggedinUser()
-        {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-            return Json(new {
-                    UserId = claims.Where(r => r.Type == ClaimTypes.GivenName).FirstOrDefault().Value,
-                    Name = claims.Where(r => r.Type == ClaimTypes.Name).FirstOrDefault().Value,
-                    PhoneNumber = claims.Where(r => r.Type == ClaimTypes.MobilePhone).FirstOrDefault().Value
-                }, JsonRequestBehavior.AllowGet
-            );
+        {            
+            return Json(base.GetLoggedinUserInfo(), JsonRequestBehavior.AllowGet);
         }
 
         [AllowAnonymous]
@@ -106,22 +100,5 @@ namespace HMS.Controllers
         {
 
         }
-    }
-
-
-    public class UserViewModel
-    {
-        [Required]
-        [Display(Name = "UserName")]
-        public string UserName { get; set; }
-        [Required]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
-        [Required]
-        [Display(Name = "Phone Number")]
-        public string PhoneNumber { get; set; }
-        [Display(Name = "Remember?")]
-        public bool RememberMe { get; set; }
-        public string ReturnUrl { get; set; }
     }
 }

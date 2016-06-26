@@ -224,6 +224,8 @@
     <Compile Include="Controllers\AppointmentController.cs" />
     <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\BillingController.cs" />
+    <Compile Include="Controllers\Classes\UserClaim.cs" />
+    <Compile Include="Controllers\Classes\UserViewModel.cs" />
     <Compile Include="Controllers\ConfigurationController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

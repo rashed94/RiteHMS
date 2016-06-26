@@ -24,7 +24,7 @@ namespace HMS.Controllers
             {
                
                 IList<Appointment> appointments = (IList<Appointment>)repo.GetByQuery();
-                appointments.ToList().ForEach(a => mappedAppointments.Add(new Appointment { Id = a.Id, Name = a.Name, StartTime = a.StartTime, EndTime = a.EndTime }));
+                appointments.ToList().ForEach(a => mappedAppointments.Add(new Appointment { Id = a.Id, Name = a.Name, StartTime = a.StartTime, EndTime = a.EndTime, UserId = a.UserId, IsBooked = a.IsBooked }));
             }
 
             using (Repository<ServiceProviderAppointment> repo = new Repository<ServiceProviderAppointment>())
@@ -59,6 +59,7 @@ namespace HMS.Controllers
         {
             using (Repository<ServiceProviderAppointment> repository = new Repository<ServiceProviderAppointment>())
             {
+                doctorAppointment.UserId = GetLoggedinUserInfo().UserId;
                 return Json(repository.Insert(doctorAppointment));
             }
         }
@@ -67,7 +68,7 @@ namespace HMS.Controllers
         {
             using (Repository<ServiceProviderAppointment> repository = new Repository<ServiceProviderAppointment>())
             {
-                repository.DeleteByID(id);
+                repository.DeleteByID(id, GetLoggedinUserInfo().UserId);
                 return Json(new {
                     Status = "Success"
                 }, JsonRequestBehavior.AllowGet);

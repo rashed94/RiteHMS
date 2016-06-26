@@ -8,7 +8,6 @@ namespace HMS.Model.Core
     {
         public long ItemID { get; set; }
         public bool? Occupied { get; set; }
-        public long? UserId { get; set; }
         public long? PatientId { get; set; }
         public string PatientName { get; set; }
     

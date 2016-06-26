@@ -16,7 +16,6 @@ namespace HMS.Model.Core
         public decimal? DeductionAmount { get; set; }
         public long PaymentTypeId { get; set; }
         public long? PatientID { get; set; }
-        public long UserId { get; set; }
         public System.DateTime Date { get; set; }
     
         public virtual ICollection<InvoicePayment> InvoicePayments { get; set; }

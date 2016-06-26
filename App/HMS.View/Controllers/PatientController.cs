@@ -55,15 +55,11 @@ namespace HMS.Controllers
                 DefaultReferrarFee=c.DefaultReferrarFee,
                 ReferralAllowed=c.ReferralAllowed,
                 ServiceProviderId=c.ServiceProviderId
-                
-
-
             }));
 
             return Json(onlyItems, JsonRequestBehavior.AllowGet);
-
-
         }
+
         public JsonResult GetMedicalType()
         {
             List<MedicalType> medicaltype;
@@ -86,10 +82,6 @@ namespace HMS.Controllers
             }));
 
             return Json(onlyMedicalType, JsonRequestBehavior.AllowGet);
-
-
-           
-
         }
 
         // GET: Patient/GetPatients
@@ -200,18 +192,12 @@ namespace HMS.Controllers
                     serviceProvider.Id = item.Id;
                     serviceProvider.Speciality = item.Speciality;
 
-                    
-
                     onlyserviceProviders.Add(serviceProvider);
-
                 }
             }
 
             return Json(onlyserviceProviders, JsonRequestBehavior.AllowGet);
         }
-
-
-
 
         public JsonResult getdoctorpartialname(string name, long typeId, long itemid)
         {
@@ -241,13 +227,10 @@ namespace HMS.Controllers
                     using (ReferralRepository referrerrepository = new ReferralRepository())
                     {
                         referral = referrerrepository.GetReferrer(serviceProvider.Id, itemid);
-             
-                        serviceProvider.ReferralFee = referral.ReferralFee;
-                      
+                        serviceProvider.ReferralFee = referral.ReferralFee;                      
                     }
 
                     onlyserviceProviders.Add(serviceProvider);
-
                 }
             }
 
@@ -289,18 +272,10 @@ namespace HMS.Controllers
             List<Referral> referrals = null;
             List<Referral> onlyReferrals = new List<Referral>();
 
-
-            
-
-
             using (ReferralRepository repository = new ReferralRepository())
             {
                 referrals = repository.GetServiceProviderPartialName(name, itemid).ToList();
                 
-
-                
-
-              
                 foreach (Referral item in referrals)
                 {
                     Referral referral = new Referral();
@@ -349,15 +324,14 @@ namespace HMS.Controllers
         //[ValidateAntiForgeryToken]
         public JsonResult CreatePatientService(IList<PatientService> patientServices)
         {
-
             //if (ModelState.IsValid)
             {
                 using (PatientServiceRepository repository = new PatientServiceRepository())
                 {
                     foreach (PatientService patientervice in patientServices)
                     {
-                        repository.Insert(patientervice);
-                        
+                        patientervice.UserId = GetLoggedinUserInfo().UserId;
+                        repository.Insert(patientervice);                        
                     }
                     repository.Commit();
                    // repository.Insert(patientService);
@@ -382,7 +356,7 @@ namespace HMS.Controllers
                     file.SaveAs(fileNameWithPath);
                     patient.Photo = fileName;
                 }
-
+                patient.UserId = GetLoggedinUserInfo().UserId;
                 repository.Insert(patient);
                 repository.Commit();
                 patient = repository.GetByPhoneNumber(patient.PhoneNumber);
@@ -410,6 +384,7 @@ namespace HMS.Controllers
                         }
                         patient.Photo = fileName;
                     }
+                    patient.UserId = GetLoggedinUserInfo().UserId;
                     repository.Update(patient);
                     repository.Commit();
                     patient = repository.GetByPhoneNumber(patient.PhoneNumber);
