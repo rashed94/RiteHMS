@@ -191,6 +191,40 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     //    BillingService.SaveInvoice($scope.Invoice);
     //};
 
+
+
+    //*************************************************  moadl    ***************************************************
+
+
+    $scope.InvoicePrintModal = function (size, isEdit, singleinvoice) {
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/PrintInvoice.html',
+            size: size,
+            controller: 'PrintInvoiceModalController',
+            scope: $scope,
+            resolve:{
+                // billingItems:billingItems
+                singleInvoice: function () {
+                    return singleinvoice;
+                }
+
+
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+
+        }, function () {
+           
+
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+
+    };
+
     $scope.InvoiceModal = function (size,isEdit, singleinvoice) {
         var billingItems = [];
         var singleInvoice = {};
@@ -250,6 +284,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         });
     };
 
+    // *********************************************** modal end *****************************************************
 
 
     $scope.toggleDetail = function (item) {
@@ -278,6 +313,8 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     {
         item.ServiceListPriceAfterDiscount = item.ServiceListPriceAfterDiscountSingleQuantity * item.ServiceQuantity;
         item.ServiceListPrice = item.OriginalAmountSingleQuantity * item.ServiceQuantity;
+        
+        $scope.CalculateTotalDiscount();
     }
 
     function prepareInvoiceDataModel()
@@ -285,10 +322,16 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         angular.forEach($scope.invocieslist, function (item) {
 
             item.Paid = 0;
+            item.TotalPrice=0;
+
             item.InvoiceDate = ToJavaScriptDate(item.InvoiceDate);
 
             item.ServiceListPriceAfterDiscount = item.ServiceListPrice;
+             
+            angular.forEach(item.PatientServices, function (pservice) {
 
+                item.TotalPrice = pservice.ServiceActualPrice * pservice.ServiceQuantity + item.TotalPrice;
+            });
 
 
             if (item.InvoiceStatusId == 1)
@@ -305,6 +348,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             angular.forEach(item.InvoicePayments, function (paymentitem) {
 
                 item.Paid = paymentitem.Amount + item.Paid;
+               
                 item.selectedIcon = true;
                 item.activePosition = false;
 

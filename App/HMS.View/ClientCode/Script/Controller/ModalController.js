@@ -10,6 +10,22 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, 
     };
 });
 
+
+HmsApp.controller("PrintInvoiceModalController", function ($scope, $modalInstance, singleInvoice) {
+    
+    $scope.singleinvoice = singleInvoice;
+
+
+
+    $scope.ok = function (file) {
+        $modalInstance.close();
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
 HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInstance, serviceProvider, ConfigurationService) {
     $scope.ServiceProvider = serviceProvider;
     if ($scope.ServiceProvider.Contact.Gender == null)
@@ -435,8 +451,8 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
     // first payment while invoice is not there
     if (singleInvoice.Id == null && billingItems.length>0) {
         angular.forEach(billingItems, function (item, key) {
-            $scope.Invoice.TotalAmount += item.ServiceListPriceAfterDiscount * item.ServiceQuantity;
-            $scope.Invoice.TotalDiscount += item.Discount * item.ServiceQuantity;
+            $scope.Invoice.TotalAmount += item.ServiceListPriceAfterDiscount ;
+            $scope.Invoice.TotalDiscount += parseFloat(item.Discount);
             $scope.GenerateServiceItem(item);
 
         });

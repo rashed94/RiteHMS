@@ -1,0 +1,73 @@
+﻿<div class="modal-header rite_modal_header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden=" true">&times;</span></button>
+    <h2 class="modal-title" id="myModalLabel">
+       Print Invoice
+    </h2>
+</div>
+
+<div class="modal-body">
+
+    <div class="print_content">
+
+        <table width="95%" border="1">
+            <thead>
+                <tr style="background:#e8e8e9;">
+                    <th width="15%">No</th>
+                    <th width="29%">Quantity</th>
+                    <th width="19%">Item Name</th>
+                    <th width="37%">Price</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="patientservice in singleinvoice.PatientServices">
+                <tr>
+                    <td>{{$index+1}}</td>
+                    <td>{{patientservice.ServiceQuantity}}</td>
+                    <td>{{patientservice.Item.Name}}</td>
+                    <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr style="border-top::1px solid #dededf;">
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr style="border-top::1px solid #dededf;">
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>Total Price</td>
+                    <td>{{singleinvoice.TotalPrice}}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>Discount</td>
+                    <td>{{singleinvoice.TotalDiscount}}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>Total</td>
+                    <td>{{singleinvoice.TotalAmount}}</td>
+                </tr>
+            </tfoot>
+        </table>  
+
+    </div>
+
+
+
+</div>
