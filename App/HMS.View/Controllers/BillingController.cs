@@ -81,6 +81,12 @@ namespace HMS.Controllers
             using (PaymentRepository repository = new PaymentRepository())
             {
                 payment.UserId = GetLoggedinUserInfo().UserId;
+                foreach (InvoicePayment item in payment.InvoicePayments)
+                {
+                    item.UserId = GetLoggedinUserInfo().UserId; 
+                    
+                }
+
                 payment = repository.Insert(payment);
                 repository.Commit();
                 // CreatePatientService(invoice.Id, patientServices);

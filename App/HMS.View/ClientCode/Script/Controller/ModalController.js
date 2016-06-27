@@ -1,7 +1,12 @@
 ﻿'use strict';
 
 HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, PatientService) {
+
     $scope.Patient = patient;
+    if(!$scope.Patient.Country)
+        {
+        $scope.Patient.Country = "BD";
+        }
     $scope.ok = function (file) {
         $modalInstance.close({Patient: $scope.Patient, File: file});
     };

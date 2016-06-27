@@ -9,6 +9,6 @@ namespace HMS.DAL.Repository
 {
     public interface IBedOccupancyRepository
     {
-        IList<BedOccupancy> getBedOccupancyByPatientId(long id);
+        IList<BedOccupancy> getBedOccupancyByItemId(long id);
     }
 }

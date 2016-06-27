@@ -14,12 +14,13 @@ namespace HMS.DAL.Repository
             _DbSet = _DbContext.Set<BedOccupancy>();
         }
 
-        public IList<BedOccupancy> getBedOccupancyByPatientId(long id)
+        public IList<BedOccupancy> getBedOccupancyByItemId(long id)
         {
             IQueryable<BedOccupancy> queryResult = _DbSet;
             //  bool active = true;
 
-            return queryResult.Where(c => c.PatientId == id && c.ItemID == c.Item.Id && c.Active == true).ToList();
+            //return queryResult.Where(c => c.PatientId == id && c.ItemID == c.Item.Id && c.Active == true).ToList();
+            return queryResult.Where(c => c.ItemID == id && c.Active == true).ToList();
         }
     }
 }

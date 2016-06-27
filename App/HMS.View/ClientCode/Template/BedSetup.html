@@ -1,113 +1,3 @@
-﻿<!--<div class="container_secondary_tab" style="">
-    <div class="container_secondary_tab_abs">
-        <ul class="tabs group">
-            <li class="summary active"><a href="#/bedsetup/summary">SUMMARY</a></li>
-            <li class="addbed"><a href="#/bedsetup/addbed">ADD BED</a></li>
-
-        </ul>
-        <div style="clear: both"></div>
-    </div>
-    <div style="clear: both"></div>
-</div>
-
-<div class="content" ng-controller="BedSetupController">
-
-    <div class="summary hide">
-
-        <div style="padding-left:60px;padding-top:60px;">
-            Select Category
-
-            <!--<select ng-model="filterCondition.ItemCategoryId">
-
-            <option ng-repeat="category in LabTestCategories" value="{{category.Id}}"> {{category.Name}}</option>
-
-        </select>-->
-            <select>
-
-                <option value="0">General Ward</option>
-                <option value="1">Cabin</option>
-
-            </select>
-
-
-        </div>
-
-        <!--<div ng-controller="MyCtrl">
-            <table>
-                <tr ng-repeat="item in items" ng-switch on="$index % 3">
-                    <td ng-switch-when="0">
-                        {{items[$index].id}} {{items[$index].name}}
-                    </td>
-                    <span ng-show="items[$index+1]">
-                        <td ng-switch-when="0">
-                            {{items[$index+1].id}} {{items[$index+1].name}}
-                        </td>
-                    </span>
-                    <span ng-show="items[$index+2]">
-                        <td ng-switch-when="0">
-                            {{items[$index+2].id}} {{items[$index+2].name}}
-                        </td>
-                    </span>
-                </tr>
-            </table>
-        </div>-->
-
-        <div class="bed_setup_category_posiition">
-
-            <table width="95%" border="0">
-                <tr ng-repeat="item in items" ng-switch on="$index % 5">
-                    <td>
-                        <div class="bed_view">
-                            <div> Empty</div>
-                            <div>Name : generic ward bed 200</div>
-                            <div>Charge : 200 TK.</div>
-                            <div><a class="link_brown" href="#">Add Patient</a></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="bed_view_patient">
-                            <h1> MD. Rashidul Alam</h1>
-                            <div>Name : generic ward bed 200</div>
-                            <div><a class="link_brown" href="#">Empty Bed</a></div>
-                            <div><a class="link_brown" href="#">Patient Info</a></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="bed_view">
-                            <div> Empty</div>
-                            <div>Name : generic ward bed 200</div>
-                            <div>Charge : 200 TK.</div>
-                            <div><a class="link_brown" href="#">Add Patient</a></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="bed_view">
-                            <div> Empty</div>
-                            <div>Name : generic ward bed 200</div>
-                            <div>Charge : 200 TK.</div>
-                            <div><a class="link_brown" href="#">Add Patient</a></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="bed_view">
-                            <div> Empty</div>
-                            <div>Name : generic ward bed 200</div>
-                            <div>Charge : 200 TK.</div>
-                            <div><a class="link_brown" href="#">Add Patient</a></div>
-                        </div>
-                    </td>
-                </tr>
-
-                
-            </table>
-
-        </div>
-    </div>
-    <div class="addbed hide">
-        bedsetup add/edit
-    </div>
-
-</div>-->
 
 <script>
 
@@ -124,10 +14,6 @@
         });
 
 
-
-
-
-
         $('#MeasurementUnit').click(function (event) {
             //  alert("test");
             event.preventDefault();
@@ -137,10 +23,6 @@
         });
 
 
-
-
-
-
         $("#popupCategory .close").click(function () {
 
             $('#popupCategory').css("visibility", "hidden");
@@ -148,15 +30,11 @@
         });
 
 
-
-
         $("#popupMeasurementUnit .close").click(function () {
 
             $('#popupMeasurementUnit').css("visibility", "hidden");
             $('#popupMeasurementUnit').css("opacity", 0);
         });
-
-
 
 
     });
@@ -183,7 +61,7 @@
     <div id="popupCategory" class="overlay">
         <div class="popup">
             <h2>Enter Category</h2>
-            <a class="close" href="#" ng-click="$event.preventDefault();">×</a>
+            <a class="close" href="#" ng-click="$event.preventDefault();">Ã—</a>
             <div class="content_text">
                 <div class="padding40">
                     <div>Category Name</div>
@@ -197,7 +75,7 @@
     <div id="popupMeasurementUnit" class="overlay">
         <div class="popup">
             <h2>Enter Measurement Unit</h2>
-            <a class="close" href="#" ng-click="$event.preventDefault();">×</a>
+            <a class="close" href="#" ng-click="$event.preventDefault();">Ã—</a>
             <div class="content_text">
                 <div class="padding40">
                     <div>Measurement Unit Name</div>
@@ -210,87 +88,88 @@
 
     <div class="summary hide">
 
+        <div class="round_box box_general" ng-show="addPatientSuccess>0">
+
+            <div class="success_message">Successfully Assigned the Bed to this Patient</div>
+        </div>
+
+        <div style="padding-left:60px;padding-top:60px;">
+            Select Category
+
+            <select ng-model="filterCondition.ItemCategoryId" ng-change="loaditembyCategory()">
+
+                <option ng-selected="true" value="0"> All</option>
+                <option ng-repeat="category in ItemCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+            </select>
+
+        </div>
 
         <div class="bed_setup_category_posiition">
 
-            <table width="100%" border="0">
+            <table width="" border="0" class="bed_table">
                 <tr ng-repeat="item in items" ng-switch on="$index % 5">
                     <td ng-switch-when="0" ng-show="items[$index]">
-                        <div class="bed_view">
-                            <div> Empty</div>
+
+                        <div ng-class="{'bed_view' : items[$index].BedOccupancies[0].Occupied==false,'bed_view_patient': items[$index].BedOccupancies[0].Occupied==true}">
+
+                            <div ng-hide="items[$index].BedOccupancies[0].Occupied==true"> Empty</div>
+                            <div ng-show="items[$index].BedOccupancies[0].Occupied==true">{{items[$index].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index].Name}}</div>
                             <div>Charge : {{items[$index].SalePrice}}</div>
-                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index]);">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index]);" ng-hide="items[$index].BedOccupancies[0].Occupied==true">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();emptyBed(items[$index]);" ng-show="items[$index].BedOccupancies[0].Occupied==true">Empty Bed</a></div>
                         </div>
+
+
                     </td>
                     <td ng-switch-when="0" ng-show="items[$index+1]">
-                        <div class="bed_view_patient">
-                            <h1> {{items[$index+1].GenericName}}</h1>
+
+                        <div ng-class="{'bed_view':items[$index+1].BedOccupancies[0].Occupied ==false,'bed_view_patient':items[$index+1].BedOccupancies[0].Occupied==true}">
+
+                            <div ng-hide="items[$index+1].BedOccupancies[0].Occupied==true"> Empty</div>
+                            <div ng-show="items[$index+1].BedOccupancies[0].Occupied==true">{{items[$index+1].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+1].Name}}</div>
                             <div>Charge : {{items[$index+1].SalePrice}}</div>
-                            <!--<div><a class="link_brown" href="#">Empty Bed</a></div>-->
-                            <!--<div><a class="link_brown" href="#">Patient Info</a></div>-->
-                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+1]);">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+1]);" ng-hide="items[$index+1].BedOccupancies[0].Occupied==true">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();emptyBed(items[$index+1]);" ng-show="items[$index+1].BedOccupancies[0].Occupied==true">Empty Bed</a></div>
                         </div>
                     </td>
+
                     <td ng-switch-when="0" ng-show="items[$index+2]">
-                        <div class="bed_view">
-                            
+                        <div ng-class="{'bed_view':items[$index+2].BedOccupancies[0].Occupied ==false,'bed_view_patient':items[$index+2].BedOccupancies[0].Occupied==true}">
+
+                            <div ng-hide="items[$index+2].BedOccupancies[0].Occupied==true"> Empty</div>
+                            <div ng-show="items[$index+2].BedOccupancies[0].Occupied==true">{{items[$index+2].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+2].Name}}</div>
                             <div>Charge : {{items[$index+2].SalePrice}}</div>
-                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+2]);">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+2]);" ng-hide="items[$index+2].BedOccupancies[0].Occupied==true">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();emptyBed(items[$index+2]);" ng-show="items[$index+2].BedOccupancies[0].Occupied==true">Empty Bed</a></div>
                         </div>
                     </td>
                     <td ng-switch-when="0" ng-show="items[$index+3]">
-                        <div class="bed_view">
-                            
+                        <div ng-class="{'bed_view':items[$index+3].BedOccupancies[0].Occupied ==false,'bed_view_patient':items[$index+3].BedOccupancies[0].Occupied==true}">
+
+                            <div ng-hide="items[$index+3].BedOccupancies[0].Occupied==true"> Empty</div>
+                            <div ng-show="items[$index+3].BedOccupancies[0].Occupied==true">{{items[$index+3].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+3].Name}}</div>
                             <div>Charge : {{items[$index+3].SalePrice}}</div>
-                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+3]);">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+3]);" ng-hide="items[$index+3].BedOccupancies[0].Occupied==true">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();emptyBed(items[$index+3]);" ng-show="items[$index+3].BedOccupancies[0].Occupied==true">Empty Bed</a></div>
                         </div>
                     </td>
                     <td ng-switch-when="0" ng-show="items[$index+4]">
-                        <div class="bed_view">
-                            
+                        <div ng-class="{'bed_view':items[$index+4].BedOccupancies[0].Occupied ==false,'bed_view_patient':items[$index+4].BedOccupancies[0].Occupied==true}">
+
+                            <div ng-hide="items[$index+4].BedOccupancies[0].Occupied==true"> Empty</div>
+                            <div ng-show="items[$index+4].BedOccupancies[0].Occupied==true">{{items[$index+4].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+4].Name}}</div>
                             <div>Charge : {{items[$index+4].SalePrice}}</div>
-                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+4]);">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+4]);" ng-hide="items[$index+4].BedOccupancies[0].Occupied==true">Add Patient</a></div>
+                            <div><a class="link_brown" ng-click="$event.preventDefault();emptyBed(items[$index+4]);" ng-show="items[$index+4].BedOccupancies[0].Occupied==true">Empty Bed</a></div>
                         </div>
                     </td>
-                    <!--<td>
-                        <div class="bed_view">
-                            <div> Empty</div>
-                            <div>Name : generic ward bed 200</div>
-                            <div>Charge : 200 TK.</div>
-                            <div><a class="link_brown" href="#">Add Patient</a></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="bed_view">
-                            <div> Empty</div>
-                            <div>Name : generic ward bed 200</div>
-                            <div>Charge : 200 TK.</div>
-                            <div><a class="link_brown" href="#">Add Patient</a></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="bed_view">
-                            <div> Empty</div>
-                            <div>Name : generic ward bed 200</div>
-                            <div>Charge : 200 TK.</div>
-                            <div><a class="link_brown" href="#">Add Patient</a></div>
-                        </div>
-                    </td>-->
-                    
-                        <!--<td ng-switch-when="0" ng-show="items[$index+1]">
-                            {{items[$index+1].Name}}
-                        </td>
-                    
-                    <span ng-show="items[$index+2]">
-                        <td ng-switch-when="0">
-                            {{items[$index+2].Name}}
-                        </td>
-                    </span>-->
+
                 </tr>
 
 
@@ -298,178 +177,113 @@
 
         </div>
 
-        </div>
+    </div>
 
-        <div class="bedlist hide">
-
-            <div class="criteria_box">
+    <div class="bedlist hide">
 
 
+        <table width="100%" border="1" align="center" class="bordered" ng-model="items" ng-init="loadItems()">
+            <thead>
+                <tr>
+                    <th width="36%">Test Name</th>
+                    <th colspan="6">Category</th>
+                    <th width="17%">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in items">
+                    <td>{{item.Name}} </td>
+                    <td colspan="6">{{item.ItemCategory.Name}}   </td>
 
-                <select name="status" class="invoice_status">
-                    <option value="open">DEMO CATEGORY</option>
-                    <option value="close">DEMO CATEGORY1</option>
-                    <option value="refunded">DEMO CATEGORY2</option>
-                </select>
-            </div>
+                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteBed(item);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/bedsetup/addbed/{{item.Id}}"></a></td>
+                </tr>
 
-            <table width="100%" border="1" align="center" class="bordered" ng-model="items" ng-init="loadItems()">
-                <thead>
-                    <tr>
-                        <th width="36%">Test Name</th>
-                        <th colspan="6">Category</th>
-                        <th width="17%">&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="item in items">
-                        <td>{{item.Name}} </td>
-                        <td colspan="6">{{item.ItemCategory.Name}}   </td>
-                        <!--<td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/pharmacy/addpharmacy/{{labitem.Id}}"></a></td>-->
-                        <td><a class=
-                        <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deletePharmacy(item.Id);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/bedsetup/addbed/{{item.Id}}"></a></td>
-                    </tr>
-
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
-
-        </div>
-        <div class="addbed hide">
-
-            <div class="round_box box_general" ng-show="saveSuccess>0">
-
-                <div class="success_message">Successfully Saved the Item</div>
-            </div>
-            <div class="round_box box_general" ng-show="valid=false">
-
-                <div class="success_message">Plz filup the required fields !</div>
-            </div>
-
-            <div style="clear:both;"></div>
-
-            <form name="form1">
-                <!--<form name="loginform" novalidate ng-submit="login.submit(loginForm)" class="css-form">-->
-                <div class="round_box box_general" ng-class="{true: 'error'}[submitted && form1.name.$invalid]">
-                    <table width="95%" border="1" ng-model="SingleLabItem">
-                        <tr>
-                            <td width="14%" height="39">&nbsp;</td>
-                            <td width="19%">NAME</td>
-                            <td width="19%">
-                                <input type="text" ng-model="SingleLabItem.Name" required name="name">
-                                <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
-                                <div ng-show="form1.name.$invalid">
-                                    <div ng-message="required">This field is required</div>
-                                </div>
-                            </td>
-                            <td width="48%"></td>
-                            <!--<td><span ng-show="!SingleLabItem.Name.length">Please enter something!</span></td>-->
-                        </tr>
-                        <!--<tr ng-show="SingleLabItem.Id>0">
-                            <td height="39">&nbsp;</td>
-                            <td>REPORT FORMAT</td>
-                            <td colspan="2">
-                                1. X-Ray PNS - Normal Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a><br>
-                                2.  X-Ray PNS - Detail Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a>
-                                <div ng-repeat="labreportformat in LabReportFormats">
-                                    <span>{{labreportformat.Name}}</span><a class="link_green" href="#" ng-click="$event.preventDefault();openTemplate('lg','true',labreportformat.Id)">EDIT</a> <a class="link_brown" href="#" ng-click="$event.preventDefault();DeleteReportFormat(labreportformat.Id);">DELETE</a><br>
-                                </div>
-                            </td>
-                        </tr>-->
-
-
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td>CODE</td>
-                            <td colspan="2">
-                                <input type="text" ng-model="SingleLabItem.Code" required name="code">
-                                <div ng-show="form1.code.$invalid">
-                                    <div ng-message="required">This field is required</div>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <!--<tr>
-                            <td height="39">&nbsp;</td>
-                            <td>GENERIC NAME</td>
-                            <td colspan="2">
-                                <input type="text" ng-model="SingleLabItem.GenericName" required name="genericName">
-                                <div ng-show="form1.genericName.$invalid">
-                                    <div ng-message="required">This field is required</div>
-                                </div>
-                            </td>
-                        </tr>-->
-
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td>CATEGORY</td>
-                            <td colspan="2">
-
-                                <select ng-model="filterCondition.ItemCategoryId">
-
-                                    <option ng-repeat="category in LabTestCategories" value="{{category.Id}}"> {{category.Name}}</option>
-
-                                </select>
-                                <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
-
-
-                            </td>
-                        </tr>
-
-                        <!--<tr>
-                            <td height="39">&nbsp;</td>
-                            <td>MEASURE UNIT</td>
-                            <td colspan="2">
-
-                                <select name="palnType3" class="distype" ng-model="filterCondition.MeasurementUnitId">
-
-
-                                    <option ng-repeat="measureMentUnit in MeasureMentUnits" value="{{measureMentUnit.Id}}">{{measureMentUnit.Name}}</option>
-
-
-
-                                </select>
-                                <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#" id="MeasurementUnit"></a>
-
-
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td>BUY PRICE</td>
-                            <td colspan="2">
-                                <input type="text" ng-model="SingleLabItem.BuyPrice">
-
-                                &nbsp;&nbsp;  <a ng-show="SingleLabItem.Id>0" class="arrow_head" href="#" ng-click="$event.preventDefault();CommissionModal('lg',true)"> ADD STOCK</a>
-                            </td>
-
-                        </tr>-->
-
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td>CHARGE PRICE</td>
-                            <td colspan="2"><input type="text" ng-model="SingleLabItem.SalePrice"></td>
-                        </tr>
-
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td colspan="2">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td colspan="3">
-                                <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();" ng-disabled="form1.$invalid">
-                                <!--<input name="save" type="submit" value="save" class="md_button" ng-click="submitted = true;saveItem();">-->
-                                <input name="cancel" type="button" value="cancel" class="md_button" ng-click="cancel()">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </form>
-
-        </div>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
 
     </div>
+    <div class="addbed hide">
+
+        <div class="round_box box_general" ng-show="saveSuccess>0">
+
+            <div class="success_message">Successfully Saved the Item</div>
+        </div>
+        <div class="round_box box_general" ng-show="valid=false">
+
+            <div class="success_message">Plz filup the required fields !</div>
+        </div>
+
+        <div style="clear:both;"></div>
+
+        <form name="form1">
+            <!--<form name="loginform" novalidate ng-submit="login.submit(loginForm)" class="css-form">-->
+            <div class="round_box box_general" ng-class="{true: 'error'}[submitted && form1.name.$invalid]">
+                <table width="95%" border="1" ng-model="SingleBedItem">
+                    <tr>
+                        <td width="14%" height="39">&nbsp;</td>
+                        <td width="19%">NAME</td>
+                        <td width="19%">
+                            <input type="text" ng-model="SingleBedItem.Name" required name="name">
+                            <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
+                            <div ng-show="form1.name.$invalid">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </td>
+                        <td width="48%"></td>
+                        <!--<td><span ng-show="!SingleBedItem.Name.length">Please enter something!</span></td>-->
+                    </tr>
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CODE</td>
+                        <td colspan="2">
+                            <input type="text" ng-model="SingleBedItem.Code" required name="code">
+                            <div ng-show="form1.code.$invalid">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CATEGORY</td>
+                        <td colspan="2">
+
+                            <select ng-model="filterCondition.ItemCategoryId">
+                                <option value="" ng-if="false"></option>
+                                <option ng-repeat="category in ItemCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+                            </select>
+                            <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CHARGE PRICE</td>
+                        <td colspan="2"><input type="text" ng-model="SingleBedItem.SalePrice"></td>
+                    </tr>
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td colspan="3">
+                            <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();" ng-disabled="form1.$invalid">
+                            <!--<input name="save" type="submit" value="save" class="md_button" ng-click="submitted = true;saveItem();">-->
+                            <input name="cancel" type="button" value="cancel" class="md_button" ng-click="cancel()">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+
+    </div>
+
+</div>

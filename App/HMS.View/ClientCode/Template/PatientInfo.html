@@ -35,9 +35,14 @@
             </div>
         </div>
 
-        <div class="home_appointment_details" ng-init="getAppointment();">
 
-            <input name="Add appointment" type="button" value="Add appointment" class="sm_button" style="margin-bottom: 20px;" onclick="location.href='#/appointment'">
+        <div class="home_appointment_details_button"><input name="Add appointment" type="button" value="Add appointment" class="sm_button" style="margin-bottom: 20px;" onclick="location.href='#/appointment'"></div>
+
+        <div class="home_appointment_details" ng-hide="DoctorAppointments.length"> There is no appointment available for this patient</div>
+
+        <div class="home_appointment_details" ng-init="getAppointment();" ng-show="DoctorAppointments.length">
+
+            
 
             <div ng-repeat="DoctorAppointment in DoctorAppointments" class="patient-appointments" style="clear: both;">
                 <!--<div ng-show="DoctorAppointment != null" style="width: 150px;float: left;">
@@ -63,6 +68,9 @@
             </div>
 
         </div>
+
+
+
 
         <div style="clear: both;"></div>
 
@@ -91,7 +99,7 @@
                     class="form-control">
             </div>
             <div class="itemButton">
-                <input name="Add" type="button" value="add" class="md_button"></div>
+              <!--  <input name="Add" type="button" value="add" class="md_button">--></div>
             <div style="clear: both;"></div>
         </div>
 
@@ -149,7 +157,7 @@
 
                 </tbody>
                 <tfoot>
-                    <tr>
+                    <tr ng-show="Items.length">
                         <td colspan="8" style="text-align: right; padding-right: 42px;">
                             <input name="save" type="button" value="save" ng-click="serviceItemSave()" class="md_button">
 

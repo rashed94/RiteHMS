@@ -1,21 +1,9 @@
-﻿//'use strict';
-//HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window, $filter, $modal, BillingService) {
-
-//    var tabClass = ".summary";
-//    if ($routeParams.tab != null) {
-//        tabClass = "." + $routeParams.tab;
-//    }
-//    $('.tabs li').removeClass('active');
-//    $(tabClass).addClass('active');
-//    $(tabClass).removeClass('hide');
+﻿'use strict';
 
 
-//});
-
-'use strict';
 HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window, $filter, $modal, BedSetupService, PatientService) {
     $scope.LabReportFormats = {};
-    $scope.SingleLabItem = {
+    $scope.SingleBedItem = {
         id: 0,
         Name: "",
         GenericName: "",
@@ -34,293 +22,124 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     };
     $scope.saveSuccess = 0;
-    $scope.LabTestCategories = {};
+    $scope.addPatientSuccess = 0;
+    $scope.ItemCategories = {};
     $scope.LabTestGroups = {};
     $scope.MeasureMentUnits = {};
     $scope.medicalTypeID = 64;
     $scope.LabItemEdit = false;
 
+    $scope.isSamePatient = 0;
+    $scope.IsPatientNull = false;
+
+
+
     $scope.$on('patientchange', function (event, args) {
         // console.log("patient changes");
+        $scope.IsPatientNull = false;
         if ($routeParams.tab == "addlabtest") {
 
         }
 
         if ($routeParams.tab == "listlabtest") {
 
-            $scope.GetLabItemsByMedicalType($scope.medicalTypeID);
+            $scope.GetItemsByMedicalType($scope.medicalTypeID);
         }
 
 
         if ($routeParams.tab == "summary") {
 
 
-            if ($scope.Patient) {
-                if ($scope.Patient.Id != null) {
-                    if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+            //if ($scope.Patient) {
+            //    if ($scope.Patient.Id != null) {
+            //        if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
 
-                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
-                }
-            }
+            //        $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
+            //    }
+            //}
 
         }
     });
 
 
-    function preparelabtestDataModel() {
-        angular.forEach($scope.labTestItems, function (item) {
 
-            item.Paid = 0;
-            item.InvoiceDate = ToJavaScriptDate(item.InvoiceDate);
+    $scope.loaditembyCategory = function () {
 
-            //item.ServiceListPriceAfterDiscount = item.ServiceListPrice;
-
-
-
-
-
-            angular.forEach(item.InvoicePayments, function (paymentitem) {
-
-                item.Paid = paymentitem.Amount + item.Paid;
-                item.selectedIcon = true;
-                item.activePosition = false;
-
-            });
+        BedSetupService.GetItemsByMedicalType($scope.medicalTypeID, $scope.filterCondition.ItemCategoryId)
+    .success(function (pt) {
+        $scope.items = pt;
+        // preparelabtestDataModel();
+        //$scope.loadBedOccupancyByItemId(itemID);
+        console.log(pt);
+    })
+    .error(function (error) {
+        $scope.status = 'Unable to load bed item data: ' + error.message;
+        console.log($scope.status);
+    });
 
 
-            angular.forEach(item.PatientServices, function (PatientService) {
-
-                if (PatientService.LabStatusId == 1) {
-                    PatientService.Staus = "Pending";
-                } else if (PatientService.LabStatusId == 2) {
-                    PatientService.Staus = "Completed";
-                } else if (PatientService.LabStatusId == 3) {
-                    PatientService.Staus = "Refunded";
-                }
-                PatientService.DeliveryDate = ToJavaScriptDate(PatientService.DeliveryDate);
-                PatientService.ServiceDate = ToJavaScriptDate(PatientService.ServiceDate);
-
-            });
-
-
-
-            if (item.LabStatusId == 1) {
-                item.Staus = "Pending";
-            } else if (item.LabStatusId == 2) {
-                item.Staus = "Completed";
-            } else if (item.LabStatusId == 3) {
-                item.Staus = "Refunded";
-            }
-
-            if (item.TotalAmount != item.Paid) {
-                item.Staus = item.Staus + ("(Due)");
-            }
-
-        });
-        // console.log($scope.invocieslist);
     }
-
-
-
-
-    //$scope.selectLabItem=function (LabItem)
-    //{
-
-
-    //    $('.tabs li').removeClass('active');
-    //    $(".addlabtest").addClass('active');
-
-    //    $('div.summary').addClass('hide');
-    //    $('div.listlabtest').addClass('hide');
-
-    //    $(".addlabtest").removeClass('hide');
-
-    //    $scope.SingleLabItem = LabItem;
-    //    $scope.LabItemEdit = true;
-
-    //}
-
-
-
-
-    $scope.toggleDetail = function (item) {
-        //$scope.isVisible = $scope.isVisible == 0 ? true : false;
-        var postion = !item.activePosition;
-        if (postion) {
-            // $(event.target).addClass('fa fa-arrow-down fa-2x');
-            item.selectedIcon = false;
-            item.activePosition = true;
-        } else {
-
-            // $(event.target).addClass('fa fa-arrow-circle-right fa-2x');
-            item.selectedIcon = true;
-            item.activePosition = false;
-
-        }
-    };
-
     $scope.loadItems = function () {
 
 
 
-        $scope.GetLabItemsByMedicalType($scope.medicalTypeID);
+        $scope.GetItemsByMedicalType($scope.medicalTypeID);
 
 
 
     }
 
-    $scope.GetLabItemsByMedicalType = function (medicalType) {
-        BedSetupService.GetLabItemsByMedicalType(medicalType)
+    $scope.GetItemsByMedicalType = function (medicalType) {
+        BedSetupService.GetItemsByMedicalType(medicalType)
             .success(function (pt) {
                 $scope.items = pt;
                 // preparelabtestDataModel();
+                //$scope.loadBedOccupancyByItemId(itemID);
+
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load lab item data: ' + error.message;
+                $scope.status = 'Unable to load bed item data: ' + error.message;
                 console.log($scope.status);
             });
     }
 
-    $scope.GetInvoicesByMedicalType = function (patientId, labStatus, medicalType) {
-        BedSetupService.GetInvoicesByMedicalType(patientId, labStatus, medicalType)
+
+
+    $scope.loadItemCategories = function () {
+        BedSetupService.loadItemCategories($scope.medicalTypeID)
             .success(function (pt) {
-                $scope.labTestItems = pt;
-                preparelabtestDataModel();
-                console.log(pt);
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to load invoices for lab test only data: ' + error.message;
-                console.log($scope.status);
-            });
-    }
+                //$scope.ItemCategories = pt;
+                $scope.ItemCategories = pt;
+                //$scope.filterCondition.ItemCategoryId = $scope.ItemCategories[1].Id;
 
-
-
-
-
-    $scope.loadLabTest = function () {
-        if ($scope.Patient) {
-            if ($scope.Patient.Id != null) {
-                if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
-
-                if ($scope.patientSelection == 0) {
-                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
-
-                } else {
-                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
-
+                if (!$routeParams.id) {
+                    $scope.filterCondition.ItemCategoryId = $scope.ItemCategories[0].Id.toString();
                 }
-            }
-        }
-
-
-    }
-
-    $scope.reloadlabtest = function () {
-        // if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
-        if ($scope.Patient) {
-            if ($scope.Patient.Id != null) {
-                if ($scope.patientSelection == 0) {
-                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
-
-                } else {
-                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
-
-                }
-            }
-        }
-
-
-    }
-
-
-
-
-
-
-
-    $scope.loadLabTestCategories = function () {
-        BedSetupService.loadLabTestCategories($scope.medicalTypeID)
-            .success(function (pt) {
-                //$scope.LabTestCategories = pt;
-                $scope.LabTestCategories = pt
 
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load labtest category for lab test only data: ' + error.message;
+                $scope.status = 'Unable to load Bed categories: ' + error.message;
                 console.log($scope.status);
             });
     }
 
 
-
-    $scope.loadLabTestGroups = function () {
-        BedSetupService.loadLabTestGroups()
-            .success(function (pt) {
-                $scope.LabTestGroups = pt;
-
-                console.log(pt);
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to load loadLabTestGroups for lab test only data: ' + error.message;
-                console.log($scope.status);
-            });
-    }
-
-
-    $scope.loadMeasureMentUnits = function () {
-        BedSetupService.loadMeasureMentUnits()
-            .success(function (pt) {
-                $scope.MeasureMentUnits = pt;
-
-                console.log(pt);
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to load loadMeasureMentUnits for lab test only data: ' + error.message;
-                console.log($scope.status);
-            });
-    }
-    $scope.LoadReportFomart = function (itemId) {
-
-        BedSetupService.LoadLabReportbyId(itemId)
-            .success(function (pt) {
-                $scope.LabReportFormats = pt;
-                console.log(pt);
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to load  lab report  ' + error.message;
-                console.log($scope.status);
-            });
-    }
-
-    $scope.LoadReportFomartByItemId = function (itemId) {
-
-        BedSetupService.LoadLabReportbyId(itemId)
-            .success(function (pt) {
-                console.log(pt);
-                return pt;
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to load  lab report  ' + error.message;
-                console.log($scope.status);
-            });
-    }
 
     $scope.loadItembyId = function (itemid) {
 
         BedSetupService.loadItembyId(itemid)
             .success(function (pt) {
-                $scope.SingleLabItem = pt;
+                $scope.SingleBedItem = pt;
                 $scope.LoadFilterCondition();
 
-                $scope.LoadReportFomart($scope.SingleLabItem.Id);
+                
 
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load single lab item ' + error.message;
+                $scope.status = 'Unable to load single bed item ' + error.message;
                 console.log($scope.status);
             });
     }
@@ -335,89 +154,30 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     /******************************* save portion ***********************************************/
 
-
-
-    $scope.saveCategory = function () {
-        BedSetupService.CreateCategory($scope.categoryName, $scope.medicalTypeID)
-        .success(function (data) {
-
-            $scope.loadLabTestCategories();
-            $scope.resetpopupFiled();
-
-            $('#popupCategory').css("visibility", "hidden");
-            $('#popupCategory').css("opacity", 0);
-
-        })
-        .error(function (error) {
-            $scope.status = 'Unable to save category data: ' + error.message;
-
-        });
-
-    }
-
-
-
-
-    $scope.saveReportGroup = function () {
-        BedSetupService.CreateReportGroup($scope.reportGroupName)
-        .success(function (data) {
-
-            $scope.loadLabTestGroups();
-            $scope.resetpopupFiled();
-
-            $('#popupLabReportGroup').css("visibility", "hidden");
-            $('#popupLabReportGroup').css("opacity", 0);
-
-        })
-        .error(function (error) {
-            $scope.status = 'Unable to save category data: ' + error.message;
-
-        });
-
-    }
+    // $scope.filterCondition = {};
     $scope.filterCondition = {
-        MeasurementUnitId: '62',
-        ItemCategoryId: '41',
-        LabReportGroupId: ""
-
-
+        ItemCategoryId: ""
     }
 
     $scope.LoadFilterCondition = function () {
-        $scope.filterCondition.MeasurementUnitId = $scope.SingleLabItem.MeasurementUnitId.toString();
-        $scope.filterCondition.ItemCategoryId = $scope.SingleLabItem.ItemCategoryId.toString();
-        if ($scope.SingleLabItem.LabReportGroupId != null) {
-            $scope.filterCondition.LabReportGroupId = $scope.SingleLabItem.LabReportGroupId.toString()
+        $scope.filterCondition.MeasurementUnitId = $scope.SingleBedItem.MeasurementUnitId.toString();
+        $scope.filterCondition.ItemCategoryId = $scope.SingleBedItem.ItemCategoryId.toString();
+        if ($scope.SingleBedItem.LabReportGroupId != null) {
+            $scope.filterCondition.LabReportGroupId = $scope.SingleBedItem.LabReportGroupId.toString()
         };
     }
 
-    $scope.saveMeasurementUnit = function () {
-        BedSetupService.CreateMeasurementUnit($scope.measurementUnitName)
-        .success(function (data) {
 
-            $scope.loadMeasureMentUnits();
-            $scope.resetpopupFiled();
-
-            $('#popupMeasurementUnit').css("visibility", "hidden");
-            $('#popupMeasurementUnit').css("opacity", 0);
-
-        })
-        .error(function (error) {
-            $scope.status = 'Unable to save category data: ' + error.message;
-
-        });
-
-    }
 
 
     $scope.saveItem = function () {
 
-        $scope.SingleLabItem.MeasurementUnitId = $scope.filterCondition.MeasurementUnitId;
-        $scope.SingleLabItem.ItemCategoryId = $scope.filterCondition.ItemCategoryId;
-        $scope.SingleLabItem.LabReportGroupId = $scope.filterCondition.LabReportGroupId;
+        $scope.SingleBedItem.MeasurementUnitId = 62;
+        $scope.SingleBedItem.ItemCategoryId = $scope.filterCondition.ItemCategoryId;
+        $scope.SingleBedItem.LabReportGroupId =null;
 
 
-        BedSetupService.SaveItem($scope.SingleLabItem)
+        BedSetupService.SaveItem($scope.SingleBedItem)
         .success(function (data) {
 
             $scope.loadItembyId(data);
@@ -439,42 +199,27 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     /*---------------------------------------- delete ------------------------------------------------*/
 
 
-
-
-    $scope.DeleteReportFormat = function (labReportFormatID) {
-
-        BedSetupService.DeleteReportFormat(labReportFormatID)
-            .success(function (data) {
-
-                $scope.loadItembyId($scope.SingleLabItem.Id);
-
-                console.log("delete lab report format successfull");
-
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to lab report format  data: ' + error.message;
-
-            });
-
-    }
     // code added by zaber
-    $scope.deletePharmacy = function (labitemId) {
+    $scope.deleteBed = function (item) {
 
 
-        BedSetupService.deleteLabTest(labitemId)
-       .success(function (data) {
+        if (item.BedOccupancies[0].ItemID != 0) {
+            $window.alert('Cant Delete Item because already assigned to Patient');
+        }
+        else {
+            BedSetupService.deleteBed(item.Id)
+           .success(function (data) {
 
-           //$scope.getDoctorWithReferrel();
-           $scope.GetLabItemsByMedicalType($scope.medicalTypeID);
-           $scope.status = 'Delete Successful';
-           //$window.alert("Delete Successful!");
-           //return;
+               $scope.GetItemsByMedicalType($scope.medicalTypeID);
+               $scope.status = 'Delete Successful';
 
-       })
-       .error(function (error) {
-           $scope.status = 'Unable to delete referral comission: ' + error.message;
-           console.log($scope.status);
-       });
+
+           })
+           .error(function (error) {
+               $scope.status = 'Unable to delete bed : ' + error.message;
+               console.log($scope.status);
+           });
+        }
 
     }
     $scope.validateInput = {
@@ -490,95 +235,6 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     //------------------------------- Modal open portion -------------------------------------------------------------
 
 
-    $scope.openResultTemplate = function (size, isEdit, PatientServiceItem, labTestitem) {
-
-
-
-        var modalInstance = $modal.open({
-            templateUrl: '/ClientCode/Template/ReportTemplateResult.html',
-            size: size,
-            controller: 'LabReportTemplateResultModalController',
-            scope: $scope,
-            resolve:
-            {
-                isEdit: function () {
-                    return isEdit;
-                },
-                PatientServiceItem: function () {
-                    return PatientServiceItem;
-                },
-                LabTestItem: function () {
-                    return labTestitem;
-                }
-            }
-        });
-
-
-
-
-        modalInstance.result.then(function (result) {
-
-        }, function () {
-
-
-
-            console.log('Modal dismissed at: ' + new Date());
-
-        });
-
-    };
-
-
-    $scope.openTemplate = function (size, isEdit, labReportID) {
-
-
-        var modalInstance = $modal.open({
-            templateUrl: '/ClientCode/Template/ReportTemplate.html',
-            size: size,
-            controller: 'LabReportTemplateModalController',
-            scope: $scope,
-            resolve:
-            {
-                isEdit: function () {
-                    return isEdit;
-                },
-                labReportID: function () {
-                    return labReportID;
-                }
-            }
-        });
-        modalInstance.result.then(function (result) {
-
-        }, function () {
-
-            $scope.loadItembyId($scope.SingleLabItem.Id);
-            console.log('Modal dismissed at: ' + new Date());
-
-        });
-
-
-    };
-
-    $scope.CommissionModal = function (size, isEdit) {
-
-
-        var modalInstance = $modal.open({
-            templateUrl: '/ClientCode/Template/AddStock.html',
-            size: size,
-            controller: 'CommissionModalController',
-            scope: $scope
-        });
-        modalInstance.result.then(function (result) {
-
-        }, function () {
-
-            console.log('Modal dismissed at: ' + new Date());
-
-        });
-
-
-    };
-
 
     //----------------------------------------------------------------------------------------------------
 
@@ -587,7 +243,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     if ($routeParams.tab == "addbed") {
 
-        //  $scope.LabTestCategories =  $scop
+        //  $scope.ItemCategories =  $scop
         // $scope.LabTestGroups = 
         // $scope.MeasureMentUnits = 
 
@@ -598,10 +254,13 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         if ($routeParams.id) {
             $scope.loadItembyId($routeParams.id);
         }
-        $scope.loadLabTestCategories();
-        $scope.loadLabTestGroups();
-        $scope.loadMeasureMentUnits();
+        $scope.loadItemCategories();
+
     }
+    if ($routeParams.tab == "summary") {
+        $scope.loadItemCategories();
+    }
+
     var tabClass = ".summary";
     if ($routeParams.tab != null) {
         tabClass = "." + $routeParams.tab;
@@ -610,76 +269,118 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $(tabClass).addClass('active');
     $(tabClass).removeClass('hide');
 
-    $scope.cancel=function()
-    {
+    $scope.cancel = function () {
         $window.location.href = '#/bedsetup/summary';
     }
 
-    $scope.addPatient = function (bedItem)
-    {
+    $scope.addPatient = function (bedItem) {
+        $scope.IsPatientExist = false;
         $scope.PatientServiceItem = [];
+        $scope.isSamePatient = 0;
 
         //Filter the Bed Item from Items model array
 
         //$scope.bedItem = $filter('filter')($scope.items, Id);
 
         $scope.serviceItem = {};
-        if ($scope.Patient == undefined)
-        {
-            $window.alert("Please Enter a Patient Name");
+
+        if (!$scope.Patient) {
+            
+                $window.alert("Please Enter a Patient Name");
+                $scope.IsPatientNull = true;
+            
         }
-        else
-        {
-            $scope.serviceItem.PatientID = $scope.Patient.Id;
-            $scope.serviceItem.ItemID = bedItem.Id;
-            $scope.serviceItem.InvoiceID = 0;
-            $scope.serviceItem.ServiceListPrice = bedItem.Amount;
-            $scope.serviceItem.ServiceActualPrice = bedItem.SalePrice;
-            $scope.serviceItem.ServiceQuantity = bedItem.Quantity;
-            $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');
-            $scope.serviceItem.ServiceProviderId = bedItem.ServiceProviderId;
+
+        angular.forEach($scope.items, function (obj) {
+
+            if (obj.BedOccupancies[0].PatientId == $scope.Patient.Id) {
+
+                $scope.IsPatientExist = true;
+            }
 
 
-            if (bedItem.MedicalTypeId == "62") {
-                $scope.serviceItem.LabStatusId = 1;
-                $scope.serviceItem.ReferralFeePaid = 0;
+        });
+        if (!$scope.IsPatientNull) {
+            //}
+            //else
+            //{
+            //    BedSetupService.loadBedOccupancyByPatientId($scope.Patient.Id)
+            //.success(function (data) {
+
+            //    $scope.newbedItem = data;
+            //    console.log(data);
+            //    //$scope.isSamePatient = 1;
+
+            //})
+            //    .error(function (error) {
+            //        $scope.status = 'Unable to get Bed Occupancy data: ' + error.message;
+            //        console.log($scope.status);
+            //    });
+
+            //angular.forEach($scope.newbedItem, function (value, index) {
+            //    alert(value.PatientId);
+            //})
+
+            if ($scope.IsPatientExist) {
+                $window.alert("This Patient has already been bedded");
             }
             else {
-                $scope.serviceItem.LabStatusId = null;
-                $scope.serviceItem.ReferralFeePaid = null;
+                $scope.serviceItem.PatientID = $scope.Patient.Id;
+                $scope.serviceItem.ItemID = bedItem.Id;
+                $scope.serviceItem.InvoiceID = 0;
+                $scope.serviceItem.ServiceListPrice = bedItem.SalePrice;
+                $scope.serviceItem.ServiceActualPrice = bedItem.SalePrice;
+                $scope.serviceItem.ServiceQuantity = 1;
+                $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');
+                $scope.serviceItem.ServiceProviderId = bedItem.ServiceProviderId;
+
+
+                if (bedItem.MedicalTypeId == "62") {
+                    $scope.serviceItem.LabStatusId = 1;
+                    $scope.serviceItem.ReferralFeePaid = 0;
+                }
+                else {
+                    $scope.serviceItem.LabStatusId = null;
+                    $scope.serviceItem.ReferralFeePaid = null;
+                }
+                $scope.serviceItem.UserId = '';
+                $scope.serviceItem.Discount = '';
+                $scope.serviceItem.Refund = '';
+                $scope.serviceItem.Billed = '';
+                $scope.serviceItem.ReferralFee = bedItem.ReferralFee;
+                $scope.serviceItem.DeliveryDate = bedItem.Date;
+                $scope.serviceItem.DeliveryTime = bedItem.ReportDeliveryTime;
+
+                $scope.PatientServiceItem.push($scope.serviceItem);
+
+
+                BedSetupService.SavePatientServiceItem($scope.PatientServiceItem)
+                .success(function (data) {
+
+                    console.log(data);
+                    $scope.UpdateTopLink('billing');
+                    //$window.location.href = '#/billing';
+                    $scope.addPatientSuccess = 1;
+                    $scope.serviceItemEmpty();
+                    $scope.loadItems();
+
+                })
+                .error(function (error) {
+                    $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+                    console.log($scope.status);
+                });
+
+                $scope.occupyBed(bedItem);
+
+
             }
-            $scope.serviceItem.UserId = '';
-            $scope.serviceItem.Discount = '';
-            $scope.serviceItem.Refund = '';
-            $scope.serviceItem.Billed = '';
-            $scope.serviceItem.ReferralFee = bedItem.ReferralFee;
-            $scope.serviceItem.DeliveryDate = bedItem.Date;
-            $scope.serviceItem.DeliveryTime = bedItem.ReportDeliveryTime;
-
-            $scope.PatientServiceItem.push($scope.serviceItem);
-
-
-            BedSetupService.SavePatientServiceItem($scope.PatientServiceItem)
-            .success(function (data) {
-
-                console.log(data);
-                $scope.UpdateTopLink('billing');
-                $window.location.href = '#/billing';
-                $scope.serviceItemEmpty();
-
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
-                console.log($scope.status);
-            });
-
-            $scope.occupyBed(bedItem);
         }
-        
+
     }
 
-    $scope.occupyBed=function(bedItem)
-    {
+
+
+    $scope.occupyBed = function (bedItem) {
         $scope.BedOccupancy = {};
         $scope.BedOccupancyCollection = [];
 
@@ -695,7 +396,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         BedSetupService.SaveBedOccupancy($scope.BedOccupancyCollection)
             .success(function (data) {
 
-                console.log(data);                
+                console.log(data);
                 $scope.serviceItemEmpty();
 
             })
@@ -706,5 +407,61 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     }
 
+    //$scope.loadBedOccupancyByItemId(itemID)
+    //{
+    //    BedSetupService.loadBedOccupancyByItemId(itemID)
+    //        .success(function (data) {
+
+    //            console.log(data);                
+
+    //        })
+    //        .error(function (error) {
+    //            $scope.status = 'Unable to load Bed Occupancy data: ' + error.message;
+    //            console.log($scope.status);
+    //        });
+    //}
+
+    $scope.emptyBed = function (bedItem) {
+
+        $scope.bedOccupancyItem = {};
+
+        $scope.bedOccupancyItem.Id = bedItem.BedOccupancies[0].Id;
+        $scope.bedOccupancyItem.ItemID = bedItem.Id;
+        $scope.bedOccupancyItem.Occupied = 0;
+        $scope.bedOccupancyItem.PatientId = '';
+        $scope.bedOccupancyItem.PatientName = '';
+        $scope.bedOccupancyItem.Active = 1;
+
+        BedSetupService.emptyBed($scope.bedOccupancyItem)
+            .success(function (data) {
+
+                console.log(data);
+                //$scope.serviceItemEmpty();
+                $scope.GetItemsByMedicalType($scope.medicalTypeID);
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to Empty Bed Allocation: ' + error.message;
+                console.log($scope.status);
+            });
+    }
+
+    $scope.saveCategory = function () {
+        BedSetupService.CreateCategory($scope.categoryName, $scope.medicalTypeID)
+        .success(function (data) {
+
+            $scope.loadItemCategories();
+            $scope.resetpopupFiled();
+
+            $('#popupCategory').css("visibility", "hidden");
+            $('#popupCategory').css("opacity", 0);
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+    }
 
 });
