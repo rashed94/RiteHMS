@@ -66,7 +66,7 @@
         return $http.post('/Item/CreateBedOccupancy', templateData);
     };
 
-    BedSetupService.loadBedOccupancyByItemId = function (PatientId) {
+    BedSetupService.loadBedOccupancyByPatientId = function (PatientId) {
 
 
         return $http.get('/Item/LoadBedOccupancybyId?PatientId=' + PatientId);

@@ -23,6 +23,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     };
     $scope.saveSuccess = 0;
+    $scope.addPatientSuccess = 0;
     $scope.LabTestCategories = {};
     $scope.LabTestGroups = {};
     $scope.MeasureMentUnits = {};
@@ -290,7 +291,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         }
         else
         {
-            BedSetupService.loadBedOccupancyByItemId($scope.Patient.Id)
+            BedSetupService.loadBedOccupancyByPatientId($scope.Patient.Id)
         .success(function (data) {
 
             $scope.newbedItem = data;
@@ -307,7 +308,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
             //    alert(value.PatientId);
             //})
 
-            if ($scope.newbedItem) {
+            if ($scope.newbedItem.PatientId!=null) {
                 $window.alert("This Patient has already been bedded");
             }
             else
@@ -346,8 +347,10 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
                     console.log(data);
                     $scope.UpdateTopLink('billing');
-                    $window.location.href = '#/billing';
+                    //$window.location.href = '#/billing';
+                    $scope.addPatientSuccess = 1;
                     $scope.serviceItemEmpty();
+                    $scope.loadItems();
 
                 })
                 .error(function (error) {
