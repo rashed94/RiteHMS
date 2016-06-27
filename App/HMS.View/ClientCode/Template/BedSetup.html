@@ -89,10 +89,16 @@
     <div class="summary hide">
 
         <div class="round_box box_general" ng-show="addPatientSuccess>0">
+<<<<<<< HEAD
 
             <div class="success_message">Successfully Assigned the Bed to this Patient</div>
         </div>
+=======
+>>>>>>> origin/master
 
+            <div class="success_message">Successfully Assigned the Bed to this Patient</div>
+        </div>
+        
         <div style="padding-left:60px;padding-top:60px;">
             Select Category
 
@@ -253,7 +259,11 @@
 
                             <select ng-model="filterCondition.ItemCategoryId">
                                 <option value="" ng-if="false"></option>
+<<<<<<< HEAD
                                 <option ng-repeat="category in ItemCategories" value="{{category.Id}}"> {{category.Name}}</option>
+=======
+                                <option ng-repeat="category in ItemCategories"  value="{{category.Id}}"> {{category.Name}}</option>
+>>>>>>> origin/master
 
                             </select>
                             <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>

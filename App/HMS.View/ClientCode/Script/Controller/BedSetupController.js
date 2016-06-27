@@ -30,7 +30,10 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $scope.LabItemEdit = false;
 
     $scope.isSamePatient = 0;
+<<<<<<< HEAD
     $scope.IsPatientNull = false;
+=======
+>>>>>>> origin/master
 
 
 
@@ -95,7 +98,11 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 $scope.items = pt;
                 // preparelabtestDataModel();
                 //$scope.loadBedOccupancyByItemId(itemID);
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> origin/master
                 console.log(pt);
             })
             .error(function (error) {
@@ -134,7 +141,11 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 $scope.SingleBedItem = pt;
                 $scope.LoadFilterCondition();
 
+<<<<<<< HEAD
                 
+=======
+                $scope.LoadReportFomart($scope.SingleBedItem.Id);
+>>>>>>> origin/master
 
                 console.log(pt);
             })
@@ -154,7 +165,11 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     /******************************* save portion ***********************************************/
 
+<<<<<<< HEAD
     // $scope.filterCondition = {};
+=======
+   // $scope.filterCondition = {};
+>>>>>>> origin/master
     $scope.filterCondition = {
         ItemCategoryId: ""
     }
@@ -172,9 +187,15 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     $scope.saveItem = function () {
 
+<<<<<<< HEAD
         $scope.SingleBedItem.MeasurementUnitId = 62;
         $scope.SingleBedItem.ItemCategoryId = $scope.filterCondition.ItemCategoryId;
         $scope.SingleBedItem.LabReportGroupId =null;
+=======
+        $scope.SingleBedItem.MeasurementUnitId = $scope.filterCondition.MeasurementUnitId;
+        $scope.SingleBedItem.ItemCategoryId = $scope.filterCondition.ItemCategoryId;
+        $scope.SingleBedItem.LabReportGroupId = $scope.filterCondition.LabReportGroupId;
+>>>>>>> origin/master
 
 
         BedSetupService.SaveItem($scope.SingleBedItem)
@@ -273,8 +294,14 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         $window.location.href = '#/bedsetup/summary';
     }
 
+<<<<<<< HEAD
     $scope.addPatient = function (bedItem) {
         $scope.IsPatientExist = false;
+=======
+    $scope.addPatient = function (bedItem)
+    {
+        $scope.IsPatientExist=false;
+>>>>>>> origin/master
         $scope.PatientServiceItem = [];
         $scope.isSamePatient = 0;
 
@@ -284,6 +311,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
         $scope.serviceItem = {};
 
+<<<<<<< HEAD
         if (!$scope.Patient) {
             
                 $window.alert("Please Enter a Patient Name");
@@ -316,15 +344,58 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
             //        $scope.status = 'Unable to get Bed Occupancy data: ' + error.message;
             //        console.log($scope.status);
             //    });
+=======
+        if ($scope.Patient)
+        {
+            if($scope.Patient.ID!=null)
+            {
+                $window.alert("Please Enter a Patient Name");
+            }
+        }
+        
+            angular.forEach($scope.items, function (obj) {
+
+                if (obj.BedOccupancies[0].PatientId == $scope.Patient.Id) {
+
+                    $scope.IsPatientExist = true;
+                }
+
+
+            });
+        
+        //}
+        //else
+        //{
+        //    BedSetupService.loadBedOccupancyByPatientId($scope.Patient.Id)
+        //.success(function (data) {
+
+        //    $scope.newbedItem = data;
+        //    console.log(data);
+        //    //$scope.isSamePatient = 1;
+
+        //})
+        //    .error(function (error) {
+        //        $scope.status = 'Unable to get Bed Occupancy data: ' + error.message;
+        //        console.log($scope.status);
+        //    });
+>>>>>>> origin/master
 
             //angular.forEach($scope.newbedItem, function (value, index) {
             //    alert(value.PatientId);
             //})
 
+<<<<<<< HEAD
             if ($scope.IsPatientExist) {
                 $window.alert("This Patient has already been bedded");
             }
             else {
+=======
+        if ( $scope.IsPatientExist) {
+                $window.alert("This Patient has already been bedded");
+            }
+            else
+            {
+>>>>>>> origin/master
                 $scope.serviceItem.PatientID = $scope.Patient.Id;
                 $scope.serviceItem.ItemID = bedItem.Id;
                 $scope.serviceItem.InvoiceID = 0;
@@ -374,9 +445,16 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
 
             }
+<<<<<<< HEAD
         }
 
     }
+=======
+            
+        }
+        
+  
+>>>>>>> origin/master
 
 
 

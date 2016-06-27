@@ -237,7 +237,11 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 if (!$routeParams.id) {
                     $scope.filterCondition.ItemCategoryId = $scope.LabTestCategories[0].Id.toString();
                 }
+<<<<<<< HEAD
 
+=======
+               
+>>>>>>> origin/master
                 console.log(pt);
             })
             .error(function (error) {
@@ -284,7 +288,11 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             .success(function (pt) {
                 $scope.LabReportFormats = pt;
 
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> origin/master
                 console.log(pt);
             })
             .error(function (error) {

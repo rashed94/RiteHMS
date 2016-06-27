@@ -195,18 +195,18 @@ namespace HMS.Controllers
             return Json("200");
         }
 
-        public JsonResult loadBedOccupancyByItemId(long itemId)
-        {
-            IList<BedOccupancy> BedOccupancy = null;
+        //public JsonResult loadBedOccupancyByItemId(long itemId)
+        //{
+        //    IList<BedOccupancy> BedOccupancy = null;
 
-            using (BedOccupancyRepository repository = new BedOccupancyRepository())
-            {
-                BedOccupancy = repository.getBedOccupancyByItemId(itemId);
+        //    using (BedOccupancyRepository repository = new BedOccupancyRepository())
+        //    {
+        //        BedOccupancy = repository.getBedOccupancyByItemId(itemId);
 
-            }
-            return Json(BedOccupancy, JsonRequestBehavior.AllowGet);
+        //    }
+        //    return Json(BedOccupancy, JsonRequestBehavior.AllowGet);
             
-        }
+        //}
 
         public JsonResult emptyBed(BedOccupancy bedOccupancyItem)
         {
@@ -222,6 +222,38 @@ namespace HMS.Controllers
             }            
 
             return Json("Item update successfull");
+        }
+
+        public JsonResult LoadBedOccupancybyId(long patientId)
+        {
+            List<BedOccupancy> bed = null;
+            List<BedOccupancy> bedlist = new List<BedOccupancy>();
+
+            using (Repository<BedOccupancy> repository = new Repository<BedOccupancy>())
+            {
+
+                Expression<Func<BedOccupancy, bool>> lambda;
+
+                lambda = (x => x.PatientId == patientId);
+
+                bed = repository.GetByQuery(lambda).ToList();
+
+                bed.ForEach(c => bedlist.Add(new BedOccupancy
+                {
+                    ItemID = c.ItemID,
+                    PatientName = c.PatientName,
+                    PatientId = c.PatientId,
+                    Occupied = c.Occupied
+
+                }));
+
+                if (bedlist == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+                return Json(bedlist, JsonRequestBehavior.AllowGet);
+            }
         }
         
         //end by zaber
