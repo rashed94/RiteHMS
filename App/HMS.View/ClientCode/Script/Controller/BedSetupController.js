@@ -29,6 +29,8 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $scope.medicalTypeID = 64;
     $scope.LabItemEdit = false;
 
+    $scope.isSamePatient = 0;
+
 
 
     $scope.$on('patientchange', function (event, args) {
@@ -274,66 +276,90 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $scope.addPatient = function (bedItem)
     {
         $scope.PatientServiceItem = [];
+        $scope.isSamePatient = 0;
 
         //Filter the Bed Item from Items model array
 
         //$scope.bedItem = $filter('filter')($scope.items, Id);
 
         $scope.serviceItem = {};
+
         if ($scope.Patient == undefined)
         {
-            $window.alert("Please Enter a Patient Name");
-        }
-        else if ($scope.Patient.Id == bedItem.BedOccupancies[0].PatientId)
-        {
-            $window.alert("This Patient has already been bedded");
+            $window.alert("Please Enter a Patient Name");            
         }
         else
         {
-            $scope.serviceItem.PatientID = $scope.Patient.Id;
-            $scope.serviceItem.ItemID = bedItem.Id;
-            $scope.serviceItem.InvoiceID = 0;
-            $scope.serviceItem.ServiceListPrice = bedItem.Amount;
-            $scope.serviceItem.ServiceActualPrice = bedItem.SalePrice;
-            $scope.serviceItem.ServiceQuantity = bedItem.Quantity;
-            $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');
-            $scope.serviceItem.ServiceProviderId = bedItem.ServiceProviderId;
+            BedSetupService.loadBedOccupancyByItemId($scope.Patient.Id)
+        .success(function (data) {
 
+            $scope.newbedItem = data;
+            console.log(data);
+            //$scope.isSamePatient = 1;
 
-            if (bedItem.MedicalTypeId == "62") {
-                $scope.serviceItem.LabStatusId = 1;
-                $scope.serviceItem.ReferralFeePaid = 0;
-            }
-            else {
-                $scope.serviceItem.LabStatusId = null;
-                $scope.serviceItem.ReferralFeePaid = null;
-            }
-            $scope.serviceItem.UserId = '';
-            $scope.serviceItem.Discount = '';
-            $scope.serviceItem.Refund = '';
-            $scope.serviceItem.Billed = '';
-            $scope.serviceItem.ReferralFee = bedItem.ReferralFee;
-            $scope.serviceItem.DeliveryDate = bedItem.Date;
-            $scope.serviceItem.DeliveryTime = bedItem.ReportDeliveryTime;
-
-            $scope.PatientServiceItem.push($scope.serviceItem);
-
-
-            BedSetupService.SavePatientServiceItem($scope.PatientServiceItem)
-            .success(function (data) {
-
-                console.log(data);
-                $scope.UpdateTopLink('billing');
-                $window.location.href = '#/billing';
-                $scope.serviceItemEmpty();
-
-            })
+        })
             .error(function (error) {
-                $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+                $scope.status = 'Unable to get Bed Occupancy data: ' + error.message;
                 console.log($scope.status);
             });
 
-            $scope.occupyBed(bedItem);
+            //angular.forEach($scope.newbedItem, function (value, index) {
+            //    alert(value.PatientId);
+            //})
+
+            if ($scope.newbedItem) {
+                $window.alert("This Patient has already been bedded");
+            }
+            else
+            {
+                $scope.serviceItem.PatientID = $scope.Patient.Id;
+                $scope.serviceItem.ItemID = bedItem.Id;
+                $scope.serviceItem.InvoiceID = 0;
+                $scope.serviceItem.ServiceListPrice = bedItem.Amount;
+                $scope.serviceItem.ServiceActualPrice = bedItem.SalePrice;
+                $scope.serviceItem.ServiceQuantity = bedItem.Quantity;
+                $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');
+                $scope.serviceItem.ServiceProviderId = bedItem.ServiceProviderId;
+
+
+                if (bedItem.MedicalTypeId == "62") {
+                    $scope.serviceItem.LabStatusId = 1;
+                    $scope.serviceItem.ReferralFeePaid = 0;
+                }
+                else {
+                    $scope.serviceItem.LabStatusId = null;
+                    $scope.serviceItem.ReferralFeePaid = null;
+                }
+                $scope.serviceItem.UserId = '';
+                $scope.serviceItem.Discount = '';
+                $scope.serviceItem.Refund = '';
+                $scope.serviceItem.Billed = '';
+                $scope.serviceItem.ReferralFee = bedItem.ReferralFee;
+                $scope.serviceItem.DeliveryDate = bedItem.Date;
+                $scope.serviceItem.DeliveryTime = bedItem.ReportDeliveryTime;
+
+                $scope.PatientServiceItem.push($scope.serviceItem);
+
+
+                BedSetupService.SavePatientServiceItem($scope.PatientServiceItem)
+                .success(function (data) {
+
+                    console.log(data);
+                    $scope.UpdateTopLink('billing');
+                    $window.location.href = '#/billing';
+                    $scope.serviceItemEmpty();
+
+                })
+                .error(function (error) {
+                    $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+                    console.log($scope.status);
+                });
+
+                $scope.occupyBed(bedItem);
+
+
+            }
+            
         }
         
     }
@@ -403,6 +429,24 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 $scope.status = 'Unable to Empty Bed Allocation: ' + error.message;
                 console.log($scope.status);
             });
+    }
+
+    $scope.saveCategory = function () {
+        BedSetupService.CreateCategory($scope.categoryName, $scope.medicalTypeID)
+        .success(function (data) {
+
+            $scope.loadLabTestCategories();
+            $scope.resetpopupFiled();
+
+            $('#popupCategory').css("visibility", "hidden");
+            $('#popupCategory').css("opacity", 0);
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
     }
 
 });
