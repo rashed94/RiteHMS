@@ -252,8 +252,8 @@
                         <td colspan="2">
 
                             <select ng-model="filterCondition.ItemCategoryId">
-
-                                <option ng-repeat="category in ItemCategories" value="{{category.Id}}"> {{category.Name}}</option>
+                                <option value="" ng-if="false"></option>
+                                <option ng-repeat="category in ItemCategories"  value="{{category.Id}}"> {{category.Name}}</option>
 
                             </select>
                             <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>

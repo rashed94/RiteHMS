@@ -94,6 +94,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 $scope.items = pt;
                 // preparelabtestDataModel();
                 //$scope.loadBedOccupancyByItemId(itemID);
+                
                 console.log(pt);
             })
             .error(function (error) {
@@ -109,8 +110,11 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
             .success(function (pt) {
                 //$scope.ItemCategories = pt;
                 $scope.ItemCategories = pt;
+                //$scope.filterCondition.ItemCategoryId = $scope.ItemCategories[1].Id;
 
-                //$scope.filterCondition.ItemCategoryId = $scope.ItemCategories[0].Id;
+                if (!$routeParams.id) {
+                    $scope.filterCondition.ItemCategoryId = $scope.ItemCategories[0].Id.toString();
+                }
 
                 console.log(pt);
             })
@@ -149,12 +153,9 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     /******************************* save portion ***********************************************/
 
-
+   // $scope.filterCondition = {};
     $scope.filterCondition = {
-        MeasurementUnitId: '62',
-        ItemCategoryId: '0',
-        LabReportGroupId: ""
-
+        ItemCategoryId: ""
     }
 
     $scope.LoadFilterCondition = function () {
@@ -276,6 +277,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     $scope.addPatient = function (bedItem)
     {
+        $scope.IsPatientExist=false;
         $scope.PatientServiceItem = [];
         $scope.isSamePatient = 0;
 
@@ -285,30 +287,45 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
         $scope.serviceItem = {};
 
-        if ($scope.Patient == undefined)
+        if ($scope.Patient)
         {
-            $window.alert("Please Enter a Patient Name");            
+            if($scope.Patient.ID!=null)
+            {
+                $window.alert("Please Enter a Patient Name");
+            }
         }
-        else
-        {
-            BedSetupService.loadBedOccupancyByPatientId($scope.Patient.Id)
-        .success(function (data) {
+        
+            angular.forEach($scope.items, function (obj) {
 
-            $scope.newbedItem = data;
-            console.log(data);
-            //$scope.isSamePatient = 1;
+                if (obj.BedOccupancies[0].PatientId == $scope.Patient.Id) {
 
-        })
-            .error(function (error) {
-                $scope.status = 'Unable to get Bed Occupancy data: ' + error.message;
-                console.log($scope.status);
+                    $scope.IsPatientExist = true;
+                }
+
+
             });
+        
+        //}
+        //else
+        //{
+        //    BedSetupService.loadBedOccupancyByPatientId($scope.Patient.Id)
+        //.success(function (data) {
+
+        //    $scope.newbedItem = data;
+        //    console.log(data);
+        //    //$scope.isSamePatient = 1;
+
+        //})
+        //    .error(function (error) {
+        //        $scope.status = 'Unable to get Bed Occupancy data: ' + error.message;
+        //        console.log($scope.status);
+        //    });
 
             //angular.forEach($scope.newbedItem, function (value, index) {
             //    alert(value.PatientId);
             //})
 
-            if ($scope.newbedItem.PatientId!=null) {
+        if ( $scope.IsPatientExist) {
                 $window.alert("This Patient has already been bedded");
             }
             else
@@ -316,9 +333,9 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 $scope.serviceItem.PatientID = $scope.Patient.Id;
                 $scope.serviceItem.ItemID = bedItem.Id;
                 $scope.serviceItem.InvoiceID = 0;
-                $scope.serviceItem.ServiceListPrice = bedItem.Amount;
+                $scope.serviceItem.ServiceListPrice = bedItem.SalePrice;
                 $scope.serviceItem.ServiceActualPrice = bedItem.SalePrice;
-                $scope.serviceItem.ServiceQuantity = bedItem.Quantity;
+                $scope.serviceItem.ServiceQuantity = 1;
                 $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');
                 $scope.serviceItem.ServiceProviderId = bedItem.ServiceProviderId;
 
@@ -365,7 +382,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
             
         }
         
-    }
+  
 
     $scope.occupyBed=function(bedItem)
     {
