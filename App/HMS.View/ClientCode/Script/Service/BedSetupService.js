@@ -16,7 +16,7 @@
         return $http.get('/Item/loadItembyId?itemID=' + itemID);
     };
 
-    BedSetupService.loadLabTestCategories = function (medicalTypeID) {
+    BedSetupService.loadItemCategories = function (medicalTypeID) {
 
         return $http.get('/Item/loadLabTestCategories?medicalTypeID=' + medicalTypeID);
     };
