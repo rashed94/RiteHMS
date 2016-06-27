@@ -332,11 +332,11 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         tabClass = "." + $routeParams.tab;
     }
     $scope.updateQuantityChange = function (item) {
-<<<<<<< HEAD
+
         // item.ServiceListPriceAfterDiscount = Math.ceil(item.ServiceListPriceAfterDiscountSingleQuantity * item.ServiceQuantity);
-=======
+
        // item.ServiceListPriceAfterDiscount = Math.ceil(item.ServiceListPriceAfterDiscountSingleQuantity * item.ServiceQuantity);
->>>>>>> origin/master
+
         item.ServiceListPrice = Math.ceil(item.OriginalAmountSingleQuantity * item.ServiceQuantity);
         $scope.adjustAfterDiscount(item);
 
