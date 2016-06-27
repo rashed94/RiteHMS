@@ -119,7 +119,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load labtest category for lab test only data: ' + error.message;
+                $scope.status = 'Unable to load Bed categories: ' + error.message;
                 console.log($scope.status);
             });
     }
@@ -138,7 +138,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load single lab item ' + error.message;
+                $scope.status = 'Unable to load single bed item ' + error.message;
                 console.log($scope.status);
             });
     }

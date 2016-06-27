@@ -230,7 +230,10 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
         LabTestService.loadLabTestCategories($scope.medicalTypeID)
             .success(function (pt) {
                 //$scope.LabTestCategories = pt;
-                $scope.LabTestCategories = pt
+                $scope.LabTestCategories = pt;
+                if (!$routeParams.id) {
+                    $scope.filterCondition.ItemCategoryId = $scope.LabTestCategories[0].Id.toString();
+                }
 
                 console.log(pt);
             })
@@ -260,6 +263,9 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
         LabTestService.loadMeasureMentUnits()
             .success(function (pt) {
                 $scope.MeasureMentUnits = pt;
+                if (!$routeParams.id) {
+                    $scope.filterCondition.MeasurementUnitId = $scope.MeasureMentUnits[0].Id.toString();
+                }
 
                 console.log(pt);
             })
