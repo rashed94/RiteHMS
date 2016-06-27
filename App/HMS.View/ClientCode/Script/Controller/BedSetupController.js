@@ -30,10 +30,8 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $scope.LabItemEdit = false;
 
     $scope.isSamePatient = 0;
-<<<<<<< HEAD
+
     $scope.IsPatientNull = false;
-=======
->>>>>>> origin/master
 
 
 
