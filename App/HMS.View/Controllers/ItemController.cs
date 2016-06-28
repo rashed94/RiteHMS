@@ -154,6 +154,30 @@ namespace HMS.Controllers
             }
 
         }
+       public JsonResult deleteItem(long ItemId)
+        {
+
+            using (ItemRepository repository = new ItemRepository())
+            {
+                repository.DeleteByID(ItemId, GetLoggedinUserInfo().UserId);
+                repository.Commit();
+                return Json("BedItem delete successfull");
+            }
+
+        }
+       public JsonResult deleteLabTest(long ItemId)
+        {
+
+            using (ItemRepository repository = new ItemRepository())
+            {
+                repository.DeleteByID(ItemId, GetLoggedinUserInfo().UserId);
+                repository.Commit();
+                return Json("BedItem delete successfull");
+            }
+
+        }
+
+        
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
@@ -416,6 +440,46 @@ namespace HMS.Controllers
             }
         }
 
+
+
+
+        public JsonResult loadTestCategories(long medicalTypeID)
+        {
+            List<ItemCategory> onlyItemCategories = new List<ItemCategory>();
+            List<ItemCategory> ItemCategories;
+
+            using (ItemCategoryRepository repository = new ItemCategoryRepository())
+            {
+
+                Expression<Func<ItemCategory, bool>> lambda;
+
+                lambda = (x => x.Active == true && x.MedicalTypeId == medicalTypeID);
+
+                ItemCategories = repository.GetByQuery(lambda).ToList();
+
+                foreach (ItemCategory catogry in ItemCategories)
+                {
+                    ItemCategory itemCategory = new ItemCategory();
+
+
+                    itemCategory.Id = catogry.Id;
+                    itemCategory.Name = catogry.Name;
+
+                    onlyItemCategories.Add(itemCategory);
+
+                }
+
+                if (onlyItemCategories == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+
+
+
+                return Json(onlyItemCategories, JsonRequestBehavior.AllowGet);
+            }
+        }
 
 
         public JsonResult loadLabTestCategories(long medicalTypeID)

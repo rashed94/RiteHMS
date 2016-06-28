@@ -439,12 +439,20 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     }
 
     if ($routeParams.tab == "invoices") {
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
+                $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
 
-        if ($scope.Patient.Id != null) {
-            $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
-
+            }
         }
 
+
+    }
+
+    if ($routeParams.tab == "summary") {
+
+        $scope.GetBillingItemByPatientId($scope.Patient.Id);
+        $scope.GetTotalDebitCredit();
 
     }
 
@@ -468,12 +476,12 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
         }
 
-        //if ($routeParams.tab == "summary") {
+       if ($routeParams.tab == "summary") {
 
         $scope.GetBillingItemByPatientId($scope.Patient.Id);
         $scope.GetTotalDebitCredit();
 
-        //}
+       }
     });
     $scope.GetTotalDebitCredit();
 

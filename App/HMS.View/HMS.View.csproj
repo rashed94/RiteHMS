@@ -134,6 +134,7 @@
     <Content Include="ClientCode\Script\Service\AppointmentService.js" />
     <Content Include="ClientCode\Script\Service\BedSetupService.js" />
     <Content Include="ClientCode\Script\Service\ConfigurationService.js" />
+    <Content Include="ClientCode\Script\Service\ItemService.js" />
     <Content Include="ClientCode\Script\Service\LabTestLService.js" />
     <Content Include="ClientCode\Script\Service\PharmacyService.js" />
     <Content Include="ClientCode\Script\Service\UserService.js" />
