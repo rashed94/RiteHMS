@@ -64,9 +64,9 @@
         return $http.post('/Item/deleteCommission', { referralId: referralId });
     };
     //Add by zaber
-    LabTestService.deleteLabTest = function (labitemId) {
+    LabTestService.deleteLabTest = function (itemId) {
 
-        return $http.post('/Item/deleteLabTest', { labitemId: labitemId });
+        return $http.post('/Item/deleteLabTest', { ItemId: itemId });
     };
     
     //zaber ended the code

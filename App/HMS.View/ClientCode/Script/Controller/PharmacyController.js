@@ -447,7 +447,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
     $scope.deletePharmacy = function (itemId) {
 
 
-        ItemService.deleteTest(itemId)
+        ItemService.deleteItem(itemId)
        .success(function (data) {
 
            //$scope.getDoctorWithReferrel();
@@ -458,7 +458,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
        })
        .error(function (error) {
-           $scope.status = 'Unable to delete referral comission: ' + error.message;
+           $scope.status = 'Unable to delete item: ' + error.message;
            console.log($scope.status);
        });
 

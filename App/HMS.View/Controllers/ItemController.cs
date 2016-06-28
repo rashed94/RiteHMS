@@ -154,6 +154,30 @@ namespace HMS.Controllers
             }
 
         }
+       public JsonResult deleteItem(long ItemId)
+        {
+
+            using (ItemRepository repository = new ItemRepository())
+            {
+                repository.DeleteByID(ItemId, GetLoggedinUserInfo().UserId);
+                repository.Commit();
+                return Json("BedItem delete successfull");
+            }
+
+        }
+       public JsonResult deleteLabTest(long ItemId)
+        {
+
+            using (ItemRepository repository = new ItemRepository())
+            {
+                repository.DeleteByID(ItemId, GetLoggedinUserInfo().UserId);
+                repository.Commit();
+                return Json("BedItem delete successfull");
+            }
+
+        }
+
+        
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
