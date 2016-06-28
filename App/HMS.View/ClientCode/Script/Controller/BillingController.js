@@ -10,6 +10,10 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.invoiceStatus = 0;
     $scope.FullDiscount = false;
     $scope.discountStatus = 0;
+    $scope.showDiscountAmount = false;
+    $scope.totalDiscountAmount = {Amount:0};
+    //var vm = this;
+    //vm.totalDiscountAmount = "";
 
     $scope.Invoice = {
         Id: null,
@@ -80,18 +84,31 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
     $scope.calcDiscount=function()
     {
-        if ($scope.discountStatus == 0)
+        if ($scope.discountStatus == 1)
             //$window.alert('hi');
+        {
+            $scope.showDiscountAmount = true;
+            $scope.totalDiscountAmount.Amount = $scope.totalDiscountAmount.Amount;
+
             angular.forEach($scope.BillingItem, function (billingitem) {
-                if (billingitem.LabStatusId == 1) {
-                    billingitem.Discount = billingitem.ReferralFee;
+                //if (billingitem.LabStatusId == 1) {
+                //billingitem.Discount = billingitem.ReferralFee
+                billingitem.Discount = $scope.totalDiscountAmount.Amount / $scope.BillingItem.length;
                     billingitem.ReferralAfterDiscount = 0;
                     billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
                     billingitem.referralfull = true;
-                }
+                    //alert($scope.BillingItem.length);
+                //}
             });
-        else
-            $window.alert('hi');
+        }
+        else {
+            $scope.showDiscountAmount = false;
+
+            angular.forEach($scope.BillingItem, function (billingitem) {
+                billingitem.referralfull = false;
+            }
+                );
+        }
     }
 
 

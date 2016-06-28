@@ -52,8 +52,9 @@
             <button type="button" class="sm_button modal_click" ng-click="InvoiceModal('lg',false,Invoice)">build invoice</button>
             <button type="button" class="sm_button modal_click" data-toggle="modal" data-target="#receiptView">build receipt</button>
             <select name="discount" class="search_container" ng-model="discountStatus" ng-change="calcDiscount()">
-                <option value=" 0" ng-selected="true">Total Discount</option>
-                <option value="1">Line Discount</option>
+                <option value=" 0" ng-selected="true">Please Select</option>
+                <option value="1">Total Discount</option>
+                <option value="2">Line Discount</option>
             </select>
 
         </div>
@@ -113,20 +114,20 @@
                     <tr>
                         <td width="2%">
                             <img src="images/ico_note.gif" width="17" height="17" aslt="note"></td>
-                        <td width="66%">
+                        <td width="61%">
                             <h2>DOCTOR’S REFERRER FEE   {{TotalReferralFee}}</h2>
                         </td>
-                        <td width="14%">
+                        <td width="12%">
                             <h2>TOTAL COST </h2>
                         </td>
-                        <td width="18%">
+                        <td width="7%">
                             <h2>{{TotalAmount}}</h2>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <input type="checkbox" ng-click="referralFullDiscount()" ng-model="FullDiscount">
-                           
+
                         </td>
                         <td>
                             <h2>REFERRER FULL DISCOUNT</h2>
@@ -134,12 +135,34 @@
                         <td>
                             <h2>TOTAL DISCOUNT</h2>
                         </td>
+                        <!--<td ng-if="showDiscountAmount">
+                            <select name="totalDiscountType" class="" ng-model="totalDiscountType" ng-change="">
+                                <option value=" 0" ng-selected="true">By Percentage</option>
+                                <option value="1">By Amount</option>
+                            </select>
+                        </td>
+                        <td ng-if="showDiscountAmount">&nbsp;&nbsp;&nbsp;</td>
+                        <td width="7%" ng-if="showDiscountAmount">
+                            <input type="text" name="discountAmount" class="" placeholder="Amount">
+                        </td>
+                        <td ng-if="showDiscountAmount">&nbsp;&nbsp;&nbsp;</td>-->
                         <td>
                             <h2>{{TotalDiscount}}</h2>
                         </td>
+                        <td width="7%" ng-if="showDiscountAmount">
+                            <input type="text" name="discountAmount" class="" placeholder="Amount" ng-model="totalDiscountAmount.Amount" ng-change="calcDiscount()">
+                        </td>
+                        <td ng-if="showDiscountAmount">&nbsp;&nbsp;&nbsp;</td>
+
+                        <td ng-if="showDiscountAmount">
+                            <select name="totalDiscountType" class="" ng-model="totalDiscountType" ng-change="">
+                                <option value=" 0" ng-selected="true">By Percentage</option>
+                                <option value="1">By Amount</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
-                        <td colspan="4" class="border_bottom"></td>
+                        <td colspan="8" class="border_bottom"></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
