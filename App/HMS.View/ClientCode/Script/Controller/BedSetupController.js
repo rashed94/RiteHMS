@@ -144,6 +144,22 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
             });
     }
 
+    $scope.loadMeasureMentUnits = function () {
+        BedSetupService.loadMeasureMentUnits()
+            .success(function (pt) {
+                $scope.MeasureMentUnits = pt;
+                if (!$routeParams.id) {
+                    $scope.filterCondition.MeasurementUnitId = $scope.MeasureMentUnits[0].Id.toString();
+                }
+
+                console.log(pt);
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load Measurement Units for Bed data: ' + error.message;
+                console.log($scope.status);
+            });
+    }
+
 
     $scope.resetpopupFiled = function () {
 
@@ -167,7 +183,23 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         };
     }
 
+    $scope.saveMeasurementUnit = function () {
+        BedSetupService.CreateMeasurementUnit($scope.measurementUnitName)
+        .success(function (data) {
 
+            $scope.loadMeasureMentUnits();
+            $scope.resetpopupFiled();
+
+            $('#popupMeasurementUnit').css("visibility", "hidden");
+            $('#popupMeasurementUnit').css("opacity", 0);
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save Measurement Unit: ' + error.message;
+
+        });
+
+    }
 
 
     $scope.saveItem = function () {
@@ -255,6 +287,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
             $scope.loadItembyId($routeParams.id);
         }
         $scope.loadItemCategories();
+        $scope.loadMeasureMentUnits();
 
     }
     if ($routeParams.tab == "summary") {
@@ -463,5 +496,6 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         });
 
     }
+
 
 });

@@ -72,7 +72,16 @@
         return $http.get('/Item/LoadBedOccupancybyId?PatientId=' + PatientId);
     };
 
+    BedSetupService.loadMeasureMentUnits = function () {
 
+        return $http.get('/Item/loadMeasureMentUnits');
+    };
+
+    BedSetupService.CreateMeasurementUnit = function (measurementUnitName) {
+
+        return $http.post('/Item/CreateMeasurementUnit', { measurementUnitName: measurementUnitName });
+
+    };
 
     return BedSetupService;
 

@@ -61,7 +61,7 @@
     <div id="popupCategory" class="overlay">
         <div class="popup">
             <h2>Enter Category</h2>
-            <a class="close" href="#" ng-click="$event.preventDefault();">Ã—</a>
+            <a class="close" href="#" ng-click="$event.preventDefault();">x</a>
             <div class="content_text">
                 <div class="padding40">
                     <div>Category Name</div>
@@ -75,7 +75,7 @@
     <div id="popupMeasurementUnit" class="overlay">
         <div class="popup">
             <h2>Enter Measurement Unit</h2>
-            <a class="close" href="#" ng-click="$event.preventDefault();">Ã—</a>
+            <a class="close" href="#" ng-click="$event.preventDefault();">x</a>
             <div class="content_text">
                 <div class="padding40">
                     <div>Measurement Unit Name</div>
@@ -257,6 +257,25 @@
 
                             </select>
                             <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>MEASUREMENT UNIT</td>
+                        <td colspan="2">
+
+                            <select name="palnType3" class="distype" ng-model="filterCondition.MeasurementUnitId">
+
+
+                                <option ng-repeat="measureMentUnit in MeasureMentUnits" value="{{measureMentUnit.Id}}">{{measureMentUnit.Name}}</option>
+
+
+
+                            </select>
+                            <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#" id="MeasurementUnit"></a>
+
 
                         </td>
                     </tr>
