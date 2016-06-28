@@ -2,6 +2,7 @@
 HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemService) {
 
     $scope.MedicalTypes = {};
+    $scope.medicalTypeID = "62";
     $scope.GetMedicalType = function () {
 
         AddItemService.GetMedicalType()
@@ -16,7 +17,7 @@ HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemS
     }
 
     $scope.filterCondition = {
-        MedicalType: '62'
+        MedicalType: $scope.medicalTypeID
     }
     $scope.GetMedicalType();
 

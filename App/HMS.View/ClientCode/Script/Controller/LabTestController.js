@@ -29,28 +29,35 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     $scope.LabItemEdit = false;
 
     $scope.$on('patientchange', function (event, args) {
-        // console.log("patient changes");
-        if ($routeParams.tab == "addlabtest") {
-
-        }
-
-        if ($routeParams.tab == "listlabtest") {
-
-            $scope.GetLabItemsByMedicalType($scope.medicalTypeID);
-        }
 
 
-        if ($routeParams.tab == "summary") {
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
+                // console.log("patient changes");
+                if ($routeParams.tab == "addlabtest") {
 
 
-            if ($scope.Patient) {
-                if ($scope.Patient.Id != null) {
-                    if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+                    if ($routeParams.id) {
+                        $scope.loadItembyId($routeParams.id);
+                    }
+                    $scope.loadLabTestCategories();
+                    $scope.loadLabTestGroups();
+                    $scope.loadMeasureMentUnits();
 
-                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
+                }
+
+                if ($routeParams.tab == "listlabtest") {
+
+                    $scope.loadLabItems();
+                }
+
+
+                if ($routeParams.tab == "summary") {
+
+
+                    $scope.loadLabTest();
                 }
             }
-
         }
     });
 
@@ -595,6 +602,14 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         $scope.loadLabTestGroups();
         $scope.loadMeasureMentUnits();
     }
+    if ($routeParams.tab == "listlabtest") {
+        $scope.loadLabItems();
+    }
+    if ($routeParams.tab == "summary") {
+        $scope.loadLabTest();
+    }
+ 
+
 
 
     var tabClass = ".summary";
