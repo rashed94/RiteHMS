@@ -9,6 +9,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.paymentType = false;//first payment
     $scope.invoiceStatus = 0;
     $scope.FullDiscount = false;
+    $scope.discountStatus = 0;
 
     $scope.Invoice = {
         Id: null,
@@ -75,6 +76,22 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
         }
         $scope.CalculateTotalDiscount();
+    }
+
+    $scope.calcDiscount=function()
+    {
+        if ($scope.discountStatus == 0)
+            //$window.alert('hi');
+            angular.forEach($scope.BillingItem, function (billingitem) {
+                if (billingitem.LabStatusId == 1) {
+                    billingitem.Discount = billingitem.ReferralFee;
+                    billingitem.ReferralAfterDiscount = 0;
+                    billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
+                    billingitem.referralfull = true;
+                }
+            });
+        else
+            $window.alert('hi');
     }
 
 

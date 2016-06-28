@@ -51,6 +51,10 @@
 
             <button type="button" class="sm_button modal_click" ng-click="InvoiceModal('lg',false,Invoice)">build invoice</button>
             <button type="button" class="sm_button modal_click" data-toggle="modal" data-target="#receiptView">build receipt</button>
+            <select name="discount" class="search_container" ng-model="discountStatus" ng-change="calcDiscount()">
+                <option value=" 0" ng-selected="true">Total Discount</option>
+                <option value="1">Line Discount</option>
+            </select>
 
         </div>
         <div style="clear: both"></div>
@@ -183,7 +187,7 @@
                 <input type="radio" value="0" ng-model="patientSelection" ng-change="reloadInvoice()" name="patient" class="all_patient_checkbox"><h2>all patient</h2>
                 <input type="radio" value="1" ng-model="patientSelection" ng-change="reloadInvoice()" ng-checked="true" name="patient" class="selected_patient_checkbox"><h2>selected patient</h2>
             </div>
-            <select name="status" class="invoice_status" ng-model="invoiceStatus" ng-change="reloadInvoice()">
+            <select name="status" class="search_container" ng-model="invoiceStatus" ng-change="reloadInvoice()">
                 <option value=" 0" ng-selected="true">
                 ALL</option>
                 <option value="1">OPEN</option>
