@@ -15,6 +15,18 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, 
     };
 });
 
+HmsApp.controller("PharmacyStockModelController", function ($scope, $modalInstance) {
+
+
+    $scope.ok = function (file) {
+        $modalInstance.close();
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
 
 HmsApp.controller("PrintInvoiceModalController", function ($scope, $modalInstance, singleInvoice) {
     
