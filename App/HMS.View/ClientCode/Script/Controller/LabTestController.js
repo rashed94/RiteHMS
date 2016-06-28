@@ -27,6 +27,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     $scope.MeasureMentUnits = {};
     $scope.medicalTypeID = 62;
     $scope.LabItemEdit = false;
+    $scope.patientSelection = 1;
 
     $scope.$on('patientchange', function (event, args) {
 
@@ -199,15 +200,26 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             if ($scope.Patient.Id != null) {
                 if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
 
-                if ($scope.patientSelection == 0) {
-                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
-
-                } else {
+                if ($scope.patientSelection == 1) {
                     $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
-
+                }else
+                {
+                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
                 }
+  
             }
+        }else
+        {
+            if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+            if ($scope.patientSelection == 1) {
+                $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
+            } else {
+                $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
+            }
+
+
         }
+        
 
 
     }
@@ -216,13 +228,23 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         // if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
-                if ($scope.patientSelection == 0) {
-                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
 
-                } else {
+                if ($scope.patientSelection == 1) {
                     $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
 
+                }else
+                {
+                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
                 }
+
+            }
+        }else
+        {
+            if ($scope.patientSelection == 1) {
+                $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
+
+            } else {
+                $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
             }
         }
 
