@@ -51,10 +51,11 @@
 
             <button type="button" class="sm_button modal_click" ng-click="InvoiceModal('lg',false,Invoice)">build invoice</button>
             <button type="button" class="sm_button modal_click" data-toggle="modal" data-target="#receiptView">build receipt</button>
+            
             <select name="discount" class="search_container" ng-model="discountStatus" ng-change="calcDiscount()">
-                <option value=" 0" ng-selected="true">Please Select</option>
+                <option value="0">Line Discount</option>
                 <option value="1">Total Discount</option>
-                <option value="2">Line Discount</option>
+
             </select>
 
         </div>
@@ -82,7 +83,7 @@
                             <td>{{billingitem.Item.Name}}</td>
                             <td>{{billingitem.Item.GenericName}}</td>
                             <td><input type="text" width="50" name="quantity" ng-change="updateQuantityChange(billingitem)" ng-disabled="billingitem.Item.ReferralAllowed" ng-model="billingitem.ServiceQuantity" class="quantity"></td>
-                            <td><input type="text" width="100" name="cost" ng-model="billingitem.ServiceListPrice" class="cost"></td>
+                            <td><input type="text" width="100" name="cost" ng-model="billingitem.ServiceListPrice" class="cost" ng-disabled="billingitem.referralfull"></td>
                             <td><input type="text" width="100" name="discount" ng-change="adjustAfterDiscount(billingitem)" ng-model="billingitem.Discount" class="discount" ng-disabled="billingitem.referralfull"></td>
                             <td>
                                 <select class="distype" ng-model="billingitem.DisCountTypeID" ng-change="adjustAfterDiscount(billingitem)" ng-disabled="billingitem.referralfull">
@@ -135,34 +136,27 @@
                         <td>
                             <h2>TOTAL DISCOUNT</h2>
                         </td>
-                        <!--<td ng-if="showDiscountAmount">
-                            <select name="totalDiscountType" class="" ng-model="totalDiscountType" ng-change="">
-                                <option value=" 0" ng-selected="true">By Percentage</option>
-                                <option value="1">By Amount</option>
-                            </select>
-                        </td>
-                        <td ng-if="showDiscountAmount">&nbsp;&nbsp;&nbsp;</td>
-                        <td width="7%" ng-if="showDiscountAmount">
-                            <input type="text" name="discountAmount" class="" placeholder="Amount">
-                        </td>
-                        <td ng-if="showDiscountAmount">&nbsp;&nbsp;&nbsp;</td>-->
+
                         <td>
                             <h2>{{TotalDiscount}}</h2>
                         </td>
-                        <td width="7%" ng-if="showDiscountAmount">
-                            <input type="text" name="discountAmount" class="" placeholder="Amount" ng-model="totalDiscountAmount.Amount" ng-change="calcDiscount()">
+                        <td width="7%" ng-show="showDiscountAmount">
+                            <input type="text" name="discountAmount" class="" placeholder="Amount" ng-model="totalDiscountAmount.Amount" ng-change="calcDiscount()" ng-disabled="disableAmount">
                         </td>
-                        <td ng-if="showDiscountAmount">&nbsp;&nbsp;&nbsp;</td>
+                        <td ng-show="showDiscountAmount">&nbsp;&nbsp;&nbsp;</td>
 
-                        <td ng-if="showDiscountAmount">
-                            <select name="totalDiscountType" class="" ng-model="totalDiscountType" ng-change="">
-                                <option value=" 0" ng-selected="true">By Percentage</option>
+                        <td ng-show="showDiscountAmount">
+
+                            <select  ng-model="DiscountTypeTotal" ng-change="calcDiscount()">
+                                <option value="0">By Percentage</option>
                                 <option value="1">By Amount</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="8" class="border_bottom"></td>
+                        <td colspan="8" class="border_bottom">
+
+                        </td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
