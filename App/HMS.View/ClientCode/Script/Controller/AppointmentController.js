@@ -1,4 +1,6 @@
 ﻿'use strict';
+
+
 HmsApp.controller("AppointmentController", function ($scope, $routeParams, $window, $filter, $modal, AppointmentService, ConfigurationService) {
 
     $scope.Appointments = [];
@@ -85,4 +87,16 @@ HmsApp.controller("AppointmentController", function ($scope, $routeParams, $wind
     }
 
     Init();
+
+    if ($routeParams.tab == "summary") {
+        
+    }
+
+    var tabClass = ".summary";
+    if ($routeParams.tab != null) {
+        tabClass = "." + $routeParams.tab;
+    }
+    $('.tabs li').removeClass('active');
+    $(tabClass).addClass('active');
+    $(tabClass).removeClass('hide');
 });

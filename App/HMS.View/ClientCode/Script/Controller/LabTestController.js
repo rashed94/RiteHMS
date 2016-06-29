@@ -56,7 +56,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 if ($routeParams.tab == "summary") {
 
 
-                    $scope.loadLabTest();
+                    $scope.reloadlabtest();
                 }
             }
         }
@@ -212,7 +212,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         {
             if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
             if ($scope.patientSelection == 1) {
-                $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
+               // $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
             } else {
                 $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
             }

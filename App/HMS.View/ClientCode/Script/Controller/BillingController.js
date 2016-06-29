@@ -543,4 +543,38 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
     }
     //zaber
+
+
+
+    /*------------------- inline editing code begin -------------------*/
+
+    $scope.selected={ };
+
+    $scope.getTemplate = function (patientService) {
+        if (patientService.Id === $scope.selected.Id) return 'edit';
+        else return 'display';
+    };
+
+    $scope.editPatientService = function (patientService) {
+        $scope.selected = angular.copy(patientService);
+    };
+
+    $scope.savePatientServiceAndInvoice = function (patientService) {
+
+        $scope.reset();
+    };
+
+    $scope.reset = function () {
+        $scope.selected = {};
+    };
+
+
+
+    $scope.updateQuantity=function()
+    {
+
+    }
+
+    /*---------------------- inline editing code end --------------------*/
+
 });

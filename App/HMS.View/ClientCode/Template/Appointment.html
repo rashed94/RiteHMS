@@ -14,7 +14,8 @@
 <div class="container_secondary_tab" style="">
     <div class="container_secondary_tab_abs">
         <ul class="tabs group">
-            <li class="setup active"><a href="#/appointment/setup" ng-click="$event.preventDefault();">View / Setup Appointment</a></li>
+            <li class="summary active"><a href="#/appointment/summary">View Appointment</a></li>
+            <li class="setup"><a href="#/appointment/setup">View / Setup Appointment</a></li>
         </ul>
         <div style="clear: both"></div>
     </div>
@@ -22,7 +23,13 @@
 </div>
 
 <div class="content" ng-controller="AppointmentController">
-    <div class="setup">
+
+    <div class="summary hide">
+
+        
+
+    </div>
+    <div class="setup hide">
         <div style="float:left; width: 35%;">
             <div class="input_containter">
                 <div class="title">Appointment date</div>
@@ -81,7 +88,7 @@
             </table>
         </div>
     </div>
-    <div class="summary">
+    
         
     </div>
 </div>
