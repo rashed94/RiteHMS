@@ -14,6 +14,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.totalDiscountAmount = {Amount:0};
     //var vm = this;
     //vm.totalDiscountAmount = "";
+    $scope.perItemDiscount = 0;
 
     $scope.Invoice = {
         Id: null,
@@ -46,6 +47,13 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             $scope.TotalReferralFee = $scope.TotalReferralFee + obj.ReferralAfterDiscount;
         });
 
+    }
+
+    $scope.itemWiseDiscount = function (Amount,cost)
+    {
+            $scope.perItemDiscount=(Amount * cost) / $scope.TotalAmount;
+
+            return $scope.perItemDiscount;
     }
 
     $scope.referralFullDiscount = function () {
@@ -89,23 +97,33 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         {
             $scope.showDiscountAmount = true;
             $scope.totalDiscountAmount.Amount = $scope.totalDiscountAmount.Amount;
+            $scope.TotalAmountAfterDiscount = 0;
 
             angular.forEach($scope.BillingItem, function (billingitem) {
                 //if (billingitem.LabStatusId == 1) {
                 //billingitem.Discount = billingitem.ReferralFee
-                billingitem.Discount = $scope.totalDiscountAmount.Amount / $scope.BillingItem.length;
+                //billingitem.Discount = $scope.totalDiscountAmount.Amount / $scope.BillingItem.length;
+                billingitem.Discount = $scope.itemWiseDiscount($scope.totalDiscountAmount.Amount, billingitem.ServiceListPrice);
                     billingitem.ReferralAfterDiscount = 0;
                     billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
                     billingitem.referralfull = true;
+                    $scope.TotalDiscount = $scope.totalDiscountAmount.Amount;
+                    $scope.TotalAmountAfterDiscount = $scope.TotalAmount - $scope.totalDiscountAmount.Amount;
                     //alert($scope.BillingItem.length);
                 //}
+                    //alert($scope.itemWiseDiscount($scope.totalDiscountAmount.Amount, billingitem.ServiceListPrice));
             });
         }
         else {
             $scope.showDiscountAmount = false;
+            $scope.TotalAmountAfterDiscount = 0;
+            $scope.TotalDiscount = 0;
 
             angular.forEach($scope.BillingItem, function (billingitem) {
                 billingitem.referralfull = false;
+                billingitem.Discount = 0;
+                billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice;
+
             }
                 );
         }
