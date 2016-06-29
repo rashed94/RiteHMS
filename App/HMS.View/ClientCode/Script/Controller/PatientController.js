@@ -245,7 +245,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                 
             console.log(data);
             $scope.UpdateTopLink('billing');
-            $window.location.href = '#/billing';
+            $window.location.href = '#/billing/summary';
             $scope.serviceItemEmpty();
            
         })
