@@ -7,7 +7,7 @@ namespace HMS.Model.Core
     {
         public decimal Amount { get; set; }
         public long InvoiceID { get; set; }
-        public long ItemId { get; set; }
+        public long PatientServiceId { get; set; }
         public long UserID { get; set; }
         public long ApprovedUserID { get; set; }
 
