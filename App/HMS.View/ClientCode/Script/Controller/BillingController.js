@@ -72,7 +72,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         return $scope.totalDiscountByPercentage;
     }
 
-    $scope.referralFullDiscount = function () {
+    $scope.referralFullDiscount = function () {          
 
         $scope.disableAmount = false;
         if ($scope.FullDiscount) {
