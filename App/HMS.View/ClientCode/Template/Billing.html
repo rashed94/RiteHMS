@@ -260,25 +260,13 @@
                                             <th width="21%">&nbsp;</th>
                                         </tr>
                                     </thead>
-                                    <tbody ng-repeat="patientservice in singleinvoice.PatientServices">
-                                        <tr>
-                                            <td>{{patientservice.Item.Name}}</td>
-                                            <td>{{patientservice.Item.GenericName}}</td>
-                                            <td>{{patientservice.ServiceQuantity}}</td>
-                                            <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
-                                            <td>{{patientservice.Discount}}</td>
-                                            <td>
-                                                by Amount
-                                            <td>{{patientservice.ServiceListPrice}}</td>
-                                            <td>{{patientservice.ReferralFee}}</td>
-                                            <td>
-                                                <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();"></a>
-                                                <span class="status_green"><a href="#" class="link_brown">refund</a></span>
-                                            </td>
-                                        </tr>
+                                    <tbody ng-repeat="patientservice in singleinvoice.PatientServices" ng-include="getTemplate(patientservice)">
+                                        <tr></tr>
 
                                     </tbody>
                                 </table>
+
+
                             </td>
                         </tr>
 
@@ -294,3 +282,37 @@
 
 
 </div>
+
+
+<script type="text/ng-template"  id="display">
+    <td>{{patientservice.Item.Name}}</td>
+    <td>{{patientservice.Item.GenericName}}</td>
+    <td>{{patientservice.ServiceQuantity}}</td>
+    <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
+    <td>{{patientservice.Discount}}</td>
+    <td>
+        by Amount
+    <td>{{patientservice.ServiceListPrice}}</td>
+    <td>{{patientservice.ReferralFee}}</td>
+    <td>
+        <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" href="#" ng-hide="singleinvoice.InvoiceStatusId==2" ng-click="$event.preventDefault();editPatientService(singleinvoice,patientservice);"></a>
+        <span class="status_green"><a href="#" class="link_brown">refund</a></span>
+    </td>
+</script>
+
+<script type="text/ng-template" id="edit">
+    <td>{{patientservice.Item.Name}}</td>
+    <td>{{patientservice.Item.GenericName}}</td>
+    <td>{{patientservice.ServiceQuantity}}</td>
+    <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
+    <td><input class="discount" type="number" min="1" ng-change="UpdatePatientServiceDiscount(singleinvoice,patientservice)" ng-model="patientservice.Discount" /></td>
+    <td>
+        by Amount
+    <td>{{patientservice.ServiceListPrice}}</td>
+    <td>{{patientservice.ReferralFee}}</td>
+    <td>
+        <a class="fa fa-floppy-o fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();savePatientServiceAndInvoice(singleinvoice,patientservice)"></a>
+        &nbsp;&nbsp;&nbsp;<a class="fa fa-times fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();reset(singleinvoice,patientservice);"></a>
+       
+    </td>
+</script>

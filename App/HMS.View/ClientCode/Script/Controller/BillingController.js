@@ -586,4 +586,80 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
     }
     //zaber
+
+
+
+    /*------------------- inline editing code begin -------------------*/
+
+    $scope.selected={ };
+
+    $scope.getTemplate = function (patientService) {
+        if (patientService.Id === $scope.selected.Id) return 'edit';
+        else return 'display';
+    };
+
+    $scope.editPatientService = function (singleinvoice,patientService) {
+        $scope.selected = angular.copy(patientService);
+        $scope.selectedSingleInvoice = angular.copy(singleinvoice);
+    };
+
+    $scope.savePatientServiceAndInvoice = function (singleinvoice, patientservice) {
+
+        // $scope.reset(patientService);
+        var totalPrice = 0;
+        var totalDiscount = 0;
+        angular.forEach(singleinvoice.PatientServices, function (obj) {
+
+            totalPrice = obj.ServiceListPrice + totalPrice;
+            totalDiscount = Math.ceil(obj.Discount) + totalDiscount;
+           
+
+        });
+
+        if (totalPrice < singleinvoice.Paid) {
+            $window.alert("Total amount shouldn't be smaller than the paid amount");
+            $scope.reset(singleinvoice,patientservice);
+        }else
+        {
+            singleinvoice.TotalAmount = totalPrice
+            singleinvoice.TotalDiscount = totalDiscount;
+            $scope.selected = {};
+            $scope.selectedSingleInvoice = {};
+
+        }
+
+    };
+
+    $scope.reset = function (singleinvoice,patientService) {
+        
+        patientService.ServiceListPrice = $scope.selected.ServiceListPrice;
+        patientService.Discount = $scope.selected.Discount;
+
+        singleinvoice = $scope.selectedSingleInvoice;
+
+        $scope.selected = {};
+        $scope.selectedSingleInvoice = {};
+        $scope.savePatientServiceAndInvoice(singleinvoice, patientService);
+    };
+
+
+ 
+    $scope.UpdatePatientServiceDiscount = function (singleinvoice, patientService)
+    {
+        var actualprice = patientService.ServiceActualPrice * patientService.ServiceQuantity;
+        if (patientService.Discount > actualprice)
+        {
+            patientService.Discount = actualprice;
+        }
+        patientService.ServiceListPrice = (patientService.ServiceActualPrice * patientService.ServiceQuantity) - patientService.Discount;
+
+        
+
+
+
+        //patientService.ServiceListPrice=patientService.ServiceActualPrice - patientService.Discount;
+    }
+
+    /*---------------------- inline editing code end --------------------*/
+
 });
