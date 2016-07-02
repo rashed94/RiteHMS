@@ -31,6 +31,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     $scope.isSamePatient = 0;
     $scope.IsPatientNull = false;
+    $scope.IsPatientExist = false;
 
 
 
@@ -48,7 +49,8 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
 
         if ($routeParams.tab == "summary") {
-
+            $scope.IsPatientExist = false;
+            $scope.checkBedOccupancy($scope.Patient.Id);
 
             //if ($scope.Patient) {
             //    if ($scope.Patient.Id != null) {
@@ -201,6 +203,10 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     }
 
+    $scope.ReloadPage=function()
+    {
+        $window.location.reload();
+    }
 
     $scope.saveItem = function () {
 
@@ -235,7 +241,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $scope.deleteBed = function (item) {
 
 
-        if (item.BedOccupancies[0].ItemID != 0) {
+        if (item.BedOccupancies[0].Occupied != 0) {
             $window.alert('Cant Delete Item because already assigned to Patient');
         }
         else {
@@ -261,6 +267,21 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
             }
         }
     }
+
+    $scope.checkBedOccupancy = function (Id) {
+        BedSetupService.loadBedOccupancyByPatientId(Id)
+                .success(function (data) {
+                    console.log(data);
+                    if (data.length > 0) {
+                        $scope.IsPatientExist = true;
+                    }
+                })
+                .error(function (error) {
+                    $scope.status = 'Unable to check bed occupancy: ' + error.message;
+                    console.log($scope.status);
+                });
+    }
+
     // end by zaber
     /*----------------------------------------delete end -----------------------------------------------*/
 
@@ -291,6 +312,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     }
     if ($routeParams.tab == "summary") {
+        $scope.checkBedOccupancy($scope.Patient.Id);
         $scope.loadItemCategories();
     }
 
@@ -306,109 +328,121 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         $window.location.href = '#/bedsetup/summary';
     }
 
+
+
     $scope.addPatient = function (bedItem) {
-        $scope.IsPatientExist = false;
-        $scope.PatientServiceItem = [];
-        $scope.isSamePatient = 0;
+        //$scope.IsPatientExist = false;
 
-        //Filter the Bed Item from Items model array
+        if ($scope.IsPatientExist==false) {
+            $scope.PatientServiceItem = [];
+            $scope.isSamePatient = 0;
 
-        //$scope.bedItem = $filter('filter')($scope.items, Id);
+            //Filter the Bed Item from Items model array
 
-        $scope.serviceItem = {};
+            //$scope.bedItem = $filter('filter')($scope.items, Id);
 
-        if (!$scope.Patient) {
-            
+            $scope.serviceItem = {};
+
+            if (!$scope.Patient) {
+
                 $window.alert("Please Enter a Patient Name");
                 $scope.IsPatientNull = true;
-            
-        }
 
-        angular.forEach($scope.items, function (obj) {
-
-            if (obj.BedOccupancies[0].PatientId == $scope.Patient.Id) {
-
-                $scope.IsPatientExist = true;
             }
 
 
-        });
-        if (!$scope.IsPatientNull) {
-            //}
-            //else
-            //{
-            //    BedSetupService.loadBedOccupancyByPatientId($scope.Patient.Id)
-            //.success(function (data) {
 
-            //    $scope.newbedItem = data;
-            //    console.log(data);
-            //    //$scope.isSamePatient = 1;
+            //angular.forEach($scope.items, function (obj) {
 
-            //})
-            //    .error(function (error) {
-            //        $scope.status = 'Unable to get Bed Occupancy data: ' + error.message;
-            //        console.log($scope.status);
-            //    });
+            //    if (obj.BedOccupancies[0].PatientId == $scope.Patient.Id) {
 
-            //angular.forEach($scope.newbedItem, function (value, index) {
-            //    alert(value.PatientId);
-            //})
-
-            if ($scope.IsPatientExist) {
-                $window.alert("This Patient has already been bedded");
-            }
-            else {
-                $scope.serviceItem.PatientID = $scope.Patient.Id;
-                $scope.serviceItem.ItemID = bedItem.Id;
-                $scope.serviceItem.InvoiceID = 0;
-                $scope.serviceItem.ServiceListPrice = bedItem.SalePrice;
-                $scope.serviceItem.ServiceActualPrice = bedItem.SalePrice;
-                $scope.serviceItem.ServiceQuantity = 1;
-                $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');
-                $scope.serviceItem.ServiceProviderId = bedItem.ServiceProviderId;
+            //        $scope.IsPatientExist = true;
+            //    }
 
 
-                if (bedItem.MedicalTypeId == "62") {
-                    $scope.serviceItem.LabStatusId = 1;
-                    $scope.serviceItem.ReferralFeePaid = 0;
+            //});
+
+            if (!$scope.IsPatientNull) {
+                //}
+                //else
+                //{
+                //    BedSetupService.loadBedOccupancyByPatientId($scope.Patient.Id)
+                //.success(function (data) {
+
+                //    $scope.newbedItem = data;
+                //    console.log(data);
+                //    //$scope.isSamePatient = 1;
+
+                //})
+                //    .error(function (error) {
+                //        $scope.status = 'Unable to get Bed Occupancy data: ' + error.message;
+                //        console.log($scope.status);
+                //    });
+
+                //angular.forEach($scope.newbedItem, function (value, index) {
+                //    alert(value.PatientId);
+                //})
+
+                if ($scope.IsPatientExist) {
+                    $window.alert("This Patient has already been bedded");
                 }
                 else {
-                    $scope.serviceItem.LabStatusId = null;
-                    $scope.serviceItem.ReferralFeePaid = null;
+                    $scope.serviceItem.PatientID = $scope.Patient.Id;
+                    $scope.serviceItem.ItemID = bedItem.Id;
+                    $scope.serviceItem.InvoiceID = 0;
+                    $scope.serviceItem.ServiceListPrice = bedItem.SalePrice;
+                    $scope.serviceItem.ServiceActualPrice = bedItem.SalePrice;
+                    $scope.serviceItem.ServiceQuantity = 1;
+                    $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');
+                    $scope.serviceItem.ServiceProviderId = bedItem.ServiceProviderId;
+
+
+                    if (bedItem.MedicalTypeId == "62") {
+                        $scope.serviceItem.LabStatusId = 1;
+                        $scope.serviceItem.ReferralFeePaid = 0;
+                    }
+                    else {
+                        $scope.serviceItem.LabStatusId = null;
+                        $scope.serviceItem.ReferralFeePaid = null;
+                    }
+                    $scope.serviceItem.UserId = '';
+                    $scope.serviceItem.Discount = '';
+                    $scope.serviceItem.Refund = '';
+                    $scope.serviceItem.Billed = '';
+                    $scope.serviceItem.ReferralFee = bedItem.ReferralFee;
+                    $scope.serviceItem.DeliveryDate = bedItem.Date;
+                    $scope.serviceItem.DeliveryTime = bedItem.ReportDeliveryTime;
+
+                    $scope.PatientServiceItem.push($scope.serviceItem);
+
+
+                    BedSetupService.SavePatientServiceItem($scope.PatientServiceItem)
+                    .success(function (data) {
+
+                        console.log(data);
+                        $scope.IsPatientExist = true;
+                        $scope.UpdateTopLink('billing');
+                        //$window.location.href = '#/billing';
+                        $scope.addPatientSuccess = 1;
+                        $scope.serviceItemEmpty();
+                        //$scope.loadItems();
+                        $scope.loaditembyCategory();
+
+                    })
+                    .error(function (error) {
+                        $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+                        console.log($scope.status);
+                    });
+
+                    $scope.occupyBed(bedItem);
+
+
                 }
-                $scope.serviceItem.UserId = '';
-                $scope.serviceItem.Discount = '';
-                $scope.serviceItem.Refund = '';
-                $scope.serviceItem.Billed = '';
-                $scope.serviceItem.ReferralFee = bedItem.ReferralFee;
-                $scope.serviceItem.DeliveryDate = bedItem.Date;
-                $scope.serviceItem.DeliveryTime = bedItem.ReportDeliveryTime;
-
-                $scope.PatientServiceItem.push($scope.serviceItem);
-
-
-                BedSetupService.SavePatientServiceItem($scope.PatientServiceItem)
-                .success(function (data) {
-
-                    console.log(data);
-                    $scope.UpdateTopLink('billing');
-                    //$window.location.href = '#/billing';
-                    $scope.addPatientSuccess = 1;
-                    $scope.serviceItemEmpty();
-                    $scope.loadItems();
-
-                })
-                .error(function (error) {
-                    $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
-                    console.log($scope.status);
-                });
-
-                $scope.occupyBed(bedItem);
-
-
             }
+        }else
+        {
+            $window.alert("Patient Already exist");
         }
-
     }
 
 
@@ -456,6 +490,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     $scope.emptyBed = function (bedItem) {
 
+
         $scope.bedOccupancyItem = {};
 
         $scope.bedOccupancyItem.Id = bedItem.BedOccupancies[0].Id;
@@ -471,6 +506,13 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 console.log(data);
                 //$scope.serviceItemEmpty();
                 $scope.GetItemsByMedicalType($scope.medicalTypeID);
+
+                if (bedItem.BedOccupancies[0].PatientId == $scope.Patient.Id) {
+                    IsPatientExist = false;
+                }
+
+
+                
 
             })
             .error(function (error) {

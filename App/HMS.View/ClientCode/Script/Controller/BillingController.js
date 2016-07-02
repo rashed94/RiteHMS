@@ -84,6 +84,12 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
                     billingitem.referralfull = true;
                     $scope.disableAmount = true;
                 }
+                else {
+                    billingitem.Discount = 0;
+                    billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
+                    billingitem.referralfull = true;
+                    $scope.totalDiscountAmount.Amount = 0;
+                }
             });
         }
         else {
@@ -100,10 +106,13 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
                     obj.ServiceListPriceAfterDiscountSingleQuantity = obj.ServiceListPriceAfterDiscount / obj.ServiceQuantity;
                     obj.Discount = 0;
                     obj.referralfull = false;
+                    $scope.TotalDiscount = 0;
                 }
                 else
                     obj.Discount = 0;
                 $scope.totalDiscountAmount.Amount = 0;
+                $scope.TotalDiscount = 0;
+                obj.referralfull = false;
 
             });
 
@@ -117,20 +126,48 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         if ($scope.discountStatus == 1)
         {
             if ($scope.DiscountTypeTotal == 1) {
-                $scope.showDiscountAmount = true;
-                $scope.totalDiscountAmount.Amount = $scope.totalDiscountAmount.Amount;
-                $scope.TotalAmountAfterDiscount = 0;
+                if ($scope.FullDiscount)
+                {
+                    angular.forEach($scope.BillingItem, function (obj) {
+                        if (obj.LabStatusId == 1) {
+                            obj.ServiceListPriceAfterDiscount = obj.ServiceListPrice;
+                            obj.ReferralAfterDiscount = obj.ReferralFee;
+                            obj.DisCountTypeID = '0';
+                            obj.DiscountTypes = [
+                            { id: '0', name: 'By Amount' },
+                            { id: '1', name: 'By Percentage' },
+                            ];
+                            obj.OriginalAmountSingleQuantity = obj.ServiceListPrice / obj.ServiceQuantity;
+                            obj.ServiceListPriceAfterDiscountSingleQuantity = obj.ServiceListPriceAfterDiscount / obj.ServiceQuantity;
+                            obj.Discount = 0;
+                            obj.referralfull = false;
+                            $scope.TotalDiscount = 0;
+                        }
+                        else
+                            obj.Discount = 0;
+                        $scope.totalDiscountAmount.Amount = 0;
+                        $scope.TotalDiscount = 0;
 
-                angular.forEach($scope.BillingItem, function (billingitem) {
-                    
-                    billingitem.Discount = Math.ceil($scope.itemWiseDiscount($scope.totalDiscountAmount.Amount, billingitem.ServiceListPrice));
-                    billingitem.ReferralAfterDiscount = 0;
-                    billingitem.ServiceListPriceAfterDiscount = Math.ceil(billingitem.ServiceListPrice - billingitem.Discount);
-                    billingitem.referralfull = true;
-                    $scope.TotalDiscount = billingitem.Discount + $scope.TotalDiscount;
-                    $scope.TotalAmountAfterDiscount = Math.ceil($scope.TotalAmount - $scope.totalDiscountAmount.Amount);
-                    
-                });
+                    });
+                }
+                else
+                {
+                    $scope.showDiscountAmount = true;
+                    $scope.totalDiscountAmount.Amount = $scope.totalDiscountAmount.Amount;
+                    $scope.TotalAmountAfterDiscount = 0;
+
+                    angular.forEach($scope.BillingItem, function (billingitem) {
+
+                        billingitem.Discount = Math.ceil($scope.itemWiseDiscount($scope.totalDiscountAmount.Amount, billingitem.ServiceListPrice));
+                        billingitem.ReferralAfterDiscount = 0;
+                        billingitem.ServiceListPriceAfterDiscount = Math.ceil(billingitem.ServiceListPrice - billingitem.Discount);
+                        billingitem.referralfull = true;
+                        $scope.TotalDiscount = billingitem.Discount + $scope.TotalDiscount;
+                        $scope.TotalAmountAfterDiscount = Math.ceil($scope.TotalAmount - $scope.totalDiscountAmount.Amount);
+
+                    });
+                }
+                
             }
             if ($scope.DiscountTypeTotal == 0) {
                 if ($scope.totalDiscountAmount.Amount > 100) {
