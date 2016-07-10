@@ -489,12 +489,19 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
     {
         // console.log("need to load invoice");
         $scope.Invoice = singleInvoice;
-        angular.forEach($scope.Invoice.InvoicePayments, function (item) {
+
+        if ($scope.Invoice.InvoicePayments.length > 0) {
+            angular.forEach($scope.Invoice.InvoicePayments, function (item) {
+
+                $scope.TotalPaid = $scope.TotalPaid + item.Amount;
+                $scope.Invoice.PaymentAmount = parseFloat($scope.Invoice.TotalAmount) - parseFloat($scope.TotalPaid);
+
+            });
+        }else
+        {
             
-            $scope.TotalPaid = $scope.TotalPaid + item.Amount;
-            $scope.Invoice.PaymentAmount = parseFloat($scope.Invoice.TotalAmount) - parseFloat($scope.TotalPaid);
-            
-        });
+            $scope.Invoice.PaymentAmount = parseFloat($scope.Invoice.TotalAmount);
+        }
 
     }
 

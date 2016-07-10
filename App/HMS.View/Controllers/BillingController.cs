@@ -95,6 +95,23 @@ namespace HMS.Controllers
             return Json("Payment successfull");
         }
 
+        public static bool IsDate(Object obj)
+        {
+            string strDate = obj.ToString();
+            try
+            {
+                DateTime dt = DateTime.Parse(strDate);
+                if ((dt.Month != System.DateTime.Now.Month) || (dt.Day < 1 && dt.Day > 31) || dt.Year != System.DateTime.Now.Year)
+                    return false;
+                else
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         //public JsonResult GetInvoicesByPatientID(long id)
         //{
         //    using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
@@ -105,11 +122,27 @@ namespace HMS.Controllers
 
         //    return Json("invoice loaded success fully");
 
-        //}
-        public JsonResult GetInvoicesByPatientId(long id, long statusid)
+        //}=""
+        public JsonResult GetInvoicesByPatientId(long id, long statusid, string DateStart, string DateEnd)
         {
             List<PatientInvoice> onlypatientInvoices = new List<PatientInvoice>();
             List<PatientInvoice> patientInvoices;
+            bool dateTimeValid;
+            DateTime invoiceDateStart=DateTime.Parse("1/1/1980");
+            DateTime invoiceDateEnd =  DateTime.Today;
+
+            try
+            {
+                 invoiceDateStart = DateTime.Parse(DateStart);
+                 invoiceDateEnd = DateTime.Parse(DateEnd);
+                dateTimeValid = true;
+            }
+            catch
+            {
+                dateTimeValid = false;
+            }
+
+
             using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
             {
                 /* ParameterExpression argParam = Expression.Parameter(typeof(PatientInvoice), "s");
@@ -129,33 +162,38 @@ namespace HMS.Controllers
 
                 //var lambda = Expression.Lambda<Func<PatientInvoice, bool>>(andExp, argParam);
                 Expression<Func<PatientInvoice, bool>> lambda;
+               
 
                 if (id == 0)
                 {
                     if (statusid == 0)
                     {
-                        lambda = (x => x.Active == true);
+                        lambda = (x => x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd);
+                        
+                        
+                      
                     }
                     else
                     {
-                        lambda = (x => x.InvoiceStatusId == statusid && x.Active == true);
+                        lambda = (x => x.InvoiceStatusId == statusid && x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd);
                     }
                 }
                 else
                 {
                     if (statusid == 0)
                     {
-                        lambda = (x => x.PatientID == id && x.Active == true);
+                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd);
                     }
                     else
                     {
-                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceStatusId == statusid);
+                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceStatusId == statusid && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd);
 
                     }
                 }
 
 
                 patientInvoices = repository.GetByQuery(lambda).ToList();
+               patientInvoices = patientInvoices.OrderByDescending(x => x.InvoiceDate).ToList();
 
 
 

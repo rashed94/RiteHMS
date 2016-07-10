@@ -4,7 +4,10 @@
 
 
         $('.reportdeliverydate').datepicker({
-            format: "dd/mm/yyyy"
+            format: "mm/dd/yyyy"
+         }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
         });
 
 
@@ -119,11 +122,11 @@
                             <td><input type="checkbox" name="lineitem" ng-model="billingitem.Selected" class="lineitem_check_box"></td>
                             <td>{{billingitem.Item.Name}}</td>
                             <td>{{billingitem.Item.GenericName}}</td>
-                            <td><input type="text" width="50" name="quantity" ng-change="updateQuantityChange(billingitem)" ng-disabled="billingitem.Item.ReferralAllowed" ng-model="billingitem.ServiceQuantity" class="quantity"></td>
-                            <td><input type="text" width="100" name="cost" ng-model="billingitem.ServiceListPrice" class="cost" ng-disabled="billingitem.referralfull"></td>
-                            <td><input type="text" width="100" name="discount" ng-change="adjustAfterDiscount(billingitem)" ng-model="billingitem.Discount" class="discount" ng-disabled="billingitem.referralfull"></td>
+                            <td><input type="text" width="50" name="quantity" ng-change="updateQuantityChange(billingitem)" ng-disabled="billingitem.Item.ReferralAllowed || billingitem.referralfull" ng-model="billingitem.ServiceQuantity" class=" quantity"></td>
+                            <td><input type="text" width="100" name="cost" ng-model="billingitem.ServiceListPrice" class="cost" ng-disabled="billingitem.referralfull || discountStatus==1"></td>
+                            <td><input type="text" width="100" name="discount" ng-change="adjustAfterDiscount(billingitem)" ng-model="billingitem.Discount" class="discount" ng-disabled="billingitem.referralfull || discountStatus==1"></td>
                             <td>
-                                <select class="distype" ng-model="billingitem.DisCountTypeID" ng-change="adjustAfterDiscount(billingitem)" ng-disabled="billingitem.referralfull">
+                                <select class="distype" ng-model="billingitem.DisCountTypeID" ng-change="adjustAfterDiscount(billingitem)" ng-disabled="billingitem.referralfull || discountStatus==1">
 
                                     <option ng-repeat="discounttype in billingitem.DiscountTypes"
                                             value="{{discounttype.id}}"
@@ -132,9 +135,9 @@
                                     </option>
                                 </select>
                             <td>
-                                <input type="text" width="50" name="costafterdiscount" ng-model="billingitem.ServiceListPriceAfterDiscount" class="cost_after_discount" ng-disabled="billingitem.referralfull">
+                                <input type="text" width="50" name="costafterdiscount" ng-model="billingitem.ServiceListPriceAfterDiscount" class="cost_after_discount" ng-disabled="billingitem.referralfull || discountStatus==1">
                             </td>
-                            <td><input type="text" width="50" name="referrerafterdiscount" ng-show="billingitem.Item.ReferralAllowed" ng-model="billingitem.ReferralAfterDiscount" class="referrer_after_discount" ng-disabled="billingitem.referralfull"></td>
+                            <td><input type="text" width="50" name="referrerafterdiscount" ng-show="billingitem.Item.ReferralAllowed" ng-model="billingitem.ReferralAfterDiscount" class="referrer_after_discount" ng-disabled="billingitem.referralfull || discountStatus==1"></td>
                             <!--<td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a></td>-->
                             <td> <a   class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteBillItem(billingitem.Id,$index);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a></td>
                         </tr>
@@ -233,9 +236,9 @@
             </div>
             <div class="date_range">
                 <h2 class="padding_left10">start date</h2>
-                <input type="text" width="110" placeholder="click to show datepicker" name="reportdeliverydate" class="reportdeliverydate">
+                <input type="text" width="110" placeholder="click to show datepicker" ng-model="invoiceDateStart" name="invoicedate" class="reportdeliverydate">
                 <h2 class="padding_left10">end date</h2>
-                <input type="text" width="110" placeholder="click to show datepicker" name="reportdeliverydate" class="reportdeliverydate">
+                <input type="text" width="110" placeholder="click to show datepicker" ng-model="invoiceDateEnd"  name="invoicedate" class="reportdeliverydate">
             </div>
             <div class="select_all_patient">
                 <input type="radio" value="0" ng-model="patientSelection" ng-change="reloadInvoice()" name="patient" class="all_patient_checkbox"><h2>all patient</h2>

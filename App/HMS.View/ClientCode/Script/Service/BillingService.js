@@ -48,9 +48,9 @@
         return $http.post('/Billing/CreatePayment', payment);
 
     };
-    BillingService.GetInvoicesByPatientId = function (patientid, invoicestatus) {
+    BillingService.GetInvoicesByPatientId = function (patientid, invoicestatus, invoiceDateStart, invoiceDateEnd) {
         //return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + "&statusid=1" );
-        return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + '&statusid=' + invoicestatus);
+        return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + '&statusid=' + invoicestatus + '&DateStart=' + invoiceDateStart + '&DateEnd=' + invoiceDateEnd);
     };
 
     BillingService.GetTotalDebit = function (patientid) {
