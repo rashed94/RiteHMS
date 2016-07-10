@@ -16,6 +16,7 @@ namespace HMS.Model.Core
         public long? ServiceProviderId { get; set; }
         public decimal? Discount { get; set; }
         public bool? Refund { get; set; }
+        public bool? RefundApproval { get; set; }
         public string RefundNote { get; set; }
         public bool? Billed { get; set; }
 

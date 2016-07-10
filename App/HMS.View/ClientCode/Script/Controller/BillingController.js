@@ -11,7 +11,8 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.FullDiscount = false;
     $scope.discountStatus = "0";
     $scope.showDiscountAmount = false;
-    $scope.totalDiscountAmount = {Amount:0};
+    $scope.totalDiscountAmount = { Amount: 0 };
+    $scope.refundedInvoice = {};
     //var vm = this;
     //vm.totalDiscountAmount = "";
     $scope.perItemDiscount = 0;
@@ -484,10 +485,12 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             item.InvoiceDate = ToJavaScriptDate(item.InvoiceDate);
 
             item.ServiceListPriceAfterDiscount = item.ServiceListPrice;
+           
 
             angular.forEach(item.PatientServices, function (pservice) {
 
                 item.TotalPrice = pservice.ServiceActualPrice * pservice.ServiceQuantity + item.TotalPrice;
+                pservice.ActualReferralFee = pservice.ReferralFee + (pservice.Discount/2);
             });
 
 
@@ -499,11 +502,13 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
                 item.Staus = "Refunded";
             }
 
+            item.selectedIcon = true;
+
             angular.forEach(item.InvoicePayments, function (paymentitem) {
 
                 item.Paid = paymentitem.Amount + item.Paid;
 
-                item.selectedIcon = true;
+               
                 item.activePosition = false;
 
             });
@@ -660,8 +665,30 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         {
             singleinvoice.TotalAmount = totalPrice
             singleinvoice.TotalDiscount = totalDiscount;
-            $scope.selected = {};
-            $scope.selectedSingleInvoice = {};
+
+            singleinvoice.InvoiceDate = ToJavaScriptDate(singleinvoice.InvoiceDate);
+            singleinvoice.DueDate = ToJavaScriptDate(singleinvoice.DueDate);
+
+            BillingService.UpdateInvoice(singleinvoice)
+                  .success(function (data) {
+
+                      console.log(data);
+                    //  singleinvoice = data;
+
+                      $scope.selected = {};
+                      $scope.selectedSingleInvoice = {};
+
+
+                  })
+                  .error(function (error) {
+                     // $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+                      $window.alert("something went wrong invoice not saved!");
+                     // console.log($scope.status);
+                      $scope.reset(singleinvoice, patientservice);
+
+                  });
+
+  
 
         }
 
@@ -671,12 +698,13 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         
         patientService.ServiceListPrice = $scope.selected.ServiceListPrice;
         patientService.Discount = $scope.selected.Discount;
+        patientService.ReferralFee = $scope.selected.ReferralFee;
 
         singleinvoice = $scope.selectedSingleInvoice;
 
         $scope.selected = {};
         $scope.selectedSingleInvoice = {};
-        $scope.savePatientServiceAndInvoice(singleinvoice, patientService);
+       // $scope.savePatientServiceAndInvoice(singleinvoice, patientService);
     };
 
 
@@ -684,11 +712,20 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.UpdatePatientServiceDiscount = function (singleinvoice, patientService)
     {
         var actualprice = patientService.ServiceActualPrice * patientService.ServiceQuantity;
+        var refferDiscount = 0;
+
         if (patientService.Discount > actualprice)
         {
             patientService.Discount = actualprice;
         }
         patientService.ServiceListPrice = (patientService.ServiceActualPrice * patientService.ServiceQuantity) - patientService.Discount;
+        if (patientService.LabStatusId > 0) {
+
+            refferDiscount = patientService.Discount / 2;
+            patientService.ReferralFee = patientService.ActualReferralFee - refferDiscount;
+
+        }
+        if (patientService.ReferralFee < 0) patientService.ReferralFee = 0;
 
         
 
@@ -698,5 +735,29 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     }
 
     /*---------------------- inline editing code end --------------------*/
+
+
+
+    /*------------------------------- refund code begin ---------------------------*/
+    $scope.OpenPopUp = function (event,singleinvoice) {
+
+        $('#popupRefundApproval').css("display", "block");
+        //$('#popupRefundApproval').css("opacity", 1);
+
+        $("#popupRefundApproval").css({ position: "absolute", top: event.pageY - 100, left: event.pageX - 220 });
+
+        $scope.refundedInvoice = singleinvoice;
+
+    }
+
+    $scope.saveRefundNote=function()
+    {
+
+        $('#popupRefundApproval').css("display", "none");
+        //$('#popupRefundApproval').css("opacity", 0);
+
+    }
+
+    /*-------------------------------------- refund code end --------------------------*/
 
 });

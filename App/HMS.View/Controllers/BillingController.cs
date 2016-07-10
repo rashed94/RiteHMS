@@ -210,6 +210,7 @@ namespace HMS.Controllers
                         patientstitem.Discount = c.Discount;
                         patientstitem.Refund = c.Refund;
                         patientstitem.Billed = c.Billed;
+                        patientstitem.LabStatusId = c.LabStatusId;
                         patientstitem.ReferralFee = c.ReferralFee;
                         patientstitem.DeliveryDate = c.DeliveryDate;
                         patientstitem.DeliveryTime = c.DeliveryTime;
@@ -309,6 +310,34 @@ namespace HMS.Controllers
             return Json(onlypatientServiceItems, JsonRequestBehavior.AllowGet);
         }
 
+
+
+        [HttpPost]
+        public JsonResult UpdateInvoice(PatientInvoice pinvoice)
+        {
+            PatientInvoice onlyInvoice = new PatientInvoice();
+             PatientInvoice patientInvoice = new PatientInvoice();
+          
+
+            using (Repository<PatientInvoice> repository = new Repository<PatientInvoice>())
+            {
+                    patientInvoice = repository.Update(pinvoice);
+                    repository.Commit();
+            }
+
+            List<PatientService> patientServiceItems = pinvoice.PatientServices.ToList();
+            foreach (PatientService item in patientServiceItems)
+            {
+                using (PatientServiceRepository patientservicerepository = new PatientServiceRepository())
+                {
+                    patientservicerepository.Update(item);
+                    patientservicerepository.Commit();
+                }
+            }
+
+
+            return Json("Invoice update successfull", JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         public JsonResult CreateInvoice(PatientInvoice pinvoice)

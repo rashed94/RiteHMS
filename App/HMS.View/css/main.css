@@ -603,8 +603,44 @@ input[type="text"]#doctorName
 .popup h2 {
   margin-top: 0;
   color: #333;
-  font-family: Tahoma, Arial, sans-serif;
+  
+
 }
+
+.popupLight
+{
+    border-radius: 4px;
+    border: 1px solid #b9d0c4;
+
+     box-shadow: 2px 2px 6px -1px rgba(0, 0, 0, 0.55);
+     z-index:9999;
+}
+.popupLight textarea
+{
+ border: 1px solid #b9d0c4;
+}
+
+
+.popupLight  h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+  padding:10px;
+  margin-left:10px;
+  font-weight:bold;
+}
+
+
+.popupLight  .close {
+
+float:right;
+margin-right:10px;
+margin-top:10px;
+
+}
+
+
+
 .popup .close {
   position: absolute;
   top: 20px;

@@ -521,6 +521,9 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
             });
     }
 
+
+
+
     $scope.saveCategory = function () {
         BedSetupService.CreateCategory($scope.categoryName, $scope.medicalTypeID)
         .success(function (data) {

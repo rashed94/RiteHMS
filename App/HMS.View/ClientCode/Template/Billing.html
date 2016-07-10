@@ -1,9 +1,22 @@
 ﻿<script type="text/javascript">
     // When the document is ready
     $(document).ready(function () {
+
+
         $('.reportdeliverydate').datepicker({
             format: "dd/mm/yyyy"
         });
+
+
+
+        $("#popupRefundApproval .close").click(function () {
+
+            $('#popupRefundApproval').css("display", "none");
+          
+        });
+
+
+
     });
 
 </script>
@@ -22,6 +35,30 @@
 </div>
 
 <div class="content" ng-controller="BillingController">
+
+
+
+    <div id="popupRefundApproval" class="overlay1" style="display:none;  width:500px; background:#fff;">
+        <div class="popupLight">
+            <h2>Enter Refund Note</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">x</a>
+            <div class="content_text1">
+                <div class="padding40">
+                    <div>Note</div>
+                    <div>
+                        <textarea rows="4" cols="50" ng-model="refundNote">
+                           .
+                        </textarea>
+                    </div>
+                    <div>
+
+                    <input name="save" type="button" value="save" class="md_button" ng-click="saveRefundNote()">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="summary hide">
         <div class="box_general_wihout_border">
@@ -296,7 +333,7 @@
     <td>{{patientservice.ReferralFee}}</td>
     <td>
         <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" href="#" ng-hide="singleinvoice.InvoiceStatusId==2" ng-click="$event.preventDefault();editPatientService(singleinvoice,patientservice);"></a>
-        <span class="status_green"><a href="#" class="link_brown">refund</a></span>
+        <span class="status_green"><a ng-click="$event.preventDefault();OpenPopUp($event,singleinvoice)" class="link_brown">refund</a></span>
     </td>
 </script>
 
@@ -305,7 +342,7 @@
     <td>{{patientservice.Item.GenericName}}</td>
     <td>{{patientservice.ServiceQuantity}}</td>
     <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
-    <td><input class="discount" type="number" min="1" ng-change="UpdatePatientServiceDiscount(singleinvoice,patientservice)" ng-model="patientservice.Discount" /></td>
+    <td><input class="discount" type="number" min="1"  ng-change="UpdatePatientServiceDiscount(singleinvoice,patientservice)" ng-model="patientservice.Discount" /></td>
     <td>
         by Amount
     <td>{{patientservice.ServiceListPrice}}</td>

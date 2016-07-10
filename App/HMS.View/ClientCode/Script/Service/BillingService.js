@@ -5,6 +5,24 @@
         return $http.get('/Billing/GetBillingIemByPatientId?id=' + patientid);
     };
 
+    BillingService.UpdateInvoice = function (invoice) {
+
+       updateInvoice= angular.copy(invoice);
+       
+       angular.forEach(updateInvoice.PatientServices, function (obj) {
+           obj.DeliveryDate = ToJavaScriptDate(obj.DeliveryDate);
+           obj.ServiceDate = ToJavaScriptDate(obj.ServiceDate);
+            obj.Item = null;
+
+        });
+
+       updateInvoice.Refunds = null;
+       updateInvoice.InvoicePayments = null;
+       updateInvoice.Patient = null;
+        return $http.post('/Billing/UpdateInvoice', updateInvoice);
+
+    };
+
     BillingService.SaveInvoice = function (invoice, patientServices) {
         if (invoice.Id == null) {
             invoice.PatientServices = patientServices;
