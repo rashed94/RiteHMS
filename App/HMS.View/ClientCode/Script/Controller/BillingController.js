@@ -555,13 +555,13 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.reloadInvoice = function () {
         //console.log($scope.patientSelection);
         if ($scope.patientSelection == 0) {
-            $scope.GetInvoices(0, $scope.invoiceStatus, $scope.invoiceDateStart, $scope.invoiceDateEnd);
+            $scope.GetInvoices(0, $scope.invoiceStatus);
         } else {
-            $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus, $scope.invoiceDateStart, $scope.invoiceDateEnd);
+            $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
         }
     }
-    $scope.GetInvoices = function (patientId, invoicestatus, invoiceDateStart, invoiceDateEnd) {
-        BillingService.GetInvoicesByPatientId(patientId, invoicestatus, invoiceDateStart, invoiceDateEnd)
+    $scope.GetInvoices = function (patientId, invoicestatus) {
+        BillingService.GetInvoicesByPatientId(patientId, invoicestatus, $scope.invoiceDateStart, $scope.invoiceDateEnd)
             .success(function (pt) {
                 $scope.invocieslist = pt;
                 prepareInvoiceDataModel();
