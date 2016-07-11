@@ -1,5 +1,5 @@
 ﻿'use strict';
-HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window, $filter, $modal,ItemService) {
+HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window, $filter,$route, $modal,ItemService) {
     $scope.ReportFormats = {};
     $scope.SingleItem = {
         id: 0,
@@ -395,7 +395,10 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
     }
     $scope.ReloadPage = function () {
-        $window.location.reload();
+        if (!$routeParams.id) {
+            // location.reload();
+            $route.reload();
+        }
     }
 
     $scope.saveItem = function () {

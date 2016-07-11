@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 
-HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window, $filter, $modal, BedSetupService, PatientService) {
+HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window, $filter, $modal,$route, BedSetupService, PatientService) {
     $scope.LabReportFormats = {};
     
     $scope.SingleBedItem = {
@@ -207,7 +207,10 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     $scope.ReloadPage=function()
     {
-        $window.location.reload();
+        if (!$routeParams.id) {
+            // location.reload();
+            $route.reload();
+        }
     }
 
     $scope.saveItem = function () {
@@ -314,7 +317,9 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     }
     if ($routeParams.tab == "summary") {
-        $scope.checkBedOccupancy($scope.Patient.Id);
+        if ($scope.Patient) {
+            $scope.checkBedOccupancy($scope.Patient.Id);
+        }
         $scope.loadItemCategories();
     }
 

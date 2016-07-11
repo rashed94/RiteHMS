@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, $filter, $modal, LabTestService) {
+HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, $filter, $modal,$route, LabTestService) {
 
     $scope.LabReportFormats = {};
     $scope.SingleLabItem = {
@@ -196,7 +196,10 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
 
     $scope.ReloadPage = function () {
-        $window.location.reload();
+        if (!$routeParams.id) {
+            // location.reload();
+            $route.reload();
+        }
     }
 
     $scope.loadLabTest = function () {
