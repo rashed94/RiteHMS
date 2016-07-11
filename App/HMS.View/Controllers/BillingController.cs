@@ -123,24 +123,20 @@ namespace HMS.Controllers
         //    return Json("invoice loaded success fully");
 
         //}=""
-        public JsonResult GetInvoicesByPatientId(long id, long statusid, string DateStart, string DateEnd)
+        public JsonResult GetInvoicesByPatientId(long id, long statusid, string DateStart, string DateEnd,long ? invoiceId=null)
         {
             List<PatientInvoice> onlypatientInvoices = new List<PatientInvoice>();
             List<PatientInvoice> patientInvoices;
-            bool dateTimeValid;
+            
             DateTime invoiceDateStart=DateTime.Parse("1/1/1980");
             DateTime invoiceDateEnd =  DateTime.Today;
 
-            try
+            if (IsDate(DateEnd) && IsDate(DateStart))
             {
-                 invoiceDateStart = DateTime.Parse(DateStart);
-                 invoiceDateEnd = DateTime.Parse(DateEnd);
-                dateTimeValid = true;
-            }
-            catch
-            {
-                dateTimeValid = false;
-            }
+
+                invoiceDateStart = DateTime.Parse(DateStart);
+                invoiceDateEnd = DateTime.Parse(DateEnd);
+            } 
 
 
             using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
@@ -168,25 +164,25 @@ namespace HMS.Controllers
                 {
                     if (statusid == 0)
                     {
-                        lambda = (x => x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd);
+                        lambda = (x => x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId==null? x.Active==true  : x.Id==invoiceId));
                         
                         
                       
                     }
                     else
                     {
-                        lambda = (x => x.InvoiceStatusId == statusid && x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd);
+                        lambda = (x => x.InvoiceStatusId == statusid && x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId == null ? x.Active == true : x.Id == invoiceId));
                     }
                 }
                 else
                 {
                     if (statusid == 0)
                     {
-                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd);
+                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId == null ? x.Active == true : x.Id == invoiceId));
                     }
                     else
                     {
-                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceStatusId == statusid && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd);
+                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceStatusId == statusid && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId == null ? x.Active == true : x.Id == invoiceId));
 
                     }
                 }

@@ -13,6 +13,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.showDiscountAmount = false;
     $scope.totalDiscountAmount = { Amount: 0 };
     $scope.refundedInvoice = {};
+    $scope.invoiceId = null;
     //var vm = this;
     //vm.totalDiscountAmount = "";
     $scope.perItemDiscount = 0;
@@ -561,7 +562,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         }
     }
     $scope.GetInvoices = function (patientId, invoicestatus) {
-        BillingService.GetInvoicesByPatientId(patientId, invoicestatus, $scope.invoiceDateStart, $scope.invoiceDateEnd)
+        BillingService.GetInvoicesByPatientId(patientId, invoicestatus, $scope.invoiceDateStart, $scope.invoiceDateEnd, $scope.invoiceId)
             .success(function (pt) {
                 $scope.invocieslist = pt;
                 prepareInvoiceDataModel();

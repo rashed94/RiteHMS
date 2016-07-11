@@ -508,7 +508,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 $scope.GetItemsByMedicalType($scope.medicalTypeID);
 
                 if (bedItem.BedOccupancies[0].PatientId == $scope.Patient.Id) {
-                    IsPatientExist = false;
+                    $scope.IsPatientExist = false;
                 }
 
 

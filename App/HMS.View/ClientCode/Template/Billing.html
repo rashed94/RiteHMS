@@ -227,9 +227,9 @@
             <div class="search_container">
                 <!-- <input type="text" width="50" maxlength="20" name="search" class="search" ><a href="#" class="fa fa-search"></a>-->
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
+                    <input type="text" class="form-control" ng-model="invoiceId" placeholder="Search for...">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" ng-model="invoiceId" ng-click="reloadInvoice()">Go!</button>
+                        <button class="btn btn-default" type="button"  ng-click="reloadInvoice()">Go!</button>
                     </span>
                 </div>
 
