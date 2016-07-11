@@ -265,6 +265,11 @@
             <div class="success_message">Successfully save the Item</div>
             </div>
         <div style="clear:both;"></div>
+
+        <div ng-show="saveSuccess>0" class="register">
+            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" ng-href="#/labtest/addlabtest">Add New Test</a>
+        </div>
+
             <div class="round_box box_general">
                 <table width="95%" border="1" ng-model="SingleLabItem">
                     <tr>
@@ -375,5 +380,6 @@
 
         <div style="clear:both;"></div>
         </div>
+    <div style="clear:both;"></div>
 
 </div>

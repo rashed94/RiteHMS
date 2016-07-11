@@ -3,6 +3,7 @@
 
 HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window, $filter, $modal, BedSetupService, PatientService) {
     $scope.LabReportFormats = {};
+    
     $scope.SingleBedItem = {
         id: 0,
         Name: "",
@@ -32,7 +33,10 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $scope.isSamePatient = 0;
     $scope.IsPatientNull = false;
     $scope.IsPatientExist = false;
-
+    $scope.filterCondition=
+    {
+        ItemCategoryId : "0"
+    }
 
 
     $scope.$on('patientchange', function (event, args) {
@@ -115,9 +119,9 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 $scope.ItemCategories = pt;
                 //$scope.filterCondition.ItemCategoryId = $scope.ItemCategories[1].Id;
 
-                if (!$routeParams.id) {
+               /* if (!$routeParams.id) {
                     $scope.filterCondition.ItemCategoryId = $scope.ItemCategories[0].Id.toString();
-                }
+                }*/
 
                 console.log(pt);
             })
@@ -173,9 +177,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     /******************************* save portion ***********************************************/
 
     // $scope.filterCondition = {};
-    $scope.filterCondition = {
-        ItemCategoryId: ""
-    }
+
 
     $scope.LoadFilterCondition = function () {
         $scope.filterCondition.MeasurementUnitId = $scope.SingleBedItem.MeasurementUnitId.toString();

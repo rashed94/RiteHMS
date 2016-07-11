@@ -118,10 +118,10 @@
             </select>
         </div>
 
-        <table width="90%" border="1" align="center" class="bordered" ng-model="items" >
+        <table width="100%" border="1" align="center" class="bordered" ng-model="items" >
             <thead>
                 <tr>
-                    <th width="36%">Test Name</th>
+                    <th width="36%">Medicine Name</th>
                     <th colspan="6">Category</th>
                     <th width="17%">&nbsp;</th>
                 </tr>
@@ -153,6 +153,11 @@
         </div>
 
         <div style="clear:both;"></div>
+
+        <div ng-show="saveSuccess>0" class="register">
+            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" ng-href="#/pharmacy/addpharmacy">Add New Pharmacy Item</a>
+        </div>
+
 
         <form name="form1" >
             <!--<form name="loginform" novalidate ng-submit="login.submit(loginForm)" class="css-form">-->

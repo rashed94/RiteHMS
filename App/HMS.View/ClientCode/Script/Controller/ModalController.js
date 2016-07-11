@@ -470,10 +470,11 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         angular.forEach(billingItems, function (item, key) {
             $scope.Invoice.TotalAmount += item.ServiceListPriceAfterDiscount ;
             $scope.Invoice.TotalDiscount += parseFloat(item.Discount);
+            
             $scope.GenerateServiceItem(item);
 
         });
-
+        $scope.Invoice.PaymentAmount = parseFloat($scope.Invoice.TotalAmount);
         if ($scope.isLabItem) {
             $scope.Invoice.LabStatusId = 1;
         }

@@ -185,7 +185,7 @@
         <table width="100%" border="1" align="center" class="bordered" ng-model="items" ng-init="loadItems()">
             <thead>
                 <tr>
-                    <th width="36%">Test Name</th>
+                    <th width="36%">Name</th>
                     <th colspan="6">Category</th>
                     <th width="17%">&nbsp;</th>
                 </tr>
@@ -215,7 +215,7 @@
             <div class="success_message">Plz filup the required fields !</div>
         </div>
         <div ng-show="saveSuccess>0" class="register">
-            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" href="#/bedsetup/addbed">Add New Bed</a>
+            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" ng-href="#/bedsetup/addbed">Add New Bed</a>
         </div>
 
         <div style="clear:both;"></div>

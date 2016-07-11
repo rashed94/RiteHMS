@@ -78,8 +78,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             angular.forEach(item.InvoicePayments, function (paymentitem) {
 
                 item.Paid = paymentitem.Amount + item.Paid;
-                item.selectedIcon = true;
-                item.activePosition = false;
+
 
             });
 
@@ -95,6 +94,9 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 }
                 PatientService.DeliveryDate = ToJavaScriptDate(PatientService.DeliveryDate);
                 PatientService.ServiceDate = ToJavaScriptDate(PatientService.ServiceDate);
+
+                item.selectedIcon = true;
+                item.activePosition = false;
 
             });
 
@@ -193,7 +195,9 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
 
 
-
+    $scope.ReloadPage = function () {
+        $window.location.reload();
+    }
 
     $scope.loadLabTest = function () {
         if ($scope.Patient) {

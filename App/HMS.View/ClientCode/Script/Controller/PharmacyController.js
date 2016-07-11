@@ -394,7 +394,9 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
         });
 
     }
-
+    $scope.ReloadPage = function () {
+        $window.location.reload();
+    }
 
     $scope.saveItem = function () {
 
