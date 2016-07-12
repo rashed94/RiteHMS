@@ -164,25 +164,25 @@ namespace HMS.Controllers
                 {
                     if (statusid == 0)
                     {
-                        lambda = (x => x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId==null? x.Active==true  : x.Id==invoiceId));
+                        lambda = (x => x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId == null ? x.Id >0 : x.Id == invoiceId));
                         
                         
                       
                     }
                     else
                     {
-                        lambda = (x => x.InvoiceStatusId == statusid && x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId == null ? x.Active == true : x.Id == invoiceId));
+                        lambda = (x => x.InvoiceStatusId == statusid && x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId == null ? x.Id>0 : x.Id == invoiceId));
                     }
                 }
                 else
                 {
                     if (statusid == 0)
                     {
-                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId == null ? x.Active == true : x.Id == invoiceId));
+                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId == null ? x.Id>0 : x.Id == invoiceId));
                     }
                     else
                     {
-                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceStatusId == statusid && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId == null ? x.Active == true : x.Id == invoiceId));
+                        lambda = (x => x.PatientID == id && x.Active == true && x.InvoiceStatusId == statusid && x.InvoiceDate >= invoiceDateStart && x.InvoiceDate <= invoiceDateEnd && (invoiceId == null ? x.Id>0 : x.Id == invoiceId));
 
                     }
                 }

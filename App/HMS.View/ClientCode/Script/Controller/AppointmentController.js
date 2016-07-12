@@ -73,6 +73,7 @@ HmsApp.controller("AppointmentController", function ($scope, $routeParams, $wind
                 $scope.DoctorAppointment = doctorAppointment;
                 $scope.DoctorAppointment.AppointmentDate = ToJavaScriptDate($scope.DoctorAppointment.AppointmentDate);
                 $window.location.href = "#/patient";
+                UpdateTopLink('patient');
             })
             .error(function (error) {
                 $scope.status = 'Unable to load DoctorAppointment data: ' + error.message;

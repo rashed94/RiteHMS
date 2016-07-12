@@ -26,16 +26,18 @@
 
     <div class="summary hide">
 
-        
+        Under Construction
 
     </div>
     <div class="setup hide">
+
+        <div style="padding-left:25px; padding-top:45px;">
         <div style="float:left; width: 35%;">
             <div class="input_containter">
                 <div class="title">Appointment date</div>
                 <div class="inputbox">
                     <!--<input type="date" width="110" placeholder="click to show datepicker" name="appointmentDate" class="appointmentDate" ng-model="DoctorAppointment.AppointmentDate">-->
-                    <input type="text" id="txtAppointmentDate" class="txtAppointmentDate" ng-model="DoctorAppointment.AppointmentDate" />
+                    <input type="text" id="txtAppointmentDate" class="txtAppointmentDate" ng-change=" GetAppointments()" ng-model="DoctorAppointment.AppointmentDate" />
                     <label for="txtAppointmentDate"></label>
                 </div>
             </div>
@@ -62,16 +64,7 @@
                     </select>
                 </div>
             </div>
-            <div class="input_containter doctor-bio" ng-show="Doctor.Id">
-                <div class="photo">
-                    <div style="width: 150px;float: left;">
-                        <img ng-src="GetImage.ashx?Name={{Doctor.Contact.Photo != null && Doctor.Contact.Photo != 'null' ? Doctor.Contact.Photo : ''}}" width="115" height="146" alt="{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}">
-                    </div>
-                </div>
-                <div class="description">
-                    {{Doctor.Description}}
-                </div>
-            </div>
+
             <div class="input_containter">
                 <div class="title"></div>
                 <div class="inputbox" ng-show="SelectedAppointment.Id">
@@ -87,8 +80,20 @@
                 </tr>
             </table>
         </div>
+
+        <div class="doctor-bio" ng-show="Doctor.Id">
+            <div class="photo">
+                <div style="width: 150px;float: left;">
+                    <img ng-src="GetImage.ashx?Name={{Doctor.Contact.Photo != null && Doctor.Contact.Photo != 'null' ? Doctor.Contact.Photo : ''}}" width="115" height="146" alt="{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}">
+                </div>
+            </div>
+            <div class="description">
+                {{Doctor.Description}}
+            </div>
+        </div>
+<div style="clear:both;"></div>
+       </div>
     </div>
     
         
     </div>
-</div>

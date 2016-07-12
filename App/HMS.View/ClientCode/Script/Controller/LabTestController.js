@@ -28,6 +28,9 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     $scope.medicalTypeID = 62;
     $scope.LabItemEdit = false;
     $scope.patientSelection = 1;
+    
+
+
 
     $scope.$on('patientchange', function (event, args) {
 
@@ -50,6 +53,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 if ($routeParams.tab == "listlabtest") {
 
                     $scope.loadLabItems();
+                    $scope.loadLabTestCategories();
                 }
 
 
@@ -168,7 +172,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     }
 
     $scope.GetLabItemsByMedicalType = function (medicalType) {
-        LabTestService.GetLabItemsByMedicalType(medicalType)
+        LabTestService.GetLabItemsByMedicalType(medicalType, $scope.filterCondition.CategoryId)
             .success(function (pt) {
                 $scope.Labitems = pt;
                 // preparelabtestDataModel();
@@ -181,7 +185,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     }
 
     $scope.GetInvoicesByMedicalType = function (patientId, labStatus, medicalType) {
-        LabTestService.GetInvoicesByMedicalType(patientId, labStatus, medicalType)
+        LabTestService.GetInvoicesByMedicalType(patientId, labStatus, medicalType, $scope.invoiceDateStart, $scope.invoiceDateEnd, $scope.invoiceId)
             .success(function (pt) {
                 $scope.labTestItems = pt;
                 preparelabtestDataModel();
@@ -414,7 +418,8 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     $scope.filterCondition = {
         MeasurementUnitId: '62',
         ItemCategoryId: '41',
-        LabReportGroupId: ""
+        LabReportGroupId: "",
+        CategoryId: "0"
 
 
     }
@@ -633,6 +638,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     }
     if ($routeParams.tab == "listlabtest") {
         $scope.loadLabItems();
+        $scope.loadLabTestCategories();
     }
     if ($routeParams.tab == "summary") {
         $scope.loadLabTest();

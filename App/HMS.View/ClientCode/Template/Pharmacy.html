@@ -99,22 +99,14 @@
     <div class="summary hide">
 
         <div class="criteria_box">
-            <div class="search_container">
-                <!-- <input type="text" width="50" maxlength="20" name="search" class="search" ><a href="#" class="fa fa-search"></a>-->
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                </div>
-
-            </div>
 
 
-            <select name="status" class="invoice_status">
-                <option value="open">DEMO CATEGORY</option>
-                <option value="close">DEMO CATEGORY1</option>
-                <option value="refunded">DEMO CATEGORY2</option>
+            <select ng-model="filterCondition.CategoryId" ng-change="loadItems()">
+
+                <option ng-selected="true" value="0"> All</option>
+                <option ng-repeat="category in TestCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+
             </select>
         </div>
 

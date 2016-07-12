@@ -1,9 +1,9 @@
 ﻿HmsApp.factory('LabTestService', ['$http', function ($http) {
 
     var LabTestService = {};
-    LabTestService.GetInvoicesByMedicalType = function (patientId, labStatus, medicalType) {
+    LabTestService.GetInvoicesByMedicalType = function (patientId, labStatus, medicalType,invoiceDateStart, invoiceDateEnd, invoiceId) {
         //return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + "&statusid=1" );
-        return $http.get('/Item/GetPatientInvoicebyMedicalType?id=' + patientId + '&statusid=' + labStatus + "&medicalTypeID=" + medicalType);
+        return $http.get('/Item/GetPatientInvoicebyMedicalType?id=' + patientId + '&statusid=' + labStatus + "&medicalTypeID=" + medicalType + '&DateStart=' + invoiceDateStart + '&DateEnd=' + invoiceDateEnd + '&invoiceId=' + invoiceId);
     };
 
     
@@ -19,9 +19,10 @@
         return $http.get('/Item/getDoctorWithReferrel?itemID=' + itemID);
     };
 
-    LabTestService.GetLabItemsByMedicalType = function (medicalType) {
+    LabTestService.GetLabItemsByMedicalType = function (medicalType,ItemCategoryId) {
         //return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + "&statusid=1" );
-        return $http.get('/Item/GetLabItemsByMedicalType?medicalTypeID=' + medicalType);
+        if (ItemCategoryId == 0) ItemCategoryId = null;
+        return $http.get('/Item/GetLabItemsByMedicalType?medicalTypeID=' + medicalType + '&categoryId=' + ItemCategoryId);
     };
 
     LabTestService.loadItembyId = function (itemID) {

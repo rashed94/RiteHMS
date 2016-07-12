@@ -556,7 +556,7 @@ namespace HMS.Controllers
         }
 
 
-        public JsonResult GetLabItemsByMedicalType(long medicalTypeID)
+        public JsonResult GetLabItemsByMedicalType(long medicalTypeID,long? categoryId=null)
         {
             List<Item> onlyItemsforLabTest = new List<Item>();
             List<Item> itemsforLabTest;
@@ -565,7 +565,7 @@ namespace HMS.Controllers
             {
                 Expression<Func<Item, bool>> lambda;
                 
-                    lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true);                
+                lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true && (categoryId==null ? x.ItemCategoryId>0: x.ItemCategoryId==categoryId));                
 
                     itemsforLabTest = repository.GetByQuery(lambda).ToList();
 
@@ -738,17 +738,41 @@ namespace HMS.Controllers
 
             return Json("Status update successfull");
         }
-
-        public JsonResult GetPatientInvoicebyMedicalType(long id, long statusid, long medicalTypeID)
+        public static bool IsDate(Object obj)
+        {
+            string strDate = obj.ToString();
+            try
+            {
+                DateTime dt = DateTime.Parse(strDate);
+                if ((dt.Month != System.DateTime.Now.Month) || (dt.Day < 1 && dt.Day > 31) || dt.Year != System.DateTime.Now.Year)
+                    return false;
+                else
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public JsonResult GetPatientInvoicebyMedicalType(long id, long statusid, long medicalTypeID, string DateStart, string DateEnd, long? invoiceId = null)
         {
 
             List<PatientInvoice> onlypatientInvoices = new List<PatientInvoice>();
             List<PatientInvoice> patientInvoices;
             List<PatientService> PatientServices;
+            DateTime invoiceDateStart = DateTime.Parse("1/1/1980");
+            DateTime invoiceDateEnd = DateTime.Today;
+
+            if (IsDate(DateEnd) && IsDate(DateStart))
+            {
+
+                invoiceDateStart = DateTime.Parse(DateStart);
+                invoiceDateEnd = DateTime.Parse(DateEnd);
+            } 
 
             using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
             {
-                patientInvoices = repository.GetPatientInvoicebyMedicalTypeOnlyLabItem(id, statusid, medicalTypeID).ToList();
+                patientInvoices = repository.GetPatientInvoicebyMedicalTypeOnlyLabItem(id, statusid, medicalTypeID, invoiceDateStart, invoiceDateEnd, invoiceId).ToList();
 
                 foreach (PatientInvoice pinvoice in patientInvoices)
                 {

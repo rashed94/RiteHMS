@@ -665,8 +665,9 @@ select option:empty { display:none }
 }
 
 .doctor-bio {
-    width: 500px;
-    margin: 25px;
+   max-width: 500px;
+    margin-left: 25px;
+    float:left;
 }
 
 .bed_view{
@@ -713,4 +714,8 @@ select option:empty { display:none }
 }
 table.bed_table  td{
     padding:4px;
+}
+.category_list
+{
+    width:170px;
 }

@@ -35,7 +35,8 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $scope.IsPatientExist = false;
     $scope.filterCondition=
     {
-        ItemCategoryId : "0"
+        ItemCategoryId: "0",
+        CategoryId:"0"
     }
 
 
@@ -119,9 +120,9 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 $scope.ItemCategories = pt;
                 //$scope.filterCondition.ItemCategoryId = $scope.ItemCategories[1].Id;
 
-               /* if (!$routeParams.id) {
+                if (!$routeParams.id) {
                     $scope.filterCondition.ItemCategoryId = $scope.ItemCategories[0].Id.toString();
-                }*/
+                }
 
                 console.log(pt);
             })

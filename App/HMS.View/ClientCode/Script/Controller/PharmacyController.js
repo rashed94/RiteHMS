@@ -36,6 +36,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
                 if ($routeParams.tab == "summary") {
                     loadItems();
+                    $scope.loadTestCategories();
                 }
                 if ($routeParams.tab == "addpharmacy") {
                     $scope.loadAddPharmacyItem();
@@ -150,7 +151,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
     }
 
     $scope.GetItemsByMedicalType = function (medicalType) {
-        ItemService.GetItemsByMedicalType(medicalType)
+        ItemService.GetItemsByMedicalType(medicalType,$scope.filterCondition.CategoryId)
             .success(function (pt) {
                 $scope.items = pt;
                 // preparelabtestDataModel();
@@ -364,7 +365,8 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
     $scope.filterCondition = {
         MeasurementUnitId: '62',
         ItemCategoryId: '41',
-        ReportGroupId: ""
+        ReportGroupId: "",
+        CategoryId:"0"
 
 
     }
@@ -601,6 +603,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
     if ($routeParams.tab == "summary") {
         $scope.loadItems();
+        $scope.loadTestCategories();
     }
 
 
