@@ -3,6 +3,7 @@ HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemS
 
     $scope.MedicalTypes = {};
     $scope.medicalTypeID = "62";
+    $scope.ServiceProviderType = 56; // which is doctor
     $scope.GetMedicalType = function () {
 
         AddItemService.GetMedicalType()
@@ -48,7 +49,7 @@ HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemS
 
         /*----------------------------  TypeId 56 means doctor --------------------------------------------------*/
 
-        return $http.get('/patient/getdoctorpartialname?name=' + name + "&typeId=" + 56 + "&itemId=" + itemid).then(function (response) {
+        return $http.get('/patient/getdoctorpartialname?name=' + name + "&typeId=" + $scope.ServiceProviderType + "&itemId=" + itemid).then(function (response) {
             var data = response.data;
             return response.data;
         });

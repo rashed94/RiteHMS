@@ -28,6 +28,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.Patient = {};
     $scope.Patient.Photo = "";
     $scope.IsPatientLoaded = "";
+    $scope.ServiceProviderType = 56;  // which is doctor
 
     $scope.getAppointment = function () {
         if ($scope.Patient) {
@@ -173,14 +174,15 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.updateReferrerItem = function ($item,doctor) {
         if (doctor == '')
         {
-            $item.ServiceProviderId = 0;
+           
             angular.forEach($scope.Items, function (obj) {
                 // obj.push($item);
-                if (obj.Id == $item.Id) {
+                
 
                     obj.ReferralFee = obj.DefaultReferrarFee;
-
-                }
+                    obj.ServiceProviderId = 0;
+                    obj.Doctor = "";
+               
             });
         }
     }
@@ -273,11 +275,8 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     //    });
     //}
 
-
-
-    $scope.OnDocotorSelect = function ($item,serviceitem) {
-
-
+    $scope.updateAllReferellFee = function ($item, serviceitem)
+    {
         if ($item.ReferralFee > 0) {
             serviceitem.ReferralFee = $item.ReferralFee;
 
@@ -285,12 +284,34 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
             if (!found.length) {
                 $scope.Items.push(serviceitem);
             }
-        }else
-        {
+        } else {
             serviceitem.ReferralFee = serviceitem.DefaultReferrarFee;
         }
         serviceitem.ServiceProviderId = $item.Id;
+    }
 
+    $scope.OnDocotorSelect = function ($item,serviceitem) {
+
+        angular.forEach($scope.Items, function (obj) {
+
+            if (obj.ReferralAllowed) {
+
+                obj.Doctor = $item.Contact.FirstName + ' ' + $item.Contact.LastName;
+
+                //var currentItem=GetServiceProviderPartialName($item.Contact.FirstName, obj.Id)
+
+                $http.get('/patient/getdoctorpartialname?name=' + $item.Contact.FirstName + "&typeId=" + $scope.ServiceProviderType + "&itemId=" + obj.Id).then(function (response) {
+                     var data = response.data;
+                     $scope.updateAllReferellFee(data[0], obj);
+                    
+                });
+
+                
+            }
+
+        });
+
+        
         //  console.log($item.Id);
 
     }

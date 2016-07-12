@@ -128,13 +128,13 @@
                         <td>
                             <input type="text" width="100" ng-model="serviceitem.ReferralFee" ng-show="serviceitem.ReferralAllowed" name="referrer" class="referrer"></td>
                         <td>
-                            <input name="doctorName" id="doctorName" type="text" ng-show="serviceitem.ReferralAllowed" ng-change="updateReferrerItem(serviceitem,Doctor)" placeholder="Type Doctor's name"
-                                ng-model="Doctor"
-                                typeahead="item as (item.Contact.FirstName + ' ' + item.Contact.LastName) for item in GetServiceProviderPartialName($viewValue,serviceitem.Id)"
-                                typeahead-on-select="OnDocotorSelect($item,serviceitem)"
-                                typeahead-min-length="1"
-                                typeahead-wait-ms="1"
-                                class="form-control">
+                            <input name="doctorName" id="doctorName" type="text" ng-show="serviceitem.ReferralAllowed" ng-change="updateReferrerItem(serviceitem,serviceitem.Doctor)" placeholder="Type Doctor's name"
+                                   ng-model="serviceitem.Doctor"
+                                   typeahead="item as (item.Contact.FirstName + ' ' + item.Contact.LastName) for item in GetServiceProviderPartialName($viewValue,serviceitem.Id)"
+                                   typeahead-on-select="OnDocotorSelect($item,serviceitem)"
+                                   typeahead-min-length="1"
+                                   typeahead-wait-ms="1"
+                                   class="form-control">
                         </td>
                         <td>
                             <input type="text" width="100" name="amount" ng-model="serviceitem.Amount" class="amount"></td>
