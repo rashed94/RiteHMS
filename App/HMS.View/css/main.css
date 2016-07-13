@@ -186,7 +186,7 @@ input[type=text]:focus, textarea:focus {
 	color: #ff45f;
 	text-transform: uppercase;
     margin:0 auto;
-	width:810px;
+	width:895px;
 	
 	
 	
@@ -336,6 +336,49 @@ background: url(../images/sitemenu_billing_hover.gif) no-repeat 6px 2px #538e4a;
 background: url(../images/sitemenu_billing.gif) no-repeat 6px 2px #80b24a;	
 padding-left:32px;	
 }
+
+.site_navigation li.admin a:hover
+{
+background: url(../images/sitemenu_admin_hover.gif) no-repeat 6px 2px #538e4a;	
+	
+}
+.site_navigation li.admin a
+{
+background: url(../images/sitemenu_admin.gif) no-repeat 6px 2px #80b24a;	
+padding-left:32px;	
+}
+
+.site_navigation li.admin a.selected 
+{
+	background: url(../images/sitemenu_admin_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:32px;	
+}
+
+
+.site_navigation_secondary
+{
+	font-size: 11px;
+	font-family: SansSemiBold;
+	color: #ff45f;
+	text-transform: uppercase;
+    margin:0 auto;
+	width:100%;
+    text-align:center;
+	
+	
+	
+}
+.site_navigation_secondary ul:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+.site_navigation_secondary { list-style: none; }
+.site_navigation_secondary li { display: inline; width:80px;}
+.site_navigation_secondary li a { color: #fff;padding:15px; background: #80b24a; text-decoration: none;float:left; position:relative; margin-left:1px; top:1px;  }
+.site_navigation_secondary li a:hover { background: #538e4a; }
 
 
 #itemname

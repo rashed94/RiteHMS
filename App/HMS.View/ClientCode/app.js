@@ -63,6 +63,13 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
         when('/configuration/:tab', {
             templateUrl: '/ClientCode/Template/Configuration.html',
         }).
+
+      when('/admin', {
+          templateUrl: '/ClientCode/Template/Admin.html',
+      }).
+      when('/admin/:tab', {
+          templateUrl: '/ClientCode/Template/Admin.html',
+      }).
         when('/contact/:id', {
             templateUrl: '/ClientCode/Template/EditContact.html',
             controller: 'ContactController'

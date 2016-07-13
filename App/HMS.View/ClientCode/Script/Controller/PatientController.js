@@ -418,6 +418,14 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
 
             //  $window.location.href = '#/billing';
         }
+
+        else if (link.indexOf("admin") > -1) {
+            $('.site_navigation li a').removeClass('selected');
+            $('.site_navigation li.admin a').addClass('selected');
+
+            //  $window.location.href = '#/billing';
+        }
+
         else {
             $('.site_navigation li a').removeClass('selected');
             $('.site_navigation li.patientinfo a').addClass('selected');
