@@ -185,11 +185,14 @@
 
 
 
-            <select name="status" class="category_list">
-                <option value="open">DEMO CATEGORY</option>
-                <option value="close">DEMO CATEGORY1</option>
-                <option value="refunded">DEMO CATEGORY2</option>
+            <select ng-model="filterCondition.CategoryId" ng-change="loadItems()">
+
+                <option ng-selected="true" value="0"> All</option>
+                <option ng-repeat="category in ItemCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+
             </select>
+
         </div>
         <table width="100%" border="1" align="center" class="bordered" ng-model="items" ng-init="loadItems()">
             <thead>

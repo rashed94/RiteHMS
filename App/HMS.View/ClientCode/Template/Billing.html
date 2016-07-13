@@ -326,7 +326,7 @@
 
 <script type="text/ng-template"  id="display">
     <td>{{patientservice.Item.Name}}</td>
-    <td>{{patientservice.Item.GenericName}}</td>
+    <td>{{patientservice.Item.ItemCategory.Name}}</td>
     <td>{{patientservice.ServiceQuantity}}</td>
     <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
     <td>{{patientservice.Discount}}</td>
@@ -336,7 +336,7 @@
     <td>{{patientservice.ReferralFee}}</td>
     <td>
         <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" href="#" ng-hide="singleinvoice.InvoiceStatusId==2" ng-click="$event.preventDefault();editPatientService(singleinvoice,patientservice);"></a>
-        <span class="status_green"><a ng-click="$event.preventDefault();OpenPopUp($event,singleinvoice)" class="link_brown">refund</a></span>
+        <span class="status_green"><span ng-hide="patientservice.RefundNote==NULL">Refund Request Sent</span><a ng-show="patientservice.RefundNote==NULL" ng-click="$event.preventDefault();OpenPopUp($event,patientservice)" class="link_brown">refund</a></span>
     </td>
 </script>
 

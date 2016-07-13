@@ -63,6 +63,26 @@ namespace HMS.Controllers
         }
 
 
+
+        public JsonResult UpdateRefundNote(PatientService pService)
+        {
+            PatientService patientService = null;
+            pService.Item = null;
+            using (PatientServiceRepository repository = new PatientServiceRepository())
+            {
+
+                patientService=repository.UpdateByField(pService, "RefundNote");
+                // CreatePatientService(invoice.Id, patientServices);
+            }
+
+            if (patientService == null)
+            {
+                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("Refund successfull", JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult SaveInvoice(PatientInvoice invoice, IList<PatientService> patientServices)
         {
             using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
@@ -229,7 +249,9 @@ namespace HMS.Controllers
                     {
                         PatientService patientstitem = new PatientService();
                         Item item = new Item();
+                        ItemCategory Category = new ItemCategory();
                         patientstitem.Item = item;
+                        patientstitem.Item.ItemCategory = Category;
 
 
                         patientstitem.Id = c.Id;
@@ -243,17 +265,24 @@ namespace HMS.Controllers
                         patientstitem.UserId = c.UserId;
                         patientstitem.Discount = c.Discount;
                         patientstitem.Refund = c.Refund;
+                        patientstitem.RefundNote = c.RefundNote;
+
                         patientstitem.Billed = c.Billed;
                         patientstitem.LabStatusId = c.LabStatusId;
                         patientstitem.ReferralFee = c.ReferralFee;
                         patientstitem.DeliveryDate = c.DeliveryDate;
                         patientstitem.DeliveryTime = c.DeliveryTime;
+
+
                         patientstitem.Item.Name = c.Item.Name;
                         patientstitem.Item.GenericName = c.Item.GenericName;
+                        patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
                         patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
+
                         patientstitem.ReferralFeePaid = c.ReferralFeePaid;
                         patientstitem.ServiceProviderId = c.ServiceProviderId;
                         patientstitem.UserId = GetLoggedinUserInfo().UserId;
+
                         onlyPatientInvoice.PatientServices.Add(patientstitem);
                     }
 

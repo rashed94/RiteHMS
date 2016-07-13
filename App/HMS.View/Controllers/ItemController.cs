@@ -812,10 +812,12 @@ namespace HMS.Controllers
                         {
                             PatientService patientstitem = new PatientService();
                             Item item = new Item();
+                            ItemCategory Category = new ItemCategory();
                             ServiceProvider serviceProdier = new ServiceProvider();
                             Contact contact = new Contact();
                             serviceProdier.Contact = contact;
                             patientstitem.Item = item;
+                            patientstitem.Item.ItemCategory = Category;
                             patientstitem.ServiceProvider = serviceProdier;
 
 
@@ -830,6 +832,7 @@ namespace HMS.Controllers
                             patientstitem.UserId = c.UserId;
                             patientstitem.Discount = c.Discount;
                             patientstitem.Refund = c.Refund;
+                            patientstitem.RefundNote = c.RefundNote;
                             patientstitem.Billed = c.Billed;
                             patientstitem.ReferralFee = c.ReferralFee;
                             patientstitem.DeliveryDate = c.DeliveryDate;
@@ -844,6 +847,8 @@ namespace HMS.Controllers
                             patientstitem.Item.Name = c.Item.Name;
                             patientstitem.Item.GenericName = c.Item.GenericName;
                             patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
+
+                            patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
 
                             if (c.ServiceProvider != null)
                             {

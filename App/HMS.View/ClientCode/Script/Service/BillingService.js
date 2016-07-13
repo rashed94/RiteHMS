@@ -23,6 +23,12 @@
 
     };
 
+    BillingService.UpdateRefundNote = function (PatientService) {
+
+        return $http.post('/Billing/UpdateRefundNote', PatientService);
+
+    };
+
     BillingService.SaveInvoice = function (invoice, patientServices) {
         if (invoice.Id == null) {
             invoice.PatientServices = patientServices;

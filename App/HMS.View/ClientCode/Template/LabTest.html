@@ -214,7 +214,7 @@
                             <tbody ng-repeat="patientservice in labTestitem.PatientServices">
                                 <tr>
                                     <td>{{patientservice.Item.Name}}</td>
-                                    <td>{{patientservice.Item.GenericName}}</td>
+                                    <td>{{patientservice.Item.ItemCategory.Name}}</td>
                                     <td>{{patientservice.ServiceProvider.Contact.FirstName}}  {{patientservice.ServiceProvider.Contact.LastName}}</td>
                                     <td><span ng-class="{'status_red':patientservice.LabStatusId==1, 'status_green':patientservice.LabStatusId==2}">{{patientservice.Staus}}</span></td>
                                     <td>

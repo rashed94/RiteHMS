@@ -13,6 +13,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.showDiscountAmount = false;
     $scope.totalDiscountAmount = { Amount: 0 };
     $scope.refundedInvoice = {};
+    $scope.refundedServices = {};
     $scope.invoiceId = null;
     //var vm = this;
     //vm.totalDiscountAmount = "";
@@ -768,19 +769,34 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
 
     /*------------------------------- refund code begin ---------------------------*/
-    $scope.OpenPopUp = function (event,singleinvoice) {
+    $scope.OpenPopUp = function (event, patientservice) {
 
         $('#popupRefundApproval').css("display", "block");
         //$('#popupRefundApproval').css("opacity", 1);
 
         $("#popupRefundApproval").css({ position: "absolute", top: event.pageY - 100, left: event.pageX - 220 });
 
-        $scope.refundedInvoice = singleinvoice;
+        $scope.refundedServices = patientservice;
 
     }
 
     $scope.saveRefundNote=function()
     {
+        $scope.refundedServices.RefundNote = $scope.refundNote;
+        BillingService.UpdateRefundNote($scope.refundedServices)
+      .success(function (data) {
+
+         
+
+
+      })
+      .error(function (error) {
+          // $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+          $window.alert("something went wrong Refund request  not send!");
+          // console.log($scope.status);
+          $scope.reset(singleinvoice, patientservice);
+
+      });
 
         $('#popupRefundApproval').css("display", "none");
         //$('#popupRefundApproval').css("opacity", 0);

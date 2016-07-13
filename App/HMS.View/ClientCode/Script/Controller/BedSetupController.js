@@ -47,9 +47,11 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
         }
 
-        if ($routeParams.tab == "listlabtest") {
+        if ($routeParams.tab == "bedlist") {
 
-            $scope.GetItemsByMedicalType($scope.medicalTypeID);
+            
+            $scope.loadItemCategories();
+          
         }
 
 
@@ -72,7 +74,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     $scope.loaditembyCategory = function () {
 
-        BedSetupService.GetItemsByMedicalType($scope.medicalTypeID, $scope.filterCondition.ItemCategoryId)
+        BedSetupService.GetItemsByMedicalType($scope.medicalTypeID, $scope.filterCondition.CategoryId)
     .success(function (pt) {
         $scope.items = pt;
         // preparelabtestDataModel();
@@ -97,7 +99,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     }
 
     $scope.GetItemsByMedicalType = function (medicalType) {
-        BedSetupService.GetItemsByMedicalType(medicalType)
+        BedSetupService.GetItemsByMedicalType($scope.medicalTypeID, $scope.filterCondition.CategoryId)
             .success(function (pt) {
                 $scope.items = pt;
                 // preparelabtestDataModel();
@@ -322,6 +324,13 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
             $scope.checkBedOccupancy($scope.Patient.Id);
         }
         $scope.loadItemCategories();
+    }
+    if ($routeParams.tab == "bedlist") {
+        $scope.loadItemCategories();
+
+
+
+
     }
 
     var tabClass = ".summary";
