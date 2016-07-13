@@ -300,9 +300,9 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
 
                 //var currentItem=GetServiceProviderPartialName($item.Contact.FirstName, obj.Id)
 
-                $http.get('/patient/getdoctorpartialname?name=' + $item.Contact.FirstName + "&typeId=" + $scope.ServiceProviderType + "&itemId=" + obj.Id).then(function (response) {
+                $http.get('/patient/getDoctorByID?serviceProviderID=' + $item.Id + "&typeId=" + $scope.ServiceProviderType + "&itemId=" + obj.Id).then(function (response) {
                      var data = response.data;
-                     $scope.updateAllReferellFee(data[0], obj);
+                     $scope.updateAllReferellFee(data, obj);
                     
                 });
 

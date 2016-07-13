@@ -237,6 +237,44 @@ namespace HMS.Controllers
             return Json(onlyserviceProviders, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult getDoctorByID(long serviceProviderID, long typeId, long itemid)
+        {
+            // long typid = 56; // retturn only doctor
+
+            ServiceProvider serviceProviders = null;
+            ServiceProvidedWithReferrerFee onlyserviceProviders = new ServiceProvidedWithReferrerFee();
+
+            using (ServiceProviderRepository repository = new ServiceProviderRepository())
+            {
+                    
+                    serviceProviders = repository.GetById(serviceProviderID);
+
+
+
+                    ServiceProvidedWithReferrerFee serviceProvider = new ServiceProvidedWithReferrerFee();
+                    Contact contact = new Contact();
+                    serviceProvider.Contact = contact;
+
+                    serviceProvider.Contact.FirstName = serviceProviders.Contact.FirstName;
+                    serviceProvider.Contact.LastName = serviceProviders.Contact.LastName;
+                    serviceProvider.Id = serviceProviders.Id;
+                    serviceProvider.Speciality = serviceProviders.Speciality;
+
+                    Referral referral = new Referral();
+
+                    using (ReferralRepository referrerrepository = new ReferralRepository())
+                    {
+                        referral = referrerrepository.GetReferrer(serviceProvider.Id, itemid);
+                        serviceProvider.ReferralFee = referral.ReferralFee;
+                    }
+
+                    onlyserviceProviders=serviceProvider;
+                
+            }
+
+            return Json(onlyserviceProviders, JsonRequestBehavior.AllowGet);
+        }
+
 
         public JsonResult GetServiceProviderPartialName(string name,long itemid)
         {
