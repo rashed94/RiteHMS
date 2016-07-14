@@ -53,6 +53,18 @@
     };
 
 
+    ItemService.GetRefundedItem = function () {
+
+        return $http.get('/Item/GetRefundedItem');
+    };
+
+    ItemService.approveRefund = function (patientservice) {
+
+        return $http.post('/Item/approveRefund', patientservice);
+    };
+
+
+
 
     ItemService.CreateCategory = function (categoryName, medicalTypeID) {
 

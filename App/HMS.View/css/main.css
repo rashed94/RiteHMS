@@ -592,6 +592,8 @@ div.payment_input_box
 	font-size:11px;
 	font-family:SansSemiBold;
 	text-transform:uppercase;
+    
+
 }
 
 .status_red
@@ -600,6 +602,12 @@ div.payment_input_box
 	font-size:11px;
 	font-family:SansSemiBold;
 	text-transform:uppercase;
+    
+}
+.status_red p
+{
+    text-decoration:none;
+    display:inline-block;
 }
 
 .status_brown
@@ -749,4 +757,9 @@ margin-top:10px;
 .top_space{
     margin-top:25px;
     display:block;
+}
+.refund_item
+{
+    text-decoration: line-through;
+    color:#c46516;
 }

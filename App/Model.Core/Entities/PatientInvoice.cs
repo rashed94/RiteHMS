@@ -21,6 +21,7 @@ namespace HMS.Model.Core
         public decimal TotalAmount { get; set; }
         public decimal? TotalDiscount { get; set; }
         public decimal? ItemDiscount { get; set; }
+        public bool IsRefunded { get; set; }
     
         public virtual ICollection<InvoicePayment> InvoicePayments { get; set; }
         public virtual InvoiceStatus InvoiceStatus { get; set; }

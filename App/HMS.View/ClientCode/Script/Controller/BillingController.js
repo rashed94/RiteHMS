@@ -769,7 +769,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
 
     /*------------------------------- refund code begin ---------------------------*/
-    $scope.OpenPopUp = function (event, patientservice) {
+    $scope.OpenPopUp = function (event, patientservice,Paid) {
 
         $('#popupRefundApproval').css("display", "block");
         //$('#popupRefundApproval').css("opacity", 1);
@@ -777,26 +777,34 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         $("#popupRefundApproval").css({ position: "absolute", top: event.pageY - 100, left: event.pageX - 220 });
 
         $scope.refundedServices = patientservice;
+        $scope.Paid = Paid;
 
     }
 
     $scope.saveRefundNote=function()
     {
-        $scope.refundedServices.RefundNote = $scope.refundNote;
-        BillingService.UpdateRefundNote($scope.refundedServices)
-      .success(function (data) {
 
-         
+        if ($scope.Paid < ($scope.refundedServices.ServiceListPrice * $scope.refundedServices.ServiceQuantity)) {
+            $window.alert("you can't refund this item");
+        } else {
+
+            $scope.refundedServices.RefundNote = $scope.refundNote;
+            BillingService.UpdateRefundNote($scope.refundedServices)
+          .success(function (data) {
 
 
-      })
-      .error(function (error) {
-          // $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
-          $window.alert("something went wrong Refund request  not send!");
-          // console.log($scope.status);
-          $scope.reset(singleinvoice, patientservice);
 
-      });
+
+
+          })
+          .error(function (error) {
+              // $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+              $window.alert("something went wrong Refund request  not send!");
+              // console.log($scope.status);
+              $scope.reset(singleinvoice, patientservice);
+
+          });
+        }
 
         $('#popupRefundApproval').css("display", "none");
         //$('#popupRefundApproval').css("opacity", 0);

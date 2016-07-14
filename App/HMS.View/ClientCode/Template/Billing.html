@@ -301,7 +301,7 @@
                                         </tr>
                                     </thead>
                                     <tbody ng-repeat="patientservice in singleinvoice.PatientServices" ng-include="getTemplate(patientservice)">
-                                        <tr></tr>
+                                      
 
                                     </tbody>
                                 </table>
@@ -324,35 +324,45 @@
 </div>
 
 
-<script type="text/ng-template"  id="display">
-    <td>{{patientservice.Item.Name}}</td>
-    <td>{{patientservice.Item.ItemCategory.Name}}</td>
-    <td>{{patientservice.ServiceQuantity}}</td>
-    <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
-    <td>{{patientservice.Discount}}</td>
-    <td>
-        by Amount
-    <td>{{patientservice.ServiceListPrice}}</td>
-    <td>{{patientservice.ReferralFee}}</td>
-    <td>
-        <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" href="#" ng-hide="singleinvoice.InvoiceStatusId==2" ng-click="$event.preventDefault();editPatientService(singleinvoice,patientservice);"></a>
-        <span class="status_green"><span ng-hide="patientservice.RefundNote==NULL">Refund Request Sent</span><a ng-show="patientservice.RefundNote==NULL" ng-click="$event.preventDefault();OpenPopUp($event,patientservice)" class="link_brown">refund</a></span>
-    </td>
+<script type="text/ng-template" id="display">
+
+    <tr ng-class="{'refund_item':patientservice.Refund,'':!patientservice.Refund}">
+        <td>{{patientservice.Item.Name}}</td>
+        <td>{{patientservice.Item.ItemCategory.Name}}</td>
+        <td>{{patientservice.ServiceQuantity}}</td>
+        <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
+        <td>{{patientservice.Discount}}</td>
+        <td>
+            by Amount
+        <td>{{patientservice.ServiceListPrice}}</td>
+        <td>{{patientservice.ReferralFee}}</td>
+        <td ng-show="!patientservice.Refund">
+            <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" href="#" ng-hide="singleinvoice.InvoiceStatusId==2" ng-click="$event.preventDefault();editPatientService(singleinvoice,patientservice);"></a>
+            <span class="status_green">
+                <span ng-show="patientservice.RefundNote!=NULL && patientservice.Refund==NULL">Refund Request Sent</span>
+                <a ng-show="patientservice.RefundNote==NULL" ng-click="$event.preventDefault();OpenPopUp($event,patientservice,singleinvoice.Paid)" class="link_brown">refund</a>
+            </span>
+
+        </td>
+        <td ng-show="patientservice.Refund"><span class="status_red"><p>Refunded</p></span></td>
+    </tr>
 </script>
 
 <script type="text/ng-template" id="edit">
-    <td>{{patientservice.Item.Name}}</td>
-    <td>{{patientservice.Item.GenericName}}</td>
-    <td>{{patientservice.ServiceQuantity}}</td>
-    <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
-    <td><input class="discount" type="number" min="1"  ng-change="UpdatePatientServiceDiscount(singleinvoice,patientservice)" ng-model="patientservice.Discount" /></td>
-    <td>
-        by Amount
-    <td>{{patientservice.ServiceListPrice}}</td>
-    <td>{{patientservice.ReferralFee}}</td>
-    <td>
-        <a class="fa fa-floppy-o fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();savePatientServiceAndInvoice(singleinvoice,patientservice)"></a>
-        &nbsp;&nbsp;&nbsp;<a class="fa fa-times fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();reset(singleinvoice,patientservice);"></a>
-       
-    </td>
+    <tr ng-class="{'refund_item':patientservice.Refund,'':!patientservice.Refund}">
+        <td>{{patientservice.Item.Name}}</td>
+        <td>{{patientservice.Item.GenericName}}</td>
+        <td>{{patientservice.ServiceQuantity}}</td>
+        <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
+        <td><input class="discount" type="number" min="1" ng-change="UpdatePatientServiceDiscount(singleinvoice,patientservice)" ng-model="patientservice.Discount" /></td>
+        <td>
+            by Amount
+        <td>{{patientservice.ServiceListPrice}}</td>
+        <td>{{patientservice.ReferralFee}}</td>
+        <td>
+            <a class="fa fa-floppy-o fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();savePatientServiceAndInvoice(singleinvoice,patientservice)"></a>
+            &nbsp;&nbsp;&nbsp;<a class="fa fa-times fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();reset(singleinvoice,patientservice);"></a>
+
+        </td>
+    </tr>
 </script>

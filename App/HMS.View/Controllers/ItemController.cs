@@ -754,6 +754,171 @@ namespace HMS.Controllers
                 return false;
             }
         }
+
+
+        public JsonResult approveRefund(PatientService patientService)
+        {
+
+            patientService.UserId = GetLoggedinUserInfo().UserId;
+            Payment pPayment = new Payment();
+      
+            long invoiceId=(long)patientService.InvoiceID;
+        
+
+            using (PatientServiceRepository repository = new PatientServiceRepository())
+            {
+                patientService.Item = null;
+                patientService.ServiceProvider = null;
+                patientService.Refund = true;
+                repository.Update(patientService);
+                repository.Commit();
+            }
+
+            Refund refundItem = new Refund();
+
+            refundItem.ApprovedUserID = GetLoggedinUserInfo().UserId;
+            refundItem.UserId =(long) patientService.UserId;
+            refundItem.Amount = patientService.ServiceActualPrice;
+            refundItem.InvoiceID = invoiceId;
+            refundItem.ItemId = patientService.ItemID;
+            refundItem.PatientInvoice = null;
+
+            
+
+            using (Repository<Refund> repository = new Repository<Refund>())
+            {
+
+                repository.Insert(refundItem);
+                repository.Commit();
+            }
+
+            
+
+
+            using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
+            {
+                PatientInvoice pInvoice = repository.GetById(invoiceId);
+                pInvoice.IsRefunded = true;
+                pInvoice.UserId = GetLoggedinUserInfo().UserId;
+                pInvoice.TotalAmount = pInvoice.TotalAmount - patientService.ServiceListPrice;
+                repository.Update(pInvoice);
+                repository.Commit();
+
+            }
+
+            using (Repository<Payment> repository = new Repository<Payment>())
+            {
+
+
+                pPayment.Amount = -(patientService.ServiceListPrice);
+                pPayment.PaymentTypeId = 101;
+                pPayment.PatientID = patientService.PatientID;
+                pPayment.UserId = (long)patientService.UserId;
+                pPayment.Date = DateTime.Now;
+
+                pPayment = repository.Insert(pPayment);
+                repository.Commit();
+            }
+
+
+            using (Repository<InvoicePayment> repository = new Repository<InvoicePayment>())
+            {
+                InvoicePayment pInvoicePayment = new InvoicePayment();
+
+                pInvoicePayment.PatientInvoiceId = invoiceId;
+                pInvoicePayment.Amount = -(patientService.ServiceListPrice);
+                pInvoicePayment.PaymentID = pPayment.Id;
+                pInvoicePayment.UserId = (long)patientService.UserId;
+
+                
+                repository.Insert(pInvoicePayment);
+                repository.Commit();
+ 
+
+            }
+
+
+
+            return Json("Successfully approved refund");
+        }
+
+        public JsonResult GetRefundedItem()
+        {
+            List<PatientService> onlyPatientServices = new List<PatientService>();
+            List<PatientService> PatientServices;
+            Expression<Func<PatientService, bool>> lambda;
+
+            using (PatientServiceRepository repository = new PatientServiceRepository())
+            {
+
+
+                lambda = (x => x.RefundNote!= null && x.Refund==null && x.Active == true);
+                PatientServices= repository.GetByQuery(lambda).ToList();
+
+
+                foreach (PatientService c in PatientServices)
+                {
+                    PatientService patientstitem = new PatientService();
+                    Item item = new Item();
+                    ItemCategory Category = new ItemCategory();
+ 
+                    
+                    patientstitem.Item = item;
+                    patientstitem.Item.ItemCategory = Category;
+                   
+
+
+                    patientstitem.Id = c.Id;
+                    patientstitem.PatientID = c.PatientID;
+                    patientstitem.ItemID = c.ItemID;
+                    patientstitem.InvoiceID = c.InvoiceID;
+                    patientstitem.ServiceListPrice = c.ServiceListPrice;
+                    patientstitem.ServiceActualPrice = c.ServiceActualPrice;
+                    patientstitem.ServiceQuantity = c.ServiceQuantity;
+                    patientstitem.ServiceDate = c.ServiceDate;
+                    patientstitem.UserId = c.UserId;
+                    patientstitem.Discount = c.Discount;
+                    patientstitem.Refund = c.Refund;
+                    patientstitem.RefundNote = c.RefundNote;
+                    patientstitem.Billed = c.Billed;
+                    patientstitem.ReferralFee = c.ReferralFee;
+                    patientstitem.DeliveryDate = c.DeliveryDate;
+                    patientstitem.DeliveryTime = c.DeliveryTime;
+
+                    patientstitem.ServiceProviderId = c.ServiceProviderId;
+                    patientstitem.ReferralFeePaid = c.ReferralFeePaid;
+                    patientstitem.ReportFormatName = c.ReportFormatName;
+                    patientstitem.LabStatusId = c.LabStatusId;
+
+                    patientstitem.Item.Id = c.Item.Id;
+                    patientstitem.Item.Name = c.Item.Name;
+                    patientstitem.Item.GenericName = c.Item.GenericName;
+                    patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
+
+                    patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+
+
+
+                    onlyPatientServices.Add(patientstitem);
+                }
+
+
+
+
+                if (onlyPatientServices == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+
+
+
+                return Json(onlyPatientServices, JsonRequestBehavior.AllowGet);
+            }
+
+          
+        }
+
         public JsonResult GetPatientInvoicebyMedicalType(long id, long statusid, long medicalTypeID, string DateStart, string DateEnd, long? invoiceId = null)
         {
 
@@ -872,5 +1037,7 @@ namespace HMS.Controllers
             }
 
         }
+
+
     }
 }
