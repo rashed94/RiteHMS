@@ -69,8 +69,15 @@
     <script src="~/ClientCode/Script/Controller/ConfigurationController.js"></script>
     <script src="~/ClientCode/Script/Service/ConfigurationService.js"></script>
 
-    <script src="~/ClientCode/Script/Controller/AdminController.js"></script>
-    <script src="~/ClientCode/Script/Service/AdminService.js"></script>
+    <script src="~/ClientCode/Script/Controller/AdminApprovalController.js"></script>
+    <script src="~/ClientCode/Script/Service/AdminApprovalService.js"></script>
+
+
+    <script src="~/ClientCode/Script/Controller/PatientSummaryReportController.js"></script>
+    <script src="~/ClientCode/Script/Service/PatientSummaryReportService.js"></script>
+
+    <script src="~/ClientCode/Script/Controller/AdminSubMenuController.js"></script>
+
 
     <script src="~/ClientCode/Script/Service/ItemService.js"></script>
 
@@ -189,7 +196,7 @@
                         <li class="bedsetup"><a ng-href="#/bedsetup/summary" ng-click="UpdateTopLink('bedsetup')">Bed Setup</a></li>
                         <li class="billing"><a ng-href="#/billing/summary" ng-click="UpdateTopLink('billing')">Billing</a></li>
                         <li class="configuration"><a ng-href="#/configuration/copayer" ng-click="UpdateTopLink('configuration')">Configuration</a></li>
-                        <li class="admin"><a ng-href="#/admin/refund" ng-click="UpdateTopLink('admin')">Admin</a></li>
+                        <li class="admin"><a ng-href="#/admin/approval/refund" ng-click="UpdateTopLink('admin')">Admin</a></li>
 
                     </ul>
 

@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 
-HmsApp.controller("AdminController", function ($scope, $routeParams, $window, $filter, $modal, AdminService) {
+HmsApp.controller("AdminApprovalController", function ($scope, $routeParams, $window, $filter, $modal, AdminApprovalService) {
 
 
 

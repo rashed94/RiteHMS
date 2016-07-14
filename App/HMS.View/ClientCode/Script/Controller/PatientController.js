@@ -447,7 +447,12 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
 
     if ($location.path() != null) {
 
-        $scope.UpdateTopLink($location.path());
+
+        var url = $location.path().split('/');
+
+        
+
+        $scope.UpdateTopLink(url[1]);
     }
 
 

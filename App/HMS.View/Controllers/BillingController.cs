@@ -419,6 +419,7 @@ namespace HMS.Controllers
                 {
                     List<PatientService> patientServiceItems = pinvoice.PatientServices.ToList();
                     pinvoice.PatientServices = null;
+                    pinvoice.UserId = patientInvoice.UserId;
                     patientInvoice = repository.Insert(pinvoice);
                     repository.Commit();
                     foreach (PatientService item in patientServiceItems)
