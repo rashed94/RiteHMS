@@ -544,6 +544,18 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
 
             advanceAmount = advanceAmount + itemAdvanceAmount;
 
+            /*---------------- defination ---------------------*/
+
+            // totalPayableAmount == total amount client need to pay
+
+            //$scope.TotalPayableAmount  ==  summation of amount client paid from advance amount
+
+            //itemAdvanceAmount  == total advance amount per item
+
+            //  advanceAmount == summation of advance amount of items
+
+            /*-----------------------end defination-------------------------*/
+
             if (totalPayableAmount >= advanceAmount) {
                 item.DeductionAmount = item.DeductionAmount + itemAdvanceAmount;
 
