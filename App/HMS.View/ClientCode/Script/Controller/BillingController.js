@@ -64,8 +64,11 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
     $scope.itemWiseDiscount = function (Amount,cost)
     {
-            $scope.perItemDiscount=(Amount * cost) / $scope.TotalAmount;
-
+        $scope.perItemDiscount = Math.ceil((Amount * cost) / $scope.TotalAmount);
+        if (isNaN($scope.perItemDiscount))
+        {
+            $scope.perItemDiscount = 0;
+        }
             return $scope.perItemDiscount;
     }
 
@@ -157,7 +160,8 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
                      //    billingitem.ServiceListPriceAfterDiscount = Math.ceil(billingitem.ServiceListPrice - billingitem.Discount);
                       //  billingitem.referralfull = true;
                        // $scope.TotalDiscount = billingitem.Discount + $scope.TotalDiscount;
-                       // $scope.TotalAmountAfterDiscount = Math.ceil($scope.TotalAmount - $scope.totalDiscountAmount.Amount);
+                        // $scope.TotalAmountAfterDiscount = Math.ceil($scope.TotalAmount - $scope.totalDiscountAmount.Amount);
+                       // billingitem.Discount = 0;
                         $scope.adjustAfterDiscount(billingitem);
 
                     });
@@ -325,6 +329,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         angular.forEach($scope.BillingItem, function (obj) {
             obj.ServiceListPriceAfterDiscount = obj.ServiceListPrice;
             obj.ReferralAfterDiscount = obj.ReferralFee;
+            obj.Discount = 0.0;
             obj.DisCountTypeID = '0';
             obj.DiscountTypes = [
             { id: '0', name: 'By Amount' },
@@ -332,6 +337,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             ];
             obj.OriginalAmountSingleQuantity = obj.ServiceListPrice / obj.ServiceQuantity;
             obj.ServiceListPriceAfterDiscountSingleQuantity = Math.ceil(obj.ServiceListPriceAfterDiscount / obj.ServiceQuantity);
+            $scope.TotalAmount += obj.ServiceListPrice;
 
         });
     }
@@ -620,6 +626,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
             $scope.GetBillingItemByPatientId($scope.Patient.Id);
             $scope.GetTotalDebitCredit();
+            
         }
 
     }
