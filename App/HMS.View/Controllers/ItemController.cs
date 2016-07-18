@@ -756,10 +756,24 @@ namespace HMS.Controllers
         }
 
 
+        public JsonResult cancelRefund(PatientService patientService)
+        {
+            using (PatientServiceRepository repository = new PatientServiceRepository())
+            {
+
+                patientService.RefundNote=null;
+                repository.UpdateByField(patientService, "RefundNote");
+                repository.Update(patientService);
+                repository.Commit();
+            }
+
+            return Json("Successfully cancel refund");
+        }
         public JsonResult approveRefund(PatientService patientService)
         {
 
-            patientService.UserId = GetLoggedinUserInfo().UserId;
+           // patientService.UserId = GetLoggedinUserInfo().UserId;
+
             Payment pPayment = new Payment();
       
             long invoiceId=(long)patientService.InvoiceID;
@@ -778,9 +792,10 @@ namespace HMS.Controllers
 
             refundItem.ApprovedUserID = GetLoggedinUserInfo().UserId;
             refundItem.UserId =(long) patientService.UserId;
-            refundItem.Amount = patientService.ServiceActualPrice;
+            refundItem.Amount = patientService.ServiceListPrice;
             refundItem.InvoiceID = invoiceId;
             refundItem.ItemId = patientService.ItemID;
+            refundItem.PatientServiceId = patientService.Id;
             refundItem.PatientInvoice = null;
 
             
@@ -800,6 +815,7 @@ namespace HMS.Controllers
                 PatientInvoice pInvoice = repository.GetById(invoiceId);
                 pInvoice.IsRefunded = true;
                 pInvoice.UserId = GetLoggedinUserInfo().UserId;
+               
                 pInvoice.TotalAmount = pInvoice.TotalAmount - patientService.ServiceListPrice;
                 repository.Update(pInvoice);
                 repository.Commit();
@@ -815,7 +831,8 @@ namespace HMS.Controllers
                 pPayment.PatientID = patientService.PatientID;
                 pPayment.UserId = (long)patientService.UserId;
                 pPayment.Date = DateTime.Now;
-
+                pPayment.DeductionAmount = 0;
+                pPayment.PaymentMethodId = 1;
                 pPayment = repository.Insert(pPayment);
                 repository.Commit();
             }

@@ -23,6 +23,32 @@ HmsApp.controller("AdminApprovalController", function ($scope, $routeParams, $wi
                     });
 
     }
+    $scope.cancelRefund = function (patientservice) {
+
+        patientservice.DeliveryDate = ToJavaScriptDate(patientservice.DeliveryDate);
+        patientservice.ServiceDate = ToJavaScriptDate(patientservice.ServiceDate);
+        patientservice.RefundNote = null;
+
+
+
+        ItemService.cancelRefund(patientservice)
+
+                    .success(function (pt) {
+
+                        $scope.GetRefundedItem();
+
+
+                        // $scope.CalculateTotalDiscount();
+
+                        console.log("refund canel successful");
+                    })
+                    .error(function (error) {
+                        $window.alert("Something is wrong ..Refund cancel not working..Please try again");
+                        $scope.status = 'Unable to cancel refund: ' + error.message;
+                        console.log($scope.status);
+                    });
+
+    }
 
     $scope.approveRefund = function (patientservice)
     {

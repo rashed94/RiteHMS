@@ -65,8 +65,8 @@
 
     <div class="summary hide">
         <div class="box_general_wihout_border">
-            <input name="add  payment" type="button" value="add  payment" class="sm_button">
-            <input name="add receipt" type="button" value="add receipt" class="sm_button">
+            <input name="add advance payment" type="button" value="add advance payment" ng-show="Patient.Id" class="sm_button" ng-click="AdvancePaymentModal('lg',false)">
+            <!--<input name="add receipt" type="button" value="add receipt" class="sm_button">-->
         </div>
         <div style="clear: both"></div>
         <div class="round_box box_general">
@@ -280,7 +280,7 @@
                             <td>{{singleinvoice.Paid}}</td>
                             <td>
                                 0.00
-                            <td><span class="status_green">{{singleinvoice.Staus}}</span></td>
+                            <td><span ng-class="{'status_green' : !singleinvoice.IsRefunded, 'status_red': singleinvoice.IsRefunded }">{{singleinvoice.Staus}}</span></td>
                             <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#" ng-click="$event.preventDefault();InvoicePrintModal('lg',true,singleinvoice)"></a>&nbsp;<a class="link_brown" ng-show="singleinvoice.InvoiceStatusId == 1;" href="#" ng-click="$event.preventDefault();InvoiceModal('lg',true,singleinvoice)">payment</a></td>
                         </tr>
                         <tr ng-show="singleinvoice.activePosition">

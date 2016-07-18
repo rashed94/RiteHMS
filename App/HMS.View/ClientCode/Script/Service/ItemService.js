@@ -144,6 +144,13 @@
         return $http.post('/Item/DeleteReportFormat', { labReportId: labReportId });
     };
 
+    ItemService.cancelRefund = function (patientService) {
+
+
+        return $http.post('/Item/cancelRefund', patientService);
+    };
+
+
 
 
     return ItemService;

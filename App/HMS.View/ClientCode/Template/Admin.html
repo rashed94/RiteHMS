@@ -47,6 +47,7 @@
                     <td>{{patientservice.RefundNote}}</td>
                     <td>
                         <a class="fa fa-check fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault();approveRefund(patientservice);"></a>  
+                        <a class="fa fa-times fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault();cancelRefund(patientservice);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>  
                        
                     </td>
 

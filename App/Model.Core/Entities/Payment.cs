@@ -15,6 +15,8 @@ namespace HMS.Model.Core
         public decimal Amount { get; set; }
         public decimal? DeductionAmount { get; set; }
         public long PaymentTypeId { get; set; }
+        public long PaymentMethodId { get; set; }
+        public string CardNumber { get; set; }
         public long? PatientID { get; set; }
         public System.DateTime Date { get; set; }
     

@@ -31,33 +31,55 @@ namespace HMS.Controllers
             List<Item> item;
             using (ItemRepository repository = new ItemRepository())
             {
-                item = repository.GetItembyMedicalPartialName(id,name).ToList();
-            }
-            if (item == null)
-            {
-                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
-            }
+                item = repository.GetItembyMedicalPartialName(id, name).ToList();
 
-            List<Item> onlyItems = new List<Item>();
-            //  patients.ForEach(corePatient => onlyPatients.Add(MapToClientObject(corePatient)));
-            item.ForEach(c => onlyItems.Add(new Item
-            {
-                Id = c.Id,
-                Name = c.Name,
-                GenericName = c.GenericName,
-                Code=c.Code,
-                ItemTypeId=c.ItemTypeId,
-                MedicalTypeId=c.MedicalTypeId,
-                ItemCategoryId=c.ItemCategoryId,
-                MeasurementUnitId=c.MeasurementUnitId,
-                SalePrice=c.SalePrice,
-                BuyPrice=c.BuyPrice,
-                DefaultReferrarFee=c.DefaultReferrarFee,
-                ReferralAllowed=c.ReferralAllowed,
-                ServiceProviderId=c.ServiceProviderId
-            }));
+                if (item == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
 
-            return Json(onlyItems, JsonRequestBehavior.AllowGet);
+                List<Item> onlyItems = new List<Item>();
+                //  patients.ForEach(corePatient => onlyPatients.Add(MapToClientObject(corePatient)));
+
+                /*item.ForEach(c => onlyItems.Add(new Item
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    GenericName = c.ItemCategory.Name.ToString(),
+                    Code=c.Code,
+                    ItemTypeId=c.ItemTypeId,
+                    MedicalTypeId=c.MedicalTypeId,
+                    ItemCategoryId=c.ItemCategoryId,
+                    MeasurementUnitId=c.MeasurementUnitId,
+                    SalePrice=c.SalePrice,
+                    BuyPrice=c.BuyPrice,
+                    DefaultReferrarFee=c.DefaultReferrarFee,
+                    ReferralAllowed=c.ReferralAllowed,
+                    ServiceProviderId=c.ServiceProviderId
+                }));*/
+                foreach (Item sitem in item)
+                {
+                    Item addItem = new Item();
+                    ItemCategory icategory = new ItemCategory();
+                    addItem.ItemCategory = icategory;
+                    addItem.Id = sitem.Id;
+                    addItem.Name = sitem.Name;
+                    addItem.GenericName = sitem.ItemCategory.Name;
+                    addItem.Code = sitem.Code;
+                    addItem.ItemTypeId = sitem.ItemTypeId;
+                    addItem.MedicalTypeId = sitem.MedicalTypeId;
+                    addItem.ItemCategoryId = sitem.ItemCategoryId;
+                    addItem.MeasurementUnitId = sitem.MeasurementUnitId;
+                    addItem.SalePrice = sitem.SalePrice;
+                    addItem.BuyPrice = sitem.BuyPrice;
+                    addItem.DefaultReferrarFee = sitem.DefaultReferrarFee;
+                    addItem.ReferralAllowed = sitem.ReferralAllowed;
+                    addItem.ServiceProviderId = sitem.ServiceProviderId;
+                    onlyItems.Add(addItem);
+                }
+
+                return Json(onlyItems, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public JsonResult GetMedicalType()

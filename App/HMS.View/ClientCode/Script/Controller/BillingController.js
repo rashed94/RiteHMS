@@ -391,6 +391,23 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     };
 
     $scope.InvoiceModal = function (size, isEdit, singleinvoice) {
+
+        BillingService.GetAdvancePayment($scope.Patient.Id)
+         .success(function (data) {
+
+             var advancePayment = data;
+             $scope.InvoiceModalWidthAdvancePayment(size, isEdit, singleinvoice, advancePayment);
+
+         })
+            .error(function (error) {
+                $scope.status = 'Unable to get Advance payment data data: ' + error.message;
+                console.log($scope.status);
+                return error;
+            });
+
+    }
+
+    $scope.InvoiceModalWidthAdvancePayment = function (size, isEdit, singleinvoice,advancePayment) {
         var billingItems = [];
         var singleInvoice = {};
 
@@ -413,8 +430,11 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         //        Amount: 120
         //    }
         //];
+
+
+
         var modalInstance = $modal.open({
-            templateUrl: '/ClientCode/Template/Invoice.html',
+            templateUrl: '/ClientCode/Template/Invoice.html?nd='+ Date.now(),
             size: size,
             controller: 'InvoiceModalController',
             scope: $scope,
@@ -425,8 +445,11 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
                 // billingItems:billingItems
                 singleInvoice: function () {
                     return singleInvoice;
-                }
-
+                },
+                // billingItems:billingItems
+                advancePayment: function () {
+                    return advancePayment;
+                },
 
             }
         });
@@ -439,7 +462,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             if ($routeParams.tab != "invoices") {
                 $window.location.href = '#/billing/invoices';
             } else {
-                $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+                $scope.GetInvoices(singleinvoice.PatientID, $scope.invoiceStatus);
             }
 
             console.log('Modal dismissed at: ' + new Date());
@@ -517,6 +540,10 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
                 item.Staus = "Closed";
             } else if (item.InvoiceStatusId == 3) {
                 item.Staus = "Refunded";
+            }
+            if (item.IsRefunded)
+            {
+                item.Staus = item.Staus + "  (Reunded)";
             }
 
             item.selectedIcon = true;
@@ -624,7 +651,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
        }
     });
-    $scope.GetTotalDebitCredit();
+   // $scope.GetTotalDebitCredit();
 
     $('.tabs li').removeClass('active');
     $(tabClass).addClass('active');
@@ -812,5 +839,42 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     }
 
     /*-------------------------------------- refund code end --------------------------*/
+
+
+    /*------------------------------- open advance payment model ------------------------------*/
+
+    $scope.AdvancePaymentModal = function (size, isEdit) {
+
+
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/AdvancePayment.html',
+            size: size,
+            controller: 'AdvancePaymentModalController',
+            scope: $scope
+        });
+
+        modalInstance.result.then(function (result) {
+
+            $scope.GetTotalDebitCredit();
+
+        }, function () {
+
+
+            //  $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+            // prepareInvoiceDataModel();
+
+
+            $scope.GetTotalDebitCredit();
+
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+    };
+
+
+    /*---------------------------------- end advance payment model ------------------------------*/
+
+
 
 });

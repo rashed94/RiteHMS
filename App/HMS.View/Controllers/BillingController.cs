@@ -39,6 +39,42 @@ namespace HMS.Controllers
             }
         }
 
+        public JsonResult GetAdvancePayment(long patientId)
+        {
+            List<Payment> OnlyAdvancePayment=new List<Payment>();
+
+            using(PaymentRepository repository= new PaymentRepository())
+            {
+
+                Expression<Func<Payment, bool>> lambda;
+                lambda=(x=>x.PatientID==patientId && x.PaymentTypeId==103 && x.Amount!=x.DeductionAmount);
+
+                List<Payment> advancePayment=repository.GetByQuery(lambda).ToList();
+                
+                foreach (Payment item in advancePayment)
+	            {
+		            Payment aPayment= new Payment();
+                    aPayment.Id = item.Id;
+                    aPayment.Amount=item.Amount;
+                    aPayment.DeductionAmount=item.DeductionAmount;
+                    aPayment.PaymentTypeId=item.PaymentTypeId;
+                    aPayment.PatientID =item.PatientID;
+                    aPayment.PaymentMethodId=item.PaymentMethodId;
+                    aPayment.CardNumber=item.CardNumber;
+                    aPayment.Date=item.Date;
+
+                    OnlyAdvancePayment.Add(aPayment);
+
+	            }
+
+                if (OnlyAdvancePayment == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+                return Json(OnlyAdvancePayment, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         public JsonResult GetTotalDebit(long patientId)
         {
@@ -96,20 +132,79 @@ namespace HMS.Controllers
             return Json(invoice.Id, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult CreatePayment(Payment payment)
+
+        public JsonResult SaveAdvancePayment(Payment payment)
         {
+
             using (PaymentRepository repository = new PaymentRepository())
             {
                 payment.UserId = GetLoggedinUserInfo().UserId;
-                foreach (InvoicePayment item in payment.InvoicePayments)
-                {
-                    item.UserId = GetLoggedinUserInfo().UserId; 
-                    
-                }
+
 
                 payment = repository.Insert(payment);
                 repository.Commit();
                 // CreatePatientService(invoice.Id, patientServices);
+            }
+
+            return Json("Payment successfull");
+        }
+
+
+        public JsonResult CreatePayment(Payment payment,List<InvoicePayment>invoicePaymentList,List<Payment>advancePayment,double reconcileAmount)
+        {
+            if (payment.Amount > 0)
+            {
+                using (PaymentRepository repository = new PaymentRepository())
+                {
+                    payment.UserId = GetLoggedinUserInfo().UserId;
+                    foreach (InvoicePayment item in payment.InvoicePayments)
+                    {
+                        item.UserId = GetLoggedinUserInfo().UserId;
+
+                    }
+
+                    payment = repository.Insert(payment);
+                    repository.Commit();
+                    // CreatePatientService(invoice.Id, patientServices);
+                }
+            }
+            if(reconcileAmount>0)
+            {
+
+                using (Repository<InvoicePayment> repository = new Repository<InvoicePayment>())
+                {
+
+                    foreach (InvoicePayment item in invoicePaymentList)
+                    {
+                        item.UserId = GetLoggedinUserInfo().UserId;
+                        repository.Insert(item);
+
+                    }
+
+                   
+                    repository.Commit();
+                    // CreatePatientService(invoice.Id, patientServices);
+                }
+
+                using (Repository<Payment> repository = new Repository<Payment>())
+                {
+
+                    foreach (Payment item in advancePayment)
+                    {
+                        item.UserId = GetLoggedinUserInfo().UserId;
+                        repository.Update(item);
+
+                    }
+
+
+                    repository.Commit();
+                    // CreatePatientService(invoice.Id, patientServices);
+                }
+
+
+
+
+                
             }
 
             return Json("Payment successfull");
@@ -229,6 +324,7 @@ namespace HMS.Controllers
                     onlyPatientInvoice.ItemDiscount = pinvoice.ItemDiscount;
                     onlyPatientInvoice.UserId = pinvoice.UserId;
                     onlyPatientInvoice.LabStatusId = pinvoice.LabStatusId;
+                    onlyPatientInvoice.IsRefunded = pinvoice.IsRefunded;
                     onlyPatientInvoice.Patient.FirstName = pinvoice.Patient.FirstName;
                     onlyPatientInvoice.Patient.LastName = pinvoice.Patient.LastName;
                     onlyPatientInvoice.UserId = GetLoggedinUserInfo().UserId;
@@ -335,7 +431,7 @@ namespace HMS.Controllers
                     patientstitem.LabStatusId = c.LabStatusId;
 
                     patientstitem.Item.Name = c.Item.Name;
-                    patientstitem.Item.GenericName = c.Item.GenericName;
+                    patientstitem.Item.GenericName = c.Item.ItemCategory.Name;
                     patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
                     onlypatientServiceItems.Add(patientstitem);
 

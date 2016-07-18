@@ -49,11 +49,27 @@
         //});
     };
 
-    BillingService.SavePayment = function (payment) {
+    BillingService.SavePayment = function (payment, invoicePaymentList, advancePayment, reconcileAmount) {
 
-        return $http.post('/Billing/CreatePayment', payment);
+        advancePayment.InvoicePayments = null;
+        return $http.post('/Billing/CreatePayment', { payment: payment, invoicePaymentList: invoicePaymentList, advancePayment: advancePayment, reconcileAmount: reconcileAmount });
 
     };
+
+    BillingService.SaveAdvancePayment = function (payment) {
+
+        return $http.post('/Billing/SaveAdvancePayment', payment);
+
+    };
+    
+
+    BillingService.GetAdvancePayment = function (patientid) {
+
+        return $http.get('/Billing/GetAdvancePayment?patientId=' + patientid);
+
+    };
+
+
     BillingService.GetInvoicesByPatientId = function (patientid, invoicestatus, invoiceDateStart, invoiceDateEnd, invoiceId) {
         //return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + "&statusid=1" );
         return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + '&statusid=' + invoicestatus + '&DateStart=' + invoiceDateStart + '&DateEnd=' + invoiceDateEnd + '&invoiceId=' + invoiceId);

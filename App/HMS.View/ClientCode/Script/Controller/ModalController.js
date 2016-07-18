@@ -3,12 +3,11 @@
 HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, PatientService) {
 
     $scope.Patient = patient;
-    if(!$scope.Patient.Country)
-        {
+    if (!$scope.Patient.Country) {
         $scope.Patient.Country = "BD";
-        }
+    }
     $scope.ok = function (file) {
-        $modalInstance.close({Patient: $scope.Patient, File: file});
+        $modalInstance.close({ Patient: $scope.Patient, File: file });
     };
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
@@ -29,7 +28,7 @@ HmsApp.controller("PharmacyStockModelController", function ($scope, $modalInstan
 
 
 HmsApp.controller("PrintInvoiceModalController", function ($scope, $modalInstance, singleInvoice) {
-    
+
     $scope.singleinvoice = singleInvoice;
 
 
@@ -45,8 +44,7 @@ HmsApp.controller("PrintInvoiceModalController", function ($scope, $modalInstanc
 
 HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInstance, serviceProvider, ConfigurationService) {
     $scope.ServiceProvider = serviceProvider;
-    if ($scope.ServiceProvider.Contact.Gender == null)
-    {
+    if ($scope.ServiceProvider.Contact.Gender == null) {
         $scope.ServiceProvider.Contact.Gender = false;
         $scope.ServiceProvider.ServiceProviderTypeId = 56;
         $scope.ServiceProvider.ServiceProviderType = { Id: 56 };
@@ -65,27 +63,23 @@ HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInst
 
 HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $http, $modalInstance, $filter, $window, isEdit, PatientServiceItem, LabTestItem, LabTestService) {
 
-    $scope.InvoiceStatusUpdate=true;
+    $scope.InvoiceStatusUpdate = true;
 
 
-    $scope.loadSavedData=function()
-    {
+    $scope.loadSavedData = function () {
         if (CKEDITOR.instances.editor1) {
 
-            if(PatientServiceItem.ReportFormatName === null)
-            {
+            if (PatientServiceItem.ReportFormatName === null) {
                 CKEDITOR.instances.editor1.setData("");
 
 
-            }else
-            {
+            } else {
                 CKEDITOR.instances.editor1.setData(PatientServiceItem.ReportFormatName);
             }
 
-        } 
+        }
     }
-    $scope.LoadData=function()
-    {
+    $scope.LoadData = function () {
         if ($scope.labreportTemplates != null) {
             $scope.labreportSingleTemplate = $scope.labreportTemplates[0];
 
@@ -95,7 +89,7 @@ HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $h
     }
 
 
-    if (isEdit=="false") {
+    if (isEdit == "false") {
         LabTestService.LoadLabReportbyId(PatientServiceItem.Item.Id)
             .success(function (pt) {
                 console.log(pt);
@@ -123,7 +117,7 @@ HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $h
             if (PatientServiceItem.Id != item.Id) {
                 if (item.LabStatusId == "1") {
                     $scope.InvoiceStatusUpdate = false;
-                } 
+                }
             }
         });
 
@@ -135,14 +129,14 @@ HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $h
 
         LabTestService.UpdateLabStatus(PatientServiceItem, $scope.InvoiceStatusUpdate, PatientServiceItem.InvoiceID)
             .success(function (pt) {
-            console.log(pt);
-            $scope.labreportTemplates = pt;
-            //$scope.LoadData();
+                console.log(pt);
+                $scope.labreportTemplates = pt;
+                //$scope.LoadData();
 
             })
             .error(function (error) {
-            $scope.status = 'Unable to load  lab report  ' + error.message;
-            console.log($scope.status);
+                $scope.status = 'Unable to load  lab report  ' + error.message;
+                console.log($scope.status);
             });
 
 
@@ -163,36 +157,35 @@ HmsApp.controller("LabReportTemplateModalController", function ($scope, $http, $
     $scope.templateData = {};
 
 
-        $scope.LoadLabReport=function()
-        {
-            LabTestService.LoadLabReport(labReportID)
-            .success(function (data) {
+    $scope.LoadLabReport = function () {
+        LabTestService.LoadLabReport(labReportID)
+        .success(function (data) {
 
-                console.log(data);
-                //$modalInstance.dismiss('cancel');
-                $scope.templateData = data;
-                $scope.reportName = $scope.templateData.Name;
-                richTextData = $scope.templateData.RichContent;
-                CKEDITOR.instances.editor1.setData(richTextData);
-               
+            console.log(data);
+            //$modalInstance.dismiss('cancel');
+            $scope.templateData = data;
+            $scope.reportName = $scope.templateData.Name;
+            richTextData = $scope.templateData.RichContent;
+            CKEDITOR.instances.editor1.setData(richTextData);
 
 
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to load LabReportTemplate data: ' + error.message;
-                console.log($scope.status);
-            });
 
-        }
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to load LabReportTemplate data: ' + error.message;
+            console.log($scope.status);
+        });
 
-        if (isEdit=='true') {
-            $scope.LoadLabReport();
+    }
+
+    if (isEdit == 'true') {
+        $scope.LoadLabReport();
     }
 
     $scope.ok = function (richTextData) {
 
         console.log(richTextData);
-  
+
 
         $scope.templateData.Name = $scope.reportName;
         $scope.templateData.RichContent = richTextData;
@@ -204,8 +197,8 @@ HmsApp.controller("LabReportTemplateModalController", function ($scope, $http, $
         LabTestService.SaveLabReportTemplate($scope.templateData)
             .success(function (data) {
 
-            console.log(data);
-            $modalInstance.dismiss('cancel');
+                console.log(data);
+                $modalInstance.dismiss('cancel');
 
 
             })
@@ -226,25 +219,25 @@ HmsApp.controller("LabReportTemplateModalController", function ($scope, $http, $
 
 });
 
-HmsApp.controller("CommissionModalController", function ($scope, $http, $modalInstance, $filter, $window,LabTestService) {
+HmsApp.controller("CommissionModalController", function ($scope, $http, $modalInstance, $filter, $window, LabTestService) {
 
 
 
-    $scope.Referral ={};
-    
+    $scope.Referral = {};
+
 
     $scope.saveCommission = function () {
         LabTestService.saveDoctorsCommission($scope.Referral)
         .success(function (data) {
 
-        console.log(data);
-        $scope.getDoctorWithReferrel();
+            console.log(data);
+            $scope.getDoctorWithReferrel();
 
 
         })
         .error(function (error) {
-        $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
-        console.log($scope.status);
+            $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+            console.log($scope.status);
         });
     }
 
@@ -269,16 +262,16 @@ HmsApp.controller("CommissionModalController", function ($scope, $http, $modalIn
 
     $scope.ok = function () {
 
- 
-            $scope.Referral.itemId= $scope.SingleLabItem.Id;
-            $scope.Referral.ServiceProviderId=  $scope.Doctor.Id;
-            $scope.Referral.ReferralFee=$scope.CommissionAmount;
-      
 
-            $scope.saveCommission();
-           
-      // $modalInstance.dismiss('cancel');
-       
+        $scope.Referral.itemId = $scope.SingleLabItem.Id;
+        $scope.Referral.ServiceProviderId = $scope.Doctor.Id;
+        $scope.Referral.ReferralFee = $scope.CommissionAmount;
+
+
+        $scope.saveCommission();
+
+        // $modalInstance.dismiss('cancel');
+
     };
 
     $scope.cancel = function () {
@@ -287,10 +280,9 @@ HmsApp.controller("CommissionModalController", function ($scope, $http, $modalIn
 
 
 
-    $scope.OnDocotorSelect=function($item)
-    {
+    $scope.OnDocotorSelect = function ($item) {
         $scope.Doctor.Name = $item.Contact.FirstName + " " + $item.Contact.LastName;
-        $scope.Doctor.Id=$item.Id;
+        $scope.Doctor.Id = $item.Id;
     }
 
     $scope.GetDoctorPartialName = function (name) {
@@ -314,23 +306,23 @@ HmsApp.controller("CommissionModalController", function ($scope, $http, $modalIn
     $scope.deleteCommission = function (referralId) {
 
 
-                 LabTestService.deleteCommission(referralId)
-                .success(function (data) {
+        LabTestService.deleteCommission(referralId)
+       .success(function (data) {
 
-                    $scope.getDoctorWithReferrel();
-
-
-
-                })
-                .error(function (error) {
-                $scope.status = 'Unable to delete referral comission: ' + error.message;
-                console.log($scope.status);
-                });
+           $scope.getDoctorWithReferrel();
 
 
-            
 
-    
+       })
+       .error(function (error) {
+           $scope.status = 'Unable to delete referral comission: ' + error.message;
+           console.log($scope.status);
+       });
+
+
+
+
+
 
     }
 
@@ -338,12 +330,14 @@ HmsApp.controller("CommissionModalController", function ($scope, $http, $modalIn
     $scope.getDoctorWithReferrel();
 });
 
-HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $filter, $window, billingItems, singleInvoice, BillingService) {
+HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $filter, $window, billingItems, singleInvoice, advancePayment, BillingService) {
 
     $scope.PatientServiceItem = [];
     $scope.InvoicePayments = [];
     $scope.TotalPaid = 0.00;
-    $scope.isLabItem = false;
+    $scope.ReconcileAmount = 0.00;
+    $scope.PaymentMethod = "1";
+    $scope.PaymentFlag = true;
 
     $scope.Invoice = {
         Id: null,
@@ -359,48 +353,56 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         TotalDiscount: 0.0,
         InvoiceStatusId: 1,
         ItemDiscount: "",
-        UserId:null
+        UserId: null,
+        PaymentAmount: 0.0
     };
 
     $scope.InvoicePayment = {
-        InvoiceId:0,
+        InvoiceId: 0,
         Amount: 0.0,
         PaymentID: null,
-        UserId:null
+        UserId: null
 
 
     };
     $scope.Payment = {
 
-        Amount:0.0, 
-        DeductionAmount:0.0,
-        PaymentTypeId :101,
-        PatientID:$scope.Patient.Id, 
-        UserId:null,
-        Date : $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss')
-       
+        Amount: 0.0,
+        DeductionAmount: 0.0,
+        PaymentTypeId: 101,
+        PatientID: $scope.Patient.Id,
+        UserId: null,
+        Date: $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss'),
+        PaymentMethodId: $scope.PaymentMethod,
+        CardNumber: null
 
     };
 
-    function ConvertJsonDateString(jsonDate) {  
-        var shortDate = null;    
-        if (jsonDate) {  
-            var regex = /-?\d+/;  
-            var matches = regex.exec(jsonDate);  
-            var dt = new Date(parseInt(matches[0]));  
-            var month = dt.getMonth() + 1;  
-            var monthString = month > 9 ? month : '0' + month;  
-            var day = dt.getDate();  
-            var dayString = day > 9 ? day : '0' + day;  
-            var year = dt.getFullYear();  
-            shortDate = monthString + '/' + dayString + '/' + year;  
-        }  
-        return shortDate;  
+
+
+
+
+    function ConvertJsonDateString(jsonDate) {
+        var shortDate = null;
+        if (jsonDate) {
+            var regex = /-?\d+/;
+            var matches = regex.exec(jsonDate);
+            var dt = new Date(parseInt(matches[0]));
+            var month = dt.getMonth() + 1;
+            var monthString = month > 9 ? month : '0' + month;
+            var day = dt.getDate();
+            var dayString = day > 9 ? day : '0' + day;
+            var year = dt.getFullYear();
+            shortDate = monthString + '/' + dayString + '/' + year;
+        }
+        return shortDate;
     };
 
     function parseJsonDate(jsonDateString) {
         return new Date(parseInt(jsonDateString.replace('/Date(', '')));
     }
+
+
 
     $scope.GenerateServiceItem = function (item) {
         $scope.serviceItem = {};
@@ -439,42 +441,48 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.ReferralFeePaid = item.ReferralFeePaid;
         $scope.serviceItem.ServiceProviderId = item.ServiceProviderId;
         $scope.serviceItem.LabStatusId = item.LabStatusId;
-        if (item.LabStatusId == 1)
-        {
+        if (item.LabStatusId == 1) {
             $scope.isLabItem = true;
         }
 
         $scope.PatientServiceItem.push($scope.serviceItem);
     }
 
-    $scope.saveInvoice = function () {
+   function saveInvoice()  {
         BillingService.SaveInvoice($scope.Invoice, $scope.PatientServiceItem)
          .success(function (data) {
 
              console.log(data);
              $scope.Invoice = data;
              $scope.Invoice.InvoiceDate = ToJavaScriptDate($scope.Invoice.InvoiceDate);
-             return data;
+
+             if ($scope.PaymentFlag) {
+                 $scope.Invoice.PaymentAmount = parseFloat($scope.Invoice.TotalAmount);
+             }else
+             {
+                 $scope.Invoice.PaymentAmount = $scope.PaymentAmount;
+             }
              
+
 
          })
             .error(function (error) {
                 $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
                 console.log($scope.status);
-                return error;
+                
             });
     }
 
     // first payment while invoice is not there
-    if (singleInvoice.Id == null && billingItems.length>0) {
+    if (singleInvoice.Id == null && billingItems.length > 0) {
         angular.forEach(billingItems, function (item, key) {
-            $scope.Invoice.TotalAmount += item.ServiceListPriceAfterDiscount ;
+            $scope.Invoice.TotalAmount += item.ServiceListPriceAfterDiscount;
             $scope.Invoice.TotalDiscount += parseFloat(item.Discount);
-            
+
             $scope.GenerateServiceItem(item);
 
         });
-        $scope.Invoice.PaymentAmount = parseFloat($scope.Invoice.TotalAmount);
+
         if ($scope.isLabItem) {
             $scope.Invoice.LabStatusId = 1;
         }
@@ -482,7 +490,7 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
             $scope.Invoice.LabStatusId = null;
         }
 
-        $scope.saveInvoice();
+      saveInvoice();
 
 
 
@@ -498,38 +506,178 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
                 $scope.Invoice.PaymentAmount = parseFloat($scope.Invoice.TotalAmount) - parseFloat($scope.TotalPaid);
 
             });
-        }else
-        {
-            
+        } else {
+
             $scope.Invoice.PaymentAmount = parseFloat($scope.Invoice.TotalAmount);
         }
 
     }
 
+    /* reconcile amount adjust begin */
 
+    var advanceAmount = 0;
+    var keepGoing = true;
+    $scope.TotalPayableAmount = 0;
+
+    var totalPayableAmount = $scope.Invoice.TotalAmount - $scope.TotalPaid;
+
+    $scope.InvoicePaymentList = [];
+
+    angular.forEach(advancePayment, function (item) {
+
+        $scope.InvoicePayment = {
+            InvoiceId: 0,
+            Amount: 0.0,
+            PaymentID: null,
+            UserId: null
+
+
+        };
+
+        if (keepGoing) {
+
+            /* update invoice payment begin */
+
+            $scope.InvoicePayment.PaymentID = item.Id;
+
+            var itemAdvanceAmount = (item.Amount - item.DeductionAmount);
+
+            advanceAmount = advanceAmount + itemAdvanceAmount;
+
+            if (totalPayableAmount >= advanceAmount) {
+                item.DeductionAmount = item.DeductionAmount + itemAdvanceAmount;
+
+                /* update invoice payment begin */
+
+                $scope.InvoicePayment.Amount = itemAdvanceAmount;
+                $scope.TotalPayableAmount += itemAdvanceAmount;
+
+                $scope.InvoicePaymentList.push($scope.InvoicePayment);
+
+                /* update invoice payment end */
+
+
+                if (totalPayableAmount == advanceAmount) {
+                    keepGoing = false;
+                }
+
+            } else {
+                /*  var tempDeduction = $scope.Invoice.TotalAmount - advanceAmount;
+      
+                  if (tempDeduction > 0) {
+                      item.DeductionAmount = item.Amount - tempDeduction;
+                  } else {
+      
+                      item.DeductionAmount = item.Amount + tempDeduction;
+                      advanceAmount = advanceAmount - tempDeduction;
+                  }
+                  */
+                var itemPayableAmount = totalPayableAmount - $scope.TotalPayableAmount;
+
+                item.DeductionAmount = item.DeductionAmount + itemPayableAmount;
+
+
+                /* update invoice payment begin */
+
+
+                $scope.InvoicePayment.Amount = itemPayableAmount;
+                $scope.TotalPayableAmount += itemPayableAmount;
+
+                $scope.InvoicePaymentList.push($scope.InvoicePayment);
+
+                /* update invoice payment end */
+
+
+                keepGoing = false;
+            }
+        }
+
+
+
+    });
+
+    if ($scope.InvoicePaymentList.length > 0) {
+        $scope.ReconcileAmount = $scope.TotalPayableAmount;
+
+
+        $scope.Invoice.PaymentAmount = $scope.Invoice.TotalAmount - $scope.ReconcileAmount - $scope.TotalPaid;
+        $scope.PaymentFlag = false;
+        $scope.PaymentAmount = $scope.Invoice.PaymentAmount;
+
+    }
+
+    console.log(advancePayment);
+
+    /* reconcile amound adjust end */
+
+    $scope.CheckReconcileAmount = function () {
+        var totalPayableAmount = $scope.Invoice.TotalAmount - $scope.TotalPaid;
+        var restPaidAmount = totalPayableAmount - $scope.TotalPayableAmount;
+
+        if ($scope.Invoice.PaymentAmount > restPaidAmount) {
+            $window.alert("Please endter correct amount");
+            $scope.Invoice.PaymentAmount = restPaidAmount;
+        }
+
+    }
 
     $scope.ok = function () {
 
+        $scope.InvoicePayment = {
+            InvoiceId: 0,
+            Amount: 0.0,
+            PaymentID: null,
+            UserId: null
 
+
+        };
+
+
+        if ($scope.InvoicePaymentList.length > 0) {
+            angular.forEach($scope.InvoicePaymentList, function (item) {
+                item.PatientInvoiceId = $scope.Invoice.Id;
+
+            });
+        }
+
+
+        //  set payment method & card number
+        $scope.Payment.PaymentMethodId = $scope.PaymentMethod;
+        if ($scope.CardNumber != "1") {
+            $scope.Payment.CardNumber = $scope.CardNumber;
+        }
+
+
+        if ($scope.Payment.PaymentMethodId != "1") {
+            $scope.Payment.CardNumber = $scope.CardNumber;
+        }
 
         if ($scope.Invoice.Id != null) {
 
-            var paymentamount =0;
+            var paymentamount = 0;
             var total = parseFloat($scope.TotalPaid);
-            var recenpayment=parseFloat( $scope.Invoice.PaymentAmount);
+            var recenpayment = parseFloat($scope.Invoice.PaymentAmount);
 
 
             paymentamount = (total + recenpayment);
 
-            if (paymentamount == $scope.Invoice.TotalAmount)
-            {
+
+
+            if (paymentamount == $scope.Invoice.TotalAmount) {
                 $scope.Invoice.InvoiceStatusId = "2";
 
-            } else if (paymentamount > $scope.Invoice.TotalAmount)
-            {
+            } else if (paymentamount > $scope.Invoice.TotalAmount) {
                 $scope.Invoice.PaymentAmount = parseFloat($scope.Invoice.TotalAmount) - total;
                 $scope.Invoice.InvoiceStatusId = "2";
             }
+
+
+            if (($scope.ReconcileAmount + recenpayment) == ($scope.Invoice.TotalAmount - $scope.TotalPaid))
+            {
+                $scope.Invoice.InvoiceStatusId = "2";
+            }
+
+
 
 
 
@@ -540,7 +688,14 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
             $scope.InvoicePayments.push($scope.InvoicePayment);
             $scope.Payment.InvoicePayments = $scope.InvoicePayments;
 
-            BillingService.SavePayment($scope.Payment)
+
+            angular.forEach(advancePayment, function (item) {
+                item.Date =ToJavaScriptDate(item.Date);
+
+            });
+
+          
+            BillingService.SavePayment($scope.Payment, $scope.InvoicePaymentList, advancePayment, $scope.ReconcileAmount)
             .success(function (data) {
 
                 console.log(data);
@@ -550,44 +705,104 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
                 $scope.Invoice.DueDate = ToJavaScriptDate($scope.Invoice.DueDate);
                 $scope.Invoice.InvoiceDate = ToJavaScriptDate($scope.Invoice.InvoiceDate);
 
-                BillingService.SaveInvoice($scope.Invoice, $scope.PatientServiceItem)
+               BillingService.SaveInvoice($scope.Invoice, $scope.PatientServiceItem)
                     .success(function (data) {
 
-                    console.log(data);
-                    $scope.Invoice = data;
-                    $scope.Invoice.InvoiceDate = ToJavaScriptDate($scope.Invoice.InvoiceDate);
-                    $modalInstance.dismiss('cancel');
+                        console.log(data);
+                        $scope.Invoice = data;
+                        $scope.Invoice.InvoiceDate = ToJavaScriptDate($scope.Invoice.InvoiceDate);
+                        $modalInstance.dismiss('cancel');
 
 
                     })
                     .error(function (error) {
                         $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
                         console.log($scope.status);
-                        
+
                     });
 
 
-             
 
 
-  
-                
-               
-              
+
+
+
+
+
 
             })
             .error(function (error) {
                 $scope.status = 'Unable to save Payment data: ' + error.message;
                 console.log($scope.status);
             });
+            
         }
 
 
 
 
-       
+
+    };
+    $scope.cancel = function () {
+
+        $modalInstance.dismiss('cancel');
+    };
+
+
+
+});
+
+
+HmsApp.controller("AdvancePaymentModalController", function ($scope, $modalInstance, $filter, BillingService) {
+
+
+    $scope.PaymentMethod = "1";
+
+    $scope.Payment = {
+
+        Amount: 0.0,
+        DeductionAmount: 0.0,
+        PaymentTypeId: 103,
+        PatientID: $scope.Patient.Id,
+        UserId: null,
+        Date: $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss'),
+        PaymentMethodId: $scope.PaymentMethod,
+        CardNumber: null
+
+
+
+    };
+
+
+    $scope.ok = function (file) {
+
+        //  set payment method & card number
+        $scope.Payment.PaymentMethodId = $scope.PaymentMethod;
+        if ($scope.CardNumber != "1") {
+            $scope.Payment.CardNumber = $scope.CardNumber;
+        }
+
+
+        BillingService.SaveAdvancePayment($scope.Payment)
+                .success(function (data) {
+
+
+                    $modalInstance.dismiss('cancel');
+
+
+                }).error(function (error) {
+                    $scope.status = 'Unable to save Avance payment data: ' + error.message;
+                    console.log($scope.status);
+
+                });
+
+
+
+        $modalInstance.close();
     };
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+
+
 });
