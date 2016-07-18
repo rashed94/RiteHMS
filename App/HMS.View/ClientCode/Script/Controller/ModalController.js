@@ -810,7 +810,7 @@ HmsApp.controller("AdvancePaymentModalController", function ($scope, $modalInsta
 
 
 
-        $modalInstance.close();
+        //$modalInstance.close();
     };
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
