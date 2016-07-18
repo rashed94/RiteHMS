@@ -1,0 +1,76 @@
+﻿<div class="modal-header rite_modal_header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden=" true">&times;</span></button>
+    <h2 class="modal-title" id="myModalLabel">
+        AdVance Payment
+    </h2>
+</div>
+<div class="modal-body">
+    <div class="payment">
+
+
+        <div class="payment_middle">
+
+            <div class="payment_detail_left line_height_small">
+
+                <p>
+                    <h2>NAME</h2>
+                    {{Patient.FirstName}} {{Patient.LastName}}
+                </p>
+                <p>
+                    <h2>GENDER</h2>
+                    {{Patient.Gender ? 'Female' : 'Male'}}
+                </p>
+                <p>
+                    <h2>ADDRESS</h2>
+                    {{Patient.City}}, {{Patient.Zip}}, {{Patient.Country}}
+                </p>
+
+            </div>
+
+            <div style="clear: both"></div>
+        </div>
+        <div class="horizontal_line"></div>
+        <div class="payment_input_box">
+            <h3>ENTER ADVANCE PAYMENT</h3>
+            <div class="title">PAYMENT AMOUNT</div>
+            <div class="inputbox">
+                <input type="text" class="payment_amount" ng-model="Payment.Amount">
+            </div>
+
+            <div style="clear: both"></div>
+
+            <div class="title">PAYMENT METHOD</div>
+            <div class="inputbox">
+                <select name="paymentmethod" class="payment_method" ng-model="PaymentMethod">
+                    <option value="1">Cash</option>
+                    <option value="2">Visa Card</option>
+                    <option value="3">Master Card</option>
+                </select>
+            </div>
+
+            <div style="clear: both"></div>
+
+            <div ng-show="PaymentMethod!='1'">
+                <div class="title">CARD  NUMBER</div>
+                <div class="inputbox">
+                    <input type="text" class="copayer_amount" ng-model="CardNumber">
+                </div>
+            </div>
+
+            <div style="clear: both"></div>
+
+            <div class="space"></div>
+            <div class="title"></div>
+            <div class="inputbox">
+                <input name="save" type="button" value="save" class="md_button" ng-click="ok()">
+                <input name="cancel" type="button" value="cancel" class="md_button cancel" ng-click="cancel()">
+                <div style="clear: both"></div>
+                <div class="space"></div>
+
+
+            </div>
+   
+        </div>
+        <div style="clear:both; padding-top:20px;"></div>
+    </div>
+</div>
