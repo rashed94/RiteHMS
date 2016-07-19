@@ -46,8 +46,9 @@ HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInst
     $scope.ServiceProvider = serviceProvider;
     if ($scope.ServiceProvider.Contact.Gender == null) {
         $scope.ServiceProvider.Contact.Gender = false;
-        $scope.ServiceProvider.ServiceProviderTypeId = 56;
-        $scope.ServiceProvider.ServiceProviderType = { Id: 56 };
+        $scope.ServiceProvider.ServiceProviderTypeId = $scope.SelectedServiceProviderType.Id;
+       
+        $scope.ServiceProvider.ServiceProviderType = { Id: $scope.SelectedServiceProviderType.Id };
         $scope.ServiceProvider.DepartmentId = 205;
         $scope.ServiceProvider.Department = { Id: 205 }
     }

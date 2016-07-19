@@ -28,24 +28,43 @@
         if ($scope.ServiceProvider.ServiceProviderType.Id)
             $scope.ServiceProvider.ServiceProviderTypeId = $scope.ServiceProvider.ServiceProviderType.Id;
 
-        file.upload = Upload.upload({
-            url: apiUrl,
-            data: { serviceProvider: $scope.ServiceProvider, file: file },
-        }).then(function (response) {
-            $scope.ServiceProvider = response.data;
-            if (response.status > 0) {
-                $scope.errorMsg = response.status + ': ' + response.data;
-            }
-            else {
-                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-            }
-        }, function (response) {
+     
 
-        }, function (evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-        });
+   
+
+           
+
+            file.upload = Upload.upload({
+                url: apiUrl,
+                data: { serviceProvider: $scope.ServiceProvider, file: file },
+            }).then(function (response) {
+                $scope.ServiceProvider = response.data;
+                if (response.status > 0) {
+                    $scope.errorMsg = response.status + ': ' + response.data;
+                }
+                else {
+                    console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+                   
+
+                }
+                return response.data;
+            }, function (response) {
+
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+            });
+
+            
+
+
+
+            return {data:file.upload}
+
+        
+
+        
     };
 
     ConfigurationService.GetDoctorsByDepartment = function (departmentId) {
