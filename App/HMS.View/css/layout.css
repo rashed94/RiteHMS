@@ -629,15 +629,21 @@ select.generaldropdown {
 
 select option:empty { display:none }
 
-.appointment {
+.appointment-slot {
     cursor: pointer;
+    margin: 10px;
+    padding: 10px;
+    background-color: #009A9A;
+    color: #fff;
+    text-align: center;
+    width: 100px;
 }
-.appointment.selected, .appointment:hover {
+.appointment-slot.selected, .appointment-slot:hover {
     background-color: #538e4a;
     color: white;
     font-weight: bold;
 }
-.appointment.disabled {
+.appointment-slot.disabled {
     pointer-events: none;
     background-color: #CCC;
 }
@@ -652,7 +658,18 @@ select option:empty { display:none }
     overflow: auto;
 }
 
-.doctor-bio {
+.appointment-doctor-bio {
     width: 500px;
     margin: 25px;
+}
+.appointment-doctor-speciality {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.slots {
+    float: left;
+    height: 320px;
+    width: 580px;
+    overflow-y: auto;
 }
