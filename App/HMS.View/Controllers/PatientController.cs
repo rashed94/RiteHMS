@@ -31,39 +31,57 @@ namespace HMS.Controllers
             List<Item> item;
             using (ItemRepository repository = new ItemRepository())
             {
-                item = repository.GetItembyMedicalPartialName(id,name).ToList();
+                item = repository.GetItembyMedicalPartialName(id, name).ToList();
+
+                if (item == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+                List<Item> onlyItems = new List<Item>();
+                //  patients.ForEach(corePatient => onlyPatients.Add(MapToClientObject(corePatient)));
+
+                /*item.ForEach(c => onlyItems.Add(new Item
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    GenericName = c.ItemCategory.Name.ToString(),
+                    Code=c.Code,
+                    ItemTypeId=c.ItemTypeId,
+                    MedicalTypeId=c.MedicalTypeId,
+                    ItemCategoryId=c.ItemCategoryId,
+                    MeasurementUnitId=c.MeasurementUnitId,
+                    SalePrice=c.SalePrice,
+                    BuyPrice=c.BuyPrice,
+                    DefaultReferrarFee=c.DefaultReferrarFee,
+                    ReferralAllowed=c.ReferralAllowed,
+                    ServiceProviderId=c.ServiceProviderId
+                }));*/
+                foreach (Item sitem in item)
+                {
+                    Item addItem = new Item();
+                    ItemCategory icategory = new ItemCategory();
+                    addItem.ItemCategory = icategory;
+                    addItem.Id = sitem.Id;
+                    addItem.Name = sitem.Name;
+                    addItem.GenericName = sitem.ItemCategory.Name;
+                    addItem.Code = sitem.Code;
+                    addItem.ItemTypeId = sitem.ItemTypeId;
+                    addItem.MedicalTypeId = sitem.MedicalTypeId;
+                    addItem.ItemCategoryId = sitem.ItemCategoryId;
+                    addItem.MeasurementUnitId = sitem.MeasurementUnitId;
+                    addItem.SalePrice = sitem.SalePrice;
+                    addItem.BuyPrice = sitem.BuyPrice;
+                    addItem.DefaultReferrarFee = sitem.DefaultReferrarFee;
+                    addItem.ReferralAllowed = sitem.ReferralAllowed;
+                    addItem.ServiceProviderId = sitem.ServiceProviderId;
+                    onlyItems.Add(addItem);
+                }
+
+                return Json(onlyItems, JsonRequestBehavior.AllowGet);
             }
-            if (item == null)
-            {
-                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
-            }
-
-            List<Item> onlyItems = new List<Item>();
-            //  patients.ForEach(corePatient => onlyPatients.Add(MapToClientObject(corePatient)));
-            item.ForEach(c => onlyItems.Add(new Item
-            {
-                Id = c.Id,
-                Name = c.Name,
-                GenericName = c.GenericName,
-                Code=c.Code,
-                ItemTypeId=c.ItemTypeId,
-                MedicalTypeId=c.MedicalTypeId,
-                ItemCategoryId=c.ItemCategoryId,
-                MeasurementUnitId=c.MeasurementUnitId,
-                SalePrice=c.SalePrice,
-                BuyPrice=c.BuyPrice,
-                DefaultReferrarFee=c.DefaultReferrarFee,
-                ReferralAllowed=c.ReferralAllowed,
-                ServiceProviderId=c.ServiceProviderId
-                
-
-
-            }));
-
-            return Json(onlyItems, JsonRequestBehavior.AllowGet);
-
-
         }
+
         public JsonResult GetMedicalType()
         {
             List<MedicalType> medicaltype;
@@ -86,10 +104,6 @@ namespace HMS.Controllers
             }));
 
             return Json(onlyMedicalType, JsonRequestBehavior.AllowGet);
-
-
-           
-
         }
 
         // GET: Patient/GetPatients
@@ -200,18 +214,12 @@ namespace HMS.Controllers
                     serviceProvider.Id = item.Id;
                     serviceProvider.Speciality = item.Speciality;
 
-                    
-
                     onlyserviceProviders.Add(serviceProvider);
-
                 }
             }
 
             return Json(onlyserviceProviders, JsonRequestBehavior.AllowGet);
         }
-
-
-
 
         public JsonResult getdoctorpartialname(string name, long typeId, long itemid)
         {
@@ -241,14 +249,49 @@ namespace HMS.Controllers
                     using (ReferralRepository referrerrepository = new ReferralRepository())
                     {
                         referral = referrerrepository.GetReferrer(serviceProvider.Id, itemid);
-             
-                        serviceProvider.ReferralFee = referral.ReferralFee;
-                      
+                        serviceProvider.ReferralFee = referral.ReferralFee;                      
                     }
 
                     onlyserviceProviders.Add(serviceProvider);
-
                 }
+            }
+
+            return Json(onlyserviceProviders, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getDoctorByID(long serviceProviderID, long typeId, long itemid)
+        {
+            // long typid = 56; // retturn only doctor
+
+            ServiceProvider serviceProviders = null;
+            ServiceProvidedWithReferrerFee onlyserviceProviders = new ServiceProvidedWithReferrerFee();
+
+            using (ServiceProviderRepository repository = new ServiceProviderRepository())
+            {
+                    
+                    serviceProviders = repository.GetById(serviceProviderID);
+
+
+
+                    ServiceProvidedWithReferrerFee serviceProvider = new ServiceProvidedWithReferrerFee();
+                    Contact contact = new Contact();
+                    serviceProvider.Contact = contact;
+
+                    serviceProvider.Contact.FirstName = serviceProviders.Contact.FirstName;
+                    serviceProvider.Contact.LastName = serviceProviders.Contact.LastName;
+                    serviceProvider.Id = serviceProviders.Id;
+                    serviceProvider.Speciality = serviceProviders.Speciality;
+
+                    Referral referral = new Referral();
+
+                    using (ReferralRepository referrerrepository = new ReferralRepository())
+                    {
+                        referral = referrerrepository.GetReferrer(serviceProvider.Id, itemid);
+                        serviceProvider.ReferralFee = referral.ReferralFee;
+                    }
+
+                    onlyserviceProviders=serviceProvider;
+                
             }
 
             return Json(onlyserviceProviders, JsonRequestBehavior.AllowGet);
@@ -289,18 +332,10 @@ namespace HMS.Controllers
             List<Referral> referrals = null;
             List<Referral> onlyReferrals = new List<Referral>();
 
-
-            
-
-
             using (ReferralRepository repository = new ReferralRepository())
             {
                 referrals = repository.GetServiceProviderPartialName(name, itemid).ToList();
                 
-
-                
-
-              
                 foreach (Referral item in referrals)
                 {
                     Referral referral = new Referral();
@@ -349,15 +384,14 @@ namespace HMS.Controllers
         //[ValidateAntiForgeryToken]
         public JsonResult CreatePatientService(IList<PatientService> patientServices)
         {
-
             //if (ModelState.IsValid)
             {
                 using (PatientServiceRepository repository = new PatientServiceRepository())
                 {
                     foreach (PatientService patientervice in patientServices)
                     {
-                        repository.Insert(patientervice);
-                        
+                        patientervice.UserId = GetLoggedinUserInfo().UserId;
+                        repository.Insert(patientervice);                        
                     }
                     repository.Commit();
                    // repository.Insert(patientService);
@@ -382,7 +416,7 @@ namespace HMS.Controllers
                     file.SaveAs(fileNameWithPath);
                     patient.Photo = fileName;
                 }
-
+                patient.UserId = GetLoggedinUserInfo().UserId;
                 repository.Insert(patient);
                 repository.Commit();
                 patient = repository.GetByPhoneNumber(patient.PhoneNumber);
@@ -410,6 +444,7 @@ namespace HMS.Controllers
                         }
                         patient.Photo = fileName;
                     }
+                    patient.UserId = GetLoggedinUserInfo().UserId;
                     repository.Update(patient);
                     repository.Commit();
                     patient = repository.GetByPhoneNumber(patient.PhoneNumber);

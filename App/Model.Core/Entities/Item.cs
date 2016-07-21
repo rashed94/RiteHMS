@@ -23,7 +23,7 @@ namespace HMS.Model.Core
         public long ItemTypeId { get; set; }
         public long MedicalTypeId { get; set; }
         public long ItemCategoryId { get; set; }
-        public long MeasurementUnitId { get; set; }
+        public long  MeasurementUnitId { get; set; }
         public decimal SalePrice { get; set; }
         public decimal BuyPrice { get; set; }
         public long? ServiceProviderId { get; set; }

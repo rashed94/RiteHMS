@@ -148,9 +148,13 @@
     </div>
 
     <div class="serviceprovider hide">
+
+        <div style="padding-top:12px;">
+            <input name="ADD SERVICE PROVIDER" type="button" value="ADD SERVICE PROVIDER" class="sm_button" ng-click="ServiceProviderModal('lg')">
+        </div>
         <div class="criteria_box">
-            <div class="search_container">
-                <!-- <input type="text" width="50" maxlength="20" name="search" class="search" ><a href="#" class="fa fa-search"></a>-->
+            <!--<div class="search_container">
+                 <input type="text" width="50" maxlength="20" name="search" class="search" ><a href="#" class="fa fa-search"></a>
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search for...">
                     <span class="input-group-btn">
@@ -158,10 +162,8 @@
                     </span>
                 </div>
 
-            </div>
-            <div class="select_all_patient">
-                <input name="Admit to Hospital" type="button" value="ADD SERVICE PROVIDER" class="sm_button" ng-click="ServiceProviderModal('lg')">
-            </div>
+            </div>-->
+
 
             <select name="ServiceProviderType"
                     class="_s_ServiceProviderType"
@@ -187,9 +189,9 @@
             </thead>
             <tbody>
                 <tr ng-repeat="ServiceProvider in ServiceProviders">
-                    <td><a class="fa fa-arrow-circle-right fa-2x" aria-hidden="true" href="#"></a></td>
+                    <td></td>
                     <td>{{ServiceProvider.Contact.FirstName}} {{ServiceProvider.Contact.LastName}}</td>
-                    <td>{{SelectedServiceProviderType.Name}}</td>
+                    <td>{{ServiceProvider.ServiceProviderType.Name}}</td>
                     <td>{{ServiceProvider.Department.Name}}</td>
                     <td>{{ServiceProvider.Contact.PhoneNumber}}</td>
                     <td>Yes</td>

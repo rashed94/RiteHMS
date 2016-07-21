@@ -79,5 +79,6 @@
     PatientService.CancelAppointment = function (doctorAppointmentId) {
         return $http.get('/Appointment/CancelAppointment?id=' + doctorAppointmentId);
     };
+    
     return PatientService;
 }]);

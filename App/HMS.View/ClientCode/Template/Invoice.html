@@ -56,7 +56,7 @@
             <h3>ENTER PAYMENT</h3>
             <div class="title">PAYMENT AMOUNT</div>
             <div class="inputbox">
-                <input type="text" class="payment_amount" ng-model="Invoice.PaymentAmount">
+                <input type="text" class="payment_amount" ng-change="CheckReconcileAmount()" ng-model="Invoice.PaymentAmount">
             </div>
             <div class="title">COPAYER AMOUNT</div>
             <div class="inputbox">
@@ -64,19 +64,33 @@
             </div>
             <div style="clear: both"></div>
 
+
             <div class="title">PAYMENT METHOD</div>
             <div class="inputbox">
-                <select name="paymentmethod" class="payment_method" ng-model="Invoice.PaymentMethod">
-                    <option value="Cash" ng-selected="true">Cash</option>
-                    <option value="Visa">Visa Card</option>
-                    <option value="MasterCard">Master Card</option>
+                <select name="paymentmethod" class="payment_method"   ng-model="PaymentMethod">
+                    <option value="1">Cash</option>
+                    <option value="2">Visa Card</option>
+                    <option value="3">Master Card</option>
                 </select>
             </div>
+
+
+           
+
             <div class="title">RECONCILE  AMOUNT</div>
             <div class="inputbox">
-                <input type="text" class="copayer_amount" ng-model="Invoice.ReconcileAmount">
+                <input type="text" class="copayer_amount" ng-disabled="true" ng-model="ReconcileAmount">
             </div>
             <div style="clear: both"></div>
+
+            <div ng-show="PaymentMethod!='1'">
+                <div class="title">CARD  NUMBER</div>
+                <div class="inputbox">
+                    <input type="text" class="copayer_amount" ng-model="CardNumber">
+                </div>
+            </div>
+            <div style="clear: both"></div>
+
             <div class="space"></div>
             <div class="title"></div>
             <div class="inputbox">

@@ -28,44 +28,53 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.Patient = {};
     $scope.Patient.Photo = "";
     $scope.IsPatientLoaded = "";
+    $scope.ServiceProviderType = 56;  // which is doctor
 
+    $scope.getAppointment = function () {
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
 
+                PatientService.GetDoctorAppointmentsByPatientId($scope.Patient.Id)
+                .success(function (doctorAppointments) {
+                    $.each(doctorAppointments, function (index, doctorAppointment) {
+                        doctorAppointment.AppointmentDate = new Date(parseInt(doctorAppointment.AppointmentDate.substring(6, doctorAppointment.AppointmentDate.length - 2)));
+                    });
+                    $scope.DoctorAppointments = doctorAppointments;
+                })
+                .error(function (error) {
+                    $scope.status = 'Unable to load Patient Appointment data: ' + error.message;
+                    console.log($scope.status);
+                });
+            }
+        }
+    }
     $scope.$watch('Patient', function () {
 
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
                 sessionStorage.PatientService = angular.toJson($scope.Patient);
                 $scope.Patient.Name = $scope.Patient.FirstName + " " + $scope.Patient.LastName;
+                $scope.getAppointment();
 
-                PatientService.GetDoctorAppointmentsByPatientId($scope.Patient.Id)
-                    .success(function (doctorAppointments) {
-                        $.each(doctorAppointments, function (index, doctorAppointment) {
-                            doctorAppointment.AppointmentDate = new Date(parseInt(doctorAppointment.AppointmentDate.substring(6, doctorAppointment.AppointmentDate.length - 2)));
-                        });
-                        $scope.DoctorAppointments = doctorAppointments;
-                    })
-                    .error(function (error) {
-                        $scope.status = 'Unable to load Patient Appointment data: ' + error.message;
-                        console.log($scope.status);
-                    });
             }
         }
         
         $scope.$broadcast('patientchange', { "val": '' });
     });
 
-    $scope.CancelAppointment = function (doctorAppointmentId) {
+    $scope.CancelAppointment = function (ItemsAppointments,doctorAppointmentId,index) {
         PatientService.CancelAppointment(doctorAppointmentId)
             .success(function (doctorAppointments) {
-                var index = -1;
-                $.each(doctorAppointments, function (i, doctorAppointment) {
-                    if (doctorAppointment.Id == doctorAppointmentId) {
-                        index = i;
-                    }
-                });
-                if (index > -1) {
-                    $scope.DoctorAppointments.splice(index, 1);
-                }
+                ItemsAppointments.splice(index, 1);
+                //var index = -1;
+                //$.each(doctorAppointments, function (i, doctorAppointment) {
+                //    if (doctorAppointment.Id == doctorAppointmentId) {
+                //        index = i;
+                //    }
+                //});
+                //if (index > -1) {
+                //    $scope.DoctorAppointments.splice(index, 1);
+                //}
             })
             .error(function (error) {
                 $scope.status = 'Unable to load Appointment data: ' + error.message;
@@ -165,14 +174,15 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.updateReferrerItem = function ($item,doctor) {
         if (doctor == '')
         {
-            $item.ServiceProviderId = 0;
+           
             angular.forEach($scope.Items, function (obj) {
                 // obj.push($item);
-                if (obj.Id == $item.Id) {
+                
 
                     obj.ReferralFee = obj.DefaultReferrarFee;
-
-                }
+                    obj.ServiceProviderId = 0;
+                    obj.Doctor = "";
+               
             });
         }
     }
@@ -236,8 +246,10 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         .success(function (data) {
                 
             console.log(data);
-            $scope.UpdateTopLink('billing');
-            $window.location.href = '#/billing';
+           // $scope.UpdateTopLink('billing');
+           // $window.location.href = '#/billing/summary';
+            $location.path('/billing/summary');
+            $scope.serviceItemEmpty();
            
         })
         .error(function (error) {
@@ -264,11 +276,8 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     //    });
     //}
 
-
-
-    $scope.OnDocotorSelect = function ($item,serviceitem) {
-
-
+    $scope.updateAllReferellFee = function ($item, serviceitem)
+    {
         if ($item.ReferralFee > 0) {
             serviceitem.ReferralFee = $item.ReferralFee;
 
@@ -276,12 +285,34 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
             if (!found.length) {
                 $scope.Items.push(serviceitem);
             }
-        }else
-        {
+        } else {
             serviceitem.ReferralFee = serviceitem.DefaultReferrarFee;
         }
         serviceitem.ServiceProviderId = $item.Id;
+    }
 
+    $scope.OnDocotorSelect = function ($item,serviceitem) {
+
+        angular.forEach($scope.Items, function (obj) {
+
+            if (obj.ReferralAllowed) {
+
+                obj.Doctor = $item.Contact.FirstName + ' ' + $item.Contact.LastName;
+
+                //var currentItem=GetServiceProviderPartialName($item.Contact.FirstName, obj.Id)
+
+                $http.get('/patient/getDoctorByID?serviceProviderID=' + $item.Id + "&typeId=" + $scope.ServiceProviderType + "&itemId=" + obj.Id).then(function (response) {
+                     var data = response.data;
+                     $scope.updateAllReferellFee(data, obj);
+                    
+                });
+
+                
+            }
+
+        });
+
+        
         //  console.log($item.Id);
 
     }
@@ -343,67 +374,20 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         });
     };
 
-    $scope.UpdateTopLink = function (link) {
-        if (link.indexOf("patient")>-1) {
-        $('.site_navigation li a').removeClass('selected');
-        $('.site_navigation li.patientinfo a').addClass('selected');
-            // $location.path = $location.path(link);
-      //  $window.location.href = '#/patient';
-        }
-        else if( link.indexOf("billing")>-1)
-        {
-            $('.site_navigation li a').removeClass('selected');
-            $('.site_navigation li.billing a').addClass('selected');
-          
-          //  $window.location.href = '#/billing';
-        }
-        else if (link.indexOf("labtest")>-1) {
-            $('.site_navigation li a').removeClass('selected');
-            $('.site_navigation li.labtest a').addClass('selected');
+    
 
-            //  $window.location.href = '#/billing';
+    if ($scope.Patient) {
+        if ($scope.Patient.Id != null) {
+            $scope.getAppointment();
         }
-        else if ( link.indexOf("appointment")>-1) {
-            $('.site_navigation li a').removeClass('selected');
-            $('.site_navigation li.appointment a').addClass('selected');
-
-            //  $window.location.href = '#/billing';
-        }
-        else if ( link.indexOf("configuration")>-1) {
-            $('.site_navigation li a').removeClass('selected');
-            $('.site_navigation li.configuration a').addClass('selected');
-
-            //  $window.location.href = '#/billing';
-        }
-        else if (link.indexOf("pharmacy") > -1) {
-            $('.site_navigation li a').removeClass('selected');
-            $('.site_navigation li.pharmacy a').addClass('selected');
-
-            //  $window.location.href = '#/billing';
-        }
-
-        else if (link.indexOf("bedsetup") > -1) {
-            $('.site_navigation li a').removeClass('selected');
-            $('.site_navigation li.bedsetup a').addClass('selected');
-
-            //  $window.location.href = '#/billing';
-        }
-        else {
-            $('.site_navigation li a').removeClass('selected');
-            $('.site_navigation li.patientinfo a').addClass('selected');
-
-        }
-
     }
+
     $scope.isEmpty = function (obj) {
         for (var i in obj) if (obj.hasOwnProperty(i)) return false;
         return true;
     };
 
-    if ($location.path() != null) {
 
-        $scope.UpdateTopLink($location.path());
-    }
 
 
     if ($routeParams.id != null) {

@@ -1,7 +1,7 @@
 ﻿'use strict';
-HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window, $filter, $modal, LabTestService) {
-    $scope.LabReportFormats = {};
-    $scope.SingleLabItem = {
+HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window, $filter,$route, $modal,ItemService) {
+    $scope.ReportFormats = {};
+    $scope.SingleItem = {
         id: 0,
         Name: "",
         GenericName: "",
@@ -15,46 +15,41 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
         ServiceProviderId: "",
         ReferralAllowed: 0,
         DefaultReferrarFee: "",
-        LabReportGroupId: "",
+        ReportGroupId: "",
 
 
     };
     $scope.saveSuccess = 0;
-    $scope.LabTestCategories = {};
-    $scope.LabTestGroups = {};
+    $scope.TestCategories = {};
+    $scope.TestGroups = {};
     $scope.MeasureMentUnits = {};
     $scope.medicalTypeID = 60;
-    $scope.LabItemEdit = false;
+    $scope.ItemEdit = false;
 
     $scope.$on('patientchange', function (event, args) {
         // console.log("patient changes");
-        if ($routeParams.tab == "addlabtest") {
-
-        }
-
-        if ($routeParams.tab == "listlabtest") {
-
-            $scope.GetLabItemsByMedicalType($scope.medicalTypeID);
-        }
 
 
-        if ($routeParams.tab == "summary") {
 
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
 
-            if ($scope.Patient) {
-                if ($scope.Patient.Id != null) {
-                    if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
-
-                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
+                if ($routeParams.tab == "summary") {
+                    loadItems();
+                    $scope.loadTestCategories();
+                }
+                if ($routeParams.tab == "addpharmacy") {
+                    $scope.loadAddPharmacyItem();
                 }
             }
-
         }
+
+        
     });
 
 
-    function preparelabtestDataModel() {
-        angular.forEach($scope.labTestItems, function (item) {
+    function preparetestDataModel() {
+        angular.forEach($scope.TestItems, function (item) {
 
             item.Paid = 0;
             item.InvoiceDate = ToJavaScriptDate(item.InvoiceDate);
@@ -76,11 +71,11 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
             angular.forEach(item.PatientServices, function (PatientService) {
 
-                if (PatientService.LabStatusId == 1) {
+                if (PatientService.StatusId == 1) {
                     PatientService.Staus = "Pending";
-                } else if (PatientService.LabStatusId == 2) {
+                } else if (PatientService.StatusId == 2) {
                     PatientService.Staus = "Completed";
-                } else if (PatientService.LabStatusId == 3) {
+                } else if (PatientService.StatusId == 3) {
                     PatientService.Staus = "Refunded";
                 }
                 PatientService.DeliveryDate = ToJavaScriptDate(PatientService.DeliveryDate);
@@ -90,11 +85,11 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
 
 
-            if (item.LabStatusId == 1) {
+            if (item.StatusId == 1) {
                 item.Staus = "Pending";
-            } else if (item.LabStatusId == 2) {
+            } else if (item.StatusId == 2) {
                 item.Staus = "Completed";
-            } else if (item.LabStatusId == 3) {
+            } else if (item.StatusId == 3) {
                 item.Staus = "Refunded";
             }
 
@@ -109,20 +104,20 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
 
 
-    //$scope.selectLabItem=function (LabItem)
+    //$scope.selectItem=function (Item)
     //{
 
 
     //    $('.tabs li').removeClass('active');
-    //    $(".addlabtest").addClass('active');
+    //    $(".addtest").addClass('active');
 
     //    $('div.summary').addClass('hide');
-    //    $('div.listlabtest').addClass('hide');
+    //    $('div.listtest').addClass('hide');
 
-    //    $(".addlabtest").removeClass('hide');
+    //    $(".addtest").removeClass('hide');
 
-    //    $scope.SingleLabItem = LabItem;
-    //    $scope.LabItemEdit = true;
+    //    $scope.SingleItem = Item;
+    //    $scope.ItemEdit = true;
 
     //}
 
@@ -149,34 +144,34 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
 
 
-        $scope.GetLabItemsByMedicalType($scope.medicalTypeID);
+        $scope.GetItemsByMedicalType($scope.medicalTypeID);
 
 
 
     }
 
-    $scope.GetLabItemsByMedicalType = function (medicalType) {
-        LabTestService.GetLabItemsByMedicalType(medicalType)
+    $scope.GetItemsByMedicalType = function (medicalType) {
+        ItemService.GetItemsByMedicalType(medicalType,$scope.filterCondition.CategoryId)
             .success(function (pt) {
                 $scope.items = pt;
                 // preparelabtestDataModel();
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load lab item data: ' + error.message;
+                $scope.status = 'Unable to load  item data: ' + error.message;
                 console.log($scope.status);
             });
     }
 
-    $scope.GetInvoicesByMedicalType = function (patientId, labStatus, medicalType) {
-        LabTestService.GetInvoicesByMedicalType(patientId, labStatus, medicalType)
+    $scope.GetInvoicesByMedicalType = function (patientId, Status, medicalType) {
+        ItemService.GetInvoicesByMedicalType(patientId, Status, medicalType)
             .success(function (pt) {
-                $scope.labTestItems = pt;
-                preparelabtestDataModel();
+                $scope.TestItems = pt;
+                preparetestDataModel();
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load invoices for lab test only data: ' + error.message;
+                $scope.status = 'Unable to load invoices for  test only data: ' + error.message;
                 console.log($scope.status);
             });
     }
@@ -185,16 +180,16 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
 
 
-    $scope.loadLabTest = function () {
+    $scope.loadTest = function () {
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
-                if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+                if (!$scope.TestStatus) $scope.TestStatus = 0;
 
                 if ($scope.patientSelection == 0) {
-                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
+                    $scope.GetInvoicesByMedicalType(0, $scope.TestStatus, $scope.medicalTypeID);
 
                 } else {
-                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
+                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.TestStatus, $scope.medicalTypeID);
 
                 }
             }
@@ -203,15 +198,15 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
     }
 
-    $scope.reloadlabtest = function () {
-        // if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+    $scope.reloadtest = function () {
+        // if (!$scope.TestStatus) $scope.TestStatus = 0;
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
                 if ($scope.patientSelection == 0) {
-                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
+                    $scope.GetInvoicesByMedicalType(0, $scope.TestStatus, $scope.medicalTypeID);
 
                 } else {
-                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
+                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.TestStatus, $scope.medicalTypeID);
 
                 }
             }
@@ -226,87 +221,93 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
 
 
-    $scope.loadLabTestCategories = function () {
-        LabTestService.loadLabTestCategories($scope.medicalTypeID)
+    $scope.loadTestCategories = function () {
+       ItemService.loadTestCategories($scope.medicalTypeID)
             .success(function (pt) {
-                //$scope.LabTestCategories = pt;
-                $scope.LabTestCategories = pt
+                //$scope.TestCategories = pt;
+                $scope.TestCategories = pt;
+                if (!$routeParams.id) {
+                    $scope.filterCondition.ItemCategoryId = $scope.TestCategories[0].Id.toString();
+                }
 
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load labtest category for lab test only data: ' + error.message;
+                $scope.status = 'Unable to load test category for  test only data: ' + error.message;
                 console.log($scope.status);
             });
     }
 
 
 
-    $scope.loadLabTestGroups = function () {
-        LabTestService.loadLabTestGroups()
+    $scope.loadTestGroups = function () {
+        ItemService.loadTestGroups()
             .success(function (pt) {
-                $scope.LabTestGroups = pt;
+                $scope.TestGroups = pt;
 
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load loadLabTestGroups for lab test only data: ' + error.message;
+                $scope.status = 'Unable to load loadTestGroups for  test only data: ' + error.message;
                 console.log($scope.status);
             });
     }
 
 
     $scope.loadMeasureMentUnits = function () {
-        LabTestService.loadMeasureMentUnits()
+        ItemService.loadMeasureMentUnits()
             .success(function (pt) {
                 $scope.MeasureMentUnits = pt;
+                if (!$routeParams.id) {
+                    $scope.filterCondition.MeasurementUnitId = $scope.MeasureMentUnits[0].Id.toString();
+                }
 
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load loadMeasureMentUnits for lab test only data: ' + error.message;
+                $scope.status = 'Unable to load loadMeasureMentUnits for  test only data: ' + error.message;
                 console.log($scope.status);
             });
     }
     $scope.LoadReportFomart = function (itemId) {
 
-        LabTestService.LoadLabReportbyId(itemId)
+        ItemService.LoadReportbyId(itemId)
             .success(function (pt) {
-                $scope.LabReportFormats = pt;
+                $scope.ReportFormats = pt;
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load  lab report  ' + error.message;
+                $scope.status = 'Unable to load   report  ' + error.message;
                 console.log($scope.status);
             });
     }
 
     $scope.LoadReportFomartByItemId = function (itemId) {
 
-        LabTestService.LoadLabReportbyId(itemId)
+        ItemService.LoadReportbyId(itemId)
             .success(function (pt) {
                 console.log(pt);
                 return pt;
             })
             .error(function (error) {
-                $scope.status = 'Unable to load  lab report  ' + error.message;
+                $scope.status = 'Unable to load   report  ' + error.message;
                 console.log($scope.status);
             });
     }
 
     $scope.loadItembyId = function (itemid) {
 
-        LabTestService.loadItembyId(itemid)
+        ItemService.loadItembyId(itemid)
             .success(function (pt) {
-                $scope.SingleLabItem = pt;
+                $scope.SingleItem = pt;
                 $scope.LoadFilterCondition();
 
-                $scope.LoadReportFomart($scope.SingleLabItem.Id);
+               // $scope.LoadReportFomart($scope.SingleItem.Id);
 
                 console.log(pt);
             })
             .error(function (error) {
-                $scope.status = 'Unable to load single lab item ' + error.message;
+                $scope.status = 'Unable to load single  item ' + error.message;
                 console.log($scope.status);
             });
     }
@@ -324,10 +325,10 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
 
     $scope.saveCategory = function () {
-        LabTestService.CreateCategory($scope.categoryName, $scope.medicalTypeID)
+        ItemService.CreateCategory($scope.categoryName, $scope.medicalTypeID)
         .success(function (data) {
 
-            $scope.loadLabTestCategories();
+            $scope.loadTestCategories();
             $scope.resetpopupFiled();
 
             $('#popupCategory').css("visibility", "hidden");
@@ -345,14 +346,14 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
 
     $scope.saveReportGroup = function () {
-        LabTestService.CreateReportGroup($scope.reportGroupName)
+        ItemService.CreateReportGroup($scope.reportGroupName)
         .success(function (data) {
 
-            $scope.loadLabTestGroups();
+            $scope.loadTestGroups();
             $scope.resetpopupFiled();
 
-            $('#popupLabReportGroup').css("visibility", "hidden");
-            $('#popupLabReportGroup').css("opacity", 0);
+            $('#popupReportGroup').css("visibility", "hidden");
+            $('#popupReportGroup').css("opacity", 0);
 
         })
         .error(function (error) {
@@ -364,21 +365,22 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
     $scope.filterCondition = {
         MeasurementUnitId: '62',
         ItemCategoryId: '41',
-        LabReportGroupId: ""
+        ReportGroupId: "",
+        CategoryId:"0"
 
 
     }
 
     $scope.LoadFilterCondition = function () {
-        $scope.filterCondition.MeasurementUnitId = $scope.SingleLabItem.MeasurementUnitId.toString();
-        $scope.filterCondition.ItemCategoryId = $scope.SingleLabItem.ItemCategoryId.toString();
-        if ($scope.SingleLabItem.LabReportGroupId != null) {
-            $scope.filterCondition.LabReportGroupId = $scope.SingleLabItem.LabReportGroupId.toString()
+        $scope.filterCondition.MeasurementUnitId = $scope.SingleItem.MeasurementUnitId.toString();
+        $scope.filterCondition.ItemCategoryId = $scope.SingleItem.ItemCategoryId.toString();
+        if ($scope.SingleItem.ReportGroupId != null) {
+            $scope.filterCondition.ReportGroupId = $scope.SingleItem.ReportGroupId.toString()
         };
     }
 
     $scope.saveMeasurementUnit = function () {
-        LabTestService.CreateMeasurementUnit($scope.measurementUnitName)
+        ItemService.CreateMeasurementUnit($scope.measurementUnitName)
         .success(function (data) {
 
             $scope.loadMeasureMentUnits();
@@ -394,16 +396,21 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
         });
 
     }
-
+    $scope.ReloadPage = function () {
+        if (!$routeParams.id) {
+            // location.reload();
+            $route.reload();
+        }
+    }
 
     $scope.saveItem = function () {
 
-        $scope.SingleLabItem.MeasurementUnitId = $scope.filterCondition.MeasurementUnitId;
-        $scope.SingleLabItem.ItemCategoryId = $scope.filterCondition.ItemCategoryId;
-        $scope.SingleLabItem.LabReportGroupId = $scope.filterCondition.LabReportGroupId;
+        $scope.SingleItem.MeasurementUnitId = $scope.filterCondition.MeasurementUnitId;
+        $scope.SingleItem.ItemCategoryId = $scope.filterCondition.ItemCategoryId;
+        $scope.SingleItem.ReportGroupId = $scope.filterCondition.ReportGroupId;
 
 
-        LabTestService.SaveItem($scope.SingleLabItem)
+        ItemService.SaveItem($scope.SingleItem)
         .success(function (data) {
 
             $scope.loadItembyId(data);
@@ -427,38 +434,38 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
 
 
-    $scope.DeleteReportFormat = function (labReportFormatID) {
+    $scope.DeleteReportFormat = function (ReportFormatID) {
 
-        LabTestService.DeleteReportFormat(labReportFormatID)
+        ItemService.DeleteReportFormat(ReportFormatID)
             .success(function (data) {
 
-                $scope.loadItembyId($scope.SingleLabItem.Id);
+                $scope.loadItembyId($scope.SingleItem.Id);
 
-                console.log("delete lab report format successfull");
+                console.log("delete  report format successfull");
 
             })
             .error(function (error) {
-                $scope.status = 'Unable to lab report format  data: ' + error.message;
+                $scope.status = 'Unable to  report format  data: ' + error.message;
 
             });
 
     }
     // code added by zaber
-    $scope.deletePharmacy = function (labitemId) {
+    $scope.deletePharmacy = function (itemId) {
 
 
-        LabTestService.deleteLabTest(labitemId)
+        ItemService.deleteItem(itemId)
        .success(function (data) {
 
            //$scope.getDoctorWithReferrel();
-           $scope.GetLabItemsByMedicalType($scope.medicalTypeID);
+           $scope.GetItemsByMedicalType($scope.medicalTypeID);
            $scope.status = 'Delete Successful';
            //$window.alert("Delete Successful!");
            //return;
 
        })
        .error(function (error) {
-           $scope.status = 'Unable to delete referral comission: ' + error.message;
+           $scope.status = 'Unable to delete item: ' + error.message;
            console.log($scope.status);
        });
 
@@ -476,7 +483,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
     //------------------------------- Modal open portion -------------------------------------------------------------
 
 
-    $scope.openResultTemplate = function (size, isEdit, PatientServiceItem, labTestitem) {
+    $scope.openResultTemplate = function (size, isEdit, PatientServiceItem, Testitem) {
 
 
 
@@ -515,7 +522,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
     };
 
 
-    $scope.openTemplate = function (size, isEdit, labReportID) {
+    $scope.openTemplate = function (size, isEdit, ReportID) {
 
 
         var modalInstance = $modal.open({
@@ -529,7 +536,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
                     return isEdit;
                 },
                 labReportID: function () {
-                    return labReportID;
+                    return ReportID;
                 }
             }
         });
@@ -537,7 +544,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
         }, function () {
 
-            $scope.loadItembyId($scope.SingleLabItem.Id);
+            $scope.loadItembyId($scope.SingleItem.Id);
             console.log('Modal dismissed at: ' + new Date());
 
         });
@@ -545,13 +552,13 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
     };
 
-    $scope.CommissionModal = function (size, isEdit) {
+    $scope.StockModal = function (size, isEdit) {
 
 
         var modalInstance = $modal.open({
             templateUrl: '/ClientCode/Template/AddStock.html',
             size: size,
-            controller: 'CommissionModalController',
+            controller: 'PharmacyStockModelController',
             scope: $scope
         });
         modalInstance.result.then(function (result) {
@@ -571,23 +578,35 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
 
 
-    if ($routeParams.tab == "addpharmacy") {
+    $scope.loadAddPharmacyItem = function () {
+        if ($routeParams.tab == "addpharmacy") {
 
-        //  $scope.LabTestCategories =  $scop
-        // $scope.LabTestGroups = 
-        // $scope.MeasureMentUnits = 
+            //  $scope.LabTestCategories =  $scop
+            // $scope.LabTestGroups = 
+            // $scope.MeasureMentUnits = 
 
-        /* $scope.loadLabTestGroups();
-        $scope.loadMeasureMentUnits();*/
+            /* $scope.loadLabTestGroups();
+            $scope.loadMeasureMentUnits();*/
 
 
-        if ($routeParams.id) {
-            $scope.loadItembyId($routeParams.id);
+            if ($routeParams.id) {
+                $scope.loadItembyId($routeParams.id);
+            }
+            $scope.loadTestCategories();
+            
+            $scope.loadMeasureMentUnits();
         }
-        $scope.loadLabTestCategories();
-        $scope.loadLabTestGroups();
-        $scope.loadMeasureMentUnits();
     }
+    if ($routeParams.tab == "addpharmacy") {
+        $scope.loadAddPharmacyItem();
+    }
+
+    if ($routeParams.tab == "summary") {
+        $scope.loadItems();
+        $scope.loadTestCategories();
+    }
+
+
     var tabClass = ".summary";
     if ($routeParams.tab != null) {
         tabClass = "." + $routeParams.tab;

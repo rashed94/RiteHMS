@@ -9,23 +9,28 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
     $(tabClass).addClass('active').removeClass('hide');
 
 
+
+    $scope.getServiceprovider=function()
+    {
+        ConfigurationService.GetServiceProviderTypes()
+        .success(function (serviceProviderTypes) {
+            $scope.ServiceProviderTypes = serviceProviderTypes;
+            $scope.SelectedServiceProviderType = $scope.ServiceProviderTypes[0];
+
+            $scope.GetServiceProviders();
+
+            console.log($scope.ServiceProviderTypes);
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to load ServiceProviderTypes data: ' + error.message;
+            console.log($scope.status);
+        });
+    }
     if ($routeParams.tab == "serviceprovider") {
         $scope.SelectedServiceProviderType = {};
         $scope.Departments = [];
 
-        ConfigurationService.GetServiceProviderTypes()
-            .success(function (serviceProviderTypes) {
-                $scope.ServiceProviderTypes = serviceProviderTypes;
-                $scope.SelectedServiceProviderType = $scope.ServiceProviderTypes[0];
-
-                $scope.GetServiceProviders();
-
-                console.log($scope.ServiceProviderTypes);
-            })
-            .error(function (error) {
-                $scope.status = 'Unable to load ServiceProviderTypes data: ' + error.message;
-                console.log($scope.status);
-            });
+        $scope.getServiceprovider();
 
         ConfigurationService.GetDepartments()
             .success(function (departments) {
@@ -51,7 +56,7 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
     }
 
     $scope.SaveServiceProvider = function (file) {
-        ConfigurationService.SaveServiceProvider($scope, file);
+       return ConfigurationService.SaveServiceProvider($scope, file);
     };
 
     $scope.ServiceProviderModal = function (size, serviceProvider) {
@@ -75,11 +80,15 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
         });
         modalInstance.result.then(function (result) {
             $scope.ServiceProvider = result.ServiceProvider;
+
             //$scope.ServiceProvider.DepartmentId = $scope.ServiceProvider.Department.Id;
             //$scope.ServiceProvider.Department = null;
             //$scope.ServiceProvider.ServiceProviderTypeId = $scope.ServiceProvider.ServiceProviderType.Id;
             //$scope.ServiceProvider.ServiceProviderType = null;
-            $scope.SaveServiceProvider(result.File);
+           $scope.SaveServiceProvider(result.File).data.then(function (result) {
+                $scope.GetServiceProviders();
+            });
+           
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });
@@ -91,6 +100,7 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
             ConfigurationService.DeleteServiceProvider(serviceProvider.Id)
             .success(function (serviceProvider) {
                 // TODO: Remove from collection
+                $scope.GetServiceProviders();
             })
             .error(function (error) {
                 $scope.status = 'Unable to load ServiceProviderTypes data: ' + error.message;

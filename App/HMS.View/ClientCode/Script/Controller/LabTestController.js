@@ -1,23 +1,23 @@
 ﻿'use strict';
 
-HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, $filter, $modal, LabTestService) {
-   
+HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, $filter, $modal,$route, LabTestService) {
+
     $scope.LabReportFormats = {};
     $scope.SingleLabItem = {
-       id:0,
+        id: 0,
         Name: "",
-        GenericName:"",
-        Code:"",
-        ItemTypeId:32,
-        MedicalTypeId:62,
-        ItemCategoryId:41,
-        MeasurementUnitId:62,
-        SalePrice:"",
-        BuyPrice:0.00,
-        ServiceProviderId:"",
-        ReferralAllowed:1,
-        DefaultReferrarFee:"",
-        LabReportGroupId:"",
+        GenericName: "",
+        Code: "",
+        ItemTypeId: 32,
+        MedicalTypeId: 62,
+        ItemCategoryId: 41,
+        MeasurementUnitId: 62,
+        SalePrice: "",
+        BuyPrice: 0.00,
+        ServiceProviderId: "",
+        ReferralAllowed: 1,
+        DefaultReferrarFee: "",
+        LabReportGroupId: "",
 
 
     };
@@ -27,30 +27,42 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     $scope.MeasureMentUnits = {};
     $scope.medicalTypeID = 62;
     $scope.LabItemEdit = false;
+    $scope.patientSelection = 1;
+    
+
+
 
     $scope.$on('patientchange', function (event, args) {
-        // console.log("patient changes");
-        if ($routeParams.tab == "addlabtest") {
-
-        }
-
-        if ($routeParams.tab == "listlabtest") {
-
-            $scope.GetLabItemsByMedicalType( $scope.medicalTypeID);
-        }
 
 
-        if ($routeParams.tab == "summary") {
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
+                // console.log("patient changes");
+                if ($routeParams.tab == "addlabtest") {
 
 
-            if ($scope.Patient) {
-                if ($scope.Patient.Id != null) {
-                    if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+                    if ($routeParams.id) {
+                        $scope.loadItembyId($routeParams.id);
+                    }
+                    $scope.loadLabTestCategories();
+                    $scope.loadLabTestGroups();
+                    $scope.loadMeasureMentUnits();
 
-                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus,  $scope.medicalTypeID);
+                }
+
+                if ($routeParams.tab == "listlabtest") {
+
+                    $scope.loadLabItems();
+                    $scope.loadLabTestCategories();
+                }
+
+
+                if ($routeParams.tab == "summary") {
+
+
+                    $scope.reloadlabtest();
                 }
             }
-
         }
     });
 
@@ -70,8 +82,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             angular.forEach(item.InvoicePayments, function (paymentitem) {
 
                 item.Paid = paymentitem.Amount + item.Paid;
-                item.selectedIcon = true;
-                item.activePosition = false;
+
 
             });
 
@@ -88,6 +99,9 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 PatientService.DeliveryDate = ToJavaScriptDate(PatientService.DeliveryDate);
                 PatientService.ServiceDate = ToJavaScriptDate(PatientService.ServiceDate);
 
+                item.selectedIcon = true;
+                item.activePosition = false;
+
             });
 
 
@@ -101,11 +115,11 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             }
 
             if (item.TotalAmount != item.Paid) {
-                item.Staus = item.Staus+("(Due)");
+                item.Staus = item.Staus + ("(Due)");
             }
 
         });
-       // console.log($scope.invocieslist);
+        // console.log($scope.invocieslist);
     }
 
 
@@ -148,20 +162,20 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     };
 
     $scope.loadLabItems = function () {
-       
-         
-
-                $scope.GetLabItemsByMedicalType( $scope.medicalTypeID);
 
 
-       
+
+        $scope.GetLabItemsByMedicalType($scope.medicalTypeID);
+
+
+
     }
 
     $scope.GetLabItemsByMedicalType = function (medicalType) {
-        LabTestService.GetLabItemsByMedicalType(medicalType)
+        LabTestService.GetLabItemsByMedicalType(medicalType, $scope.filterCondition.CategoryId)
             .success(function (pt) {
                 $scope.Labitems = pt;
-               // preparelabtestDataModel();
+                // preparelabtestDataModel();
                 console.log(pt);
             })
             .error(function (error) {
@@ -170,8 +184,8 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             });
     }
 
-    $scope.GetInvoicesByMedicalType = function (patientId, labStatus,medicalType) {
-        LabTestService.GetInvoicesByMedicalType(patientId, labStatus, medicalType)
+    $scope.GetInvoicesByMedicalType = function (patientId, labStatus, medicalType) {
+        LabTestService.GetInvoicesByMedicalType(patientId, labStatus, medicalType, $scope.invoiceDateStart, $scope.invoiceDateEnd, $scope.invoiceId)
             .success(function (pt) {
                 $scope.labTestItems = pt;
                 preparelabtestDataModel();
@@ -185,38 +199,63 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
 
 
+    $scope.ReloadPage = function () {
+        if (!$routeParams.id) {
+            // location.reload();
+            $route.reload();
+        }
+    }
 
-
-    $scope.loadLabTest=function()
-    {
+    $scope.loadLabTest = function () {
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
                 if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
 
-                if ($scope.patientSelection == 0) {
-                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus,  $scope.medicalTypeID);
-
-                } else {
-                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus,  $scope.medicalTypeID);
-
+                if ($scope.patientSelection == 1) {
+                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
+                }else
+                {
+                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
                 }
+  
             }
-        }
+        }else
+        {
+            if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+            if ($scope.patientSelection == 1) {
+               // $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
+            } else {
+                $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
+            }
 
+
+        }
         
+
+
     }
 
     $scope.reloadlabtest = function () {
-       // if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+        // if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
-                if ($scope.patientSelection == 0) {
-                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus,  $scope.medicalTypeID);
 
-                } else {
-                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus,  $scope.medicalTypeID);
+                if ($scope.patientSelection == 1) {
+                    $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
 
+                }else
+                {
+                    $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
                 }
+
+            }
+        }else
+        {
+            if ($scope.patientSelection == 1) {
+                $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
+
+            } else {
+                $scope.GetInvoicesByMedicalType(0, $scope.LabTestStatus, $scope.medicalTypeID);
             }
         }
 
@@ -233,8 +272,14 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         LabTestService.loadLabTestCategories($scope.medicalTypeID)
             .success(function (pt) {
                 //$scope.LabTestCategories = pt;
-                $scope.LabTestCategories = pt
+                $scope.LabTestCategories = pt;
+
+                if (!$routeParams.id) {
+                    $scope.filterCondition.ItemCategoryId = $scope.LabTestCategories[0].Id.toString();
+                }
+
                
+
                 console.log(pt);
             })
             .error(function (error) {
@@ -249,7 +294,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         LabTestService.loadLabTestGroups()
             .success(function (pt) {
                 $scope.LabTestGroups = pt;
-               
+
                 console.log(pt);
             })
             .error(function (error) {
@@ -264,6 +309,10 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             .success(function (pt) {
                 $scope.MeasureMentUnits = pt;
 
+                if (!$routeParams.id) {
+                    $scope.filterCondition.MeasurementUnitId = $scope.MeasureMentUnits[0].Id.toString();
+                }
+
                 console.log(pt);
             })
             .error(function (error) {
@@ -271,12 +320,13 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 console.log($scope.status);
             });
     }
-    $scope.LoadReportFomart=function(itemId)
-    {
+    $scope.LoadReportFomart = function (itemId) {
 
         LabTestService.LoadLabReportbyId(itemId)
             .success(function (pt) {
                 $scope.LabReportFormats = pt;
+
+
                 console.log(pt);
             })
             .error(function (error) {
@@ -298,8 +348,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             });
     }
 
-    $scope.loadItembyId= function(itemid)
-    {
+    $scope.loadItembyId = function (itemid) {
 
         LabTestService.loadItembyId(itemid)
             .success(function (pt) {
@@ -308,18 +357,17 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
                 $scope.LoadReportFomart($scope.SingleLabItem.Id);
 
-            console.log(pt);
+                console.log(pt);
             })
             .error(function (error) {
-            $scope.status = 'Unable to load single lab item ' + error.message;
-            console.log($scope.status);
+                $scope.status = 'Unable to load single lab item ' + error.message;
+                console.log($scope.status);
             });
     }
 
 
-    $scope.resetpopupFiled=function()
-    {
-        
+    $scope.resetpopupFiled = function () {
+
         $scope.categoryName = "";
         $scope.reportGroupName = "";
         $scope.measurementUnitName = "";
@@ -329,8 +377,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
 
 
-    $scope.saveCategory=function()
-    {
+    $scope.saveCategory = function () {
         LabTestService.CreateCategory($scope.categoryName, $scope.medicalTypeID)
         .success(function (data) {
 
@@ -371,13 +418,13 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     $scope.filterCondition = {
         MeasurementUnitId: '62',
         ItemCategoryId: '41',
-        LabReportGroupId:""
-      
+        LabReportGroupId: "",
+        CategoryId: "0"
+
 
     }
-   
-    $scope.LoadFilterCondition=function()
-    {
+
+    $scope.LoadFilterCondition = function () {
         $scope.filterCondition.MeasurementUnitId = $scope.SingleLabItem.MeasurementUnitId.toString();
         $scope.filterCondition.ItemCategoryId = $scope.SingleLabItem.ItemCategoryId.toString();
         if ($scope.SingleLabItem.LabReportGroupId != null) {
@@ -406,15 +453,15 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
     $scope.saveItem = function () {
 
-        $scope.SingleLabItem.MeasurementUnitId= $scope.filterCondition.MeasurementUnitId;
-        $scope.SingleLabItem.ItemCategoryId=  $scope.filterCondition.ItemCategoryId;
+        $scope.SingleLabItem.MeasurementUnitId = $scope.filterCondition.MeasurementUnitId;
+        $scope.SingleLabItem.ItemCategoryId = $scope.filterCondition.ItemCategoryId;
         $scope.SingleLabItem.LabReportGroupId = $scope.filterCondition.LabReportGroupId;
 
 
         LabTestService.SaveItem($scope.SingleLabItem)
         .success(function (data) {
 
-            $scope.loadItembyId( data);
+            $scope.loadItembyId(data);
             $scope.saveSuccess = 1;
             console.log("Save successfull");
 
@@ -435,21 +482,20 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
 
 
-    $scope.DeleteReportFormat=function(labReportFormatID)
-    {
+    $scope.DeleteReportFormat = function (labReportFormatID) {
 
         LabTestService.DeleteReportFormat(labReportFormatID)
             .success(function (data) {
 
                 $scope.loadItembyId($scope.SingleLabItem.Id);
-           
-            console.log("delete lab report format successfull");
+
+                console.log("delete lab report format successfull");
 
             })
             .error(function (error) {
                 $scope.status = 'Unable to lab report format  data: ' + error.message;
 
-});
+            });
 
     }
     // code added by zaber
@@ -478,8 +524,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     //------------------------------- Modal open portion -------------------------------------------------------------
 
 
-    $scope.openResultTemplate=function(size, isEdit,PatientServiceItem,labTestitem)
-    {
+    $scope.openResultTemplate = function (size, isEdit, PatientServiceItem, labTestitem) {
 
 
 
@@ -488,7 +533,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             size: size,
             controller: 'LabReportTemplateResultModalController',
             scope: $scope,
-            resolve: 
+            resolve:
             {
                 isEdit: function () {
                     return isEdit;
@@ -510,7 +555,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         }, function () {
 
 
-           
+
             console.log('Modal dismissed at: ' + new Date());
 
         });
@@ -518,7 +563,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     };
 
 
-    $scope.openTemplate = function (size, isEdit,labReportID) {
+    $scope.openTemplate = function (size, isEdit, labReportID) {
 
 
         var modalInstance = $modal.open({
@@ -526,7 +571,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             size: size,
             controller: 'LabReportTemplateModalController',
             scope: $scope,
-            resolve: 
+            resolve:
             {
                 isEdit: function () {
                     return isEdit;
@@ -558,9 +603,9 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             scope: $scope
         });
         modalInstance.result.then(function (result) {
-  
+
         }, function () {
-           
+
             console.log('Modal dismissed at: ' + new Date());
 
         });
@@ -576,22 +621,30 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
     if ($routeParams.tab == "addlabtest") {
 
-      //  $scope.LabTestCategories =  $scop
-       // $scope.LabTestGroups = 
+        //  $scope.LabTestCategories =  $scop
+        // $scope.LabTestGroups = 
         // $scope.MeasureMentUnits = 
-     
+
         /* $scope.loadLabTestGroups();
         $scope.loadMeasureMentUnits();*/
-       
 
-        if($routeParams.id)
-        {
+
+        if ($routeParams.id) {
             $scope.loadItembyId($routeParams.id);
         }
         $scope.loadLabTestCategories();
         $scope.loadLabTestGroups();
         $scope.loadMeasureMentUnits();
     }
+    if ($routeParams.tab == "listlabtest") {
+        $scope.loadLabItems();
+        $scope.loadLabTestCategories();
+    }
+    if ($routeParams.tab == "summary") {
+        $scope.loadLabTest();
+    }
+ 
+
 
 
     var tabClass = ".summary";

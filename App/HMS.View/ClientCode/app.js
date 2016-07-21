@@ -20,6 +20,9 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
         when('/bedsetup/:tab', {
             templateUrl: '/ClientCode/Template/BedSetup.html',
         }).
+        when('/bedsetup/:tab/:id', {
+            templateUrl: '/ClientCode/Template/BedSetup.html',
+        }).
 
         when('/pharmacy', {
             templateUrl: '/ClientCode/Template/Pharmacy.html',
@@ -40,6 +43,11 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
         when('/appointment', {
             templateUrl: '/ClientCode/Template/Appointment.html',
         }).
+        when('/appointment/:tab', {
+            templateUrl: '/ClientCode/Template/Appointment.html',
+        }).
+
+
         when('/labtest', {
             templateUrl: '/ClientCode/Template/LabTest.html',
         }).
@@ -55,6 +63,16 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
         when('/configuration/:tab', {
             templateUrl: '/ClientCode/Template/Configuration.html',
         }).
+
+      when('/admin', {
+          templateUrl: '/ClientCode/Template/Admin.html',
+      }).
+      when('/admin/approval/:tab', {
+          templateUrl: '/ClientCode/Template/Admin.html',
+      }).
+      when('/admin/patientsummaryreport/:tab', {
+          templateUrl: '/ClientCode/Template/PatientSummaryReport.html',
+      }).
         when('/contact/:id', {
             templateUrl: '/ClientCode/Template/EditContact.html',
             controller: 'ContactController'
@@ -68,6 +86,6 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
         });
   }]);
 
-HmsApp.run(['$route', function ($route) {
-    $route.reload();
-}]);
+//HmsApp.run(['$route', function ($route) {
+//    $route.reload();
+//}]);

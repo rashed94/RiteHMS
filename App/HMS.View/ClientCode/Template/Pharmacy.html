@@ -99,29 +99,21 @@
     <div class="summary hide">
 
         <div class="criteria_box">
-            <div class="search_container">
-                <!-- <input type="text" width="50" maxlength="20" name="search" class="search" ><a href="#" class="fa fa-search"></a>-->
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                </div>
-
-            </div>
 
 
-            <select name="status" class="invoice_status">
-                <option value="open">DEMO CATEGORY</option>
-                <option value="close">DEMO CATEGORY1</option>
-                <option value="refunded">DEMO CATEGORY2</option>
+            <select ng-model="filterCondition.CategoryId" ng-change="loadItems()">
+
+                <option ng-selected="true" value="0"> All</option>
+                <option ng-repeat="category in TestCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+
             </select>
         </div>
 
-        <table width="90%" border="1" align="center" class="bordered" ng-model="items" ng-init="loadItems()">
+        <table width="100%" border="1" align="center" class="bordered" ng-model="items" >
             <thead>
                 <tr>
-                    <th width="36%">Test Name</th>
+                    <th width="36%">Medicine Name</th>
                     <th colspan="6">Category</th>
                     <th width="17%">&nbsp;</th>
                 </tr>
@@ -131,7 +123,7 @@
                     <td>{{item.Name}} </td>
                     <td colspan="6">{{item.ItemCategory.Name}}   </td>
                     <!--<td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/pharmacy/addpharmacy/{{labitem.Id}}"></a></td>-->
-                    <td><a class=
+                    
                     <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deletePharmacy(item.Id);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/pharmacy/addpharmacy/{{item.Id}}"></a></td>
                 </tr>
 
@@ -154,31 +146,36 @@
 
         <div style="clear:both;"></div>
 
+        <div ng-show="saveSuccess>0" class="register">
+            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" ng-href="#/pharmacy/addpharmacy">Add New Pharmacy Item</a>
+        </div>
+
+
         <form name="form1" >
             <!--<form name="loginform" novalidate ng-submit="login.submit(loginForm)" class="css-form">-->
                 <div class="round_box box_general" ng-class="{true: 'error'}[submitted && form1.name.$invalid]">
-                    <table width="95%" border="1" ng-model="SingleLabItem">
+                    <table width="95%" border="1" ng-model="SingleItem">
                         <tr>
                             <td width="14%" height="39">&nbsp;</td>
                             <td width="19%">NAME</td>
                             <td width="19%">
-                                <input type="text" ng-model="SingleLabItem.Name" required name="name">
+                                <input type="text" ng-model="SingleItem.Name" required name="name">
                                 <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
                                 <div ng-show="form1.name.$invalid">
                                     <div ng-message="required">This field is required</div>
                                 </div>
                             </td>
                             <td width="48%"></td>
-                            <!--<td><span ng-show="!SingleLabItem.Name.length">Please enter something!</span></td>-->
+                            <!--<td><span ng-show="!SingleItem.Name.length">Please enter something!</span></td>-->
                         </tr>
-                        <tr ng-show="SingleLabItem.Id>0">
+                        <tr ng-show="SingleItem.Id>0">
                             <td height="39">&nbsp;</td>
                             <td>REPORT FORMAT</td>
                             <td colspan="2">
                                 <!--1. X-Ray PNS - Normal Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a><br>
                         2.  X-Ray PNS - Detail Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a>-->
-                                <div ng-repeat="labreportformat in LabReportFormats">
-                                    <span>{{labreportformat.Name}}</span><a class="link_green" href="#" ng-click="$event.preventDefault();openTemplate('lg','true',labreportformat.Id)">EDIT</a> <a class="link_brown" href="#" ng-click="$event.preventDefault();DeleteReportFormat(labreportformat.Id);">DELETE</a><br>
+                                <div ng-repeat="reportformat in ReportFormats">
+                                    <span>{{reportformat.Name}}</span><a class="link_green" href="#" ng-click="$event.preventDefault();openTemplate('lg','true',reportformat.Id)">EDIT</a> <a class="link_brown" href="#" ng-click="$event.preventDefault();DeleteReportFormat(reportformat.Id);">DELETE</a><br>
                                 </div>
                             </td>
                         </tr>
@@ -188,7 +185,7 @@
                             <td height="39">&nbsp;</td>
                             <td>CODE</td>
                             <td colspan="2">
-                                <input type="text" ng-model="SingleLabItem.Code" required name="code">
+                                <input type="text" ng-model="SingleItem.Code" required name="code">
                                 <div ng-show="form1.code.$invalid">
                                     <div ng-message="required">This field is required</div>
                                 </div>
@@ -199,7 +196,7 @@
                             <td height="39">&nbsp;</td>
                             <td>GENERIC NAME</td>
                             <td colspan="2">
-                                <input type="text" ng-model="SingleLabItem.GenericName" required name="genericName">
+                                <input type="text" ng-model="SingleItem.GenericName" required name="genericName">
                                 <div ng-show="form1.genericName.$invalid">
                                     <div ng-message="required">This field is required</div>
                                 </div>
@@ -213,7 +210,7 @@
 
                                 <select ng-model="filterCondition.ItemCategoryId">
 
-                                    <option ng-repeat="category in LabTestCategories" value="{{category.Id}}"> {{category.Name}}</option>
+                                    <option ng-repeat="category in TestCategories" value="{{category.Id}}"> {{category.Name}}</option>
 
                                 </select>
                                 <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
@@ -245,9 +242,9 @@
                             <td height="39">&nbsp;</td>
                             <td>BUY PRICE</td>
                             <td colspan="2">
-                                <input type="text" ng-model="SingleLabItem.BuyPrice">
+                                <input type="text" ng-model="SingleItem.BuyPrice">
 
-                                &nbsp;&nbsp;  <a ng-show="SingleLabItem.Id>0" class="arrow_head" href="#" ng-click="$event.preventDefault();CommissionModal('lg',true)"> ADD STOCK</a>
+                                &nbsp;&nbsp;  <a ng-show="SingleItem.Id>0" class="arrow_head" href="#" ng-click="$event.preventDefault();StockModal('lg',true)"> ADD STOCK</a>
                             </td>
 
                         </tr>
@@ -255,7 +252,7 @@
                         <tr>
                             <td height="39">&nbsp;</td>
                             <td>CHARGE PRICE</td>
-                            <td colspan="2"><input type="text" ng-model="SingleLabItem.SalePrice"></td>
+                            <td colspan="2"><input type="text" ng-model="SingleItem.SalePrice"></td>
                         </tr>
 
                         <tr>

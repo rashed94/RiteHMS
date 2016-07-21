@@ -16,12 +16,12 @@ namespace HMS.Model.Core
         public long PatientID { get; set; }
         public System.DateTime InvoiceDate { get; set; }
         public System.DateTime DueDate { get; set; }
-        public long? UserId { get; set; }
         public long InvoiceStatusId { get; set; }
         public long? LabStatusId { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal? TotalDiscount { get; set; }
         public decimal? ItemDiscount { get; set; }
+        public bool IsRefunded { get; set; }
     
         public virtual ICollection<InvoicePayment> InvoicePayments { get; set; }
         public virtual InvoiceStatus InvoiceStatus { get; set; }

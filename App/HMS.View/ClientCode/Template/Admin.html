@@ -1,0 +1,67 @@
+﻿
+<div ng-include src="'/ClientCode/Template/AdminSecondaryMenu.html'"></div>
+
+
+<div class="container_secondary_tab" style="">
+    <div class="container_secondary_tab_abs">
+        <ul class="tabs group">
+            <li class="refund active"><a href="#/admin/approval/refund">View Refund Request</a></li>
+            <li class="role"><a href="#/admin/approval/role">User Role Management</a></li>
+        </ul>
+        <div style="clear: both"></div>
+    </div>
+    <div style="clear: both"></div>
+</div>
+
+<div class="content" ng-controller="AdminApprovalController">
+
+
+
+    <div class="refund hide">
+
+        <div class="top_space"></div>
+
+        <table width="100%" border="1" align="center" class="bordered small_header">
+            <thead>
+                <tr>
+                    <th width="16%">ITEM  NAME</th>
+                    <th width="13%">CATEGORY</th>
+                    <th width="7%">QUANTITY</th>
+                    <th width="6%">cost</th>
+                    <th width="9%">discount</th>
+                   
+                    <th width="9%">cost after discount</th>
+                    <th width="9%">Refund Note</th>
+                    <th width="21%">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="patientservice in PatientServices" >
+                <tr>
+
+                    <td>{{patientservice.Item.Name}}</td>
+                    <td>{{patientservice.Item.ItemCategory.Name}}</td>
+                    <td>{{patientservice.ServiceQuantity}}</td>
+                    <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
+                    <td>{{patientservice.Discount}}</td>
+                    <td>{{patientservice.ServiceListPrice}}</td>
+                    <td>{{patientservice.RefundNote}}</td>
+                    <td>
+                        <a class="fa fa-check fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault();approveRefund(patientservice);"></a>  
+                        <a class="fa fa-times fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault();cancelRefund(patientservice);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>  
+                       
+                    </td>
+
+
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+    <div class="role hide">
+        Under Construction
+
+    </div>
+
+
+</div>

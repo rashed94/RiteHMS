@@ -186,7 +186,7 @@ input[type=text]:focus, textarea:focus {
 	color: #ff45f;
 	text-transform: uppercase;
     margin:0 auto;
-	width:810px;
+	width:895px;
 	
 	
 	
@@ -337,6 +337,86 @@ background: url(../images/sitemenu_billing.gif) no-repeat 6px 2px #80b24a;
 padding-left:32px;	
 }
 
+.site_navigation li.admin a:hover
+{
+background: url(../images/sitemenu_admin_hover.gif) no-repeat 6px 2px #538e4a;	
+	
+}
+.site_navigation li.admin a
+{
+background: url(../images/sitemenu_admin.gif) no-repeat 6px 2px #80b24a;	
+padding-left:32px;	
+}
+
+.site_navigation li.admin a.selected 
+{
+	background: url(../images/sitemenu_admin_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:32px;	
+}
+
+
+.site_navigation_secondary
+{
+	font-size: 11px;
+	font-family: SansSemiBold;
+	color: #ff45f;
+	text-transform: uppercase;
+    margin:0 auto;
+	width:100%;
+    text-align:center;
+    height:56px;
+    background:#d8e5d5;
+   /* border-top:1px solid #c5d3b7;*/
+    border-bottom:1px solid #c5d3b7;
+	
+}
+.site_navigation_secondary ul:after {
+        content: ".";
+        display: inline;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+        
+    }
+
+
+ .site_navigation_secondary ul {
+        margin: 2px auto;
+        line-height: 1.4;
+        padding-left: 0;
+        padding-top:12px;
+         
+}
+
+
+.site_navigation_secondary ul li {
+    display: inline-block;
+    text-align: center;
+    border-left:1px solid #aabe97; 
+   
+
+}
+
+.site_navigation_secondary ul li a
+{
+text-decoration: none; color:#4f6d56; 
+display:table-cell; height:30px;
+vertical-align:middle;width:120px;
+
+
+
+}
+
+.site_navigation_secondary li a:hover { color: #b7651d; }
+
+.site_navigation_secondary ul li:first-child {
+    border:none;
+}
+
+.site_navigation_secondary ul li a.active
+{
+text-decoration: none; color:#b7651d; 
+}
 
 #itemname
 {
@@ -512,6 +592,8 @@ div.payment_input_box
 	font-size:11px;
 	font-family:SansSemiBold;
 	text-transform:uppercase;
+    
+
 }
 
 .status_red
@@ -520,6 +602,12 @@ div.payment_input_box
 	font-size:11px;
 	font-family:SansSemiBold;
 	text-transform:uppercase;
+    
+}
+.status_red p
+{
+    text-decoration:none;
+    display:inline-block;
 }
 
 .status_brown
@@ -603,8 +691,44 @@ input[type="text"]#doctorName
 .popup h2 {
   margin-top: 0;
   color: #333;
-  font-family: Tahoma, Arial, sans-serif;
+  
+
 }
+
+.popupLight
+{
+    border-radius: 4px;
+    border: 1px solid #b9d0c4;
+
+     box-shadow: 2px 2px 6px -1px rgba(0, 0, 0, 0.55);
+     z-index:9999;
+}
+.popupLight textarea
+{
+ border: 1px solid #b9d0c4;
+}
+
+
+.popupLight  h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+  padding:10px;
+  margin-left:10px;
+  font-weight:bold;
+}
+
+
+.popupLight  .close {
+
+float:right;
+margin-right:10px;
+margin-top:10px;
+
+}
+
+
+
 .popup .close {
   position: absolute;
   top: 20px;
@@ -629,4 +753,13 @@ input[type="text"]#doctorName
 }
 .padding40 div{
     padding:4px;
+}
+.top_space{
+    margin-top:25px;
+    display:block;
+}
+.refund_item
+{
+    text-decoration: line-through;
+    color:#c46516;
 }

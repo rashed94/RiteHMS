@@ -5,6 +5,30 @@
         return $http.get('/Billing/GetBillingIemByPatientId?id=' + patientid);
     };
 
+    BillingService.UpdateInvoice = function (invoice) {
+
+       updateInvoice= angular.copy(invoice);
+       
+       angular.forEach(updateInvoice.PatientServices, function (obj) {
+           obj.DeliveryDate = ToJavaScriptDate(obj.DeliveryDate);
+           obj.ServiceDate = ToJavaScriptDate(obj.ServiceDate);
+            obj.Item = null;
+
+        });
+
+       updateInvoice.Refunds = null;
+       updateInvoice.InvoicePayments = null;
+       updateInvoice.Patient = null;
+        return $http.post('/Billing/UpdateInvoice', updateInvoice);
+
+    };
+
+    BillingService.UpdateRefundNote = function (PatientService) {
+
+        return $http.post('/Billing/UpdateRefundNote', PatientService);
+
+    };
+
     BillingService.SaveInvoice = function (invoice, patientServices) {
         if (invoice.Id == null) {
             invoice.PatientServices = patientServices;
@@ -25,14 +49,30 @@
         //});
     };
 
-    BillingService.SavePayment = function (payment) {
+    BillingService.SavePayment = function (payment, invoicePaymentList, advancePayment, reconcileAmount) {
 
-        return $http.post('/Billing/CreatePayment', payment);
+        advancePayment.InvoicePayments = null;
+        return $http.post('/Billing/CreatePayment', { payment: payment, invoicePaymentList: invoicePaymentList, advancePayment: advancePayment, reconcileAmount: reconcileAmount });
 
     };
-    BillingService.GetInvoicesByPatientId = function (patientid, invoicestatus) {
+
+    BillingService.SaveAdvancePayment = function (payment) {
+
+        return $http.post('/Billing/SaveAdvancePayment', payment);
+
+    };
+    
+
+    BillingService.GetAdvancePayment = function (patientid) {
+
+        return $http.get('/Billing/GetAdvancePayment?patientId=' + patientid);
+
+    };
+
+
+    BillingService.GetInvoicesByPatientId = function (patientid, invoicestatus, invoiceDateStart, invoiceDateEnd, invoiceId) {
         //return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + "&statusid=1" );
-        return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + '&statusid=' + invoicestatus);
+        return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + '&statusid=' + invoicestatus + '&DateStart=' + invoiceDateStart + '&DateEnd=' + invoiceDateEnd + '&invoiceId=' + invoiceId);
     };
 
     BillingService.GetTotalDebit = function (patientid) {
@@ -45,7 +85,16 @@
        
     //    return $http.get('/Billing/GetInvoicesByPatientID?patientId=' + patientid);
 
-    //}    
+    //}
+
+    //Code Added by Zaber
+
+    BillingService.deleteBillItem = function (billID) {
+
+        return $http.post('/Billing/deleteBillItem', { billId: billID});
+
+    };
+    // Code Ended by Zaber
 
     return BillingService;
 }]);

@@ -6,10 +6,14 @@ namespace HMS.Model.Core
     public partial class Refund : EntityBase
     {
         public decimal Amount { get; set; }
+
+        
         public long InvoiceID { get; set; }
-        public long UserID { get; set; }
+        public long PatientServiceId { get; set; }
         public long ApprovedUserID { get; set; }
-    
+        public long ItemId { get; set; }
+
+         [ForeignKey("InvoiceID")]
         public virtual PatientInvoice PatientInvoice { get; set; }
 
         protected override void RegisterValidationMethods()

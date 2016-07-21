@@ -1,13 +1,17 @@
 ﻿'use strict';
+
+
 HmsApp.controller("AppointmentController", function ($scope, $routeParams, $window, $filter, $modal, AppointmentService, ConfigurationService) {
 
     $scope.Appointments = [];
     $scope.SelectedAppointment = {};
     $scope.Doctor = {};
 
+    var todayDate=$filter('date')(new Date(), 'MM/dd/yyyy');
+
     $scope.DoctorAppointment = {
         ServiceProviderId: 0,
-        AppointmentDate: new Date()
+        AppointmentDate: todayDate
     };
 
     ConfigurationService.GetDepartments()
@@ -63,9 +67,13 @@ HmsApp.controller("AppointmentController", function ($scope, $routeParams, $wind
         $scope.DoctorAppointment.AppointmentId = $scope.SelectedAppointment.Id;
         $scope.DoctorAppointment.PatientId = $scope.Patient.Id;
         $scope.DoctorAppointment.ServiceProviderId = $scope.Doctor.Id;
+        console.log($scope.DoctorAppointment.AppointmentDate);
         AppointmentService.SaveAppointment($scope.DoctorAppointment)
             .success(function (doctorAppointment) {
                 $scope.DoctorAppointment = doctorAppointment;
+                $scope.DoctorAppointment.AppointmentDate = ToJavaScriptDate($scope.DoctorAppointment.AppointmentDate);
+                $window.location.href = "#/patient";
+                UpdateTopLink('patient');
             })
             .error(function (error) {
                 $scope.status = 'Unable to load DoctorAppointment data: ' + error.message;
@@ -80,4 +88,16 @@ HmsApp.controller("AppointmentController", function ($scope, $routeParams, $wind
     }
 
     Init();
+
+    if ($routeParams.tab == "summary") {
+        
+    }
+
+    var tabClass = ".summary";
+    if ($routeParams.tab != null) {
+        tabClass = "." + $routeParams.tab;
+    }
+    $('.tabs li').removeClass('active');
+    $(tabClass).addClass('active');
+    $(tabClass).removeClass('hide');
 });

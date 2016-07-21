@@ -1,7 +1,21 @@
-﻿<div class="container_secondary_tab" style="">
+﻿
+<script type="text/javascript">
+    // When the document is ready
+    $(document).ready(function () {
+        $('.txtAppointmentDate').datepicker({
+            format: "mm/dd/yyyy"
+        }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
+        });
+    });
+
+</script>
+<div class="container_secondary_tab" style="">
     <div class="container_secondary_tab_abs">
         <ul class="tabs group">
-            <li class="setup active"><a href="#/appointment/setup" ng-click="$event.preventDefault();">View / Setup Appointment</a></li>
+            <li class="summary active"><a href="#/appointment/summary">View Appointment</a></li>
+            <li class="setup"><a href="#/appointment/setup">View / Setup Appointment</a></li>
         </ul>
         <div style="clear: both"></div>
     </div>
@@ -9,12 +23,22 @@
 </div>
 
 <div class="content" ng-controller="AppointmentController">
-    <div class="setup">
-        <div style="float:left; width: 50%;">
+
+    <div class="summary hide">
+
+        Under Construction
+
+    </div>
+    <div class="setup hide">
+
+        <div style="padding-left:25px; padding-top:45px;">
+        <div style="float:left; width: 35%;">
             <div class="input_containter">
                 <div class="title">Appointment date</div>
                 <div class="inputbox">
-                    <input type="text" ng-model="DoctorAppointment.AppointmentDate" placeholder="Select a date" jqdatepicker>
+                    <!--<input type="date" width="110" placeholder="click to show datepicker" name="appointmentDate" class="appointmentDate" ng-model="DoctorAppointment.AppointmentDate">-->
+                    <input type="text" id="txtAppointmentDate" class="txtAppointmentDate" ng-change=" GetAppointments()" ng-model="DoctorAppointment.AppointmentDate" />
+                    <label for="txtAppointmentDate"></label>
                 </div>
             </div>
             <div class="input_containter">
@@ -65,9 +89,20 @@
                 <input type="button" class="sm_button" value="Confirm Appointment" ng-click="ConfirmAppointment()" />
             </div>
         </div>
-    </div>
 
-    <div class="summary">
+        <div class="doctor-bio" ng-show="Doctor.Id">
+            <div class="photo">
+                <div style="width: 150px;float: left;">
+                    <img ng-src="GetImage.ashx?Name={{Doctor.Contact.Photo != null && Doctor.Contact.Photo != 'null' ? Doctor.Contact.Photo : ''}}" width="115" height="146" alt="{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}">
+                </div>
+            </div>
+            <div class="description">
+                {{Doctor.Description}}
+            </div>
+        </div>
+<div style="clear:both;"></div>
+       </div>
+    </div>
+    
         
     </div>
-</div>

@@ -7,9 +7,9 @@
     <link rel="icon" href="~/favicon.ico" type="image/ico" />
 
     <!-- jQuery, Angular -->
-    <script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
-    @*<script src="~/Scripts/ckeditor.js"></script>*@
-
+   @*<script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>*@
+   
+    <script src="~/Scripts/ck/ckeditor.js"></script>
     <script src="~/Scripts/jquery-2.2.3.min.js"></script>
     <script src="~/Scripts/bootstrap-datepicker.js"></script>
     <script src="~/Scripts/angular.js"></script>
@@ -69,10 +69,26 @@
     <script src="~/ClientCode/Script/Controller/ConfigurationController.js"></script>
     <script src="~/ClientCode/Script/Service/ConfigurationService.js"></script>
 
+    <script src="~/ClientCode/Script/Controller/AdminApprovalController.js"></script>
+    <script src="~/ClientCode/Script/Service/AdminApprovalService.js"></script>
+
+
+    <script src="~/ClientCode/Script/Controller/PatientSummaryReportController.js"></script>
+    <script src="~/ClientCode/Script/Service/PatientSummaryReportService.js"></script>
+
+    <script src="~/ClientCode/Script/Controller/AdminSubMenuController.js"></script>
+
+    <script src="~/ClientCode/Script/Controller/PrimaryMenuController.js"></script>
+
+
+    <script src="~/ClientCode/Script/Service/ItemService.js"></script>
+
     <!-- Directives -->
 
     <script src="~/ClientCode/Script/Directive/ConfirmationBox.js"></script>
-    
+
+
+    <script src="~/Scripts/printThis.js"></script>
 
 
     <script>
@@ -118,7 +134,7 @@
                     <div class="logo_img"><img src="~/images/stethoscope.gif" width="136" height="143" alt="stethoscope"></div>
                     <div class="user_info" ng-controller="UserController">
                         <div><img src="~/images/hospitalmanagement.gif" width="260" height="63" alt="hospital management system"></div>
-                        <div class="login_info">You are loged in as {{User.Name}}   |   <a href="/Login/LogOff">SIGN OUT</a></div>
+                        <div class="login_info">You are loged in as {{User.FullName}}   |   <a href="/Login/LogOff">SIGN OUT</a></div>
                         <div class="register">
                             <a data-toggle="modal" class="modal_registration_click" ng-click="PatientModal('lg')">Register new patient </a>
                         </div>
@@ -171,22 +187,7 @@
                     </div>
                     <div style="clear:both;"> </div>
                 </div>
-
-                <div class="site_navigation">
-
-                    <ul>
-                        <li class="patientinfo"><a ng-href="#/patient" class="selected" ng-click="UpdateTopLink('patient')">Patient info</a></li>
-                        <li class="labtest"><a ng-href="#/labtest/summary" ng-click="UpdateTopLink('labtest')">Lab Test</a></li>
-                        <li class="pharmacy"><a ng-href="#/pharmacy" ng-click="UpdateTopLink('pharmacy')">Pharmacy</a></li>
-                        <li class="appointment"><a ng-href="#/appointment" ng-click="UpdateTopLink('appointment')">Appointment</a></li>
-                        <li class="bedsetup"><a ng-href="#/bedsetup" ng-click="UpdateTopLink('bedsetup')">Bed Setup</a></li>
-                        <li class="billing"><a ng-href="#/billing" ng-click="UpdateTopLink('billing')">Billing</a></li>
-                        <li class="configuration"><a ng-href="#/configuration" ng-click="UpdateTopLink('configuration')">Configuration</a></li>
-
-                    </ul>
-
-
-                </div>
+                <div ng-include src="'/ClientCode/Template/PrimaryMenu.html'"></div>
 
             </div>
 

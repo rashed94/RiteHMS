@@ -2,6 +2,8 @@
 HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemService) {
 
     $scope.MedicalTypes = {};
+    $scope.medicalTypeID = "62";
+    $scope.ServiceProviderType = 56; // which is doctor
     $scope.GetMedicalType = function () {
 
         AddItemService.GetMedicalType()
@@ -16,7 +18,7 @@ HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemS
     }
 
     $scope.filterCondition = {
-        MedicalType: '62'
+        MedicalType: $scope.medicalTypeID
     }
     $scope.GetMedicalType();
 
@@ -26,6 +28,7 @@ HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemS
         $item.Quantity = 1;
         $item.Amount = $item.SalePrice;
         $item.ReferralFee = $item.DefaultReferrarFee;
+        $scope.Item = "";
         
         var found = $filter('filter')($scope.Items, { Id: $item.Id }, true);
         if (!found.length) {
@@ -46,7 +49,7 @@ HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemS
 
         /*----------------------------  TypeId 56 means doctor --------------------------------------------------*/
 
-        return $http.get('/patient/getdoctorpartialname?name=' + name + "&typeId=" + 56 + "&itemId=" + itemid).then(function (response) {
+        return $http.get('/patient/getdoctorpartialname?name=' + name + "&typeId=" + $scope.ServiceProviderType + "&itemId=" + itemid).then(function (response) {
             var data = response.data;
             return response.data;
         });

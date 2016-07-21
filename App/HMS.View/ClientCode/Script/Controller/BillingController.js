@@ -8,6 +8,26 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.TotalReferralFee = 0;
     $scope.paymentType = false;//first payment
     $scope.invoiceStatus = 0;
+    $scope.FullDiscount = false;
+    $scope.discountStatus = "0";
+    $scope.showDiscountAmount = false;
+    $scope.totalDiscountAmount = { Amount: 0 };
+    $scope.refundedInvoice = {};
+    $scope.refundedServices = {};
+    $scope.invoiceId = null;
+    //var vm = this;
+    //vm.totalDiscountAmount = "";
+    $scope.perItemDiscount = 0;
+    $scope.DiscountTypeTotal = "1";
+
+    //$scope.regions = [
+    //    {
+    //        name: "By Percentage",
+    //        code: "AL"},
+    //{
+    //    name: "By Amount",
+    //    code: "AK"},
+    //];
 
     $scope.Invoice = {
         Id: null,
@@ -42,6 +62,162 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
     }
 
+    $scope.itemWiseDiscount = function (Amount,cost)
+    {
+        $scope.perItemDiscount = Math.ceil((Amount * cost) / $scope.TotalAmount);
+        if (isNaN($scope.perItemDiscount))
+        {
+            $scope.perItemDiscount = 0;
+        }
+            return $scope.perItemDiscount;
+    }
+
+    $scope.findPercentageAmount = function (Amount, percentage) {
+        $scope.totalDiscountByPercentage = (Amount * percentage) / 100;
+
+        return $scope.totalDiscountByPercentage;
+    }
+
+    $scope.referralFullDiscount = function () {          
+
+        $scope.disableAmount = false;
+        if ($scope.FullDiscount) {
+            angular.forEach($scope.BillingItem, function (billingitem) {
+                if (billingitem.LabStatusId == 1) {
+                    billingitem.Discount = billingitem.ReferralFee;
+                    billingitem.ReferralAfterDiscount = 0;
+                    billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
+                    billingitem.referralfull = true;
+                    $scope.disableAmount = true;
+                }
+                else {
+                    billingitem.Discount = 0;
+                    billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
+                    billingitem.referralfull = true;
+                    $scope.totalDiscountAmount.Amount = 0;
+                }
+            });
+        }
+        else {
+            angular.forEach($scope.BillingItem, function (obj) {
+                if (obj.LabStatusId == 1) {
+                    obj.ServiceListPriceAfterDiscount = obj.ServiceListPrice;
+                    obj.ReferralAfterDiscount = obj.ReferralFee;
+                    obj.DisCountTypeID = '0';
+                    obj.DiscountTypes = [
+                    { id: '0', name: 'By Amount' },
+                    { id: '1', name: 'By Percentage' },
+                    ];
+                    obj.OriginalAmountSingleQuantity = obj.ServiceListPrice / obj.ServiceQuantity;
+                    obj.ServiceListPriceAfterDiscountSingleQuantity = obj.ServiceListPriceAfterDiscount / obj.ServiceQuantity;
+                    obj.Discount = 0;
+                    obj.referralfull = false;
+                    $scope.TotalDiscount = 0;
+                }
+                else
+                    obj.Discount = 0;
+                $scope.totalDiscountAmount.Amount = 0;
+                $scope.TotalDiscount = 0;
+                obj.referralfull = false;
+
+            });
+
+        }
+        $scope.CalculateTotalDiscount();
+    }
+    function  updateDiscountTypeDropDown()
+    {
+        angular.forEach($scope.BillingItem, function (obj) {
+
+            obj.DisCountTypeID = "0";
+        });
+    }
+
+    $scope.calcDiscount=function()
+    {
+        $scope.TotalDiscount = 0;
+
+        updateDiscountTypeDropDown();
+
+        if ($scope.discountStatus == 1)
+        {
+            if ($scope.DiscountTypeTotal == 1) {
+                if ($scope.FullDiscount)
+                {
+                    $scope.referralFullDiscount();
+                    $scope.showDiscountAmount = true;
+                }
+                else
+                {
+                    $scope.showDiscountAmount = true;
+                    $scope.totalDiscountAmount.Amount = $scope.totalDiscountAmount.Amount;
+                    $scope.TotalAmountAfterDiscount = 0;
+
+                    angular.forEach($scope.BillingItem, function (billingitem) {
+
+                        billingitem.Discount = Math.ceil($scope.itemWiseDiscount($scope.totalDiscountAmount.Amount, billingitem.ServiceListPrice));
+                       // billingitem.ReferralAfterDiscount = 0;
+                     //    billingitem.ServiceListPriceAfterDiscount = Math.ceil(billingitem.ServiceListPrice - billingitem.Discount);
+                      //  billingitem.referralfull = true;
+                       // $scope.TotalDiscount = billingitem.Discount + $scope.TotalDiscount;
+                        // $scope.TotalAmountAfterDiscount = Math.ceil($scope.TotalAmount - $scope.totalDiscountAmount.Amount);
+                       // billingitem.Discount = 0;
+                        $scope.adjustAfterDiscount(billingitem);
+
+                    });
+                }
+                
+            }
+            if ($scope.DiscountTypeTotal == 0) {
+                if ($scope.totalDiscountAmount.Amount > 100) {
+                    alert('Highest 100% is allowed');
+                    $scope.totalDiscountAmount.Amount = 100;
+                }
+                else {
+                    $scope.TotalDiscountByPercentage = $scope.findPercentageAmount($scope.TotalAmount, $scope.totalDiscountAmount.Amount);
+
+                    $scope.showDiscountAmount = true;
+                    $scope.totalDiscountAmount.Amount = $scope.totalDiscountAmount.Amount;
+                  //  $scope.TotalAmountAfterDiscount = 0;
+
+                    angular.forEach($scope.BillingItem, function (billingitem) {
+
+                        billingitem.Discount = Math.ceil($scope.itemWiseDiscount($scope.TotalDiscountByPercentage, billingitem.ServiceListPrice));
+                       // billingitem.ReferralAfterDiscount = 0;
+                       // billingitem.ServiceListPriceAfterDiscount = Math.ceil(billingitem.ServiceListPrice - billingitem.Discount);
+                       // billingitem.referralfull = true;
+                       // $scope.TotalDiscount = billingitem.Discount + $scope.TotalDiscount;
+                        // $scope.TotalAmountAfterDiscount = Math.ceil($scope.TotalAmount - $scope.totalDiscountAmount.Amount);
+                        $scope.adjustAfterDiscount(billingitem);
+                    });
+                }
+            }
+        }
+        else {
+
+            if (!$scope.FullDiscount)
+                {
+                    $scope.showDiscountAmount = false;
+                   // $scope.TotalAmountAfterDiscount = 0;
+                    $scope.TotalDiscount = 0;
+
+                    angular.forEach($scope.BillingItem, function (billingitem) {
+                        //billingitem.referralfull = false;
+                        //billingitem.Discount = 0;
+                        //billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice;
+                        //billingitem.ReferralAfterDiscount = billingitem.ReferralFee;
+                        $scope.adjustAfterDiscount(billingitem);
+
+                    });
+            }else
+            {
+                $scope.referralFullDiscount();
+            }
+                    
+            }
+        
+    }
+
 
     $scope.GetBillingItemByPatientId = function (patientId) {
         if ($scope.Patient) {
@@ -51,7 +227,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
                         $scope.BillingItem = pt;
 
                         $scope.adjustBillingData();
-                        $scope.CalculateTotalDiscount();
+                       // $scope.CalculateTotalDiscount();
 
                         console.log($scope.BillingItem);
                     })
@@ -63,66 +239,105 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         }
     }
 
+    $scope.checkAmount=function(billingitem)
+    {
+        if(billingitem.DisCountTypeID == 1)
+        {
+            if( billingitem.Discount>100)
+            {
+               // $window.alert("Discount should be equal or less then 100");
+                billingitem.Discount = 100;
+
+            }
+        } else if (billingitem.DisCountTypeID==0)
+        {
+            if(billingitem.Discount>billingitem.ServiceListPrice)
+            {
+               // $window.alert("Discount should be equal or less then Total price");
+                billingitem.Discount = billingitem.ServiceListPrice;
+            }
+        }
+    }
     $scope.adjustAfterDiscount = function (billingitem) {
 
-        // if amount is selected
+        $scope.checkAmount(billingitem);
+        if (billingitem.LabStatusId == 1) {
+
+            if (billingitem.DisCountTypeID == 0) {
+                if (billingitem.Discount != "") {
+                    var discount = billingitem.Discount / 2;
+
+
+                    billingitem.ReferralAfterDiscount = Math.ceil(billingitem.ReferralFee - discount);
+
+                    if (billingitem.ReferralAfterDiscount < 0) billingitem.ReferralAfterDiscount = 0;
+
+
+                    billingitem.ServiceListPriceAfterDiscount = Math.ceil(billingitem.ServiceListPrice - billingitem.Discount);
+
+
+
+                }
+                else {
+                    billingitem.ServiceListPriceAfterDiscount = Math.ceil(billingitem.ServiceListPrice);
+                    billingitem.ReferralAfterDiscount = billingitem.ReferralFee;
+                }
+
+            }
+            else if (billingitem.DisCountTypeID == 1) {
+
+                if (billingitem.Discount != "") {
+                    var discount = billingitem.Discount / 2;
+                    billingitem.ServiceListPriceAfterDiscount =Math.ceil( billingitem.ServiceListPrice - (billingitem.Discount * billingitem.ServiceListPrice) / 100);
+
+                    billingitem.ReferralAfterDiscount = Math.ceil(billingitem.ReferralFee - (discount * billingitem.ServiceListPrice) / 100);
+                    if (billingitem.ReferralAfterDiscount < 0) billingitem.ReferralAfterDiscount = 0;
+                }
+                else {
+                    billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice;
+                    billingitem.ReferralAfterDiscount = billingitem.ReferralFee;
+                }
+
+
+            }
+        }
+        else {
+            if (billingitem.DisCountTypeID == 0) {
+
+                billingitem.ServiceListPriceAfterDiscount = Math.ceil(billingitem.ServiceListPrice - billingitem.Discount);
+
+            } else if (billingitem.DisCountTypeID == 1) {
+                billingitem.ServiceListPriceAfterDiscount = Math.ceil(billingitem.ServiceListPrice - (billingitem.Discount * billingitem.ServiceListPrice) / 100);
+
+
+            }
+
+        }
+        billingitem.ServiceListPriceAfterDiscountSingleQuantity = Math.ceil(billingitem.ServiceListPriceAfterDiscount / billingitem.ServiceQuantity);
+
+        // billingitem.ServiceListPriceAfterDiscountWithQuantity = billingitem.ServiceListPriceAfterDiscount * billingitem.ServiceQuantity
+
         
-        if (billingitem.DisCountTypeID == 0)
-        {
-            if (billingitem.Discount != "") {
-                var discount = billingitem.Discount / 2;
-                
-                billingitem.ReferralAfterDiscount = billingitem.ReferralFee - discount;
-                billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - billingitem.Discount;
-               
-
-            }
-            else
-            {
-                billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice;
-                billingitem.ReferralAfterDiscount = billingitem.ReferralFee;
-            }
-            
-        }
-        else if (billingitem.DisCountTypeID == 1)
-        {
-
-            if (billingitem.Discount != "") {
-                var discount = billingitem.Discount / 2;
-                billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice - (billingitem.Discount * billingitem.ServiceListPrice) / 100;
-                billingitem.ReferralAfterDiscount = billingitem.ReferralFee - (discount * billingitem.ServiceListPrice) / 100;
-            }
-            else {
-                billingitem.ServiceListPriceAfterDiscount = billingitem.ServiceListPrice;
-                billingitem.ReferralAfterDiscount = billingitem.ReferralFee;
-            }
-
-           
-        }
-        billingitem.ServiceListPriceAfterDiscountSingleQuantity = billingitem.ServiceListPriceAfterDiscount / billingitem.ServiceQuantity;
-
-       // billingitem.ServiceListPriceAfterDiscountWithQuantity = billingitem.ServiceListPriceAfterDiscount * billingitem.ServiceQuantity
-
-        $scope.CalculateTotalDiscount();
-
-
+            $scope.CalculateTotalDiscount();
+       
 
     }
 
-    $scope.adjustBillingData=function ()
-    {
+    $scope.adjustBillingData = function () {
 
 
         angular.forEach($scope.BillingItem, function (obj) {
             obj.ServiceListPriceAfterDiscount = obj.ServiceListPrice;
             obj.ReferralAfterDiscount = obj.ReferralFee;
+            obj.Discount = 0.0;
             obj.DisCountTypeID = '0';
             obj.DiscountTypes = [
             { id: '0', name: 'By Amount' },
             { id: '1', name: 'By Percentage' },
             ];
             obj.OriginalAmountSingleQuantity = obj.ServiceListPrice / obj.ServiceQuantity;
-            obj.ServiceListPriceAfterDiscountSingleQuantity = obj.ServiceListPriceAfterDiscount / obj.ServiceQuantity;
+            obj.ServiceListPriceAfterDiscountSingleQuantity = Math.ceil(obj.ServiceListPriceAfterDiscount / obj.ServiceQuantity);
+            $scope.TotalAmount += obj.ServiceListPrice;
 
         });
     }
@@ -147,7 +362,58 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     //    BillingService.SaveInvoice($scope.Invoice);
     //};
 
-    $scope.InvoiceModal = function (size,isEdit, singleinvoice) {
+
+
+    //*************************************************  moadl    ***************************************************
+
+
+    $scope.InvoicePrintModal = function (size, isEdit, singleinvoice) {
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/PrintInvoice.html',
+            size: size,
+            controller: 'PrintInvoiceModalController',
+            scope: $scope,
+            resolve: {
+                // billingItems:billingItems
+                singleInvoice: function () {
+                    return singleinvoice;
+                }
+
+
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+
+        }, function () {
+
+
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+
+    };
+
+    $scope.InvoiceModal = function (size, isEdit, singleinvoice) {
+
+        BillingService.GetAdvancePayment($scope.Patient.Id)
+         .success(function (data) {
+
+             var advancePayment = data;
+             $scope.InvoiceModalWidthAdvancePayment(size, isEdit, singleinvoice, advancePayment);
+
+         })
+            .error(function (error) {
+                $scope.status = 'Unable to get Advance payment data data: ' + error.message;
+                console.log($scope.status);
+                return error;
+            });
+
+    }
+
+    $scope.InvoiceModalWidthAdvancePayment = function (size, isEdit, singleinvoice,advancePayment) {
         var billingItems = [];
         var singleInvoice = {};
 
@@ -157,8 +423,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
                     billingItems.push(item);
                 }
             });
-        } else
-        {
+        } else {
             singleInvoice = singleinvoice;
         }
         //var billingItems = [
@@ -171,8 +436,11 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         //        Amount: 120
         //    }
         //];
+
+
+
         var modalInstance = $modal.open({
-            templateUrl: '/ClientCode/Template/Invoice.html',
+            templateUrl: '/ClientCode/Template/Invoice.html?nd='+ Date.now(),
             size: size,
             controller: 'InvoiceModalController',
             scope: $scope,
@@ -183,29 +451,39 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
                 // billingItems:billingItems
                 singleInvoice: function () {
                     return singleInvoice;
-                }
-                
-          
+                },
+                // billingItems:billingItems
+                advancePayment: function () {
+                    return advancePayment;
+                },
+
             }
         });
         modalInstance.result.then(function (result) {
-           // $scope.Invoice = result.Invoice;
-           // $scope.SaveInvoice();
+            // $scope.Invoice = result.Invoice;
+            // $scope.SaveInvoice();
         }, function () {
-            $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+            //  $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+            // prepareInvoiceDataModel();
+            if ($routeParams.tab != "invoices") {
+                $window.location.href = '#/billing/invoices';
+            } else {
+                $scope.GetInvoices(singleinvoice.PatientID, $scope.invoiceStatus);
+            }
+
             console.log('Modal dismissed at: ' + new Date());
-            
+
         });
     };
 
+    // *********************************************** modal end *****************************************************
 
 
     $scope.toggleDetail = function (item) {
         //$scope.isVisible = $scope.isVisible == 0 ? true : false;
-        var postion= !item.activePosition ;
-        if (postion)
-        {
-           // $(event.target).addClass('fa fa-arrow-down fa-2x');
+        var postion = !item.activePosition;
+        if (postion) {
+            // $(event.target).addClass('fa fa-arrow-down fa-2x');
             item.selectedIcon = false;
             item.activePosition = true;
         } else {
@@ -222,38 +500,65 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     if ($routeParams.tab != null) {
         tabClass = "." + $routeParams.tab;
     }
-    $scope.updateQuantityChange=function(item)
-    {
-        item.ServiceListPriceAfterDiscount = item.ServiceListPriceAfterDiscountSingleQuantity * item.ServiceQuantity;
-        item.ServiceListPrice = item.OriginalAmountSingleQuantity * item.ServiceQuantity;
+    $scope.updateQuantityChange = function (item) {
+
+        // item.ServiceListPriceAfterDiscount = Math.ceil(item.ServiceListPriceAfterDiscountSingleQuantity * item.ServiceQuantity);
+
+       // item.ServiceListPriceAfterDiscount = Math.ceil(item.ServiceListPriceAfterDiscountSingleQuantity * item.ServiceQuantity);
+
+        item.ServiceListPrice = Math.ceil(item.OriginalAmountSingleQuantity * item.ServiceQuantity);
+
+        if ($scope.discountStatus == 1) {  // if total discount eanable
+
+            $scope.CalculateTotalDiscount();
+            $scope.calcDiscount();
+
+        } else { // if line item discount enale and total discount disable
+
+            $scope.adjustAfterDiscount(item);
+           // $scope.CalculateTotalDiscount();
+        }
+
+
     }
 
-    function prepareInvoiceDataModel()
-    {
+    function prepareInvoiceDataModel() {
         angular.forEach($scope.invocieslist, function (item) {
 
             item.Paid = 0;
+            item.TotalPrice = 0;
+
             item.InvoiceDate = ToJavaScriptDate(item.InvoiceDate);
 
             item.ServiceListPriceAfterDiscount = item.ServiceListPrice;
+           
+
+            angular.forEach(item.PatientServices, function (pservice) {
+
+                item.TotalPrice = pservice.ServiceActualPrice * pservice.ServiceQuantity + item.TotalPrice;
+                pservice.ActualReferralFee = pservice.ReferralFee + (pservice.Discount/2);
+            });
 
 
-
-            if (item.InvoiceStatusId == 1)
-            {
+            if (item.InvoiceStatusId == 1) {
                 item.Staus = "Open";
-            } else if (item.InvoiceStatusId == 2)
-            {
+            } else if (item.InvoiceStatusId == 2) {
                 item.Staus = "Closed";
-            } else if (item.InvoiceStatusId == 3)
-            {
+            } else if (item.InvoiceStatusId == 3) {
                 item.Staus = "Refunded";
             }
-           
+            if (item.IsRefunded)
+            {
+                item.Staus = item.Staus + "  (Reunded)";
+            }
+
+            item.selectedIcon = true;
+
             angular.forEach(item.InvoicePayments, function (paymentitem) {
 
                 item.Paid = paymentitem.Amount + item.Paid;
-                item.selectedIcon = true;
+
+               
                 item.activePosition = false;
 
             });
@@ -261,9 +566,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         console.log($scope.invocieslist);
     }
 
-    $scope.GetTotalDebitCredit=function()
-
-    {
+    $scope.GetTotalDebitCredit = function () {
 
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
@@ -284,19 +587,16 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         }
     }
 
-    $scope.reloadInvoice=function()
-    {
+    $scope.reloadInvoice = function () {
         //console.log($scope.patientSelection);
-        if($scope.patientSelection==0)
-        {
+        if ($scope.patientSelection == 0) {
             $scope.GetInvoices(0, $scope.invoiceStatus);
-        }else
-        {
+        } else {
             $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
         }
     }
-    $scope.GetInvoices = function (patientId,invoicestatus) {
-        BillingService.GetInvoicesByPatientId(patientId, invoicestatus)
+    $scope.GetInvoices = function (patientId, invoicestatus) {
+        BillingService.GetInvoicesByPatientId(patientId, invoicestatus, $scope.invoiceDateStart, $scope.invoiceDateEnd, $scope.invoiceId)
             .success(function (pt) {
                 $scope.invocieslist = pt;
                 prepareInvoiceDataModel();
@@ -309,12 +609,26 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     }
 
     if ($routeParams.tab == "invoices") {
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
+                $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
 
-        if ($scope.Patient.Id != null) {
-            $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+            }
         }
 
-       
+
+    }
+
+    if ($routeParams.tab == "summary") {
+
+        if($scope.Patient)
+        {
+
+            $scope.GetBillingItemByPatientId($scope.Patient.Id);
+            $scope.GetTotalDebitCredit();
+            
+        }
+
     }
 
 
@@ -326,28 +640,248 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
 
     //    }
-        
+
     //});
     $scope.$on('patientchange', function (event, args) {
         // console.log("patient changes");
-            if ($routeParams.tab == "invoices") {
+        if ($routeParams.tab == "invoices") {
 
-                $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
-                $scope.patientSelection = 1;
+            $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
 
-            }
 
-            //if ($routeParams.tab == "summary") {
+        }
 
-            $scope.GetBillingItemByPatientId($scope.Patient.Id);
-            $scope.GetTotalDebitCredit();
+       if ($routeParams.tab == "summary") {
 
-            //}
+        $scope.GetBillingItemByPatientId($scope.Patient.Id);
+        $scope.GetTotalDebitCredit();
+
+       }
     });
-    $scope.GetTotalDebitCredit();
-
+   // $scope.GetTotalDebitCredit();
 
     $('.tabs li').removeClass('active');
     $(tabClass).addClass('active');
     $(tabClass).removeClass('hide');
+
+    // zaber
+    $scope.deleteBillItem = function (itemId, index) {
+
+        BillingService.deleteBillItem(itemId)
+       .success(function (data) {
+
+           //$scope.GetBillingItemByPatientId($scope.Patient.Id);
+
+           $scope.status = 'Delete Successful';
+           $scope.BillingItem.splice(index, 1);
+           $scope.calcDiscount();
+
+           //$window.alert("Delete Successful!");
+           //return;
+
+       })
+       .error(function (error) {
+           $scope.status = 'Unable to delete billing item : ' + error.message;
+           console.log($scope.status);
+       });
+
+    }
+    //zaber
+
+
+
+    /*------------------- inline editing code begin -------------------*/
+
+    $scope.selected={ };
+
+    $scope.getTemplate = function (patientService) {
+        if (patientService.Id === $scope.selected.Id) return 'edit';
+        else return 'display';
+    };
+
+    $scope.editPatientService = function (singleinvoice,patientService) {
+        $scope.selected = angular.copy(patientService);
+        $scope.selectedSingleInvoice = angular.copy(singleinvoice);
+    };
+
+    $scope.savePatientServiceAndInvoice = function (singleinvoice, patientservice) {
+
+        // $scope.reset(patientService);
+        var totalPrice = 0;
+        var totalDiscount = 0;
+        angular.forEach(singleinvoice.PatientServices, function (obj) {
+
+            if (!obj.Discount) obj.Discount = 0;
+
+            totalPrice = obj.ServiceListPrice + totalPrice;
+            totalDiscount = Math.ceil(obj.Discount + totalDiscount);
+           
+
+        });
+
+        if (totalPrice < singleinvoice.Paid) {
+            $window.alert("Total amount shouldn't be smaller than the paid amount");
+            $scope.reset(singleinvoice,patientservice);
+        }else
+        {
+            singleinvoice.TotalAmount = totalPrice
+            singleinvoice.TotalDiscount = totalDiscount;
+
+            singleinvoice.InvoiceDate = ToJavaScriptDate(singleinvoice.InvoiceDate);
+            singleinvoice.DueDate = ToJavaScriptDate(singleinvoice.DueDate);
+
+            BillingService.UpdateInvoice(singleinvoice)
+                  .success(function (data) {
+
+                      console.log(data);
+                    //  singleinvoice = data;
+
+                      $scope.selected = {};
+                      $scope.selectedSingleInvoice = {};
+
+
+                  })
+                  .error(function (error) {
+                     // $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+                      $window.alert("something went wrong invoice not saved!");
+                     // console.log($scope.status);
+                      $scope.reset(singleinvoice, patientservice);
+
+                  });
+
+  
+
+        }
+
+    };
+
+    $scope.reset = function (singleinvoice,patientService) {
+        
+        patientService.ServiceListPrice = $scope.selected.ServiceListPrice;
+        patientService.Discount = $scope.selected.Discount;
+        patientService.ReferralFee = $scope.selected.ReferralFee;
+
+        singleinvoice = $scope.selectedSingleInvoice;
+
+        $scope.selected = {};
+        $scope.selectedSingleInvoice = {};
+       // $scope.savePatientServiceAndInvoice(singleinvoice, patientService);
+    };
+
+
+ 
+    $scope.UpdatePatientServiceDiscount = function (singleinvoice, patientService)
+    {
+        var actualprice = patientService.ServiceActualPrice * patientService.ServiceQuantity;
+        var refferDiscount = 0;
+
+        if (!patientService.Discount) patientService.Discount = 0;
+
+
+        if (patientService.Discount > actualprice)
+        {
+            patientService.Discount = actualprice;
+        }
+        patientService.ServiceListPrice = (patientService.ServiceActualPrice * patientService.ServiceQuantity) - patientService.Discount;
+        if (patientService.LabStatusId > 0) {
+
+            refferDiscount = patientService.Discount / 2;
+            patientService.ReferralFee = patientService.ActualReferralFee - refferDiscount;
+
+        }
+        if (patientService.ReferralFee < 0) patientService.ReferralFee = 0;
+
+        patientService.DiscountAfterInvoice = true;
+
+
+
+        //patientService.ServiceListPrice=patientService.ServiceActualPrice - patientService.Discount;
+    }
+
+    /*---------------------- inline editing code end --------------------*/
+
+
+
+    /*------------------------------- refund code begin ---------------------------*/
+    $scope.OpenPopUp = function (event, patientservice,Paid) {
+
+        $('#popupRefundApproval').css("display", "block");
+        //$('#popupRefundApproval').css("opacity", 1);
+
+        $("#popupRefundApproval").css({ position: "absolute", top: event.pageY - 100, left: event.pageX - 220 });
+
+        $scope.refundedServices = patientservice;
+        $scope.Paid = Paid;
+
+    }
+
+    $scope.saveRefundNote=function()
+    {
+
+        if ($scope.Paid < ($scope.refundedServices.ServiceListPrice * $scope.refundedServices.ServiceQuantity)) {
+            $window.alert("you can't refund this item");
+        } else {
+
+            $scope.refundedServices.RefundNote = $scope.refundNote;
+            BillingService.UpdateRefundNote($scope.refundedServices)
+          .success(function (data) {
+
+
+
+
+
+          })
+          .error(function (error) {
+              // $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+              $window.alert("something went wrong Refund request  not send!");
+              // console.log($scope.status);
+              $scope.reset(singleinvoice, patientservice);
+
+          });
+        }
+
+        $('#popupRefundApproval').css("display", "none");
+        //$('#popupRefundApproval').css("opacity", 0);
+
+    }
+
+    /*-------------------------------------- refund code end --------------------------*/
+
+
+    /*------------------------------- open advance payment model ------------------------------*/
+
+    $scope.AdvancePaymentModal = function (size, isEdit) {
+
+
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/AdvancePayment.html',
+            size: size,
+            controller: 'AdvancePaymentModalController',
+            scope: $scope
+        });
+
+        modalInstance.result.then(function (result) {
+
+            $scope.GetTotalDebitCredit();
+
+        }, function () {
+
+
+            //  $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+            // prepareInvoiceDataModel();
+
+
+            $scope.GetTotalDebitCredit();
+
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+    };
+
+
+    /*---------------------------------- end advance payment model ------------------------------*/
+
+
+
 });

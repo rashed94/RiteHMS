@@ -4,6 +4,16 @@
     $(document).ready(function() {
 
 
+        $('.reportdeliverydate').datepicker({
+            format: "mm/dd/yyyy"
+        }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
+        });
+
+
+
+
         $('#categoryPop').click(function (event) {
           //  alert("test");
             event.preventDefault();
@@ -137,18 +147,18 @@
             <div class="search_container">
                 <!-- <input type="text" width="50" maxlength="20" name="search" class="search" ><a href="#" class="fa fa-search"></a>-->
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
+                    <input type="text" class="form-control" ng-model="invoiceId" placeholder="Invoice No...">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
+                        <button class="btn btn-default" type="button" ng-click="reloadlabtest();">Go!</button>
                     </span>
                 </div>
 
             </div>
             <div class="date_range">
                 <h2 class="padding_left10">start date</h2>
-                <input type="text" width="110" placeholder="click to show datepicker" name="reportdeliverydate" class="reportdeliverydate">
+                <input type="text" width="110" placeholder="click to show datepicker" ng-model="invoiceDateStart" name="invoicedate" class="reportdeliverydate">
                 <h2 class="padding_left10">end date</h2>
-                <input type="text" width="110" placeholder="click to show datepicker" name="reportdeliverydate" class="reportdeliverydate">
+                <input type="text" width="110" placeholder="click to show datepicker" ng-model="invoiceDateEnd" name="invoicedate" class="reportdeliverydate">
             </div>
             <div class="select_all_patient">
                 <input type="radio" value="0" ng-model="patientSelection" ng-change="loadLabTest()" name="patient" class="all_patient_checkbox"><h2>all patient</h2>
@@ -164,7 +174,7 @@
             </select>
         </div>
         
-        <table width="100%" border="1" align="center" class="bordered evencolor" ng-model="labTestItems" ng-init="loadLabTest()">
+        <table width="100%" border="1" align="center" class="bordered evencolor" ng-model="labTestItems">
             <thead>
                 <tr>
                     <th width="3%">&nbsp;</th>
@@ -204,7 +214,7 @@
                             <tbody ng-repeat="patientservice in labTestitem.PatientServices">
                                 <tr>
                                     <td>{{patientservice.Item.Name}}</td>
-                                    <td>{{patientservice.Item.GenericName}}</td>
+                                    <td>{{patientservice.Item.ItemCategory.Name}}</td>
                                     <td>{{patientservice.ServiceProvider.Contact.FirstName}}  {{patientservice.ServiceProvider.Contact.LastName}}</td>
                                     <td><span ng-class="{'status_red':patientservice.LabStatusId==1, 'status_green':patientservice.LabStatusId==2}">{{patientservice.Staus}}</span></td>
                                     <td>
@@ -231,9 +241,20 @@
     </div>
 
     <div class="listlabtest hide">
-        <div class="round_box box_general">
+      
+        <div class="criteria_box">
 
-            <table width="90%" border="1" align="center" class="bordered" ng-model="Labitems" ng-init="loadLabItems()">
+
+
+            <select name="status" class="category_list" ng-model="filterCondition.CategoryId" ng-change="loadLabItems()">
+                <option ng-selected="true" value="0"> All</option>
+                <option ng-repeat="category in LabTestCategories" value="{{category.Id}}"> {{category.Name}}</option>
+            </select>
+
+
+        </div>
+
+            <table width="100%" border="1" align="center" class="bordered" ng-model="Labitems" >
                 <thead>
                     <tr>
                         <th width="36%">Test Name</th>
@@ -254,7 +275,7 @@
                 </tfoot>
             </table>
 
-        </div>
+        
 
     </div>
 
@@ -265,6 +286,11 @@
             <div class="success_message">Successfully save the Item</div>
             </div>
         <div style="clear:both;"></div>
+
+        <div ng-show="saveSuccess>0" class="register">
+            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" ng-href="#/labtest/addlabtest">Add New Test</a>
+        </div>
+
             <div class="round_box box_general">
                 <table width="95%" border="1" ng-model="SingleLabItem">
                     <tr>
@@ -292,7 +318,7 @@
                         <td colspan="2"><input type="text" ng-model="SingleLabItem.Code"></td>
                     </tr>
 
-                    <tr>
+                    <tr ng-hide="true">
                         <td height="39">&nbsp;</td>
                         <td>GENERIC NAME</td>
                         <td colspan="2"><input type="text" ng-model="SingleLabItem.GenericName"></td>
@@ -375,5 +401,6 @@
 
         <div style="clear:both;"></div>
         </div>
+    <div style="clear:both;"></div>
 
 </div>

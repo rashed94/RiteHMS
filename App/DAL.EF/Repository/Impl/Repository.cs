@@ -117,10 +117,11 @@ namespace HMS.DAL.Repository
 
         //    _DbSet.Remove(entity);
         //}
-        public void Delete(T entity)
+        public void Delete(T entity, long userId)
         {
             if (_DbContext.Entry(entity).State == EntityState.Detached)
                 _DbSet.Attach(entity);
+            entity.UserId = userId;
             entity.Active = false;
             _DbContext.SaveChanges();
         }
@@ -130,9 +131,10 @@ namespace HMS.DAL.Repository
         //    T entity = _DbSet.Find(id);
         //    _DbSet.Remove(entity);
         //}
-        public void DeleteByID(long id)
+        public void DeleteByID(long id, long userId)
         {
             T entity = _DbSet.Find(id);
+            entity.UserId = userId;
             entity.Active = false;
             _DbContext.SaveChanges();
         }
