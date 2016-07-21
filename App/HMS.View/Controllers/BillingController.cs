@@ -360,6 +360,7 @@ namespace HMS.Controllers
                         patientstitem.ServiceDate = c.ServiceDate;
                         patientstitem.UserId = c.UserId;
                         patientstitem.Discount = c.Discount;
+                        patientstitem.DiscountAfterInvoice = c.DiscountAfterInvoice;
                         patientstitem.Refund = c.Refund;
                         patientstitem.RefundNote = c.RefundNote;
 
@@ -421,6 +422,7 @@ namespace HMS.Controllers
                     patientstitem.ServiceDate = c.ServiceDate;
                     patientstitem.UserId = c.UserId;
                     patientstitem.Discount = c.Discount;
+                    patientstitem.DiscountAfterInvoice = c.DiscountAfterInvoice;
                     patientstitem.Refund = c.Refund;
                     patientstitem.Billed = c.Billed;
                     patientstitem.ReferralFee = c.ReferralFee;
@@ -481,6 +483,7 @@ namespace HMS.Controllers
             using (Repository<PatientInvoice> repository = new Repository<PatientInvoice>())
             {
                     patientInvoice = repository.Update(pinvoice);
+                    patientInvoice.UserId = GetLoggedinUserInfo().UserId;
                     repository.Commit();
             }
 
@@ -489,6 +492,7 @@ namespace HMS.Controllers
             {
                 using (PatientServiceRepository patientservicerepository = new PatientServiceRepository())
                 {
+                    item.UserId = GetLoggedinUserInfo().UserId;
                     patientservicerepository.Update(item);
                     patientservicerepository.Commit();
                 }

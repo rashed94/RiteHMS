@@ -86,6 +86,6 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
         });
   }]);
 
-HmsApp.run(['$route', function ($route) {
-    $route.reload();
-}]);
+//HmsApp.run(['$route', function ($route) {
+//    $route.reload();
+//}]);

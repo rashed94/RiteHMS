@@ -895,6 +895,7 @@ namespace HMS.Controllers
                     patientstitem.ServiceDate = c.ServiceDate;
                     patientstitem.UserId = c.UserId;
                     patientstitem.Discount = c.Discount;
+                    patientstitem.DiscountAfterInvoice = c.DiscountAfterInvoice;
                     patientstitem.Refund = c.Refund;
                     patientstitem.RefundNote = c.RefundNote;
                     patientstitem.Billed = c.Billed;
@@ -1013,6 +1014,7 @@ namespace HMS.Controllers
                             patientstitem.ServiceDate = c.ServiceDate;
                             patientstitem.UserId = c.UserId;
                             patientstitem.Discount = c.Discount;
+                            patientstitem.DiscountAfterInvoice = c.DiscountAfterInvoice;
                             patientstitem.Refund = c.Refund;
                             patientstitem.RefundNote = c.RefundNote;
                             patientstitem.Billed = c.Billed;

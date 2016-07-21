@@ -131,6 +131,7 @@
     <Content Include="ClientCode\Script\Controller\PatientSummaryReportController.js" />
     <Content Include="ClientCode\Script\Controller\PharmacyController.js" />
     <Content Include="ClientCode\Script\Controller\AdminSubMenuController.js" />
+    <Content Include="ClientCode\Script\Controller\PrimaryMenuController.js" />
     <Content Include="ClientCode\Script\Controller\UserController.js" />
     <Content Include="ClientCode\Script\Directive\ConfirmationBox.js" />
     <Content Include="ClientCode\Script\Service\AddItemService.js" />
@@ -167,6 +168,7 @@
     <Content Include="ClientCode\Script\Service\PatientService.js" />
     <Content Include="ClientCode\Template\PatientSummaryReport.html" />
     <Content Include="ClientCode\Template\Pharmacy.html" />
+    <Content Include="ClientCode\Template\PrimaryMenu.html" />
     <Content Include="ClientCode\Template\PrintInvoice.html" />
     <Content Include="ClientCode\Template\ReportTemplateResult.html" />
     <Content Include="ClientCode\Template\ReportTemplate.html" />

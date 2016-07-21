@@ -78,6 +78,8 @@
 
     <script src="~/ClientCode/Script/Controller/AdminSubMenuController.js"></script>
 
+    <script src="~/ClientCode/Script/Controller/PrimaryMenuController.js"></script>
+
 
     <script src="~/ClientCode/Script/Service/ItemService.js"></script>
 
@@ -185,23 +187,7 @@
                     </div>
                     <div style="clear:both;"> </div>
                 </div>
-
-                <div class="site_navigation">
-
-                    <ul>
-                        <li class="patientinfo"><a ng-href="#/patient" class="selected" ng-click="UpdateTopLink('patient')">Patient info</a></li>
-                        <li class="labtest"><a ng-href="#/labtest/summary" ng-click="UpdateTopLink('labtest')">Lab Test</a></li>
-                        <li class="pharmacy"><a ng-href="#/pharmacy/summary" ng-click="UpdateTopLink('pharmacy')">Pharmacy</a></li>
-                        <li class="appointment"><a ng-href="#/appointment/setup" ng-click="UpdateTopLink('appointment')">Appointment</a></li>
-                        <li class="bedsetup"><a ng-href="#/bedsetup/summary" ng-click="UpdateTopLink('bedsetup')">Bed Setup</a></li>
-                        <li class="billing"><a ng-href="#/billing/summary" ng-click="UpdateTopLink('billing')">Billing</a></li>
-                        <li class="configuration"><a ng-href="#/configuration/copayer" ng-click="UpdateTopLink('configuration')">Configuration</a></li>
-                        <li class="admin"><a ng-href="#/admin/approval/refund" ng-click="UpdateTopLink('admin')">Admin</a></li>
-
-                    </ul>
-
-
-                </div>
+                <div ng-include src="'/ClientCode/Template/PrimaryMenu.html'"></div>
 
             </div>
 

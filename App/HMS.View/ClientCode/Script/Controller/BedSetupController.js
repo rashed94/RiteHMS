@@ -438,7 +438,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
                         console.log(data);
                         $scope.IsPatientExist = true;
-                        $scope.UpdateTopLink('billing');
+                       // $scope.UpdateTopLink('billing');
                         //$window.location.href = '#/billing';
                         $scope.addPatientSuccess = 1;
                         $scope.serviceItemEmpty();

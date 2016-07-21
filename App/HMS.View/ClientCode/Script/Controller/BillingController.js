@@ -791,7 +791,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         }
         if (patientService.ReferralFee < 0) patientService.ReferralFee = 0;
 
-        
+        patientService.DiscountAfterInvoice = true;
 
 
 

@@ -15,6 +15,7 @@ namespace HMS.Model.Core
         public System.DateTime ServiceDate { get; set; }
         public long? ServiceProviderId { get; set; }
         public decimal? Discount { get; set; }
+        public bool DiscountAfterInvoice { get; set; }
         public bool? Refund { get; set; }
         public bool? RefundApproval { get; set; }
         public string RefundNote { get; set; }
