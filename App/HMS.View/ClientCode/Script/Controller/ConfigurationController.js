@@ -84,9 +84,7 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
             //$scope.ServiceProvider.Department = null;
             //$scope.ServiceProvider.ServiceProviderTypeId = $scope.ServiceProvider.ServiceProviderType.Id;
             //$scope.ServiceProvider.ServiceProviderType = null;
-            var myDataPromise=$scope.SaveServiceProvider(result.File);
-
-            myDataPromise.data.then(function (result) {
+           $scope.SaveServiceProvider(result.File).data.then(function (result) {
                 $scope.GetServiceProviders();
             });
            
