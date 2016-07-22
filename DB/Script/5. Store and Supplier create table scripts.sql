@@ -531,7 +531,7 @@ GO
 
 
 
-/****** Object:  Table [dbo].[PurchaseOrderDetail]    Script Date: 7/22/2016 11:11:23 PM ******/
+/****** Object:  Table [dbo].[PurchaseOrderDetail]    Script Date: 7/22/2016 11:46:18 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -540,14 +540,12 @@ GO
 
 CREATE TABLE [dbo].[PurchaseOrderDetail](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[SubstoreId] [bigint] NOT NULL,
-	[Date] [datetime] NOT NULL,
+	[PurchaseOrderId] [bigint] NOT NULL,
 	[ItemId] [bigint] NOT NULL,
 	[RequiredQuantity] [int] NOT NULL,
 	[MeasurementUnitId] [bigint] NOT NULL,
-	[StockBalance] [int] NULL,
 	[Active] [bit] NOT NULL,
- CONSTRAINT [PK_PurchaseOrderDetail] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_PurchaseIndent] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
@@ -555,7 +553,7 @@ CREATE TABLE [dbo].[PurchaseOrderDetail](
 
 GO
 
-ALTER TABLE [dbo].[PurchaseOrderDetail] ADD  CONSTRAINT [DF_PurchaseOrderDetail_Active]  DEFAULT ((1)) FOR [Active]
+ALTER TABLE [dbo].[PurchaseOrderDetail] ADD  CONSTRAINT [DF_PurchaseIndent_Active]  DEFAULT ((1)) FOR [Active]
 GO
 
 ALTER TABLE [dbo].[PurchaseOrderDetail]  WITH CHECK ADD  CONSTRAINT [FK_PurchaseOrderDetail_Item] FOREIGN KEY([ItemId])
@@ -572,11 +570,11 @@ GO
 ALTER TABLE [dbo].[PurchaseOrderDetail] CHECK CONSTRAINT [FK_PurchaseOrderDetail_MeasurementUnit]
 GO
 
-ALTER TABLE [dbo].[PurchaseOrderDetail]  WITH CHECK ADD  CONSTRAINT [FK_PurchaseOrderDetail_Store] FOREIGN KEY([SubstoreId])
-REFERENCES [dbo].[Store] ([Id])
+ALTER TABLE [dbo].[PurchaseOrderDetail]  WITH CHECK ADD  CONSTRAINT [FK_PurchaseOrderDetail_PurchaseOrder] FOREIGN KEY([PurchaseOrderId])
+REFERENCES [dbo].[PurchaseOrder] ([Id])
 GO
 
-ALTER TABLE [dbo].[PurchaseOrderDetail] CHECK CONSTRAINT [FK_PurchaseOrderDetail_Store]
+ALTER TABLE [dbo].[PurchaseOrderDetail] CHECK CONSTRAINT [FK_PurchaseOrderDetail_PurchaseOrder]
 GO
 
 
