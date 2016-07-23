@@ -88,7 +88,17 @@
 
     };
 
+    
 
+    LabTestService.UpdateLabItem = function (labtestInvoice) {
+
+        //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
+
+        return $http.post('/Item/UpdateLabItem', { pinvoice: labtestInvoice });
+
+
+
+    };
     LabTestService.UpdateLabStatus = function (PatientServiceItem, InvoiceStatusUpdate,InvoiceID) {
 
         //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);

@@ -67,11 +67,45 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
     });
 
 
+    $scope.MarkAsDelvered =function(labtestInvoice)
+    {
+        labtestInvoice.LabStatusId = 3;
+       
+
+        angular.forEach(labtestInvoice.PatientServices, function (PatientService) {
+
+            if (!PatientService.Refund)
+            PatientService.LabStatusId = 3;
+
+        });
+
+
+        
+
+        LabTestService.UpdateLabItem(labtestInvoice)
+        .success(function (pt) {
+
+            $scope.loadLabTest();
+
+       
+          
+        console.log(pt);
+    })
+    .error(function (error) {
+        $scope.status = 'Unable upadate status to mark as delivered: ' + error.message;
+        console.log($scope.status);
+    });
+
+
+
+    }
+
     function preparelabtestDataModel() {
         angular.forEach($scope.labTestItems, function (item) {
 
             item.Paid = 0;
             item.InvoiceDate = ToJavaScriptDate(item.InvoiceDate);
+            item.DueDate =      ToJavaScriptDate(item.DueDate);
 
             //item.ServiceListPriceAfterDiscount = item.ServiceListPrice;
 
@@ -94,7 +128,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 } else if (PatientService.LabStatusId == 2) {
                     PatientService.Staus = "Completed";
                 } else if (PatientService.LabStatusId == 3) {
-                    PatientService.Staus = "Refunded";
+                    PatientService.Staus = "Delivered";
                 }
                 PatientService.DeliveryDate = ToJavaScriptDate(PatientService.DeliveryDate);
                 PatientService.ServiceDate = ToJavaScriptDate(PatientService.ServiceDate);
@@ -111,7 +145,11 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             } else if (item.LabStatusId == 2) {
                 item.Staus = "Completed";
             } else if (item.LabStatusId == 3) {
-                item.Staus = "Refunded";
+                item.Staus = "Delivered";
+            }
+
+            if (item.IsRefunded) {
+                item.Staus = item.Staus + "  (Reunded)";
             }
 
             if (item.TotalAmount != item.Paid) {

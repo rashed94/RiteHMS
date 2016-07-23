@@ -423,6 +423,18 @@ a:active, a:focus { outline-style: none; -moz-outline-style:none; }
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 }
+.rite_print_modal_header
+{
+	background:#c1c2c0;
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+    
+}
+.rite_print_modal_header .modal-title
+{
+    color:#000;
+}
+
 
 .close span
 {
@@ -719,3 +731,96 @@ table.bed_table  td{
 {
     width:170px;
 }
+.prinInvoice 
+{
+    background:#fff;
+     min-height:500px;
+}
+Table.prinInvoice 
+{
+    border:1px solid #424342;
+    color:#000;
+   margin:0 auto;
+  
+   
+}
+
+.prinInvoice thead th{
+
+    background:#eeeeee;
+    height:25px;
+    border-bottom:1px solid #424342;
+    border-left:1px solid #424342;
+    padding:6px;
+    font-weight:bold;
+}
+
+.prinInvoice td{ 
+       
+    padding:4px;
+}
+.prinInvoice tbody td{
+    border-left:1px solid #424342;
+}
+
+.prinInvoice .border-bottom
+{
+ border-bottom:1px solid #424342;
+}
+.prinInvoice tfoot tr:first-child td{
+    border-left:1px solid #424342;
+}
+.print_body
+{
+ background:#fff;
+ padding:16px;
+ min-height:600px;
+}
+
+.print_content .payment_detail_right
+{
+	float:right;
+	
+   
+}
+
+.print_content{
+    
+     width: 210mm;
+    min-height: 197mm;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin:0 auto;
+
+}
+
+.invoice
+{
+    text-align:center;
+    padding-top:12px;
+    padding-bottom:12px;
+    font-weight:bold;
+    font-size:18px;
+    
+}
+.no-print
+{
+    float:right;
+    padding-right:20px;
+    padding-top:30px;
+   
+}
+
+.no-print:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.no-print a{
+
+    text-decoration:none;
+
+}
+

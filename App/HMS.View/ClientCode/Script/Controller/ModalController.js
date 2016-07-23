@@ -116,7 +116,7 @@ HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $h
         angular.forEach(LabTestItem.PatientServices, function (item) {
 
             if (PatientServiceItem.Id != item.Id) {
-                if (item.LabStatusId == "1") {
+                if (item.LabStatusId == "1" && !item.Refund) {
                     $scope.InvoiceStatusUpdate = false;
                 }
             }
@@ -126,6 +126,24 @@ HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $h
             LabTestItem.Staus = "Completed";
             LabTestItem.LabStatusId = "2";
 
+        }
+
+
+        if (LabTestItem.LabStatusId == 1) {
+            LabTestItem.Staus = "Pending";
+        } else if (LabTestItem.LabStatusId == 2) {
+            LabTestItem.Staus = "Completed";
+        } else if (LabTestItem.LabStatusId == 3) {
+            LabTestItem.Staus = "Delivered";
+        }
+
+
+        if (LabTestItem.IsRefunded) {
+            LabTestItem.Staus = LabTestItem.Staus + "  (Reunded)";
+        }
+
+        if (LabTestItem.TotalAmount != LabTestItem.Paid) {
+            LabTestItem.Staus = LabTestItem.Staus + ("(Due)");
         }
 
         LabTestService.UpdateLabStatus(PatientServiceItem, $scope.InvoiceStatusUpdate, PatientServiceItem.InvoiceID)
@@ -449,6 +467,51 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.PatientServiceItem.push($scope.serviceItem);
     }
 
+    $scope.GenerateServiceItemAfterInvoice = function (item) {
+        $scope.serviceItem = {};
+
+        /*   var serviceItem = {
+                PatientID: $scope.Patient.Id,
+                ItemID: obj.Id,
+                InvoiceID: '',
+                ServiceListPrice: obj.Amount,
+                ServiceActualPrice: obj.SalePrice,
+                ServiceQuantity: obj.Quantity,
+                ServiceDate: Date.now(),
+                UserId: '',
+                Discount: '',
+                Refund: '',
+                Billed: '',
+                ReferralFee: obj.ReferralFee,
+                DeliveryDate: obj.Date,
+                DeliverTime:obj.ReportDeliveryTime
+            };*/
+        $scope.serviceItem.Id = item.Id;
+        $scope.serviceItem.PatientId = item.PatientID;
+        $scope.serviceItem.ItemID = item.ItemID;
+        $scope.serviceItem.InvoiceID = 0;
+        $scope.serviceItem.ServiceListPrice = item.ServiceListPrice;
+        $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
+        $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;
+        $scope.serviceItem.ServiceDate = ToJavaScriptDate(item.ServiceDate);
+        $scope.serviceItem.UserId = '';
+        $scope.serviceItem.Discount = item.Discount;
+        $scope.serviceItem.Refund = '';
+        $scope.serviceItem.Billed = '';
+        $scope.serviceItem.ReferralFee = item.ReferralFee;
+        $scope.serviceItem.ReferralFeePaid = $scope.serviceItem.ReferralFeePaid;
+        $scope.serviceItem.DeliveryDate = ToJavaScriptDate(item.DeliveryDate);
+        $scope.serviceItem.DeliveryTime = item.DeliveryTime;
+        $scope.serviceItem.ReferralFeePaid = item.ReferralFeePaid;
+        $scope.serviceItem.ServiceProviderId = item.ServiceProviderId;
+        $scope.serviceItem.LabStatusId = item.LabStatusId;
+        if (item.LabStatusId == 1) {
+            $scope.isLabItem = true;
+        }
+
+        $scope.PatientServiceItem.push($scope.serviceItem);
+    }
+
    function saveInvoice()  {
         BillingService.SaveInvoice($scope.Invoice, $scope.PatientServiceItem)
          .success(function (data) {
@@ -500,6 +563,15 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         // console.log("need to load invoice");
         $scope.Invoice = singleInvoice;
 
+
+        if (singleInvoice.Id != null && billingItems.length > 0) {
+            angular.forEach(billingItems, function (item, key) {
+
+                $scope.GenerateServiceItemAfterInvoice(item);
+
+            });
+        }
+
         if ($scope.Invoice.InvoicePayments.length > 0) {
             angular.forEach($scope.Invoice.InvoicePayments, function (item) {
 
@@ -514,7 +586,13 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
 
     }
 
-    /* reconcile amount adjust begin */
+    /* ---------------------------------------------------------------------------------------------*/
+
+    /***************************************  reconcile amount adjust begin *******************************/
+
+    /*----------------------------------------------------------------------------------------------------*/
+
+    
 
     var advanceAmount = 0;
     var keepGoing = true;
@@ -551,7 +629,7 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
 
             //$scope.TotalPayableAmount  ==  summation of amount client paid from advance amount
 
-            //itemAdvanceAmount  == total advance amount per item
+            //itemAdvanceAmount  ==  advance amount per item
 
             //  advanceAmount == summation of advance amount of items
 
@@ -621,7 +699,15 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
 
     console.log(advancePayment);
 
-    /* reconcile amound adjust end */
+
+
+    /* ---------------------------------------------------------------------------------------------*/
+
+    /*************************************** reconcile amound adjust end *******************************/
+
+    /*----------------------------------------------------------------------------------------------------*/
+
+
 
     $scope.CheckReconcileAmount = function () {
         var totalPayableAmount = $scope.Invoice.TotalAmount - $scope.TotalPaid;
@@ -794,6 +880,8 @@ HmsApp.controller("AdvancePaymentModalController", function ($scope, $modalInsta
         if ($scope.CardNumber != "1") {
             $scope.Payment.CardNumber = $scope.CardNumber;
         }
+
+
 
 
         BillingService.SaveAdvancePayment($scope.Payment)

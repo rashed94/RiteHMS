@@ -180,6 +180,7 @@
     <Content Include="css\font-awesome.min.css" />
     <Content Include="css\layout.css" />
     <Content Include="css\main.css" />
+    <Content Include="css\print.css" />
     <Content Include="css\reset.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

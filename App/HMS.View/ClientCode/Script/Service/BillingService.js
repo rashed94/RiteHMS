@@ -37,7 +37,7 @@
             invoice.Patient = null;
         } else
         {
-            invoice.PatientServices = null;
+            invoice.PatientServices = patientServices;
             invoice.Refunds = null;
             invoice.InvoicePayments = null;
             invoice.Patient = null;

@@ -177,7 +177,48 @@ namespace HMS.Controllers
 
         }
 
-        
+       public JsonResult UpdateLabItem(PatientInvoice pinvoice)
+       {
+           PatientInvoice onlyInvoice = new PatientInvoice();
+           PatientInvoice patientInvoice = new PatientInvoice();
+           List<PatientService> patientServiceItems = pinvoice.PatientServices.ToList();
+         
+
+
+           pinvoice.Refunds = null;
+           pinvoice.PatientServices = null;
+           pinvoice.Patient = null;
+           pinvoice.InvoicePayments = null;
+           pinvoice.InvoiceStatus = null;
+
+           
+
+           using (Repository<PatientInvoice> repository = new Repository<PatientInvoice>())
+           {
+               patientInvoice = repository.Update(pinvoice);
+               patientInvoice.UserId = GetLoggedinUserInfo().UserId;
+               repository.Commit();
+           }
+
+         
+           foreach (PatientService sitem in patientServiceItems)
+           {
+               sitem.Item = null;
+               sitem.Patient = null;
+               sitem.PatientInvoice = null;
+               sitem.ServiceProvider = null;
+
+               using (PatientServiceRepository patientservicerepository = new PatientServiceRepository())
+               {
+                   sitem.UserId = GetLoggedinUserInfo().UserId;
+                   patientservicerepository.Update(sitem);
+                   patientservicerepository.Commit();
+               }
+           }
+
+
+           return Json("Invoice update successfull", JsonRequestBehavior.AllowGet);
+       }
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
@@ -941,7 +982,7 @@ namespace HMS.Controllers
         {
 
             List<PatientInvoice> onlypatientInvoices = new List<PatientInvoice>();
-            List<PatientInvoice> patientInvoices;
+            List<PatientInvoice> patientInvoices =new  List<PatientInvoice>();
             List<PatientService> PatientServices;
             DateTime invoiceDateStart = DateTime.Parse("1/1/1980");
             DateTime invoiceDateEnd = DateTime.Today;
@@ -956,6 +997,7 @@ namespace HMS.Controllers
             using (PatientInvoiceRepository repository = new PatientInvoiceRepository())
             {
                 patientInvoices = repository.GetPatientInvoicebyMedicalTypeOnlyLabItem(id, statusid, medicalTypeID, invoiceDateStart, invoiceDateEnd, invoiceId).ToList();
+             
 
                 foreach (PatientInvoice pinvoice in patientInvoices)
                 {
@@ -971,6 +1013,7 @@ namespace HMS.Controllers
                     onlyPatientInvoice.TotalDiscount = pinvoice.TotalDiscount;
                     onlyPatientInvoice.InvoiceStatusId = pinvoice.InvoiceStatusId;
                     onlyPatientInvoice.LabStatusId = pinvoice.LabStatusId;
+                    onlyPatientInvoice.IsRefunded = pinvoice.IsRefunded;
                     onlyPatientInvoice.ItemDiscount = pinvoice.ItemDiscount;
                     onlyPatientInvoice.UserId = pinvoice.UserId;
                     onlyPatientInvoice.Patient.FirstName = pinvoice.Patient.FirstName;

@@ -30,6 +30,12 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.IsPatientLoaded = "";
     $scope.ServiceProviderType = 56;  // which is doctor
 
+  /*  $scope.getRandomSpan = function () {
+        return Math.floor((Math.random() * 60) + 1);
+    }
+
+    console.log($scope.getRandomSpan());*/
+
     $scope.getAppointment = function () {
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
@@ -52,7 +58,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
 
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
-                sessionStorage.PatientService = angular.toJson($scope.Patient);
+                sessionStorage.Patient = angular.toJson($scope.Patient);
                 $scope.Patient.Name = $scope.Patient.FirstName + " " + $scope.Patient.LastName;
                 $scope.getAppointment();
 
@@ -82,7 +88,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
             });
     };
 
-    $scope.Patient = angular.fromJson(sessionStorage.PatientService);
+    $scope.Patient = angular.fromJson(sessionStorage.Patient);
 
     $scope.initDatePicker=function () {
         $('.reportdeliverydate').datepicker({
@@ -190,73 +196,86 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     {
         $scope.PatientServiceItem = [];
       
-        
-        angular.forEach($scope.Items, function (obj) {
+        if (typeof $scope.Patient === "undefined") {
 
-            $scope.serviceItem = {};
-            
-        /*   var serviceItem = {
-                PatientID: $scope.Patient.Id,
-                ItemID: obj.Id,
-                InvoiceID: '',
-                ServiceListPrice: obj.Amount,
-                ServiceActualPrice: obj.SalePrice,
-                ServiceQuantity: obj.Quantity,
-                ServiceDate: Date.now(),
-                UserId: '',
-                Discount: '',
-                Refund: '',
-                Billed: '',
-                ReferralFee: obj.ReferralFee,
-                DeliveryDate: obj.Date,
-                DeliverTime:obj.ReportDeliveryTime
-            };*/
-            $scope.serviceItem.PatientID = $scope.Patient.Id;
-            $scope.serviceItem.ItemID = obj.Id;
-            $scope.serviceItem.InvoiceID = 0;
-            $scope.serviceItem.ServiceListPrice = obj.Amount;
-            $scope.serviceItem.ServiceActualPrice = obj.SalePrice;
-            $scope.serviceItem.ServiceQuantity = obj.Quantity;
-            $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');
-            $scope.serviceItem.ServiceProviderId = obj.ServiceProviderId;
 
-          
-            if (obj.MedicalTypeId == "62") {
-                $scope.serviceItem.LabStatusId = 1;
-                $scope.serviceItem.ReferralFeePaid = 0;
-            }
-            else
-            {
-                $scope.serviceItem.LabStatusId = null;
-                $scope.serviceItem.ReferralFeePaid =null;
-            }
-            $scope.serviceItem.UserId = '';
-            $scope.serviceItem.Discount = '';
-            $scope.serviceItem.Refund = '';
-            $scope.serviceItem.Billed = '';
-            $scope.serviceItem.ReferralFee = obj.ReferralFee;
-            $scope.serviceItem.DeliveryDate = obj.Date;
-            $scope.serviceItem.DeliveryTime = obj.ReportDeliveryTime;
+            alert("Please Select a Patient");
 
-            $scope.PatientServiceItem.push($scope.serviceItem);
-            
-        });
+        } else {
 
-        PatientService.SavePatientServiceItem($scope.PatientServiceItem)
-        .success(function (data) {
-                
-            console.log(data);
-           // $scope.UpdateTopLink('billing');
-           // $window.location.href = '#/billing/summary';
-            $location.path('/billing/summary');
-            $scope.serviceItemEmpty();
-           
-        })
-        .error(function (error) {
-            $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
-            console.log($scope.status);
-        });
 
+            angular.forEach($scope.Items, function (obj) {
+
+                $scope.serviceItem = {};
+
+
+
+                /*   var serviceItem = {
+                        PatientID: $scope.Patient.Id,
+                        ItemID: obj.Id,
+                        InvoiceID: '',
+                        ServiceListPrice: obj.Amount,
+                        ServiceActualPrice: obj.SalePrice,
+                        ServiceQuantity: obj.Quantity,
+                        ServiceDate: Date.now(),
+                        UserId: '',
+                        Discount: '',
+                        Refund: '',
+                        Billed: '',
+                        ReferralFee: obj.ReferralFee,
+                        DeliveryDate: obj.Date,
+                        DeliverTime:obj.ReportDeliveryTime
+                    };*/
+                if ($scope.Patient) {
+                    if ($scope.Patient.Id != null) {
+                        $scope.serviceItem.PatientID = $scope.Patient.Id;
+                    }
+                }
+                $scope.serviceItem.ItemID = obj.Id;
+                $scope.serviceItem.InvoiceID = 0;
+                $scope.serviceItem.ServiceListPrice = obj.Amount;
+                $scope.serviceItem.ServiceActualPrice = obj.SalePrice;
+                $scope.serviceItem.ServiceQuantity = obj.Quantity;
+                $scope.serviceItem.ServiceDate = $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss');
+                $scope.serviceItem.ServiceProviderId = obj.ServiceProviderId;
+
+
+                if (obj.MedicalTypeId == "62") {
+                    $scope.serviceItem.LabStatusId = 1;
+                    $scope.serviceItem.ReferralFeePaid = 0;
+                }
+                else {
+                    $scope.serviceItem.LabStatusId = null;
+                    $scope.serviceItem.ReferralFeePaid = null;
+                }
+                $scope.serviceItem.UserId = '';
+                $scope.serviceItem.Discount = '';
+                $scope.serviceItem.Refund = '';
+                $scope.serviceItem.Billed = '';
+                $scope.serviceItem.ReferralFee = obj.ReferralFee;
+                $scope.serviceItem.DeliveryDate = obj.Date;
+                $scope.serviceItem.DeliveryTime = obj.ReportDeliveryTime;
+
+                $scope.PatientServiceItem.push($scope.serviceItem);
+
+
+            });
+
+            PatientService.SavePatientServiceItem($scope.PatientServiceItem)
+            .success(function (data) {
+
+                console.log(data);
+                // $scope.UpdateTopLink('billing');
+                // $window.location.href = '#/billing/summary';
+                $location.path('/billing/summary');
+                $scope.serviceItemEmpty();
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to save PatientServiceItem data: ' + error.message;
+                console.log($scope.status);
+            });
+        }
 
     }
     $scope.serviceItemEmpty=function()

@@ -537,8 +537,30 @@ namespace HMS.Controllers
                 }
                 else
                 {
+                    List<PatientService> patientServiceItems = pinvoice.PatientServices.ToList();
+                    pinvoice.PatientServices = null;
+
                     patientInvoice = repository.Update(pinvoice);
                     repository.Commit();
+
+                    if(pinvoice.InvoiceStatusId==2)
+                    {
+                        foreach (PatientService item in patientServiceItems)
+                        {
+                            item.InvoiceID = pinvoice.Id;
+                            item.UserId = GetLoggedinUserInfo().UserId;
+
+                            item.Billed=true;
+
+                            using (PatientServiceRepository patientservicerepository = new PatientServiceRepository())
+                            {
+                                patientservicerepository.Update(item);
+                                patientservicerepository.Commit();
+                            }
+
+                        }
+
+                    }
                 }
 
 

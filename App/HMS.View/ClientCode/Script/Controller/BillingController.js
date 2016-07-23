@@ -425,6 +425,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             });
         } else {
             singleInvoice = singleinvoice;
+            billingItems = singleInvoice.PatientServices;
         }
         //var billingItems = [
         //    {

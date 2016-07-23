@@ -170,7 +170,7 @@
                 </option>
                 <option value="1">PENDING</option>
                 <option value="2">COMPLETED</option>
-                <option value="3">REFUNDED</option>
+                <option value="3">DELIVERED</option>
             </select>
         </div>
         
@@ -193,9 +193,9 @@
                     <td>{{labTestitem.Id}}</td>
                     <td>{{labTestitem.Patient.FirstName}} {{labTestitem.Patient.LastName}}</td>
                     <td>rashed</td>
-                    <td><span ng-class="{'status_red':labTestitem.LabStatusId==1, 'status_green':labTestitem.LabStatusId==2}">{{labTestitem.Staus}}</span></td>
+                    <td><span ng-class="{'status_red':labTestitem.LabStatusId==1, 'status_green':labTestitem.LabStatusId==2,'status_brown':labTestitem.LabStatusId==3 }">{{labTestitem.Staus}}</span></td>
 
-                    <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-check fa-2x" aria-hidden="true" href="#"></a></td>
+                    <td><a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a ng-show="labTestitem.LabStatusId==2"  ng-really-message="Are you Sure you want to Mark This As Delivered ?" ng-really-click="takeAction()" ng-click="$event.preventDefault();MarkAsDelvered(labTestitem);" class="fa fa-check fa-2x" aria-hidden="true"></a></td>
                 </tr>
                 <tr ng-show="labTestitem.activePosition">
                     <td>&nbsp;</td>
@@ -212,15 +212,19 @@
                                 </tr>
                             </thead>
                             <tbody ng-repeat="patientservice in labTestitem.PatientServices">
-                                <tr>
+                                <tr ng-class="{'refund_item':patientservice.Refund,'':!patientservice.Refund}">
                                     <td>{{patientservice.Item.Name}}</td>
                                     <td>{{patientservice.Item.ItemCategory.Name}}</td>
                                     <td>{{patientservice.ServiceProvider.Contact.FirstName}}  {{patientservice.ServiceProvider.Contact.LastName}}</td>
-                                    <td><span ng-class="{'status_red':patientservice.LabStatusId==1, 'status_green':patientservice.LabStatusId==2}">{{patientservice.Staus}}</span></td>
+                                    <td><span ng-class="{'status_red':patientservice.LabStatusId==1, 'status_green':patientservice.LabStatusId==2,'status_brown':labTestitem.LabStatusId==3 }">{{patientservice.Staus}}</span></td>
                                     <td>
-                                        <a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>
-                                        <a href="#" ng-show="patientservice.LabStatusId<2" ng-click="$event.preventDefault();openResultTemplate('lg','false',patientservice,labTestitem);" class="link_brown">ENTER RESULT</a>
-                                        <a href="#" ng-show="patientservice.LabStatusId>1"  ng-click="$event.preventDefault();openResultTemplate('lg','true',patientservice,labTestitem);" class="link_brown">VIEW/EDIT RESULT</a>
+                                        <div ng-show="!patientservice.Refund">
+                                            <a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>
+                                            <div style="display:inline;" ng-show="patientservice.LabStatusId!=3">
+                                                <a href="#" ng-show="patientservice.LabStatusId<2" ng-click="$event.preventDefault();openResultTemplate('lg','false',patientservice,labTestitem);" class="link_brown">ENTER RESULT</a>
+                                                <a href="#" ng-show="patientservice.LabStatusId>1" ng-click="$event.preventDefault();openResultTemplate('lg','true',patientservice,labTestitem);" class="link_brown">VIEW/EDIT RESULT</a>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
 
