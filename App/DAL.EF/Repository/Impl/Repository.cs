@@ -56,8 +56,10 @@ namespace HMS.DAL.Repository
             //If there is a query, execute it against the dbset
             if (query != null)
             {
-                queryResult = queryResult.Where(query).Where(c => c.Active == true);
+                queryResult = queryResult.Where(query);
             }
+
+            queryResult = queryResult.Where(c => c.Active == true);
 
             //get the include requests for the navigation properties and add them to the query result
             foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))

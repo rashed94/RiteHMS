@@ -64,24 +64,33 @@
                     </select>
                 </div>
             </div>
-
-            <div class="input_containter">
-                <div class="title"></div>
-                <div class="inputbox" ng-show="SelectedAppointment.Id">
-                    <input type="button" class="sm_button" value="Confirm Appointment" ng-click="ConfirmAppointment()" />
+            <div class="input_containter appointment-doctor-bio" ng-show="Doctor.Id">
+                <div class="photo">
+                    <div style="width: 150px;float: left;">
+                        <img ng-src="GetImage.ashx?Name={{Doctor.Contact.Photo != null && Doctor.Contact.Photo != 'null' ? Doctor.Contact.Photo : ''}}" width="115" height="146" alt="{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}">
+                    </div>
+                </div>
+                <div class="description">
+                    <div ng-bind-html="Doctor.Speciality" class="appointment-doctor-speciality"></div>
+                    <div ng-bind-html="Doctor.Description" class="appointment-doctor-description"></div>
                 </div>
             </div>
+
         </div>
-        <div class="slots" ng-show="Appointments.length > 0" style="float: left; border: 1px solid #CCC; height: 300px; width: 150px; overflow-y: scroll;">
-            <table width="100%" border="1" align="center" class="bordered">
-                <tr ng-repeat="appointment in Appointments">
-                    <td ng-click="SelectAppointment(appointment);"
-                        ng-class="{selected:appointment.Selected, disabled:appointment.IsBooked}" class="appointment">{{appointment.Name}}</td>
-                </tr>
-            </table>
+        <div class="slots" ng-show="Appointments.length > 0 && Doctor.Id">
+            <div ng-repeat="appointment in Appointments" class="pull-left">
+                <div ng-click="SelectAppointment(appointment);"
+                    ng-class="{selected:appointment.Selected, disabled:appointment.IsBooked}" class="appointment-slot">{{appointment.Name}}</div>
+            </div>
+        </div>
+        <div class="input_containter">
+            <div class="title"></div>
+            <div class="inputbox" ng-show="SelectedAppointment.Id">
+                <input type="button" class="sm_button" value="Confirm Appointment" ng-click="ConfirmAppointment()" />
+            </div>
         </div>
 
-        <div class="doctor-bio" ng-show="Doctor.Id">
+        <!--<div class="doctor-bio" ng-show="Doctor.Id">
             <div class="photo">
                 <div style="width: 150px;float: left;">
                     <img ng-src="GetImage.ashx?Name={{Doctor.Contact.Photo != null && Doctor.Contact.Photo != 'null' ? Doctor.Contact.Photo : ''}}" width="115" height="146" alt="{{DoctorAppointment.ServiceProvider.Contact.FirstName}} {{DoctorAppointment.ServiceProvider.Contact.LastName}}">
@@ -90,7 +99,7 @@
             <div class="description">
                 {{Doctor.Description}}
             </div>
-        </div>
+        </div>-->
 <div style="clear:both;"></div>
        </div>
     </div>

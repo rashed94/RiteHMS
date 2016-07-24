@@ -152,18 +152,6 @@ container_secondary_tab_abs
 	float:left;
 	width:520px;
 	padding-left:40px;
-    border-left:1px solid #b9d0c4;
-    min-height:220px;
-}
-.home_appointment_details_button
-{
-	float:left;
-	width:520px;
-	padding-left:40px;
-    border-left:1px solid #b9d0c4
-    
-    
-
 }
 .home_top
 {
@@ -423,18 +411,6 @@ a:active, a:focus { outline-style: none; -moz-outline-style:none; }
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
 }
-.rite_print_modal_header
-{
-	background:#c1c2c0;
-	border-top-left-radius:5px;
-	border-top-right-radius:5px;
-    
-}
-.rite_print_modal_header .modal-title
-{
-    color:#000;
-}
-
 
 .close span
 {
@@ -653,15 +629,21 @@ select.generaldropdown {
 
 select option:empty { display:none }
 
-.appointment {
+.appointment-slot {
     cursor: pointer;
+    margin: 10px;
+    padding: 10px;
+    background-color: #009A9A;
+    color: #fff;
+    text-align: center;
+    width: 100px;
 }
-.appointment.selected, .appointment:hover {
+.appointment-slot.selected, .appointment-slot:hover {
     background-color: #538e4a;
     color: white;
     font-weight: bold;
 }
-.appointment.disabled {
+.appointment-slot.disabled {
     pointer-events: none;
     background-color: #CCC;
 }
@@ -669,13 +651,28 @@ select option:empty { display:none }
 .patient-appointments {
     border-radius: 5px;
     border: 1px solid #CCC;
-    background-color: #eef0ee;
+    background-color: #FFF;
     box-shadow: #CCC 2px 2px 2px;
-    padding:10px;
-    margin-bottom: 10px;
+    padding: 5px;
+    margin-bottom: 5px;
     overflow: auto;
 }
 
+.appointment-doctor-bio {
+    width: 500px;
+    margin: 25px;
+}
+.appointment-doctor-speciality {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.slots {
+    float: left;
+    height: 320px;
+    width: 580px;
+    overflow-y: auto;
+}
 .doctor-bio {
    max-width: 500px;
     margin-left: 25px;
@@ -731,6 +728,8 @@ table.bed_table  td{
 {
     width:170px;
 }
+
+
 .prinInvoice 
 {
     background:#fff;
@@ -794,6 +793,12 @@ Table.prinInvoice
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     margin:0 auto;
 
+    /*  position:relative;
+   display:table;
+   table-layout:fixed;
+   padding-top:80px;
+   padding-bottom:80px;*/
+
 }
 
 .invoice
@@ -823,4 +828,3 @@ Table.prinInvoice
     text-decoration:none;
 
 }
-

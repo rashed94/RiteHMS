@@ -124,6 +124,24 @@
 	
    
                 }
+                .blankHeight
+                {
+                    display:block;
+                    height:120px;
+                }
+
+               /* .print_content{
+    
+                                
+      
+
+                   position:relative;
+                   display:table;
+                   table-layout:fixed;
+                   padding-top:80px;
+                   padding-bottom:80px;
+
+                }*/
 
                 .no-print, .no-print *
                 {
