@@ -70,12 +70,9 @@ HmsApp.controller("PrimaryMenuController", function ($scope, $routeParams, $loca
 
     }
     
-    
-    $scope.$on('$locationChangeSuccess', function(event)
-
+    $scope.ChangePath=function()
     {
 
-        
         if ($location.path() != null) {
 
 
@@ -85,8 +82,15 @@ HmsApp.controller("PrimaryMenuController", function ($scope, $routeParams, $loca
 
             $scope.UpdateTopLink(url[1]);
         }
+    }
+    
+    $scope.$on('$locationChangeSuccess', function(event)
+    {
+        $scope.ChangePath();
+        
+
     });
 
-
+    $scope.ChangePath();
 
 });
