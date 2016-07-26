@@ -582,6 +582,7 @@ namespace HMS.Controllers
                 LabTestItem.SalePrice = Item.SalePrice;
                 LabTestItem.BuyPrice = Item.BuyPrice;
                 LabTestItem.DefaultReferrarFee = Item.DefaultReferrarFee;
+                LabTestItem.Description = Item.Description;
                 LabTestItem.ReferralAllowed = Item.ReferralAllowed;
                 LabTestItem.ServiceProviderId = Item.ServiceProviderId;
                 LabTestItem.LabReportGroupId = Item.LabReportGroupId;
@@ -655,6 +656,7 @@ namespace HMS.Controllers
                     LabTestItem.BuyPrice = c.BuyPrice;
                     LabTestItem.DefaultReferrarFee = c.DefaultReferrarFee;
                     LabTestItem.ReferralAllowed = c.ReferralAllowed;
+                    LabTestItem.Description = c.Description;
                     LabTestItem.ServiceProviderId = c.ServiceProviderId;
                     LabTestItem.LabReportGroupId = c.LabReportGroupId;
                     LabTestItem.ItemCategory.Name = c.ItemCategory.Name;
@@ -739,6 +741,7 @@ namespace HMS.Controllers
                     LabTestItem.BuyPrice = c.BuyPrice;
                     LabTestItem.DefaultReferrarFee = c.DefaultReferrarFee;
                     LabTestItem.ReferralAllowed = c.ReferralAllowed;
+                    LabTestItem.Description = c.Description;
                     LabTestItem.ServiceProviderId = c.ServiceProviderId;
                     LabTestItem.LabReportGroupId = c.LabReportGroupId;
                     LabTestItem.ItemCategory.Name = c.ItemCategory.Name;

@@ -17,6 +17,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         BuyPrice: 0.00,
         ServiceProviderId: "",
         ReferralAllowed: 0,
+        Description:"",
         DefaultReferrarFee: "",
         LabReportGroupId: "",
 

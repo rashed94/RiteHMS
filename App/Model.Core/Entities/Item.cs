@@ -28,6 +28,7 @@ namespace HMS.Model.Core
         public decimal BuyPrice { get; set; }
         public long? ServiceProviderId { get; set; }
         public bool ReferralAllowed { get; set; }
+        public string Description { get; set; }
         public decimal DefaultReferrarFee { get; set; }
         public long? LabReportGroupId { get; set; }
     
