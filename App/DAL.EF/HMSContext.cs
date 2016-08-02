@@ -16,12 +16,15 @@ namespace HMS.DAL
         //    throw new UnintentionalCodeFirstException();
         //}
 
+        protected virtual DbSet<Appointment> Appointments { get; set; }
         protected virtual DbSet<BedOccupancy> BedOccupancies { get; set; }
         protected virtual DbSet<Contact> Contacts { get; set; }
         protected virtual DbSet<Department> Departments { get; set; }
         protected virtual DbSet<DrugAdministration> DrugAdministrations { get; set; }
         protected virtual DbSet<DrugDosage> DrugDosages { get; set; }
         protected virtual DbSet<DrugFrequency> DrugFrequencies { get; set; }
+        protected virtual DbSet<InitialSetup> InitialSetup { get; set; }
+        protected virtual DbSet<InitialSetupItem> InitialSetupItem { get; set; }
         protected virtual DbSet<Inventory> Inventories { get; set; }
         protected virtual DbSet<InvoicePayment> InvoicePayments { get; set; }
         protected virtual DbSet<InvoiceStatus> InvoiceStatus { get; set; }
@@ -35,6 +38,7 @@ namespace HMS.DAL
         protected virtual DbSet<MeasurementUnit> MeasurementUnits { get; set; }
         protected virtual DbSet<LabReportGroup> LabReportGroup { get; set; }
         protected virtual DbSet<LabReportFormat> LabReportFormat { get; set; }
+        protected virtual DbSet<LabStatus> LabStatus { get; set; }
         protected virtual DbSet<MedicalType> MedicalTypes { get; set; }
         protected virtual DbSet<Membership> Memberships { get; set; }
         protected virtual DbSet<Patient> Patients { get; set; }
@@ -42,15 +46,19 @@ namespace HMS.DAL
         protected virtual DbSet<PatientInvoice> PatientInvoices { get; set; }
         protected virtual DbSet<PatientService> PatientServices { get; set; }
         protected virtual DbSet<Payment> Payments { get; set; }
+        protected virtual DbSet<PaymentMethod> PaymentMethod { get; set; }
         protected virtual DbSet<PaymentType> PaymentTypes { get; set; }
         protected virtual DbSet<ReceiptPayment> ReceiptPayments { get; set; }
+        protected virtual DbSet<Referral> Referrals { get; set; }
         protected virtual DbSet<Refund> Refunds { get; set; }
         protected virtual DbSet<ServiceProvider> ServiceProviders { get; set; }
         protected virtual DbSet<ServiceProviderType> ServiceProviderTypes { get; set; }
-        protected virtual DbSet<Store> Stores { get; set; }
-        protected virtual DbSet<Referral> Referrals { get; set; }
-        protected virtual DbSet<User> Users { get; set; }
-        protected virtual DbSet<Appointment> Appointments { get; set; }
         protected virtual DbSet<ServiceProviderAppointment> ServiceProviderAppointments { get; set; }
+        protected virtual DbSet<Store> Stores { get; set; }
+        protected virtual DbSet<User> Users { get; set; }
+  
+       
+      
+        
     }
 }

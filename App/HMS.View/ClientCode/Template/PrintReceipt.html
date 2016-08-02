@@ -1,0 +1,112 @@
+﻿<script>
+
+    function print()
+    {
+
+      //  $("#print_content").printThis();
+
+        $("#print_content").printThis({
+            debug: false,
+            importCSS: false,
+            importStyle: false,
+            printContainer: true,
+            pageTitle: "",
+             removeInline: false,
+             printDelay: 333,
+             header: "",
+             formValues: true,
+            loadCSS: "../../css/print.css"
+    });
+
+    }
+
+</script>
+
+<div class="modal-header rite_print_modal_header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden=" true">&times;</span></button>
+    <h2 class="modal-title" id="myModalLabel">
+        Print Receipt
+    </h2>
+</div>
+
+<div class="modal-body" style="background:#808080;">
+
+
+    <div class="print_receipt_content" id="print_content">
+
+        <div class="no-print"> <a class="fa fa-print fa-2x" aria-hidden="true" href="#" onclick="event.preventDefault();print()"></a></div>
+        <div style="clear: both"></div>
+
+        <div class="payment_middle">
+
+            <div class="payment_detail_right line_height_small">
+                <p>
+                    <h2>RECEIPT DATE</h2>
+                    {{Receipt.ReceiptDate}}
+                </p>
+                <p>
+                    <h2>RECEIPT NO</h2>
+                    {{Receipt.Id}}
+                </p>
+
+            </div>
+            <div style="clear: both"></div>
+        </div>
+
+        <table width="100%" border="1" align="center" class="printReceipt">
+            <thead>
+                <tr>
+                    <th width="12%">No</th>
+                    <th width="14%">Quantity</th>
+                    <th width="37%" colspan="2">Item Name</th>
+                    <th width="37%">Price</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="patientservice in Receipt.PatientServices">
+                <tr>
+                    <td>{{$index+1}}</td>
+                    <td>{{patientservice.ServiceQuantity}}</td>
+                    <td colspan="2">{{patientservice.Item.Name}}</td>
+                    <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+
+                <tr>
+                    <td class="border-bottom">&nbsp;</td>
+                    <td class="border-bottom">&nbsp;</td>
+                    <td colspan="2" class="border-bottom">&nbsp;</td>
+                    <td class="border-bottom">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td align="right">Total Price</td>
+                    <td>&nbsp;</td>
+                    <td>{{Receipt.TotalAmount+Receipt.TotalDiscount}}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td align="right">Discount</td>
+                    <td>&nbsp;</td>
+                    <td>{{Receipt.TotalDiscount}}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td align="right">Total</td>
+                    <td>&nbsp;</td>
+                    <td>{{Receipt.TotalAmount}}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="space"></div>
+
+
+    </div>
+
+
+
+</div>

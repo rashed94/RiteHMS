@@ -17,8 +17,9 @@ namespace HMS.DAL.Repository
         {
             IQueryable<PatientService> queryResult = _DbSet;
             //  bool active = true;
-            long invoiceid = 0;
-            return queryResult.Where(c => c.PatientID == id && c.ItemID == c.Item.Id && c.InvoiceID == invoiceid  && c.Active==true).ToList();
+           
+            
+            return queryResult.Where(c => c.PatientID == id && c.ItemId == c.Item.Id && c.InvoiceID == null && c.ReceiptId==null  && c.Active==true).ToList();
         }
 
         public IList<PatientService> GetServiceItemsLabtestOnlyByPatientId(long patientid,long invoiceid)
@@ -26,7 +27,7 @@ namespace HMS.DAL.Repository
             IQueryable<PatientService> queryResult = _DbSet;
             //  bool active = true;
            // long invoiceid = 0;
-            return queryResult.Where(c => c.PatientID == patientid && c.ItemID == c.Item.Id && c.InvoiceID == invoiceid  && c.LabStatusId != null).ToList();
+            return queryResult.Where(c => c.PatientID == patientid && c.ItemId == c.Item.Id && c.InvoiceID == invoiceid  && c.LabStatusId != null).ToList();
         }
 
     }

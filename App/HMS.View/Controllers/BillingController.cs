@@ -238,6 +238,109 @@ namespace HMS.Controllers
         //    return Json("invoice loaded success fully");
 
         //}=""
+
+        public JsonResult GetReceiptByPatientId(long patientid, long? receiptId=null)
+        {
+            List<ReceiptPayment> receipt;
+            List<ReceiptPayment> onlyReceipt=new List<ReceiptPayment>();
+
+            using (Repository<ReceiptPayment> repository = new Repository<ReceiptPayment>())
+            {
+                Expression<Func<ReceiptPayment, bool>> lambda;
+
+               Func<IQueryable<ReceiptPayment>, IOrderedQueryable<ReceiptPayment>> orderingFunc = query => query.OrderByDescending(m => m.Id);
+               
+
+                lambda = (x => x.Active == true && x.PatientId==patientid && (receiptId == null ? x.Id > 0 : x.Id == receiptId));
+                receipt = repository.GetByQuery(lambda, orderingFunc).ToList();
+                
+
+
+                foreach (ReceiptPayment item in receipt)
+                {
+                    ReceiptPayment itemReceipt = new ReceiptPayment();
+                    Payment receiptPayment = new Payment();
+
+                    itemReceipt.Payment = receiptPayment;
+
+                    itemReceipt.Id = item.Id;
+                    itemReceipt.PaymentId = item.PaymentId;
+                    itemReceipt.PatientId = item.PatientId;
+                    itemReceipt.ReceiptDate = item.ReceiptDate;
+                    itemReceipt.TotalAmount = item.TotalAmount;
+                    itemReceipt.TotalDiscount = item.TotalDiscount;
+                    itemReceipt.IsRefunded = item.IsRefunded;
+
+                    if (item.Payment != null)
+                    {
+                        itemReceipt.Payment.Amount = item.Payment.Amount;
+                    }
+                    else
+                    {
+                        itemReceipt.Payment.Amount = 0;
+                    }
+
+
+                    foreach (PatientService c in item.PatientServices)
+                    {
+                        PatientService patientstitem = new PatientService();
+
+                        Item sitem = new Item();
+
+                        ItemCategory Category = new ItemCategory();
+
+                        patientstitem.Item = sitem;
+                        patientstitem.Item.ItemCategory = Category;
+
+
+                        patientstitem.Id = c.Id;
+                        patientstitem.PatientID = c.PatientID;
+                        patientstitem.ItemId = c.ItemId;
+                        patientstitem.InvoiceID = c.InvoiceID;
+                        patientstitem.ServiceListPrice = c.ServiceListPrice;
+                        patientstitem.ServiceActualPrice = c.ServiceActualPrice;
+                        patientstitem.ServiceQuantity = c.ServiceQuantity;
+                        patientstitem.ServiceDate = c.ServiceDate;
+                        patientstitem.UserId = c.UserId;
+                        patientstitem.Discount = c.Discount;
+                        patientstitem.DiscountAfterInvoice = c.DiscountAfterInvoice;
+                        patientstitem.Refund = c.Refund;
+                        patientstitem.RefundNote = c.RefundNote;
+
+                        patientstitem.Billed = c.Billed;
+                        patientstitem.LabStatusId = c.LabStatusId;
+                        patientstitem.ReferralFee = c.ReferralFee;
+                        patientstitem.DeliveryDate = c.DeliveryDate;
+                        patientstitem.DeliveryTime = c.DeliveryTime;
+
+
+                        patientstitem.Item.Name = c.Item.Name;
+                        patientstitem.Item.GenericName = c.Item.GenericName;
+                        patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+
+                        itemReceipt.PatientServices.Add(patientstitem);
+
+
+                    }
+
+                    onlyReceipt.Add(itemReceipt);
+
+
+
+
+
+                }
+
+
+            }
+
+            if (onlyReceipt.Count == 0)
+            {
+                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+            }
+            return Json(onlyReceipt, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetInvoicesByPatientId(long id, long statusid, string DateStart, string DateEnd,long ? invoiceId=null)
         {
             List<PatientInvoice> onlypatientInvoices = new List<PatientInvoice>();
@@ -352,7 +455,7 @@ namespace HMS.Controllers
 
                         patientstitem.Id = c.Id;
                         patientstitem.PatientID = c.PatientID;
-                        patientstitem.ItemID = c.ItemID;
+                        patientstitem.ItemId = c.ItemId;
                         patientstitem.InvoiceID = c.InvoiceID;
                         patientstitem.ServiceListPrice = c.ServiceListPrice;
                         patientstitem.ServiceActualPrice = c.ServiceActualPrice;
@@ -414,7 +517,7 @@ namespace HMS.Controllers
 
                     patientstitem.Id = c.Id;
                     patientstitem.PatientID = c.PatientID;
-                    patientstitem.ItemID = c.ItemID;
+                    patientstitem.ItemId = c.ItemId;
                     patientstitem.InvoiceID = c.InvoiceID;
                     patientstitem.ServiceListPrice = c.ServiceListPrice;
                     patientstitem.ServiceActualPrice = c.ServiceActualPrice;
@@ -433,7 +536,12 @@ namespace HMS.Controllers
                     patientstitem.LabStatusId = c.LabStatusId;
 
                     patientstitem.Item.Name = c.Item.Name;
+                    patientstitem.Item.MedicalTypeId = c.Item.MedicalTypeId;
                     patientstitem.Item.GenericName = c.Item.ItemCategory.Name;
+                    ItemCategory itemCategory = new ItemCategory();
+                    patientstitem.Item.ItemCategory = itemCategory;
+                    patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+
                     patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
                     onlypatientServiceItems.Add(patientstitem);
 
@@ -500,6 +608,89 @@ namespace HMS.Controllers
 
 
             return Json("Invoice update successfull", JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult SaveRecieptPayment(ReceiptPayment receipt)
+        {
+            Payment payment = receipt.Payment;
+            receipt.Payment = null;
+            ReceiptPayment onlyReceipt = new ReceiptPayment();
+           List< PatientService> onlyPatientServices= new List<PatientService>();
+           
+
+           onlyPatientServices = receipt.PatientServices.ToList();
+           receipt.PatientServices = null;
+
+           List<PatientService> pService = onlyPatientServices;
+           
+
+            using (PaymentRepository repository = new PaymentRepository())
+            {
+                payment.UserId = GetLoggedinUserInfo().UserId;
+ 
+                payment = repository.Insert(payment);
+                repository.Commit();
+                // CreatePatientService(invoice.Id, patientServices);
+            }
+            
+            receipt.PaymentId = payment.Id;
+
+            using (Repository<ReceiptPayment> repository = new Repository<ReceiptPayment>())
+            {
+                onlyReceipt.UserId = GetLoggedinUserInfo().UserId; 
+                onlyReceipt=repository.Update(receipt);
+                repository.Commit();
+            }
+
+            using (Repository<PatientService> repository = new Repository<PatientService>())
+            {
+                foreach (PatientService item in pService)
+                {
+                    item.Item = null;
+                    item.UserId = GetLoggedinUserInfo().UserId; 
+                    repository.Update(item);
+                    repository.Commit();
+                }
+            }
+            onlyReceipt.PatientServices = onlyPatientServices;
+
+            return Json(onlyReceipt, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult CreateReceipt(ReceiptPayment receipt)
+        {
+
+            ReceiptPayment onlyReceiptPayment = new ReceiptPayment();
+            List<PatientService> listPatientService = receipt.PatientServices.ToList();
+            receipt.PatientServices = null;
+
+
+
+            receipt.UserId = GetLoggedinUserInfo().UserId;
+
+            using (Repository<ReceiptPayment> repository = new Repository<ReceiptPayment>())
+            {
+               
+                    onlyReceiptPayment = repository.Insert(receipt);
+                    repository.Commit();
+              
+            }
+            foreach (PatientService sitem in listPatientService)
+            {
+                sitem.UserId = GetLoggedinUserInfo().UserId; ;
+                sitem.ReceiptId = onlyReceiptPayment.Id;
+                sitem.Item = null;
+
+                using (PatientServiceRepository patientservicerepository = new PatientServiceRepository())
+                {
+                    patientservicerepository.Update(sitem);
+                    patientservicerepository.Commit();
+                }
+            }
+
+            return Json(onlyReceiptPayment, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

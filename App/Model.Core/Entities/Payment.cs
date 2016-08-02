@@ -21,9 +21,13 @@ namespace HMS.Model.Core
         public System.DateTime Date { get; set; }
     
         public virtual ICollection<InvoicePayment> InvoicePayments { get; set; }
+
+        [ForeignKey("PatientID")]
         public virtual Patient Patient { get; set; }
-       
+        [ForeignKey("PaymentTypeId")]
         public virtual PaymentType PaymentType { get; set; }
+        [ForeignKey("PaymentMethodId")]
+        public virtual PaymentMethod PaymentMethod { get; set; }
         public virtual ICollection<ReceiptPayment> ReceiptPayments { get; set; }
 
         protected override void RegisterValidationMethods()

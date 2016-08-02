@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace HMS.Model.Core
@@ -20,7 +21,10 @@ namespace HMS.Model.Core
         public bool AssignedToAllUsers { get; set; }
         public bool IsReferer { get; set; }
 
+        [ForeignKey("ContactId")]
         public virtual Contact Contact { get; set; }
+        [ForeignKey("ServiceProviderTypeId")]
+        public virtual ServiceProviderType ServiceProviderType { get; set; }
 
 
 

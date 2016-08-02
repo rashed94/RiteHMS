@@ -10,7 +10,9 @@ namespace HMS.Model.Core
         public long ServiceProviderId { get; set; }
         public decimal ReferralFee { get; set; }
 
+         [ForeignKey("ItemId")]
         public virtual Item Item { get; set; }
+        [ForeignKey("ServiceProviderId")]
         public virtual ServiceProvider ServiceProvider { get; set; }
 
         protected override void RegisterValidationMethods()

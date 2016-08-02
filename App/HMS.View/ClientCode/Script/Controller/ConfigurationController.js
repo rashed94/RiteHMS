@@ -1,5 +1,8 @@
 ﻿'use strict';
-HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $window, $filter, $modal, ConfigurationService) {
+HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $window, $filter, $modal, $route,ItemService, ConfigurationService) {
+
+    $scope.medicalTypeID = 65;
+    $scope.HospitalAdmissionId = 101;
 
     var tabClass = ".copayer";
     if ($routeParams.tab != null) {
@@ -108,5 +111,155 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
             });
         }
     };
+
+
+
+    $scope.OtherServicesModal = function (size, item) {
+
+        if (item == "") item = { Id: null };
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/EditOtherServices.html',
+            size: size,
+            controller: 'OtherServicesModalController',
+            scope: $scope,
+            resolve: {
+                item: function () {
+                    return item;
+                }
+            }
+        });
+        modalInstance.result.then(function (result) {
+           
+            console.log('Modal ok at: ' + new Date());
+            $scope.loadItems();
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+    function prepareOtherServiceDataModel   () {
+        angular.forEach($scope.Items, function (obj) {
+
+            obj.IsHospitalItem = false;
+            angular.forEach(obj.InitialSetupItems, function (initialsetupobj) {
+
+                if(obj.MedicalTypeId==initialsetupobj.MedicalTypeId)
+                {
+                    obj.IsHospitalItem = true;
+
+                    obj.InitialSetupItem = {};
+
+                    obj.InitialSetupItem.Id = initialsetupobj.Id;
+                    obj.InitialSetupItem.InitialSetupId = initialsetupobj.InitialSetupId;
+                    obj.InitialSetupItem.ItemId = initialsetupobj.ItemId;
+                    obj.InitialSetupItem.MedicalTypeId = initialsetupobj.MedicalTypeId;
+                }
+
+            });
+
+
+
+        });
+    }
+
+    $scope.GetOtherServices = function (medicalType) {
+        ItemService.GetOtherServices(medicalType)
+            .success(function (pt) {
+                $scope.Items = pt;
+                // preparelabtestDataModel();
+                prepareOtherServiceDataModel();
+                console.log(pt);
+
+
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load  item data: ' + error.message;
+                console.log($scope.status);
+            });
+    }
+
+    $scope.loadItems = function () {
+
+
+
+        $scope.GetOtherServices($scope.medicalTypeID);
+
+
+
+    }
+
+    $scope.HospitalAdmissionDefault=function(item)
+    {
+       var initialSetupItem = {
+
+            InitialSetupId: $scope.HospitalAdmissionId,
+            ItemId:item.Id,
+            MedicalTypeID:item.MedicalTypeId
+        }
+
+        ItemService.SaveInititalSetupItem(initialSetupItem)
+        .success(function (data) {
+
+            //$scope.loadItembyId(data);
+            $scope.saveSuccess = 1;
+            $scope.GetOtherServices($scope.medicalTypeID);
+            console.log("Save successfull");
+            $modalInstance.close();
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+
+    }
+
+    $scope.HospitalAdmissionDefaultRemove = function (item) {
+ 
+        ItemService.SaveInititalSetupItem(item.InitialSetupItem)
+        .success(function (data) {
+
+            //$scope.loadItembyId(data);
+            $scope.saveSuccess = 1;
+            $scope.GetOtherServices($scope.medicalTypeID);
+            console.log("Save successfull");
+            $modalInstance.close();
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+
+    }
+
+    $scope.deleteService = function (item) {
+
+        ItemService.DeleteOtherService(item, item.InitialSetupItem)
+        .success(function (data) {
+
+     
+            $scope.GetOtherServices($scope.medicalTypeID);
+            console.log("delete successfull");
+            $modalInstance.close();
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to delete item data: ' + error.message;
+
+        });
+
+
+    }
+
+
+    if ($routeParams.tab == "OtherServices") {
+        $scope.loadItems();
+        
+    }
+
 
 });

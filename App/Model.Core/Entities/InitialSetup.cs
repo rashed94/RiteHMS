@@ -1,22 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace HMS.Model.Core
 {
-    [Table("LabReportFormat")]
-    public partial class LabReportFormat : EntityBase
+    [Table("InitialSetup")]
+    public partial class InitialSetup : EntityBase
     {
-        public LabReportFormat()
-        {
-
-        }
-
+       
         public string Name { get; set; }
-        public string RichContent { get; set; }
-        public long? ItemId { get; set; }
 
 
-        
+        public virtual ICollection<InitialSetupItem> InitialSetupItems { get; set; }
+
         protected override void RegisterValidationMethods()
         {
 

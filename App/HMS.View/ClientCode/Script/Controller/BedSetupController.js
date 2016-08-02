@@ -406,7 +406,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 }
                 else {
                     $scope.serviceItem.PatientID = $scope.Patient.Id;
-                    $scope.serviceItem.ItemID = bedItem.Id;
+                    $scope.serviceItem.ItemId = bedItem.Id;
                     $scope.serviceItem.InvoiceID = 0;
                     $scope.serviceItem.ServiceListPrice = bedItem.SalePrice;
                     $scope.serviceItem.ServiceActualPrice = bedItem.SalePrice;

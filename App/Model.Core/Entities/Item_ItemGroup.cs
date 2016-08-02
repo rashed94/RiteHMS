@@ -7,8 +7,9 @@ namespace HMS.Model.Core
     {
         public long ItemID { get; set; }
         public long ItemGroupID { get; set; }
-    
+        [ForeignKey("ItemID")]
         public virtual Item Item { get; set; }
+        [ForeignKey("ItemGroupID")]
         public virtual ItemGroup ItemGroup { get; set; }
 
         protected override void RegisterValidationMethods()

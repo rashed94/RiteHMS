@@ -1,20 +1,20 @@
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HMS.Model.Core
 {
-    [Table("ItemCategory")]
-    public partial class ItemCategory : EntityBase
+    [Table("InitialSetupItem")]
+    public partial class InitialSetupItem : EntityBase
     {
-        public ItemCategory()
-        {
-            this.Items = new List<Item>();
-        }
-    
-        public string Name { get; set; }
+        public long InitialSetupId { get; set; }
+        public long ItemId { get; set; }
         public long MedicalTypeId { get; set; }
-    
-        public virtual ICollection<Item> Items { get; set; }
+
+
+        [ForeignKey("ItemId")]
+        public virtual Item Item { get; set; }
+        [ForeignKey("InitialSetupId")]
+        public virtual InitialSetup InitialSetup { get; set; }
         [ForeignKey("MedicalTypeId")]
         public virtual MedicalType MedicalType { get; set; }
 

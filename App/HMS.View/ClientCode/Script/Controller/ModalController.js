@@ -26,10 +26,81 @@ HmsApp.controller("PharmacyStockModelController", function ($scope, $modalInstan
 });
 
 
+HmsApp.controller("OtherServicesModalController", function ($scope, $modalInstance,item,ItemService) {
+
+
+
+    $scope.OtherService = {
+        id: 0,
+        Name: "",
+        GenericName: "",
+        Code: "",
+        ItemTypeId: 31,
+        MedicalTypeId: 65,
+        ItemCategoryId: null,
+        MeasurementUnitId: null,
+        SalePrice: "",
+        BuyPrice: 0.00,
+        ServiceProviderId: "",
+        ReferralAllowed: 0,
+        Description: "",
+        DefaultReferrarFee: "",
+        LabReportGroupId: "",
+
+
+    };
+
+    if (item.Id != null) {
+        $scope.OtherService = item;
+    }
+
+    $scope.ok = function () {
+
+        $scope.OtherService.BedOccupancies = null;
+        $scope.OtherService.ItemCategory = null;
+        ItemService.SaveItem($scope.OtherService)
+        .success(function (data) {
+
+            //$scope.loadItembyId(data);
+            $scope.saveSuccess = 1;
+            console.log("Save successfull");
+            $modalInstance.close();
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+
+        
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+   
+});
+
+
 
 HmsApp.controller("PrintInvoiceModalController", function ($scope, $modalInstance, singleInvoice) {
 
     $scope.singleinvoice = singleInvoice;
+
+
+
+    $scope.ok = function (file) {
+        $modalInstance.close();
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
+HmsApp.controller("PrintReceiptModalController", function ($scope, $modalInstance, receipt) {
+
+    $scope.Receipt = receipt;
 
 
 
@@ -349,6 +420,215 @@ HmsApp.controller("CommissionModalController", function ($scope, $http, $modalIn
     $scope.getDoctorWithReferrel();
 });
 
+HmsApp.controller("ReceiptModalController", function ($scope, $modalInstance, $filter, $window, $localStorage, billingItems, receipt, isDisplayAddress,NonRegisterPatientId, BillingService) {
+
+
+    $scope.IsDisplayAddress = isDisplayAddress;
+
+    $scope.PatientServiceItem = [];
+    $scope.Receipt = {
+        Id: null,
+        ReceiptDate: $filter('date')(new Date(), 'MM/dd/yy'),
+        PatientId: $scope.Patient.Id,
+        PaymentId: null,
+        TotalAmount: 0.0,
+        //PaidAmount: 0.0,
+        //PaymentAmount: 0.0,
+        //PaymentMethod: 'Cash',
+        //CoPayerAmount: 0.0,
+        //ReconcileAmount: 0.0,
+        TotalDiscount: 0.0,
+        IsRefunded: 0,
+        UserId: null
+    };
+   
+
+    $scope.PaymentMethod = "1";
+    $scope.Payment = {
+
+        Amount: 0.0,
+        DeductionAmount: 0.0,
+        PaymentTypeId: 102,
+        PatientId: $scope.Patient.Id,
+        UserId: null,
+        Date: $filter('date')(new Date(), 'MM/dd/yy hh:mm:ss'),
+        PaymentMethodId: $scope.PaymentMethod,
+        CardNumber: null
+
+    };
+
+    $scope.GenerateServiceItem = function (item) {
+        $scope.serviceItem = {};
+
+        $scope.serviceItem.Item = {};
+        /*   var serviceItem = {
+                PatientID: $scope.Patient.Id,
+                ItemID: obj.Id,
+                InvoiceID: '',
+                ServiceListPrice: obj.Amount,
+                ServiceActualPrice: obj.SalePrice,
+                ServiceQuantity: obj.Quantity,
+                ServiceDate: Date.now(),
+                UserId: '',
+                Discount: '',
+                Refund: '',
+                Billed: '',
+                ReferralFee: obj.ReferralFee,
+                DeliveryDate: obj.Date,
+                DeliverTime:obj.ReportDeliveryTime
+            };*/
+        $scope.serviceItem.Id = item.Id;
+        $scope.serviceItem.PatientId = item.PatientID;
+        $scope.serviceItem.ItemId = item.ItemId;
+        $scope.serviceItem.InvoiceID = null;
+
+        if (receipt.Id == null) {
+            $scope.serviceItem.ReceiptId = null;
+            $scope.serviceItem.ServiceListPrice = item.ServiceListPriceAfterDiscount;
+        } else
+        {
+            $scope.serviceItem.ReceiptId = receipt.Id;
+            $scope.serviceItem.ServiceListPrice = item.ServiceListPrice;
+        }
+
+        
+        $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
+        $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;
+        $scope.serviceItem.ServiceDate = ToJavaScriptDate(item.ServiceDate);
+        $scope.serviceItem.UserId = '';
+        $scope.serviceItem.Discount = item.Discount;
+        $scope.serviceItem.Refund = '';
+        $scope.serviceItem.Billed = false;
+        
+        $scope.serviceItem.ReferralFee = item.ReferralAfterDiscount;
+        $scope.serviceItem.DeliveryDate = ToJavaScriptDate(item.DeliveryDate);
+        $scope.serviceItem.DeliveryTime = item.DeliveryTime;
+        $scope.serviceItem.ReferralFeePaid = item.ReferralFeePaid;
+        $scope.serviceItem.ServiceProviderId = item.ServiceProviderId;
+        $scope.serviceItem.LabStatusId = item.LabStatusId;
+
+        $scope.serviceItem.Item.Name = item.Item.Name;
+        $scope.serviceItem.Item.MedicalTypeId = item.Item.MedicalTypeId;
+        $scope.serviceItem.Item.GenericName = item.Item.ItemCategory.Name;
+
+        $scope.PatientServiceItem.push($scope.serviceItem);
+    }
+
+    angular.forEach(billingItems, function (item, key) {
+
+        if (receipt.Id == null) {
+            $scope.Receipt.TotalAmount += item.ServiceListPriceAfterDiscount;
+            $scope.Receipt.TotalDiscount += parseFloat(item.Discount);
+        } else {
+
+            $scope.Receipt.TotalAmount += item.ServiceListPrice;
+            $scope.Receipt.TotalDiscount += parseFloat(item.Discount);
+        }
+       // $scope.Receipt.TotalPrice += item.ServiceActualPrice * item.ServiceQuantity;
+
+        $scope.GenerateServiceItem(item);
+
+    });
+
+    $scope.PaymentAmount = parseFloat($scope.Receipt.TotalAmount);
+
+
+    $scope.SaveReceipt=function()
+    {
+        BillingService.SaveReciept($scope.Receipt, $scope.PatientServiceItem)
+         .success(function (data) {
+
+             console.log(data);
+             $scope.Receipt = data;
+             $scope.Receipt.ReceiptDate = ToJavaScriptDate($scope.Receipt.ReceiptDate);
+             
+             angular.forEach(billingItems, function (item, key) {
+
+                 $scope.BillingItem.splice($scope.BillingItem.indexOf(item), 1);
+
+             });
+             if ($scope.Patient.Id == NonRegisterPatientId) {
+                 $localStorage.BillingItem = $scope.BillingItem;
+             }
+             
+
+         })
+            .error(function (error) {
+                $scope.status = 'Unable to save reciept data: ' + error.message;
+                console.log($scope.status);
+
+            });
+    }
+
+    if (receipt.Id == null) {
+
+        $scope.SaveReceipt();
+        
+    } else
+    {
+        $scope.Receipt = receipt;
+       
+    }
+
+   
+
+
+    $scope.ok = function () {
+
+        $scope.Payment.Amount = $scope.PaymentAmount;
+
+        $scope.Receipt.PatientServices = $scope.PatientServiceItem;
+
+        //  set payment method & card number
+        $scope.Payment.PaymentMethodId = $scope.PaymentMethod;
+        if ($scope.Payment.PaymentMethodId != "1") {
+            $scope.Payment.CardNumber = $scope.CardNumber;
+        }
+
+        $scope.Receipt.Payment = $scope.Payment;
+
+
+        angular.forEach($scope.Receipt.PatientServices, function (item, key) {
+
+            item.Billed = true;
+            item.ReceiptId = $scope.Receipt.Id;
+        });
+
+
+        BillingService.SaveRecieptPayment($scope.Receipt)
+        .success(function (data) {
+
+            console.log(data);
+           // $scope.Receipt = data;
+            
+
+            $("div.payment").addClass('hide');
+            $("div.print").removeClass('hide');
+
+        })
+            .error(function (error) {
+
+                $scope.status = 'Unable to save reciept Payment data: ' + error.message;
+                console.log($scope.status);
+
+       });
+
+
+
+        //$modalInstance.close();
+
+        
+
+    };
+
+    $scope.cancel = function () {
+
+        $modalInstance.dismiss('cancel');
+    };
+
+
+});
+
 HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $filter, $window, billingItems, singleInvoice, advancePayment, BillingService) {
 
     $scope.PatientServiceItem = [];
@@ -372,6 +652,7 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         TotalDiscount: 0.0,
         InvoiceStatusId: 1,
         ItemDiscount: "",
+        IsRefunded: 0,
         UserId: null,
         PaymentAmount: 0.0
     };
@@ -444,8 +725,8 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
             };*/
         $scope.serviceItem.Id = item.Id;
         $scope.serviceItem.PatientId = item.PatientID;
-        $scope.serviceItem.ItemID = item.ItemID;
-        $scope.serviceItem.InvoiceID = 0;
+        $scope.serviceItem.ItemId = item.ItemId;
+        $scope.serviceItem.InvoiceID =null;
         $scope.serviceItem.ServiceListPrice = item.ServiceListPriceAfterDiscount;
         $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
         $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;
@@ -488,8 +769,8 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
             };*/
         $scope.serviceItem.Id = item.Id;
         $scope.serviceItem.PatientId = item.PatientID;
-        $scope.serviceItem.ItemID = item.ItemID;
-        $scope.serviceItem.InvoiceID = 0;
+        $scope.serviceItem.ItemId = item.ItemId;
+        $scope.serviceItem.InvoiceID = null;
         $scope.serviceItem.ServiceListPrice = item.ServiceListPrice;
         $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
         $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;

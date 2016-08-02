@@ -8,7 +8,8 @@ namespace HMS.Model.Core
         public int ReorderLevel { get; set; }
         public string ShelfName { get; set; }
         public long ItemID { get; set; }
-    
+
+        [ForeignKey("ItemID")]
         public virtual Item Item { get; set; }
 
         protected override void RegisterValidationMethods()

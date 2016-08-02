@@ -49,6 +49,22 @@
         //});
     };
 
+    BillingService.GetReceiptByPatientId=function(patientId, receiptId)
+    {
+        return $http.get('/Billing/GetReceiptByPatientId?patientId=' + patientId + "&receiptId=" + receiptId);
+    }
+
+    BillingService.SaveRecieptPayment=function(receipt)
+    {
+        return $http.post('/Billing/SaveRecieptPayment', receipt);
+    }
+
+    BillingService.SaveReciept = function (receipt, patientServices) {
+
+        receipt.PatientServices = patientServices;
+        return $http.post('/Billing/CreateReceipt', receipt);
+    };
+
     BillingService.SavePayment = function (payment, invoicePaymentList, advancePayment, reconcileAmount) {
 
         advancePayment.InvoicePayments = null;

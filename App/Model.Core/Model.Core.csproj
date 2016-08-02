@@ -59,6 +59,8 @@
     <Compile Include="Entities\DrugAdministration.cs" />
     <Compile Include="Entities\DrugDosage.cs" />
     <Compile Include="Entities\DrugFrequency.cs" />
+    <Compile Include="Entities\InitialSetup.cs" />
+    <Compile Include="Entities\InitialSetupItem.cs" />
     <Compile Include="Entities\LabReportFormat.cs" />
     <Compile Include="Entities\LabReportGroup.cs" />
     <Compile Include="Entities\Inventory.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Entities\ItemReorder.cs" />
     <Compile Include="Entities\ItemType.cs" />
     <Compile Include="Entities\Item_ItemGroup.cs" />
+    <Compile Include="Entities\LabStatus.cs" />
     <Compile Include="Entities\MeasurementUnit.cs" />
     <Compile Include="Entities\MedicalType.cs" />
     <Compile Include="Entities\Membership.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="Entities\PatientInvoice.cs" />
     <Compile Include="Entities\PatientService.cs" />
     <Compile Include="Entities\Payment.cs" />
+    <Compile Include="Entities\PaymentMethod.cs" />
     <Compile Include="Entities\PaymentType.cs" />
     <Compile Include="Entities\ReceiptPayment.cs" />
     <Compile Include="Entities\Referral.cs" />

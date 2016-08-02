@@ -25,6 +25,12 @@
         return $http.get('/Item/GetLabItemsByMedicalType?medicalTypeID=' +medicalType+ '&categoryId=' + ItemCategoryId);
     };
 
+    ItemService.GetOtherServices = function (medicalType) {
+        //return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + "&statusid=1" );
+       
+        return $http.get('/Item/GetOtherServices?medicalTypeID=' + medicalType);
+    };
+
 
 
     ItemService.loadItembyId = function (itemID) {
@@ -84,6 +90,13 @@
         return $http.post('/Item/deleteItem', { ItemId: itemId });
     };
 
+    ItemService.DeleteOtherService = function (item, InitialSetupItem) {
+
+        return $http.post('/Item/DeleteOtherService', { item: item,iniItem:InitialSetupItem});
+    };
+
+    
+
     //zaber ended the code
 
     ItemService.CreateReportGroup = function (reportGroupName) {
@@ -110,6 +123,18 @@
         return $http.post('/Item/UpdateLabStatus', { PatientServiceItem: PatientServiceItem, InvoiceStatusUpdate: InvoiceStatusUpdate, InvoiceID: InvoiceID });
 
     };
+
+
+    
+
+    ItemService.SaveInititalSetupItem = function (initialSetupItem) {
+
+        //  return $http.post('/LabTest/CreateCategory', categoryName, medicalTypeID);
+
+        return $http.post('/Item/SaveInititalSetupItem', initialSetupItem);
+
+    };
+    
 
 
 

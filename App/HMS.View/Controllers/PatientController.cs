@@ -13,6 +13,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using System.IO;
 using System.Configuration;
+using System.Collections;
 
 namespace HMS.Controllers
 {
@@ -65,6 +66,9 @@ namespace HMS.Controllers
                     addItem.Id = sitem.Id;
                     addItem.Name = sitem.Name;
                     addItem.GenericName = sitem.ItemCategory.Name;
+                    ItemCategory itemCategory = new ItemCategory();
+                    addItem.ItemCategory = itemCategory;
+                    addItem.ItemCategory.Name = sitem.ItemCategory.Name;
                     addItem.Code = sitem.Code;
                     addItem.ItemTypeId = sitem.ItemTypeId;
                     addItem.MedicalTypeId = sitem.MedicalTypeId;
@@ -384,22 +388,50 @@ namespace HMS.Controllers
         //[ValidateAntiForgeryToken]
         public JsonResult CreatePatientService(IList<PatientService> patientServices)
         {
+            List<PatientService> PatientServiceList =new List<PatientService>();
             //if (ModelState.IsValid)
             {
                 using (PatientServiceRepository repository = new PatientServiceRepository())
                 {
+                    
                     foreach (PatientService patientervice in patientServices)
                     {
+                        PatientService PatientService = new PatientService();
+                     
+
                         patientervice.UserId = GetLoggedinUserInfo().UserId;
-                        repository.Insert(patientervice);                        
+                        PatientService=repository.Insert(patientervice);
+                        PatientServiceList.Add(PatientService);
                     }
                     repository.Commit();
                    // repository.Insert(patientService);
                    // repository.Commit();
                    // patient = repository.GetByPhoneNumber(patient.PhoneNumber);
                 }
+
+
+                foreach (PatientService patientervice in PatientServiceList)
+                {
+                    using (ItemRepository itemRepository = new ItemRepository())
+                    {
+
+                        Item item = new Item();
+                        patientervice.Item = item;
+
+                        Item cItem = itemRepository.GetById(patientervice.ItemId);
+
+                        patientervice.Item.Id = cItem.Id;
+                        patientervice.Item.Name = cItem.Name;
+                        patientervice.Item.MedicalTypeId = cItem.MedicalTypeId;
+                        patientervice.Item.GenericName = cItem.ItemCategory.Name;
+                        patientervice.Item.ItemCategory = new ItemCategory();
+                        patientervice.Item.ItemCategory.Name = cItem.ItemCategory.Name;
+                        patientervice.Item.ReferralAllowed = cItem.ReferralAllowed;
+                    }
+                    
+                }
             }
-            return Json("200");
+            return Json(PatientServiceList, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

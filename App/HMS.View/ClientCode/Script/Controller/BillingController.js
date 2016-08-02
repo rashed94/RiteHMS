@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-HmsApp.controller("BillingController", function ($scope, $routeParams, $window, $filter, $modal, BillingService) {
+HmsApp.controller("BillingController", function ($scope, $routeParams, $window, $filter, $modal,$localStorage, BillingService) {
 
     $scope.TotalDiscount = 0;
     $scope.TotalAmount = 0;
@@ -15,6 +15,8 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.refundedInvoice = {};
     $scope.refundedServices = {};
     $scope.invoiceId = null;
+    $scope.NonRegisterPatientId = 10212;
+    $scope.ReceiptMedicalTypeId = 60;
     //var vm = this;
     //vm.totalDiscountAmount = "";
     $scope.perItemDiscount = 0;
@@ -31,8 +33,8 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
     $scope.Invoice = {
         Id: null,
-        InvoiceDate: "",
-        DueDate: "",
+        PaymentId:null,
+        ReceiptDate: "",
         PatientID: null,
         TotalAmount: 0.0,
         //PaidAmount: 0.0,
@@ -43,6 +45,22 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         TotalDiscount: 0.0,
         InvoiceStatusId: 1,
         ItemDiscount: "",
+        UserId: null
+    };
+
+    $scope.Receipt = {
+        Id: null,
+        ReceiptDate: "",
+        PatientID: null,
+        PaymentId:null,
+        TotalAmount: 0.0,
+        //PaidAmount: 0.0,
+        //PaymentAmount: 0.0,
+        //PaymentMethod: 'Cash',
+        //CoPayerAmount: 0.0,
+        //ReconcileAmount: 0.0,
+        TotalDiscount: 0.0,
+        IsRefunded:0,
         UserId: null
     };
 
@@ -222,19 +240,30 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
     $scope.GetBillingItemByPatientId = function (patientId) {
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
-                BillingService.GetBillingItemByPatientId(patientId)
-                    .success(function (pt) {
-                        $scope.BillingItem = pt;
 
-                        $scope.adjustBillingData();
-                       // $scope.CalculateTotalDiscount();
+                if ($scope.NonRegisterPatientId == $scope.Patient.Id) {
 
-                        console.log($scope.BillingItem);
-                    })
-                    .error(function (error) {
-                        $scope.status = 'Unable to load Billing data: ' + error.message;
-                        console.log($scope.status);
-                    });
+                    $scope.BillingItem = $localStorage.BillingItem;
+                    $scope.adjustBillingData();
+
+                } else {
+
+                    BillingService.GetBillingItemByPatientId(patientId)
+                        .success(function (pt) {
+
+
+                            $scope.BillingItem = pt;
+
+                            $scope.adjustBillingData();
+                            // $scope.CalculateTotalDiscount();
+
+                            console.log($scope.BillingItem);
+                        })
+                        .error(function (error) {
+                            $scope.status = 'Unable to load Billing data: ' + error.message;
+                            console.log($scope.status);
+                        });
+                }
             }
         }
     }
@@ -396,26 +425,165 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
     };
 
+    $scope.ReceiptPrintModal = function (size, isEdit, receipt) {
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/PrintReceipt.html',
+            size: size,
+            controller: 'PrintReceiptModalController',
+            scope: $scope,
+            resolve: {
+                // billingItems:billingItems
+                receipt: function () {
+                    return receipt;
+                }
+
+
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+
+        }, function () {
+
+
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+
+    };
+
+
+
+    $scope.ReceiptModal = function (size, isEdit, sreceipt) {
+        var billingItems = [];
+        var receipt = {};
+        var isNonDrugItem = false;
+        var isDisplayAddress = true;
+
+
+        if (sreceipt.Id == null) {
+            receipt = sreceipt;
+            angular.forEach($scope.BillingItem, function (item) {
+                if (item.Selected) {
+
+                    if (item.Item.MedicalTypeId != $scope.ReceiptMedicalTypeId) {
+                        isNonDrugItem = true;
+                    } else {
+                        billingItems.push(item);
+                    }
+
+                }
+
+            });
+        } else
+        {
+            receipt = sreceipt;
+            billingItems = receipt.PatientServices;
+        }
+
+        if (isNonDrugItem) {
+            alert("You can only build Receipt for  Drug Item....for other item You have to Build Invoice");
+        } else {
+
+            if (billingItems.length > 0) {
+
+                if ($scope.Patient.Id == $scope.NonRegisterPatientId) {
+                    isDisplayAddress = false;
+                }
+
+
+                var modalInstance = $modal.open({
+                    templateUrl: '/ClientCode/Template/Receipt.html?nd=' + Date.now(),
+                    size: size,
+                    controller: 'ReceiptModalController',
+                    scope: $scope,
+                    resolve: {
+                        billingItems: function () {
+                            return billingItems;
+                        },
+                        // billingItems:billingItems
+                        receipt: function () {
+                            return receipt;
+                        },
+                        isDisplayAddress: function () {
+                            return isDisplayAddress;
+                        },
+                        NonRegisterPatientId: function () {
+                            return $scope.NonRegisterPatientId;
+                         }
+                    }
+                });
+
+                modalInstance.result.then(function (result) {
+
+                    if ($routeParams.tab == "receipt") {
+                        $window.location.reload();
+                    }
+
+                    if ($scope.Patient.Id == $scope.NonRegisterPatientId) {
+                    } else
+                    {
+                        $scope.GetBillingItemByPatientId($scope.Patient.Id);
+                    }
+
+                   
+                    console.log("modal ok");
+                  
+
+                }, function () {
+                    
+                    console.log('Modal dismissed at: ' + new Date());
+
+                    if ($routeParams.tab == "receipt") {
+                        $window.location.reload();
+                    }
+
+
+                    if ($scope.Patient.Id == $scope.NonRegisterPatientId) {
+                    } else {
+                        $scope.GetBillingItemByPatientId($scope.Patient.Id);
+                    }
+                  
+
+                });
+
+
+            }
+        }
+    }
+
+
     $scope.InvoiceModal = function (size, isEdit, singleinvoice) {
 
-        BillingService.GetAdvancePayment($scope.Patient.Id)
-         .success(function (data) {
+        if ($scope.Patient.Id == $scope.NonRegisterPatientId) {
 
-             var advancePayment = data;
-             $scope.InvoiceModalWidthAdvancePayment(size, isEdit, singleinvoice, advancePayment);
+            alert("You can't create Invoice for this Patient");
 
-         })
-            .error(function (error) {
-                $scope.status = 'Unable to get Advance payment data data: ' + error.message;
-                console.log($scope.status);
-                return error;
-            });
+        } else {
+            BillingService.GetAdvancePayment($scope.Patient.Id)
+             .success(function (data) {
+
+                 var advancePayment = data;
+                 $scope.InvoiceModalWidthAdvancePayment(size, isEdit, singleinvoice, advancePayment);
+
+             })
+                .error(function (error) {
+                    $scope.status = 'Unable to get Advance payment data data: ' + error.message;
+                    console.log($scope.status);
+                    return error;
+                });
+        }
 
     }
+
+
 
     $scope.InvoiceModalWidthAdvancePayment = function (size, isEdit, singleinvoice,advancePayment) {
         var billingItems = [];
         var singleInvoice = {};
+        var NonRegisterPatientId;
 
         if (singleinvoice.Id == null) {
             angular.forEach($scope.BillingItem, function (item) {
@@ -438,43 +606,45 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
         //    }
         //];
 
+        if (billingItems.length > 0) {
 
+            var modalInstance = $modal.open({
+                templateUrl: '/ClientCode/Template/Invoice.html?nd=' + Date.now(),
+                size: size,
+                controller: 'InvoiceModalController',
+                scope: $scope,
+                resolve: {
+                    billingItems: function () {
+                        return billingItems;
+                    },
+                    // billingItems:billingItems
+                    singleInvoice: function () {
+                        return singleInvoice;
+                    },
+                    // billingItems:billingItems
+                    advancePayment: function () {
+                        return advancePayment;
+                    }
 
-        var modalInstance = $modal.open({
-            templateUrl: '/ClientCode/Template/Invoice.html?nd='+ Date.now(),
-            size: size,
-            controller: 'InvoiceModalController',
-            scope: $scope,
-            resolve: {
-                billingItems: function () {
-                    return billingItems;
-                },
-                // billingItems:billingItems
-                singleInvoice: function () {
-                    return singleInvoice;
-                },
-                // billingItems:billingItems
-                advancePayment: function () {
-                    return advancePayment;
-                },
+                }
+            });
 
-            }
-        });
-        modalInstance.result.then(function (result) {
-            // $scope.Invoice = result.Invoice;
-            // $scope.SaveInvoice();
-        }, function () {
-            //  $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
-            // prepareInvoiceDataModel();
-            if ($routeParams.tab != "invoices") {
-                $window.location.href = '#/billing/invoices';
-            } else {
-                $scope.GetInvoices(singleinvoice.PatientID, $scope.invoiceStatus);
-            }
+            modalInstance.result.then(function (result) {
+                // $scope.Invoice = result.Invoice;
+                // $scope.SaveInvoice();
+            }, function () {
+                //  $scope.GetInvoices($scope.Patient.Id, $scope.invoiceStatus);
+                // prepareInvoiceDataModel();
+                if ($routeParams.tab != "invoices") {
+                    $window.location.href = '#/billing/invoices';
+                } else {
+                    $scope.GetInvoices(singleinvoice.PatientID, $scope.invoiceStatus);
+                }
 
-            console.log('Modal dismissed at: ' + new Date());
+                console.log('Modal dismissed at: ' + new Date());
 
-        });
+            });
+        }
     };
 
     // *********************************************** modal end *****************************************************
@@ -609,6 +779,58 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
             });
     }
 
+    function  prepareReceiptDataModel()
+    {
+
+        angular.forEach($scope.ReceiptList, function (item) {
+
+            item.Paid = 0;
+            item.TotalPrice = 0;
+
+            item.ReceiptDate = ToJavaScriptDate(item.ReceiptDate);
+            item.Paid = item.Payment.Amount;
+            item.selectedIcon = true;
+            item.activePosition = false;
+
+            if (item.Paid>0){
+                item.Staus = "Paid";
+            } else {
+                item.Staus = "Not-Paid";
+            }
+
+            if(item.IsRefunded)
+            {
+                item.Staus = "Refunded";
+            }
+
+        });
+
+    }
+    $scope.reloadRceipt=function()
+    {
+        $scope.GetReceipt($scope.Patient.Id);
+    }
+    $scope.GetReceipt = function (patientId) {
+        BillingService.GetReceiptByPatientId(patientId, $scope.ReceiptId)
+            .success(function (pt) {
+
+                if (pt.length > 0) {
+                    $scope.ReceiptList = pt;
+                } else
+                {
+                    $scope.ReceiptList = "";
+                }
+                
+                prepareReceiptDataModel();
+                console.log(pt);
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load Receipt data: ' + error.message;
+                console.log($scope.status);
+            });
+    }
+
+
     if ($routeParams.tab == "invoices") {
         if ($scope.Patient) {
             if ($scope.Patient.Id != null) {
@@ -620,13 +842,27 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
     }
 
+    if ($routeParams.tab == "receipt") {
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
+                $scope.GetReceipt($scope.Patient.Id);
+
+            }
+        }
+
+
+    }
+
+
     if ($routeParams.tab == "summary") {
 
         if($scope.Patient)
         {
-
-            $scope.GetBillingItemByPatientId($scope.Patient.Id);
-            $scope.GetTotalDebitCredit();
+        
+      
+                $scope.GetBillingItemByPatientId($scope.Patient.Id);
+                $scope.GetTotalDebitCredit();
+          
             
         }
 
@@ -675,6 +911,9 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
 
            $scope.status = 'Delete Successful';
            $scope.BillingItem.splice(index, 1);
+           if ($scope.NonRegisterPatientId == $scope.Patient.Id) {
+               $localStorage.BillingItem = $scope.BillingItem;
+           }
            $scope.calcDiscount();
 
            //$window.alert("Delete Successful!");

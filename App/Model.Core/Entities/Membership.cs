@@ -10,7 +10,8 @@ namespace HMS.Model.Core
         public decimal AnnualFee { get; set; }
         public bool? HealthBook { get; set; }
         public System.DateTime EntryDate { get; set; }
-    
+
+        [ForeignKey("PatiendId")]
         public virtual Patient Patient { get; set; }
 
         protected override void RegisterValidationMethods()

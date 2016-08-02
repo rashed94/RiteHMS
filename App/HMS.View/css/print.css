@@ -74,6 +74,24 @@
         color:#6b6c6b;
         }
 
+        .print_content{
+    
+        width: 210mm;
+        min-height: 197mm;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        margin:0 auto;
+
+        /*  position:relative;
+        display:table;
+        table-layout:fixed;
+        padding-top:80px;
+        padding-bottom:80px;*/
+
+        }
+
         .invoice
         {
             text-align:center;
@@ -202,6 +220,64 @@
                 padding-top:2px;
                 }
 
+
+            
+                .printReceipt 
+                {
+                background:#fff;
+                min-height:500px;
+                }
+                Table.printReceipt 
+                {
+                border:1px solid #424342;
+                color:#000;
+                margin:0 auto;
+  
+   
+                }
+
+                .printReceipt thead th{
+
+                background:#eeeeee;
+                height:25px;
+                border-bottom:1px solid #424342;
+                border-left:1px solid #424342;
+                padding:6px;
+                font-weight:bold;
+                }
+
+                .printReceipt td{ 
+       
+                padding:4px;
+                }
+                .printReceipt tbody td{
+                border-left:1px solid #424342;
+                }
+
+                .printReceipt .border-bottom
+                {
+                border-bottom:1px solid #424342;
+                }
+                .printReceipt tfoot tr:first-child td{
+                border-left:1px solid #424342;
+                }
+                .print_receipt_content{
+    
+                width: 110mm;
+              /*  min-height: 197mm;*/
+                border: 1px #D3D3D3 solid;
+                border-radius: 5px;
+                background: white;
+              /*  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+                margin:0 auto;
+
+                /*  position:relative;
+               display:table;
+               table-layout:fixed;
+               padding-top:80px;
+               padding-bottom:80px;*/
+
+                }
 
 
 

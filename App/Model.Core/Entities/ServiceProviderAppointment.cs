@@ -12,8 +12,11 @@ namespace HMS.Model.Core
         public long PatientId { get; set; }
         public bool AppointmentAllowed { get; set; }
 
+        [ForeignKey("ServiceProviderId")]
         public virtual ServiceProvider ServiceProvider { get; set; }
+        [ForeignKey("AppointmentId")]
         public virtual Appointment Appointment { get; set; }
+        [ForeignKey("PatientId")]
         public virtual Patient Patient { get; set; }
 
         protected override void RegisterValidationMethods()

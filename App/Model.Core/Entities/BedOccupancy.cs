@@ -10,7 +10,8 @@ namespace HMS.Model.Core
         public bool? Occupied { get; set; }
         public long? PatientId { get; set; }
         public string PatientName { get; set; }
-    
+
+         [ForeignKey("ItemID")]
         public virtual Item Item { get; set; }
 
         protected override void RegisterValidationMethods()

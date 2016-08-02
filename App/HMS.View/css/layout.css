@@ -445,6 +445,21 @@ a:active, a:focus { outline-style: none; -moz-outline-style:none; }
 	float:left;
 	margin-right:30px;
 }
+.inputbox_patient_edit
+{
+	float:left;
+	margin-right:30px;
+}
+
+.inputbox_patient_edit input[type="text"] {
+
+    width:180px;
+}
+
+.inputbox_patient_edit  input.dob
+{
+    width:130px;
+}
 table.bordered a.fa-print
 {
 	color:#4c7d5c;
@@ -826,5 +841,63 @@ Table.prinInvoice
 .no-print a{
 
     text-decoration:none;
+
+}
+
+.printReceipt 
+{
+    background:#fff;
+     min-height:500px;
+}
+Table.printReceipt 
+{
+    border:1px solid #424342;
+    color:#000;
+   margin:0 auto;
+  
+   
+}
+
+.printReceipt thead th{
+
+    background:#eeeeee;
+    height:25px;
+    border-bottom:1px solid #424342;
+    border-left:1px solid #424342;
+    padding:6px;
+    font-weight:bold;
+}
+
+.printReceipt td{ 
+       
+    padding:4px;
+}
+.printReceipt tbody td{
+    border-left:1px solid #424342;
+}
+
+.printReceipt .border-bottom
+{
+ border-bottom:1px solid #424342;
+}
+.printReceipt tfoot tr:first-child td{
+    border-left:1px solid #424342;
+}
+
+.print_receipt_content{
+    
+    width: 110mm;
+   /* min-height: 197mm;*/
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+   /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+    margin:0 auto;
+
+    /*  position:relative;
+    display:table;
+    table-layout:fixed;
+    padding-top:80px;
+    padding-bottom:80px;*/
 
 }

@@ -146,6 +146,11 @@ input[type="text"]:disabled{
     background-color:#ced1d7;
 
 }
+textarea {
+	border:1px solid #ced1d7;
+	background:#fff;
+	 border-radius:4px;
+}
 select
 {
  border: 1px solid #ced1d7;

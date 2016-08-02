@@ -2,7 +2,7 @@
 
 // App Module: the name HMS matches the ng-app attribute in the main <html> tag
 // the route provides parses the URL and injects the appropriate partial page
-var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', 'ngLoadingSpinner', 'ngSanitize']).
+var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', 'ngLoadingSpinner', 'ngSanitize', 'ngStorage']).
   config(['$routeProvider', function ($routeProvider) {
       $routeProvider.
         when('/patient', {

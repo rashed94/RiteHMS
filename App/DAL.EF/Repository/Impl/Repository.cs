@@ -79,6 +79,37 @@ namespace HMS.DAL.Repository
             }
         }
 
+        public System.Collections.Generic.IEnumerable<T> GetByQueryWithInactive(Expression<Func<T, bool>> query = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "")
+        {
+            IQueryable<T> queryResult = _DbSet;
+
+            //If there is a query, execute it against the dbset
+            if (query != null)
+            {
+                queryResult = queryResult.Where(query);
+            }
+
+            
+
+            //get the include requests for the navigation properties and add them to the query result
+            foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                queryResult = queryResult.Include(property);
+            }
+
+            //if a sort request is made, order the query accordingly.
+            if (orderBy != null)
+            {
+                return orderBy(queryResult).ToList();
+            }
+            //if not, return the results as is
+            else
+            {
+                return queryResult.ToList();
+            }
+        }
+
+
         public T GetFirst(Expression<Func<T, bool>> predicate)
         {
             return _DbSet.First(predicate);

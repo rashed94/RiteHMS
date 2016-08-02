@@ -1,0 +1,201 @@
+﻿<script>
+
+    function print() {
+
+        //  $("#print_content").printThis();
+
+        $("#print_content").printThis({
+            debug: false,
+            importCSS: false,
+            importStyle: false,
+            printContainer: true,
+            pageTitle: "",
+            removeInline: false,
+            printDelay: 333,
+            header: "",
+            formValues: true,
+            loadCSS: "../../css/print.css"
+        });
+
+    }
+
+</script>
+
+<div class="modal-header rite_modal_header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden=" true">&times;</span></button>
+    <h2 class="modal-title" id="myModalLabel">
+         Receipt
+    </h2>
+</div>
+<div class="modal-body">
+    <div class="payment">
+
+        <div class="payment_top">
+            <div class="floatleft">
+                <img src="images/ico_note.gif" width="17" height="17" alt="note">
+            </div>
+            <div class="floatleft success_message">Receipt CREATED SUCCESSFULLY</div>
+            <div style="display:none;" class="floatright modal_menu"><a href="#" class="active">Enter payment</a> | <a href="#">view/EDIT INVOICE</a> | <a href="#">PRINT INVOICE</a></div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="payment_middle">
+
+            <div ng-show="IsDisplayAddress" class="payment_detail_left line_height_small">
+
+                <p>
+                    <h2>NAME</h2>
+                    {{Patient.FirstName}} {{Patient.LastName}}
+                </p>
+                <p>
+                    <h2>GENDER</h2>
+                    {{Patient.Gender ? 'Female' : 'Male'}}
+                </p>
+                <p>
+                    <h2>ADDRESS</h2>
+                    {{Patient.City}}, {{Patient.Zip}}, {{Patient.Country}}
+                </p>
+
+            </div>
+            <div class="payment_detail_right line_height_small">
+                <p>
+                    <h2>RECEIPT DATE</h2>
+                    {{Receipt.ReceiptDate}}
+                </p>
+                <p>
+                    <h2>RECEIPT NO</h2>
+                    {{Receipt.Id}}
+                </p>
+                <p>
+                    <h2>TOTAL</h2>
+                    {{Receipt.TotalAmount}}  BDT  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <h2>TOTAL Discount</h2>
+                    {{Receipt.TotalDiscount}}  BDT  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             
+                </p>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="horizontal_line"></div>
+        <div class="payment_input_box">
+            <h3>ENTER PAYMENT</h3>
+            <div class="title">PAYMENT AMOUNT</div>
+            <div class="inputbox">
+                <input type="text" class="payment_amount" ng-disabled="true"  ng-model="PaymentAmount">
+            </div>
+
+            <div style="clear: both"></div>
+
+
+            <div class="title">PAYMENT METHOD</div>
+            <div class="inputbox">
+                <select name="paymentmethod" class="payment_method" ng-model="PaymentMethod">
+                    <option value="1">Cash</option>
+                    <option value="2">Visa Card</option>
+                    <option value="3">Master Card</option>
+                </select>
+            </div>
+
+
+            <div style="clear: both"></div>
+
+            <div ng-show="PaymentMethod!='1'">
+                <div class="title">CARD  NUMBER</div>
+                <div class="inputbox">
+                    <input type="text" class="copayer_amount" ng-model="CardNumber">
+                </div>
+            </div>
+            <div style="clear: both"></div>
+
+            <div class="space"></div>
+            <div class="title"></div>
+            <div class="inputbox">
+                <input name="save" type="button" value="save" class="md_button" ng-click="ok()">
+                <input name="cancel" type="button" value="cancel" class="md_button cancel" ng-click="cancel()">
+                <div style="clear: both"></div>
+                <div class="space"></div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="print hide">
+
+        <div class="print_receipt_content" id="print_content">
+
+            <div class="no-print"> <a class="fa fa-print fa-2x" aria-hidden="true" href="#" onclick="event.preventDefault();print()"></a></div>
+            <div style="clear: both"></div>
+
+            <div class="payment_middle">
+
+                <div class="payment_detail_right line_height_small">
+                    <p>
+                        <h2>RECEIPT DATE</h2>
+                        {{Receipt.ReceiptDate}}
+                    </p>
+                    <p>
+                        <h2>RECEIPT NO</h2>
+                        {{Receipt.Id}}
+                    </p>
+
+                </div>
+                <div style="clear: both"></div>
+            </div>
+
+            <table width="100%" border="1" align="center" class="printReceipt">
+                <thead>
+                    <tr>
+                        <th width="12%">No</th>
+                        <th width="14%">Quantity</th>
+                        <th width="37%" colspan="2">Item Name</th>
+                        <th width="37%">Price</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="patientservice in Receipt.PatientServices">
+                    <tr>
+                        <td>{{$index+1}}</td>
+                        <td>{{patientservice.ServiceQuantity}}</td>
+                        <td colspan="2">{{patientservice.Item.Name}}</td>
+                        <td>{{patientservice.ServiceActualPrice*patientservice.ServiceQuantity}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+
+                    <tr>
+                        <td class="border-bottom">&nbsp;</td>
+                        <td class="border-bottom">&nbsp;</td>
+                        <td colspan="2" class="border-bottom">&nbsp;</td>
+                        <td class="border-bottom">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td align="right">Total Price</td>
+                        <td>&nbsp;</td>
+                        <td>{{Receipt.TotalAmount+Receipt.TotalDiscount}}</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td align="right">Discount</td>
+                        <td>&nbsp;</td>
+                        <td>{{Receipt.TotalDiscount}}</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td align="right">Total</td>
+                        <td>&nbsp;</td>
+                        <td>{{Receipt.TotalAmount}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="space"></div>
+
+
+        </div>
+
+    </div>
+    </div>

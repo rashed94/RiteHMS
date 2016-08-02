@@ -3,6 +3,7 @@
         <ul class="tabs group">
             <li class="copayer active"><a href="#/configuration/copayer">COPAYER SETUP</a></li>
             <li class="serviceprovider"><a href="#/configuration/serviceprovider">ADD SERVICE PROVIDER</a></li>
+            <li class="OtherServices"><a href="#/configuration/OtherServices">ADD OTHER SERVICES</a></li>
 
         </ul>
         <div style="clear: both"></div>
@@ -204,5 +205,40 @@
             <tfoot>
             </tfoot>
         </table>
+    </div>
+    
+    <div class="OtherServices hide">
+
+        <div style="padding-top:12px; padding-bottom:20px;">
+            <input name="ADD OTHER SERVICES" type="button" value="ADD OTHER SERVICES" class="sm_button" ng-click="OtherServicesModal('lg','')">
+        </div>
+
+        <table width="100%" border="1" align="center" class="bordered" ng-model="Items">
+            <thead>
+                <tr>
+                    <th width="24%">Name</th>
+                    <th colspan="6">Price</th>
+                    <th width="62%">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in Items">
+                    <td>{{item.Name}} </td>
+                    <td colspan="6">{{item.SalePrice}}   </td>
+
+                    <td>
+                        <a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteService(item);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>
+                        &nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-click="OtherServicesModal('lg',item)"></a>
+                        <a class="link_brown" ng-hide="item.IsHospitalItem" href="#" ng-click="$event.preventDefault();HospitalAdmissionDefault(item)">SET HOSPITAL ADMISSION DEFAULT</a>
+                        <a class="link_brown" ng-show="item.IsHospitalItem" href="#" ng-click="$event.preventDefault();HospitalAdmissionDefaultRemove(item)">REMOVE HOSPITAL ADMISSION DEFAULT</a>
+                    </td>
+                </tr>
+
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+
+
     </div>
 </div>

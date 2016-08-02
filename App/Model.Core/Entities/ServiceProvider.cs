@@ -21,13 +21,15 @@ namespace HMS.Model.Core
         public string Code { get; set; }
         public bool ?AssignedToAllUsers { get; set; }
         public bool IsReferer { get; set; }
-    
+
+        [ForeignKey("ContactId")]
         public virtual Contact Contact { get; set; }
-     
-     
+
+         [ForeignKey("DepartmentId")]
         public virtual Department Department { get; set; }
         public virtual ICollection<Item> Items { get; set; }
         public virtual ICollection<PatientAdmission> PatientAdmissions { get; set; }
+        [ForeignKey("ServiceProviderTypeId")]
         public virtual ServiceProviderType ServiceProviderType { get; set; }
 
         protected override void RegisterValidationMethods()

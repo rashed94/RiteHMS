@@ -22,8 +22,8 @@ namespace HMS.Model.Core
         public string Code { get; set; }
         public long ItemTypeId { get; set; }
         public long MedicalTypeId { get; set; }
-        public long ItemCategoryId { get; set; }
-        public long  MeasurementUnitId { get; set; }
+        public long? ItemCategoryId { get; set; }
+        public long?  MeasurementUnitId { get; set; }
         public decimal SalePrice { get; set; }
         public decimal BuyPrice { get; set; }
         public long? ServiceProviderId { get; set; }
@@ -35,12 +35,19 @@ namespace HMS.Model.Core
         public virtual ICollection<BedOccupancy> BedOccupancies { get; set; }
         public virtual ICollection<Inventory> Inventories { get; set; }
         public virtual ICollection<Item_ItemGroup> Item_ItemGroup { get; set; }
-        public virtual ItemCategory ItemCategory { get; set; }
         public virtual ICollection<ItemDefault> ItemDefaults { get; set; }
         public virtual ICollection<ItemReorder> ItemReorders { get; set; }
+        public virtual ICollection<InitialSetupItem> InitialSetupItems { get; set; }
+
+        [ForeignKey("ItemTypeId")]
         public virtual ItemType ItemType { get; set; }
+        [ForeignKey("ItemCategoryId")]
+        public virtual ItemCategory ItemCategory { get; set; }
+        [ForeignKey("MeasurementUnitId")]
         public virtual MeasurementUnit MeasurementUnit { get; set; }
+        [ForeignKey("MedicalTypeId")]
         public virtual MedicalType MedicalType { get; set; }
+        [ForeignKey("ServiceProviderId")]
         public virtual ServiceProvider ServiceProvider { get; set; }
         public virtual ICollection<PatientService> PatientServices { get; set; }
         public virtual ICollection<ReceiptPayment> ReceiptPayments { get; set; }

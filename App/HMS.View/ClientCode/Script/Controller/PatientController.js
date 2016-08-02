@@ -17,7 +17,7 @@
 //    };
 //});
 
-HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout, $window, $modal,$location, $filter, $http, PatientService) {
+HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout, $window, $modal,$location, $filter, $http,$localStorage, PatientService) {
     //$scope.calculateAge = function (birthday) { // birthday is a date
     //    var ageDifMs = Date.now() - birthday.getTime();
     //    var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -29,7 +29,12 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.Patient.Photo = "";
     $scope.IsPatientLoaded = "";
     $scope.ServiceProviderType = 56;  // which is doctor
-
+    $scope.LabratoryItemCategoryId = 62;
+    $scope.NonRegisterPatientId = 10212;
+    
+   
+   
+    
   /*  $scope.getRandomSpan = function () {
         return Math.floor((Math.random() * 60) + 1);
     }
@@ -231,8 +236,8 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                         $scope.serviceItem.PatientID = $scope.Patient.Id;
                     }
                 }
-                $scope.serviceItem.ItemID = obj.Id;
-                $scope.serviceItem.InvoiceID = 0;
+                $scope.serviceItem.ItemId = obj.Id;
+                $scope.serviceItem.InvoiceID = null;
                 $scope.serviceItem.ServiceListPrice = obj.Amount;
                 $scope.serviceItem.ServiceActualPrice = obj.SalePrice;
                 $scope.serviceItem.ServiceQuantity = obj.Quantity;
@@ -240,7 +245,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                 $scope.serviceItem.ServiceProviderId = obj.ServiceProviderId;
 
 
-                if (obj.MedicalTypeId == "62") {
+                if (obj.MedicalTypeId == $scope.LabratoryItemCategoryId) {
                     $scope.serviceItem.LabStatusId = 1;
                     $scope.serviceItem.ReferralFeePaid = 0;
                 }
@@ -249,7 +254,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                     $scope.serviceItem.ReferralFeePaid = null;
                 }
                 $scope.serviceItem.UserId = '';
-                $scope.serviceItem.Discount = '';
+                $scope.serviceItem.Discount = 0;
                 $scope.serviceItem.Refund = '';
                 $scope.serviceItem.Billed = '';
                 $scope.serviceItem.ReferralFee = obj.ReferralFee;
@@ -264,6 +269,22 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
             PatientService.SavePatientServiceItem($scope.PatientServiceItem)
             .success(function (data) {
 
+                var peviousBillingItem = [];
+                if ($scope.NonRegisterPatientId == $scope.Patient.Id) {
+
+                     
+                     peviousBillingItem = $localStorage.BillingItem;
+                    if (peviousBillingItem.length > 0)
+                    {
+                        angular.forEach(data, function (item) {
+                            peviousBillingItem.push(item);
+                        });
+                     } else
+                    {
+                        peviousBillingItem = data;
+                    }
+                    $localStorage.BillingItem = peviousBillingItem;
+                }
                 console.log(data);
                 // $scope.UpdateTopLink('billing');
                 // $window.location.href = '#/billing/summary';

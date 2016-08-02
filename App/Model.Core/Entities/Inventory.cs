@@ -11,8 +11,10 @@ namespace HMS.Model.Core
         public decimal? BuyPrice { get; set; }
         public System.DateTime? BuyDate { get; set; }
         public System.DateTime? ExpireDate { get; set; }
-    
+
+         [ForeignKey("ItemID")]
         public virtual Item Item { get; set; }
+         [ForeignKey("StoreID")]
         public virtual Store Store { get; set; }
 
         protected override void RegisterValidationMethods()

@@ -19,16 +19,16 @@
     <div class="patient_registration_contnet">
 
         <div class="input_containter">
-            <div class="title">First Name</div><div class="inputbox"><input type="text" class="first_name" ng-model="Patient.FirstName"></div>
+            <div class="title">First Name</div><div class="inputbox_patient_edit"><input type="text"  ng-model="Patient.FirstName"></div>
         </div>
 
         <div class="input_containter">
-            <div class="title">Last Name</div><div class="inputbox"><input type="text" class="last_name" ng-model="Patient.LastName"></div>
+            <div class="title">Last Name</div><div class="inputbox_patient_edit"><input type="text" ng-model="Patient.LastName"></div>
         </div>
 
         <div class="input_containter">
             <div class="title">gender</div>
-            <div class="inputbox">
+            <div class="inputbox_patient_edit">
                 <select name="gender" class="generaldropdown" ng-model="Patient.Gender">
                     <option value="false" ng-selected="{{ Patient.Gender == false }}">MALE</option>
                     <option value="true" ng-selected="{{ Patient.Gender == true }}">Female</option>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="input_containter">
-            <div class="title">blood group</div><div class="inputbox">
+            <div class="title">blood group</div><div class="inputbox_patient_edit">
                 <select name="bloodgroup" class="" ng-model="Patient.BloodGroup">
                     <option value="AB+">AB+</option>
                     <option value="AB-">AB-</option>
@@ -52,25 +52,28 @@
         </div>
 
         <div class="input_containter">
-            <div class="title">mobile</div><div class="inputbox"><input type="text" class="mobile" ng-model="Patient.PhoneNumber"></div>
+            <div class="title">mobile</div><div class="inputbox_patient_edit"><input type="text" ng-model="Patient.PhoneNumber"></div>
         </div>
 
         <div class="input_containter">
-            <div class="title">e-mail</div><div class="inputbox"><input type="text" class="email" ng-model="Patient.Email"></div>
+            <div class="title">e-mail</div><div class="inputbox_patient_edit"><input type="text" ng-model="Patient.Email"></div>
         </div>
 
 
         <div class="input_containter">
-            <div class="title">city</div><div class="inputbox"><input type="text" class="city" ng-model="Patient.City"></div>
+            <div class="title">city</div><div class="inputbox_patient_edit"><input type="text" ng-model="Patient.City"></div>
         </div>
         <div class="input_containter">
-            <div class="title">zip</div><div class="inputbox"><input type="text" class="zip" ng-model="Patient.Zip"></div>
+            <div class="title">Street/Addresss</div><div class="inputbox_patient_edit"><input type="text" ng-model="Patient.Street"></div>
+        </div>
+        <div class="input_containter">
+            <div class="title">zip</div><div class="inputbox_patient_edit"><input type="text" ng-model="Patient.Zip"></div>
         </div>
 
         <div class="input_containter">
             <!--<div class="title">Country</div><div class="inputbox"><input type="text" class="country" ng-model="Patient.Country"></div>-->
             <div class="title">Country</div>
-            <div class="inputbox">
+            <div class="inputbox_patient_edit">
                 <select id="countries" name="countries" class="" ng-model="Patient.Country">
                     <!--<option selected="selected">Bangladesh</option>-->
                     <option value="AF">Afghanistan</option>
@@ -323,11 +326,11 @@
 
 
         <div class="input_containter">
-            <div class="title">date of birth</div><div class="inputbox">
+            <div class="title">date of birth</div><div class="inputbox_patient_edit">
 
-                <input type="text" width="110" placeholder="click to show datepicker" name="dob" class="dob" ng-model="Patient.DOB">
+    <input type="text" width="110" placeholder="click to show datepicker" name="dob" class="dob" ng-model="Patient.DOB">
 
-            </div>
+</div>
         </div>
 
         <div class="input_containter">

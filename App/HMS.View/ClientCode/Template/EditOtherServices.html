@@ -1,0 +1,62 @@
+﻿<div class="modal-header rite_modal_header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title" id="myModalLabel">ADD/EDIT OTHER SERVICES</h2>
+</div>
+
+<div class="modal-body">
+
+    <form name="form1">
+        <table width="65%" border="1" ng-model="OtherService" align="center">
+            <tr>
+                <td width="14%" height="39">&nbsp;</td>
+                <td width="19%">NAME</td>
+                <td width="19%">
+                    <input type="text" ng-model="OtherService.Name" required name="name">
+                    <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
+                    <div ng-show="form1.name.$invalid">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </td>
+                <td width="48%"></td>
+                <!--<td><span ng-show="!SingleBedItem.Name.length">Please enter something!</span></td>-->
+            </tr>
+
+            <tr>
+                <td height="39">&nbsp;</td>
+                <td>CHARGE PRICE</td>
+                <td colspan="2">
+                    <input type="text" ng-model="OtherService.SalePrice" required name="SalePrice">
+                    <div ng-show="form1.SalePrice.$invalid">
+                        <div ng-message="required">This field is required</div>
+                    </div>
+                </td>
+
+            </tr>
+
+
+            <tr>
+                <td height="39">&nbsp;</td>
+                <td>DESCRIPTION</td>
+                <td colspan="2">
+
+                    <textarea rows="4" cols="50" ng-model="OtherService.Description"></textarea>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td height="39">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td height="39">&nbsp;</td>
+                <td colspan="3">
+                    <input name="save" type="button" value="save" class="md_button" ng-click="ok();" ng-disabled="form1.$invalid">
+                    <!--<input name="save" type="submit" value="save" class="md_button" ng-click="submitted = true;saveItem();">-->
+                    <input name="cancel" type="button" value="cancel" class="md_button" ng-click="cancel()">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

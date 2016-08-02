@@ -10,6 +10,8 @@ HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemS
             .success(function (mdtype) {
                 $scope.MedicalTypes = mdtype;
 
+                $scope.MedicalTypes.splice(4,2);
+
             })
             .error(function (error) {
             $scope.status = 'Unable to load ItemCategory data: ' + error.message;
