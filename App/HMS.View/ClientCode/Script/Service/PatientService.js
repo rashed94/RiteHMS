@@ -35,10 +35,21 @@
         //return $http.post('/Patient/CreatePatient', patient);
     };
 
+    
+    PatientService.DischagePatient = function ( patientAdmission) {
+        return $http.post('/Patient/DischagePatient', patientAdmission);
+    };
     PatientService.SavePatientServiceItem = function (patientService) {
         return $http.post('/Patient/CreatePatientService', patientService);
     };
 
+    PatientService.SaveAdmission = function (Admission, InititalSetupId) {
+        return $http.post('/Patient/SaveAdmission', { Admission: Admission, InititalSetupId: InititalSetupId });
+    };
+
+    PatientService.GetAdmission = function (patientId) {
+        return $http.get('/Patient/GetAdmission?PatientId=' + patientId);
+    };
 
     PatientService.UploadPhoto = function (patient) {
         return $http({

@@ -1,9 +1,105 @@
-﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
-</head>
-<body>
+﻿<script>
+    $(document).ready(function () {
+        $('.admissiondate').datepicker({
+            format: "yyyy-mm-dd",
+            startView: "day",
+            minViewMode: "day"
+        }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
+        });
+        $('.dischargedate').datepicker({
+            format: "yyyy-mm-dd",
+            startView: "day",
+            minViewMode: "day"
+        }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
+        });
 
-</body>
-</html>
+    });
+</script>
+
+<div class="modal-header rite_modal_header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title" id="myModalLabel">Patient Admission</h2>
+</div>
+<div class="modal-body">
+    <div class="patient_registration_contnet">
+
+        <div class="input_containter">
+            <div class="title">Admission Date</div>
+            <div class="inputbox_patient_edit">
+                <input type="text" width="110" placeholder="click to show datepicker" name="admissiondate" class="admissiondate" ng-model="Admission.AdmissionDate">
+            </div>
+        </div>
+
+        <div class="input_containter">
+            <div class="title">Discharge Date</div>
+            <div class="inputbox_patient_edit">
+                <input type="text" width="110" placeholder="click to show datepicker" name="DischargeDate" class="dischargedate" ng-model="Admission.DischargeDate">
+            </div>
+        </div>
+
+        <div class="input_containter">
+            <div class="title">Super Vise Doctor's Name</div>
+            <div class="inputbox_patient_edit">
+                <input name="doctorName" id="doctorName" type="text" placeholder="Type Doctor's name"
+                       ng-model="SDoctor.Name"
+                       typeahead="item as (item.Contact.FirstName + ' ' + item.Contact.LastName+'('+item.DepartmentName+')') for item in GetDoctorPartialName($viewValue)"
+                       typeahead-on-select="OnSDocotorSelect($item)"
+                       typeahead-min-length="1"
+                       typeahead-wait-ms="1"
+                       class="form-control">
+            </div>
+        </div>
+
+
+        <div class="input_containter">
+            <div class="title">Referer Doctor's Name</div>
+            <div class="inputbox_patient_edit">
+                <input name="doctorName" id="doctorName" type="text" placeholder="Type Doctor's name"
+                       ng-model="RDoctor.Name"
+                       typeahead="item as (item.Contact.FirstName + ' ' + item.Contact.LastName+'('+item.DepartmentName+')') for item in GetDoctorPartialName($viewValue)"
+                       typeahead-on-select="OnRDocotorSelect($item)"
+                       typeahead-min-length="1"
+                       typeahead-wait-ms="1"
+                       class="form-control">
+            </div>
+        </div>
+
+        <div class="input_containter">
+            <div class="title">Department</div><div class="inputbox_patient_edit">
+
+            <select name="ServiceProviderDepartment"
+                    class="_s_ServiceProviderDepartment"
+                    ng-model="Admission.DepartmentId"
+                    ng-options="department.Id as department.Name for department in Departments">
+
+            </select>
+            </div>
+        </div>
+
+        <div class="input_containter">
+            <div class="title">Note</div><div class="inputbox_patient_edit">
+
+              <textarea rows="4" cols="50" ng-model="Admission.Notes"></textarea> 
+                                                   
+            </div>
+        </div>
+
+
+        
+
+        <div class="input_containter">
+            <div class="space"></div>
+            <div class="title"></div>
+            <div class="inputbox">
+                <input name="save" type="button" value="save" class="md_button" ng-click="ok()">
+                <input name="cancel" type="button" value="cancel" class="md_button cancel" ng-click="cancel()">
+            </div>
+        </div>
+
+    </div>
+
+</div>

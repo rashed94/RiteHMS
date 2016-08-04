@@ -297,6 +297,8 @@ namespace HMS.Controllers
                         patientstitem.PatientID = c.PatientID;
                         patientstitem.ItemId = c.ItemId;
                         patientstitem.InvoiceID = c.InvoiceID;
+                        patientstitem.ReceiptId = c.ReceiptId;
+                        patientstitem.PatientAdmissionId = c.PatientAdmissionId;
                         patientstitem.ServiceListPrice = c.ServiceListPrice;
                         patientstitem.ServiceActualPrice = c.ServiceActualPrice;
                         patientstitem.ServiceQuantity = c.ServiceQuantity;
@@ -316,7 +318,10 @@ namespace HMS.Controllers
 
                         patientstitem.Item.Name = c.Item.Name;
                         patientstitem.Item.GenericName = c.Item.GenericName;
-                        patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+                        if (c.Item.ItemCategory != null)
+                        {
+                            patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+                        }
 
                         itemReceipt.PatientServices.Add(patientstitem);
 
@@ -457,6 +462,8 @@ namespace HMS.Controllers
                         patientstitem.PatientID = c.PatientID;
                         patientstitem.ItemId = c.ItemId;
                         patientstitem.InvoiceID = c.InvoiceID;
+                        patientstitem.ReceiptId = c.ReceiptId;
+                        patientstitem.PatientAdmissionId = c.PatientAdmissionId;
                         patientstitem.ServiceListPrice = c.ServiceListPrice;
                         patientstitem.ServiceActualPrice = c.ServiceActualPrice;
                         patientstitem.ServiceQuantity = c.ServiceQuantity;
@@ -476,7 +483,12 @@ namespace HMS.Controllers
 
                         patientstitem.Item.Name = c.Item.Name;
                         patientstitem.Item.GenericName = c.Item.GenericName;
-                        patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+
+                        if (c.Item.ItemCategory != null)
+                        {
+                            patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+                        }
+
                         patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
 
                         patientstitem.ReferralFeePaid = c.ReferralFeePaid;
@@ -519,6 +531,8 @@ namespace HMS.Controllers
                     patientstitem.PatientID = c.PatientID;
                     patientstitem.ItemId = c.ItemId;
                     patientstitem.InvoiceID = c.InvoiceID;
+                    patientstitem.ReceiptId = c.ReceiptId;
+                    patientstitem.PatientAdmissionId = c.PatientAdmissionId;
                     patientstitem.ServiceListPrice = c.ServiceListPrice;
                     patientstitem.ServiceActualPrice = c.ServiceActualPrice;
                     patientstitem.ServiceQuantity = c.ServiceQuantity;
@@ -537,10 +551,14 @@ namespace HMS.Controllers
 
                     patientstitem.Item.Name = c.Item.Name;
                     patientstitem.Item.MedicalTypeId = c.Item.MedicalTypeId;
-                    patientstitem.Item.GenericName = c.Item.ItemCategory.Name;
-                    ItemCategory itemCategory = new ItemCategory();
-                    patientstitem.Item.ItemCategory = itemCategory;
-                    patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+
+                    if (c.Item.ItemCategory != null)
+                    {
+                        patientstitem.Item.GenericName = c.Item.ItemCategory.Name;
+                        ItemCategory itemCategory = new ItemCategory();
+                        patientstitem.Item.ItemCategory = itemCategory;
+                        patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+                    }
 
                     patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
                     onlypatientServiceItems.Add(patientstitem);

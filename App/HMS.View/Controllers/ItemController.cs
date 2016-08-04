@@ -173,7 +173,7 @@ namespace HMS.Controllers
            {
                repository.DeleteByID(item.Id, GetLoggedinUserInfo().UserId);
                repository.Commit();
-               return Json("BedItem delete successfull");
+               //return Json("BedItem delete successfull");
            }
 
          
@@ -269,18 +269,28 @@ namespace HMS.Controllers
         [HttpPost]
         public JsonResult CreateBedOccupancy(IList<BedOccupancy> BedOccupancy)
         {
-
+            PatientAdmission pAdmission = new PatientAdmission();
             //if (ModelState.IsValid)
             {
                 using (BedOccupancyRepository repository = new BedOccupancyRepository())
                 {
                     foreach (BedOccupancy isBedOccupied in BedOccupancy)
                     {
+                        pAdmission.BedId = isBedOccupied.ItemID;
+                        pAdmission.Id = isBedOccupied.AdmissioinId;
+                        pAdmission.UserId=GetLoggedinUserInfo().UserId;
+
+                        isBedOccupied.UserId = GetLoggedinUserInfo().UserId;
                         repository.Insert(isBedOccupied);
 
                     }
                     repository.Commit();
                 }
+                using (Repository<PatientAdmission> repository = new Repository<PatientAdmission>())
+                 {
+                     repository.UpdateByField(pAdmission, "BedId");
+                     repository.Commit();
+                 }
             }
             return Json("200");
         }
@@ -304,8 +314,8 @@ namespace HMS.Controllers
             {
 
                 bedOccupancyItem.Occupied = false;
-                bedOccupancyItem.PatientId = null;
-                bedOccupancyItem.PatientName = null;
+                bedOccupancyItem.Active = false;
+                bedOccupancyItem.UserId=GetLoggedinUserInfo().UserId;
                 repository.Update(bedOccupancyItem);
 
                 repository.Commit();                
@@ -324,7 +334,7 @@ namespace HMS.Controllers
 
                 Expression<Func<BedOccupancy, bool>> lambda;
 
-                lambda = (x => x.PatientId == patientId);
+                lambda = (x => x.Occupied == true && x.Active == true && x.PatientId == patientId);
 
                 bed = repository.GetByQuery(lambda).ToList();
 
@@ -964,7 +974,7 @@ namespace HMS.Controllers
         {
             using (PatientServiceRepository repository = new PatientServiceRepository())
             {
-
+                patientService.Item.ItemCategory = null;
                 patientService.RefundNote=null;
                 repository.UpdateByField(patientService, "RefundNote");
                // repository.Update(patientService);
@@ -1129,6 +1139,7 @@ namespace HMS.Controllers
                     patientstitem.ItemId = c.ItemId;
                     patientstitem.InvoiceID = c.InvoiceID;
                     patientstitem.ReceiptId = c.ReceiptId;
+                    patientstitem.PatientAdmissionId = c.PatientAdmissionId;
                     patientstitem.ServiceListPrice = c.ServiceListPrice;
                     patientstitem.ServiceActualPrice = c.ServiceActualPrice;
                     patientstitem.ServiceQuantity = c.ServiceQuantity;
@@ -1152,8 +1163,10 @@ namespace HMS.Controllers
                     patientstitem.Item.Name = c.Item.Name;
                     patientstitem.Item.GenericName = c.Item.GenericName;
                     patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
-
-                    patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+                    if (c.Item.ItemCategory != null)
+                    {
+                        patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+                    }
 
 
 
@@ -1250,6 +1263,8 @@ namespace HMS.Controllers
                             patientstitem.PatientID = c.PatientID;
                             patientstitem.ItemId = c.ItemId;
                             patientstitem.InvoiceID = c.InvoiceID;
+                            patientstitem.ReceiptId = c.ReceiptId;
+                            patientstitem.PatientAdmissionId = c.PatientAdmissionId;
                             patientstitem.ServiceListPrice = c.ServiceListPrice;
                             patientstitem.ServiceActualPrice = c.ServiceActualPrice;
                             patientstitem.ServiceQuantity = c.ServiceQuantity;
@@ -1273,8 +1288,11 @@ namespace HMS.Controllers
                             patientstitem.Item.Name = c.Item.Name;
                             patientstitem.Item.GenericName = c.Item.GenericName;
                             patientstitem.Item.ReferralAllowed = c.Item.ReferralAllowed;
+                            if (c.Item.ItemCategory != null)
+                            {
+                                patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
 
-                            patientstitem.Item.ItemCategory.Name = c.Item.ItemCategory.Name;
+                            }
 
                             if (c.ServiceProvider != null)
                             {

@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Configuration;
 using System.Collections;
+using System.Linq.Expressions;
 
 namespace HMS.Controllers
 {
@@ -66,9 +67,14 @@ namespace HMS.Controllers
                     addItem.Id = sitem.Id;
                     addItem.Name = sitem.Name;
                     addItem.GenericName = sitem.ItemCategory.Name;
-                    ItemCategory itemCategory = new ItemCategory();
-                    addItem.ItemCategory = itemCategory;
-                    addItem.ItemCategory.Name = sitem.ItemCategory.Name;
+
+                    if (sitem.ItemCategory != null)
+                    {
+                        ItemCategory itemCategory = new ItemCategory();
+                        addItem.ItemCategory = itemCategory;
+                        addItem.ItemCategory.Name = sitem.ItemCategory.Name;
+                    }
+
                     addItem.Code = sitem.Code;
                     addItem.ItemTypeId = sitem.ItemTypeId;
                     addItem.MedicalTypeId = sitem.MedicalTypeId;
@@ -217,6 +223,7 @@ namespace HMS.Controllers
                     serviceProvider.Contact.LastName = item.Contact.LastName;
                     serviceProvider.Id = item.Id;
                     serviceProvider.Speciality = item.Speciality;
+                    serviceProvider.DepartmentName = item.Department.Name;
 
                     onlyserviceProviders.Add(serviceProvider);
                 }
@@ -433,6 +440,140 @@ namespace HMS.Controllers
             }
             return Json(PatientServiceList, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public JsonResult DischagePatient(PatientAdmission patientAdmission)
+        {
+            using (Repository<PatientAdmission> Repository = new Repository<PatientAdmission>())
+            {
+
+                patientAdmission.UserId = GetLoggedinUserInfo().UserId;
+                patientAdmission.Active = false;
+                Repository.Update(patientAdmission);
+                Repository.Commit();
+            }
+
+            using (Repository<BedOccupancy> repository = new Repository<BedOccupancy>())
+            {
+                Expression<Func<BedOccupancy, bool>> lambda;
+
+                lambda = (x => x.Occupied == true && x.Active == true && x.AdmissioinId == patientAdmission.Id);
+
+                 List<BedOccupancy> bedlist = new List<BedOccupancy>();
+                 bedlist = repository.GetByQuery(lambda).ToList();
+
+              if (bedlist.Count > 0)
+              {
+                  BedOccupancy bed = new BedOccupancy();
+                  bed = bedlist[0];
+                  bed.UserId = GetLoggedinUserInfo().UserId;
+                  bed.Occupied = false;
+                  bed.Active = false;
+                  repository.Update(bed);
+                  repository.Commit();
+              }
+
+            }
+            return Json("Discharge successfull", JsonRequestBehavior.AllowGet);
+        }
+        
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public JsonResult SaveAdmission(PatientAdmission Admission, long InititalSetupId)
+        {
+            PatientAdmission onlyAdmission;
+            using(Repository<PatientAdmission> Repository =new Repository<PatientAdmission> ())
+            {
+                Admission.UserId = GetLoggedinUserInfo().UserId;
+                onlyAdmission= Repository.Insert(Admission);
+                Repository.Commit();
+            }
+
+            using (Repository<InitialSetupItem> Repository = new Repository<InitialSetupItem>())
+            {
+                Expression<Func<InitialSetupItem, bool>> lambda;
+                lambda = (x => x.InitialSetupId == InititalSetupId  && x.Active == true);
+
+                List<InitialSetupItem> onlyAdmissionItemList = Repository.GetByQuery(lambda).ToList();
+
+                
+
+                foreach (InitialSetupItem initalsetupitem in onlyAdmissionItemList)
+                {
+                    PatientService sItem =new PatientService();
+
+                    sItem.PatientID = Admission.PatientId;
+                    sItem.PatientAdmissionId = onlyAdmission.Id;
+                    sItem.ItemId = initalsetupitem.ItemId;
+                    sItem.ServiceActualPrice = initalsetupitem.Item.SalePrice;
+                    sItem.ServiceListPrice = initalsetupitem.Item.SalePrice;
+                    sItem.ServiceQuantity = 1;
+                    sItem.ServiceDate = DateTime.Now;
+                    sItem.Discount = 0;
+
+                    using (Repository<PatientService> psRepository = new Repository<PatientService>())
+                   {
+                       psRepository.Insert(sItem);
+                       psRepository.Commit();
+                   }
+
+                }
+                
+            }
+
+
+            if (onlyAdmission == null)
+            {
+                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+            }else
+            {
+                return Json(onlyAdmission, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public JsonResult GetAdmission(long PatientId)
+        {
+            PatientAdmission onlyAdmission=null;
+            List<PatientAdmission> onlyAdmissionList;
+            using (Repository<PatientAdmission> Repository = new Repository<PatientAdmission>())
+            {
+                Expression<Func<PatientAdmission, bool>> lambda;
+                lambda=(x=>x.PatientId==PatientId && x.IsReleased==false && x.Active==true);
+
+                onlyAdmissionList = Repository.GetByQuery(lambda).ToList();
+
+                if (onlyAdmissionList != null)
+                {
+                    foreach (PatientAdmission item in onlyAdmissionList)
+                    {
+                        onlyAdmission = new PatientAdmission();
+                        onlyAdmission.Id=item.Id;
+                        onlyAdmission.PatientId = item.PatientId;
+                        onlyAdmission.AdmissionDate = item.AdmissionDate;
+                        onlyAdmission.ServiceProviderId = item.ServiceProviderId;
+                        onlyAdmission.RefererId = item.RefererId;
+                        onlyAdmission.DepartmentId = item.DepartmentId;
+                        onlyAdmission.BedId = item.BedId;
+                        onlyAdmission.IsReleased = item.IsReleased;
+                        onlyAdmission.Notes = item.Notes;
+                        onlyAdmission.UserId = item.UserId;
+                        onlyAdmission.Active = item.Active;
+                    }
+                }
+                
+            }
+            if (onlyAdmission == null)
+            {
+
+                return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                
+                return Json(onlyAdmission, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
         [HttpPost]
         //[ValidateAntiForgeryToken]

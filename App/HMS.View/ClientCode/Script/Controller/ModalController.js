@@ -26,6 +26,97 @@ HmsApp.controller("PharmacyStockModelController", function ($scope, $modalInstan
 });
 
 
+HmsApp.controller("HospitalAmissionModalController", function ($scope, $modalInstance, $http, $filter, ConfigurationService, PatientService) {
+
+
+    $scope.ServiceProviderType = 56;
+    $scope.Admission = {
+        PatientId: $scope.Patient.Id,
+        AdmissionDate: $filter('date')(new Date(), 'yyyy-MM-dd'),
+        DischargeDate:null,
+        ServiceProviderId: "",
+        RefererId: "",
+        DepartmentId: "",
+        BedId: null,
+        IsReleased: false,
+        Notes:""
+
+    }
+    $scope.InititalSetupId = 101;
+
+
+    ConfigurationService.GetDepartments()
+    .success(function (departments) {
+        $scope.Departments = departments;
+        $scope.Admission.DepartmentId = 205;
+        $scope.Admission.DepartmentId = $scope.Departments[0].Id;
+        
+       
+    })
+    .error(function (error) {
+        $scope.status = 'Unable to load Departments data: ' + error.message;
+        console.log($scope.status);
+    });
+
+
+    $scope.OnRDocotorSelect = function ($item) {
+        $scope.RDoctor.Name = $item.Contact.FirstName + " " + $item.Contact.LastName;
+        $scope.Admission.RefererId = $item.Id;
+    }
+
+    $scope.OnSDocotorSelect = function ($item) {
+        $scope.SDoctor.Name = $item.Contact.FirstName + " " + $item.Contact.LastName;
+        $scope.Admission.ServiceProviderId = $item.Id;
+    }
+
+    
+
+    $scope.GetDoctorPartialName = function (name) {
+
+
+        //return $http.get('/patient/getserviceproviderpartialname?name=' + name + "&itemid=" + itemid).then(function (response) {
+        //    var data = response.data;
+        //    return response.data;
+        //});
+
+        /*----------------------------  TypeId 56 means doctor --------------------------------------------------*/
+
+        return $http.get('/patient/getdoctorbyname?name=' + name + "&typeId=" + $scope.ServiceProviderType).then(function (response) {
+            var data = response.data;
+            return response.data;
+        });
+
+
+    }
+
+
+    $scope.ok = function () {
+
+        PatientService.SaveAdmission($scope.Admission, $scope.InititalSetupId)
+        .success(function (data) {
+
+            console.log(data);
+            $scope.Patient.AdmissionId = data.Id;
+            $modalInstance.close();
+
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save Admission data: ' + error.message;
+        
+            console.log($scope.status);
+
+        });
+
+       
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
+
 HmsApp.controller("OtherServicesModalController", function ($scope, $modalInstance,item,ItemService) {
 
 
@@ -120,8 +211,8 @@ HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInst
         $scope.ServiceProvider.ServiceProviderTypeId = $scope.SelectedServiceProviderType.Id;
        
         $scope.ServiceProvider.ServiceProviderType = { Id: $scope.SelectedServiceProviderType.Id };
-        $scope.ServiceProvider.DepartmentId = 205;
-        $scope.ServiceProvider.Department = { Id: 205 }
+       
+        $scope.ServiceProvider.Department = { Id: $scope.Departments[0].Id }
     }
 
     $scope.ok = function (file) {
@@ -482,6 +573,7 @@ HmsApp.controller("ReceiptModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.ItemId = item.ItemId;
         $scope.serviceItem.InvoiceID = null;
 
+
         if (receipt.Id == null) {
             $scope.serviceItem.ReceiptId = null;
             $scope.serviceItem.ServiceListPrice = item.ServiceListPriceAfterDiscount;
@@ -491,7 +583,7 @@ HmsApp.controller("ReceiptModalController", function ($scope, $modalInstance, $f
             $scope.serviceItem.ServiceListPrice = item.ServiceListPrice;
         }
 
-        
+        $scope.serviceItem.PatientAdmissionId = $scope.Patient.AdmissionId;
         $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
         $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;
         $scope.serviceItem.ServiceDate = ToJavaScriptDate(item.ServiceDate);
@@ -726,7 +818,8 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.Id = item.Id;
         $scope.serviceItem.PatientId = item.PatientID;
         $scope.serviceItem.ItemId = item.ItemId;
-        $scope.serviceItem.InvoiceID =null;
+        $scope.serviceItem.InvoiceID = null;
+        $scope.serviceItem.PatientAdmissionId = $scope.Patient.AdmissionId;
         $scope.serviceItem.ServiceListPrice = item.ServiceListPriceAfterDiscount;
         $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
         $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;
@@ -771,6 +864,7 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.PatientId = item.PatientID;
         $scope.serviceItem.ItemId = item.ItemId;
         $scope.serviceItem.InvoiceID = null;
+        $scope.serviceItem.PatientAdmissionId = $scope.Patient.AdmissionId;
         $scope.serviceItem.ServiceListPrice = item.ServiceListPrice;
         $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
         $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;

@@ -31,7 +31,19 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.ServiceProviderType = 56;  // which is doctor
     $scope.LabratoryItemCategoryId = 62;
     $scope.NonRegisterPatientId = 10212;
-    
+    $scope.PatientAdmission = {
+
+        Id:null,
+        PatientId: $scope.Patient.Id,
+        AdmissionDate: null,
+        DischargeDate: null,
+        ServiceProviderId: "",
+        RefererId: "",
+        DepartmentId: "",
+        BedId: null,
+        IsReleased: true,
+        Notes:""
+    };
    
    
     
@@ -238,6 +250,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                 }
                 $scope.serviceItem.ItemId = obj.Id;
                 $scope.serviceItem.InvoiceID = null;
+                $scope.serviceItem.PatientAdmissionId = $scope.Patient.AdmissionId;
                 $scope.serviceItem.ServiceListPrice = obj.Amount;
                 $scope.serviceItem.ServiceActualPrice = obj.SalePrice;
                 $scope.serviceItem.ServiceQuantity = obj.Quantity;
@@ -366,6 +379,9 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         if ($scope.Patient.DOB != null) {
             $scope.AgeCalculate();
         }
+        $scope.getPatientAdmission();
+       
+
        // $scope.$broadcast('patientchange', { "val": '' });
     };
 
@@ -414,6 +430,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         });
     };
 
+
     
 
     if ($scope.Patient) {
@@ -436,4 +453,104 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     else {
         //$scope.Patient = {};
     }
+
+
+    $scope.OpenAdmissionModal = function (size) {
+
+        
+
+        var modalInstance = $modal.open({
+            templateUrl: '/ClientCode/Template/AdmitToHospital.html',
+            size: size,
+            controller: 'HospitalAmissionModalController',
+            scope: $scope,
+            resolve:{}
+            
+        });
+        modalInstance.result.then(function (result) {
+
+            if ($scope.Patient) {
+
+                if ($scope.Patient.Id != null) {
+
+                    // $scope.
+                    $scope.getPatientAdmission();
+                    $window.location.href = '#/bedsetup/summary';
+                }
+
+            }
+
+            
+
+            console.log('Modal ok at: ' + new Date());
+           
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+
+    $scope.getPatientAdmission=function()
+    {
+        if ($scope.Patient) {
+            if ($scope.Patient.Id != null) {
+                PatientService.GetAdmission($scope.Patient.Id)
+                .success(function (data) {
+
+                    console.log(data);
+                    if (data.StatusCode == 404) {
+                        $scope.PatientAdmission = {
+
+                            Id: null,
+                            PatientId: $scope.Patient.Id,
+                            AdmissionDate: null,
+                            DischargeDate: null,
+                            ServiceProviderId: "",
+                            RefererId: "",
+                            DepartmentId: "",
+                            BedId: null,
+                            IsReleased: true
+                        };
+
+                        $scope.Patient.AdmissionId = null;
+
+                    } else {
+                        $scope.PatientAdmission = data;
+                        $scope.Patient.AdmissionId = $scope.PatientAdmission.Id;
+                    }
+
+
+                })
+                .error(function (error) {
+
+                    $scope.status = 'Unable to get Admission data: ' + error.message;
+                    console.log($scope.status);
+
+                });
+            }
+        }
+    }
+
+    $scope.DischagePatient=function()
+    {
+        $scope.PatientAdmission.DischargeDate = $filter('date')(new Date(), 'MM/dd/yy');
+        $scope.PatientAdmission.IsReleased = true;
+        $scope.PatientAdmission.AdmissionDate=ToJavaScriptDate($scope.PatientAdmission.AdmissionDate);
+        PatientService.DischagePatient( $scope.PatientAdmission)
+                .success(function (data) {
+
+                    console.log("Discharge successful");
+                    $scope.getPatientAdmission();
+
+                })
+                .error(function (error) {
+
+                            $scope.status = 'Unable to Discharge Admission: ' + error.message;
+                            console.log($scope.status);
+
+                });
+
+
+    }
+    $scope.getPatientAdmission();
+
 });

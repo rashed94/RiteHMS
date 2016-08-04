@@ -8,7 +8,8 @@
                     <img ng-src="GetImage.ashx?Name={{Patient.Photo != null && Patient.Photo != 'null' ? Patient.Photo : ''}}" width="115" height="146" alt="{{Patient.FirstName}} {{Patient.LastName}}">
                 </div>
 
-                <input name="Admit to Hospital" type="button" value="Admit to Hospital" class="sm_button">
+                <input name="Admit to Hospital" ng-show="PatientAdmission.IsReleased" type="button" value="Admit to Hospital" ng-click="OpenAdmissionModal('lg')" class="sm_button">
+                <input name="Discharge Patient" ng-hide="PatientAdmission.IsReleased" type="button" value="Discharge Patient" ng-really-message="Are you Sure you want to Discharge Patient ?" ng-really-click="takeAction()" ng-click="DischagePatient()" class="sm_button">
             </div>
             <p>&nbsp;</p>
             <div class="patient_address">

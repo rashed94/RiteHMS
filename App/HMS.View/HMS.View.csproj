@@ -146,6 +146,7 @@
     <Content Include="ClientCode\Script\Service\UserService.js" />
     <Content Include="ClientCode\Template\AddStock.html" />
     <Content Include="ClientCode\Template\Admin.html" />
+    <Content Include="ClientCode\Template\AdmitToHospital.html" />
     <Content Include="ClientCode\Template\AdvancePayment.html" />
     <Content Include="ClientCode\Template\Appointment.html" />
     <Content Include="ClientCode\Template\BedSetup.html" />

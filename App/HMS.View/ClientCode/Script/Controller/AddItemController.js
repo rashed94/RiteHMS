@@ -50,6 +50,7 @@ HmsApp.controller("AddItemController", function ($scope, $http,$filter, AddItemS
         //});
 
         /*----------------------------  TypeId 56 means doctor --------------------------------------------------*/
+        var itemid = "";
 
         return $http.get('/patient/getdoctorpartialname?name=' + name + "&typeId=" + $scope.ServiceProviderType + "&itemId=" + itemid).then(function (response) {
             var data = response.data;

@@ -351,6 +351,12 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $scope.addPatient = function (bedItem) {
         //$scope.IsPatientExist = false;
 
+        if ($scope.Patient.AdmissionId == null)
+        {
+            alert("Patient Is not Admited to hospital");
+            return;
+        }
+
         if ($scope.IsPatientExist==false) {
             $scope.PatientServiceItem = [];
             $scope.isSamePatient = 0;
@@ -407,7 +413,8 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 else {
                     $scope.serviceItem.PatientID = $scope.Patient.Id;
                     $scope.serviceItem.ItemId = bedItem.Id;
-                    $scope.serviceItem.InvoiceID = 0;
+                    $scope.serviceItem.InvoiceID = null;
+                    $scope.serviceItem.PatientAdmissionId = $scope.Patient.AdmissionId;
                     $scope.serviceItem.ServiceListPrice = bedItem.SalePrice;
                     $scope.serviceItem.ServiceActualPrice = bedItem.SalePrice;
                     $scope.serviceItem.ServiceQuantity = 1;
@@ -444,7 +451,9 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                         $scope.addPatientSuccess = 1;
                         $scope.serviceItemEmpty();
                         //$scope.loadItems();
-                        $scope.loaditembyCategory();
+                        $scope.occupyBed(bedItem);
+                        
+                       
 
                     })
                     .error(function (error) {
@@ -452,7 +461,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                         console.log($scope.status);
                     });
 
-                    $scope.occupyBed(bedItem);
+                    
 
 
                 }
@@ -470,6 +479,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         $scope.BedOccupancyCollection = [];
 
         $scope.BedOccupancy.ItemID = bedItem.Id;
+        $scope.BedOccupancy.AdmissioinId = $scope.Patient.AdmissionId;
         $scope.BedOccupancy.PatientId = $scope.Patient.Id;
         $scope.BedOccupancy.PatientName = $scope.Patient.Name;
         $scope.BedOccupancy.Occupied = 1;
@@ -483,6 +493,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
                 console.log(data);
                 $scope.serviceItemEmpty();
+                $scope.loaditembyCategory();
 
             })
             .error(function (error) {
@@ -512,11 +523,12 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         $scope.bedOccupancyItem = {};
 
         $scope.bedOccupancyItem.Id = bedItem.BedOccupancies[0].Id;
-        $scope.bedOccupancyItem.ItemID = bedItem.Id;
+        $scope.bedOccupancyItem.ItemID = bedItem.BedOccupancies[0].ItemID;
+        $scope.bedOccupancyItem.AdmissioinId = $scope.Patient.AdmissionId;
         $scope.bedOccupancyItem.Occupied = 0;
-        $scope.bedOccupancyItem.PatientId = '';
-        $scope.bedOccupancyItem.PatientName = '';
-        $scope.bedOccupancyItem.Active = 1;
+        $scope.bedOccupancyItem.PatientId = bedItem.BedOccupancies[0].PatientId;
+        $scope.bedOccupancyItem.PatientName = bedItem.BedOccupancies[0].PatientName;
+        $scope.bedOccupancyItem.Active = 0;
 
         BedSetupService.emptyBed($scope.bedOccupancyItem)
             .success(function (data) {
