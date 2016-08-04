@@ -1,0 +1,16 @@
+﻿
+    {
+        "Configuration": {
+            "NonRegisterPatientId": 10212,
+            "DoctorTypeId": 56,
+            "InititalSetupHospitalAdmission": 101,
+            "MedicalTypeDrug": 60,
+            "MedicalTypeTreatment": 61,
+            "MedicalTypeLabTest": 62,
+            "MedicalTypeSurgery": 63,
+            "MedicalTypeBed": 64,
+            "MedicalTypeOther": 65,
+            "InventoryItem": 32,
+            "ServiceItem": 31
+        }
+    }

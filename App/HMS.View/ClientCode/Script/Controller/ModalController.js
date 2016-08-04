@@ -29,7 +29,7 @@ HmsApp.controller("PharmacyStockModelController", function ($scope, $modalInstan
 HmsApp.controller("HospitalAmissionModalController", function ($scope, $modalInstance, $http, $filter, ConfigurationService, PatientService) {
 
 
-    $scope.ServiceProviderType = 56;
+
     $scope.Admission = {
         PatientId: $scope.Patient.Id,
         AdmissionDate: $filter('date')(new Date(), 'yyyy-MM-dd'),
@@ -42,7 +42,7 @@ HmsApp.controller("HospitalAmissionModalController", function ($scope, $modalIns
         Notes:""
 
     }
-    $scope.InititalSetupId = 101;
+    
 
 
     ConfigurationService.GetDepartments()
@@ -127,7 +127,7 @@ HmsApp.controller("OtherServicesModalController", function ($scope, $modalInstan
         GenericName: "",
         Code: "",
         ItemTypeId: 31,
-        MedicalTypeId: 65,
+        MedicalTypeId: $scope.medicalTypeID,
         ItemCategoryId: null,
         MeasurementUnitId: null,
         SalePrice: "",
@@ -476,7 +476,7 @@ HmsApp.controller("CommissionModalController", function ($scope, $http, $modalIn
 
         /*----------------------------  TypeId 56 means doctor --------------------------------------------------*/
 
-        return $http.get('/patient/getdoctorbyname?name=' + name + "&typeId=" + 56).then(function (response) {
+        return $http.get('/patient/getdoctorbyname?name=' + name + "&typeId=" + $scope.ServiceProviderType).then(function (response) {
             var data = response.data;
             return response.data;
         });

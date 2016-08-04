@@ -139,6 +139,7 @@
     <Content Include="ClientCode\Script\Service\AppointmentService.js" />
     <Content Include="ClientCode\Script\Service\BedSetupService.js" />
     <Content Include="ClientCode\Script\Service\ConfigurationService.js" />
+    <Content Include="ClientCode\Script\Service\IniService.js" />
     <Content Include="ClientCode\Script\Service\ItemService.js" />
     <Content Include="ClientCode\Script\Service\LabTestLService.js" />
     <Content Include="ClientCode\Script\Service\PatientSummaryReportService.js" />
@@ -231,6 +232,7 @@
     <Content Include="Scripts\ck\plugins\wsc\LICENSE.md" />
     <Content Include="Scripts\ck\plugins\wsc\README.md" />
     <Content Include="Scripts\ck\skins\moono\readme.md" />
+    <Content Include="Configuration.json" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\ck\adapters\jquery.js" />
     <Content Include="Scripts\ck\ckeditor.js" />

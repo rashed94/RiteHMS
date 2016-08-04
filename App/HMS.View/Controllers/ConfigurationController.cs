@@ -102,11 +102,11 @@ namespace HMS.Controllers
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetDoctorsByDepartment(int departmentId)
+        public JsonResult GetDoctorsByDepartment(int departmentId, int serviceProviderType)
         {
             using (Repository<ServiceProvider> repo = new Repository<ServiceProvider>())
             {
-                List<ServiceProvider> providers = repo.GetByQuery(p => (p.ServiceProviderTypeId == 56 && p.DepartmentId == departmentId)).ToList();
+                List<ServiceProvider> providers = repo.GetByQuery(p => (p.ServiceProviderTypeId == serviceProviderType && p.DepartmentId == departmentId)).ToList();
 
                 List<ServiceProvider> cProviders = new List<ServiceProvider>();
                 providers.ForEach(p => 

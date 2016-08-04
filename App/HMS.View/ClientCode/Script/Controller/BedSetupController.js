@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 
-HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window, $filter, $modal,$route, BedSetupService, PatientService) {
+HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window, $filter, $modal, $route, BedSetupService, PatientService, IniService) {
     $scope.LabReportFormats = {};
     
     $scope.SingleBedItem = {
@@ -9,10 +9,10 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         Name: "",
         GenericName: "",
         Code: "",
-        ItemTypeId: 31,
-        MedicalTypeId: 64,
-        ItemCategoryId: 38,
-        MeasurementUnitId: 62,
+        ItemTypeId: '',
+        MedicalTypeId: '',
+        ItemCategoryId: '',
+        MeasurementUnitId:'',
         SalePrice: "",
         BuyPrice: 0.00,
         ServiceProviderId: "",
@@ -28,7 +28,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $scope.ItemCategories = {};
     $scope.LabTestGroups = {};
     $scope.MeasureMentUnits = {};
-    $scope.medicalTypeID = 64;
+    $scope.medicalTypeID='';
     $scope.LabItemEdit = false;
 
     $scope.isSamePatient = 0;
@@ -40,6 +40,9 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         CategoryId:"0"
     }
 
+ 
+    function init()
+    {
 
     $scope.$on('patientchange', function (event, args) {
         // console.log("patient changes");
@@ -50,9 +53,9 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
         if ($routeParams.tab == "bedlist") {
 
-            
+
             $scope.loadItemCategories();
-          
+
         }
 
 
@@ -144,7 +147,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 $scope.SingleBedItem = pt;
                 $scope.LoadFilterCondition();
 
-                
+
 
                 console.log(pt);
             })
@@ -209,8 +212,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     }
 
-    $scope.ReloadPage=function()
-    {
+    $scope.ReloadPage = function () {
         if (!$routeParams.id) {
             // location.reload();
             $route.reload();
@@ -221,7 +223,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
         $scope.SingleBedItem.MeasurementUnitId = 62;
         $scope.SingleBedItem.ItemCategoryId = $scope.filterCondition.ItemCategoryId;
-        $scope.SingleBedItem.LabReportGroupId =null;
+        $scope.SingleBedItem.LabReportGroupId = null;
 
 
         BedSetupService.SaveItem($scope.SingleBedItem)
@@ -325,9 +327,11 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
             $scope.checkBedOccupancy($scope.Patient.Id);
         }
         $scope.loadItemCategories();
+        $scope.loaditembyCategory();
     }
     if ($routeParams.tab == "bedlist") {
         $scope.loadItemCategories();
+        $scope.loadItems()
 
 
 
@@ -351,13 +355,12 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
     $scope.addPatient = function (bedItem) {
         //$scope.IsPatientExist = false;
 
-        if ($scope.Patient.AdmissionId == null)
-        {
+        if ($scope.Patient.AdmissionId == null) {
             alert("Patient Is not Admited to hospital");
             return;
         }
 
-        if ($scope.IsPatientExist==false) {
+        if ($scope.IsPatientExist == false) {
             $scope.PatientServiceItem = [];
             $scope.isSamePatient = 0;
 
@@ -422,7 +425,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                     $scope.serviceItem.ServiceProviderId = bedItem.ServiceProviderId;
 
 
-                    if (bedItem.MedicalTypeId == "62") {
+                    if (bedItem.MedicalTypeId == $scope.medicalTypeIDLab) {
                         $scope.serviceItem.LabStatusId = 1;
                         $scope.serviceItem.ReferralFeePaid = 0;
                     }
@@ -446,14 +449,14 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
                         console.log(data);
                         $scope.IsPatientExist = true;
-                       // $scope.UpdateTopLink('billing');
+                        // $scope.UpdateTopLink('billing');
                         //$window.location.href = '#/billing';
                         $scope.addPatientSuccess = 1;
                         $scope.serviceItemEmpty();
                         //$scope.loadItems();
                         $scope.occupyBed(bedItem);
-                        
-                       
+
+
 
                     })
                     .error(function (error) {
@@ -461,13 +464,12 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                         console.log($scope.status);
                     });
 
-                    
+
 
 
                 }
             }
-        }else
-        {
+        } else {
             $window.alert("Patient Already exist");
         }
     }
@@ -542,7 +544,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 }
 
 
-                
+
 
             })
             .error(function (error) {
@@ -571,6 +573,41 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
         });
 
     }
+  
+}
+
+
+    /*------------------------- configuration begin -------------------------*/
+
+        $scope.GetConfiguration = function () {
+
+            IniService.GetConfiguration()
+                .success(function (data) {
+
+                    $scope.Configuration = data;
+
+
+                    $scope.medicalTypeID = $scope.Configuration.Configuration.MedicalTypeBed.toString();
+                    $scope.SingleBedItem.MedicalTypeId = $scope.Configuration.Configuration.MedicalTypeBed;
+                    $scope.NonRegisterPatientId = $scope.Configuration.Configuration.NonRegisterPatientId;
+                    $scope.ServiceProviderType = $scope.Configuration.Configuration.DoctorTypeId;
+                    $scope.SingleBedItem.ItemTypeId = $scope.Configuration.Configuration.ServiceItem;
+                    $scope.medicalTypeIDLab = $scope.Configuration.Configuration.MedicalTypeLabTest.toString();
+
+                    init();
+
+                }).error(function (error) {
+
+                    $scope.status = 'Unable to Discharge Admission: ' + error.message;
+                    console.log($scope.status);
+
+                });
+
+        }
+
+        $scope.GetConfiguration();
+
+    /*------------------------- configuration end -------------------------*/
 
 
 });

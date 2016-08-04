@@ -67,8 +67,8 @@
         
     };
 
-    ConfigurationService.GetDoctorsByDepartment = function (departmentId) {
-        return $http.get('/Configuration/GetDoctorsByDepartment?departmentId=' + departmentId);
+    ConfigurationService.GetDoctorsByDepartment = function (departmentId,serviceProviderType) {
+        return $http.get('/Configuration/GetDoctorsByDepartment?departmentId=' + departmentId + "&serviceProviderType=" + serviceProviderType);
     };
 
     return ConfigurationService;

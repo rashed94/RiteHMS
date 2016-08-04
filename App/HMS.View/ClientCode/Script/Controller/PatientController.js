@@ -17,7 +17,7 @@
 //    };
 //});
 
-HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout, $window, $modal,$location, $filter, $http,$localStorage, PatientService) {
+HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout, $window, $modal, $location, $filter, $http, $localStorage, PatientService, IniService) {
     //$scope.calculateAge = function (birthday) { // birthday is a date
     //    var ageDifMs = Date.now() - birthday.getTime();
     //    var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -28,9 +28,10 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
     $scope.Patient = {};
     $scope.Patient.Photo = "";
     $scope.IsPatientLoaded = "";
-    $scope.ServiceProviderType = 56;  // which is doctor
-    $scope.LabratoryItemCategoryId = 62;
-    $scope.NonRegisterPatientId = 10212;
+    $scope.ServiceProviderType;  // which is doctor
+    $scope.LabratoryItemCategoryId
+    ;
+    $scope.NonRegisterPatientId;
     $scope.PatientAdmission = {
 
         Id:null,
@@ -45,7 +46,33 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         Notes:""
     };
    
+
+    /*------------------------- configuration begin -------------------------*/
    
+    $scope.GetConfiguration = function () {
+
+        IniService.GetConfiguration()
+            .success(function (data) {
+
+                $scope.Configuration = data;
+
+                $scope.ServiceProviderType = $scope.Configuration.Configuration.DoctorTypeId;  // which is doctor
+                $scope.LabratoryItemCategoryId = $scope.Configuration.Configuration.MedicalTypeLabTest;
+                $scope.NonRegisterPatientId = $scope.Configuration.Configuration.NonRegisterPatientId;
+                $scope.InititalSetupId = $scope.Configuration.Configuration.InititalSetupHospitalAdmission;
+
+        }).error(function (error) {
+
+                $scope.status = 'Unable to Discharge Admission: ' + error.message;
+                console.log($scope.status);
+
+        });
+
+    }
+
+    $scope.GetConfiguration();
+
+    /*------------------------- configuration end -------------------------*/
     
   /*  $scope.getRandomSpan = function () {
         return Math.floor((Math.random() * 60) + 1);
@@ -552,5 +579,8 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
 
     }
     $scope.getPatientAdmission();
+
+
+
 
 });
