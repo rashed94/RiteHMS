@@ -246,7 +246,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         $scope.loadLabTest = function () {
             if ($scope.Patient) {
                 if ($scope.Patient.Id != null) {
-                    if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+                    if (!$scope.LabTestStatus) $scope.LabTestStatus = "0";
 
                     if ($scope.patientSelection == 1) {
                         $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
@@ -256,7 +256,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
                 }
             } else {
-                if (!$scope.LabTestStatus) $scope.LabTestStatus = 0;
+                if (!$scope.LabTestStatus) $scope.LabTestStatus = "0";
                 if ($scope.patientSelection == 1) {
                     // $scope.GetInvoicesByMedicalType($scope.Patient.Id, $scope.LabTestStatus, $scope.medicalTypeID);
                 } else {
@@ -590,6 +590,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
 
                 console.log('Modal dismissed at: ' + new Date());
+               // $scope.loadLabTest();
 
             });
 
@@ -708,6 +709,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 $scope.ServiceProviderType = $scope.Configuration.Configuration.DoctorTypeId;
                 $scope.SingleLabItem.ItemTypeId = $scope.Configuration.Configuration.InventoryItem;
                 $scope.medicalTypeIDLab = $scope.Configuration.Configuration.MedicalTypeLabTest.toString();
+                $scope.LabTestStatus = "0";
 
                 init();
 

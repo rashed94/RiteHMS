@@ -132,6 +132,7 @@
     <Content Include="ClientCode\Script\Controller\PharmacyController.js" />
     <Content Include="ClientCode\Script\Controller\AdminSubMenuController.js" />
     <Content Include="ClientCode\Script\Controller\PrimaryMenuController.js" />
+    <Content Include="ClientCode\Script\Controller\SurgeryController.js" />
     <Content Include="ClientCode\Script\Controller\UserController.js" />
     <Content Include="ClientCode\Script\Directive\ConfirmationBox.js" />
     <Content Include="ClientCode\Script\Service\AddItemService.js" />
@@ -178,6 +179,7 @@
     <Content Include="ClientCode\Template\ReportTemplateResult.html" />
     <Content Include="ClientCode\Template\ReportTemplate.html" />
     <Content Include="ClientCode\Template\AdminSecondaryMenu.html" />
+    <Content Include="ClientCode\Template\Surgery.html" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\datepicker.css" />
@@ -207,12 +209,16 @@
     <Content Include="images\sitemenu_bed_hover.gif" />
     <Content Include="images\sitemenu_billing.gif" />
     <Content Include="images\sitemenu_billing_hover.gif" />
+    <Content Include="images\sitemenu_expense.gif" />
+    <Content Include="images\sitemenu_expense_hover.gif" />
     <Content Include="images\sitemenu_lab.gif" />
     <Content Include="images\sitemenu_lab_hover.gif" />
     <Content Include="images\sitemenu_patieninfo.gif" />
     <Content Include="images\sitemenu_patieninfo_hover.gif" />
     <Content Include="images\sitemenu_pharmacy.gif" />
     <Content Include="images\sitemenu_pharmacy_hover.gif" />
+    <Content Include="images\sitemenu_surgery.gif" />
+    <Content Include="images\sitemenu_surgery_hover.gif" />
     <Content Include="images\sm_button_bg.gif" />
     <Content Include="images\stethoscope.gif" />
     <Content Include="Scripts\angular-loading-spinner.js" />
@@ -471,6 +477,7 @@
     <Content Include="Scripts\ck\skins\moono\images\refresh.png" />
     <Content Include="Scripts\ck\skins\moono\images\spinner.gif" />
     <Content Include="Scripts\ck\styles.js" />
+    <Content Include="Scripts\ck\contents.css" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\ng-file-upload-shim.js" />

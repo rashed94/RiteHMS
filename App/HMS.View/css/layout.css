@@ -901,3 +901,14 @@ Table.printReceipt
     padding-bottom:80px;*/
 
 }
+
+table.report_template
+{
+    margin-left:180px;
+    margin-bottom:80px;
+    margin-top:40px;
+
+}
+table.report_template td{
+    height:25px;
+}

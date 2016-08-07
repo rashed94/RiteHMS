@@ -31,9 +31,17 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
             templateUrl: '/ClientCode/Template/Pharmacy.html',
         }).
         when('/pharmacy/:tab/:id', {
-            templateUrl: '/ClientCode/Template/Pharmacy.html',
+            templateUrl: '/ClientCode/Template/pharmacy.html',
         }).
-
+        when('/surgery', {
+            templateUrl: '/ClientCode/Template/Surgery.html',
+        }).
+        when('/surgery/:tab', {
+            templateUrl: '/ClientCode/Template/Surgery.html',
+        }).
+        when('/surgery/:tab/:id', {
+            templateUrl: '/ClientCode/Template/Surgery.html',
+        }).
         when('/billing', {
             templateUrl: '/ClientCode/Template/Billing.html',
         }).

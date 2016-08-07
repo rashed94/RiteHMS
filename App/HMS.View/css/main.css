@@ -191,7 +191,7 @@ input[type=text]:focus, textarea:focus {
 	color: #ff45f;
 	text-transform: uppercase;
     margin:0 auto;
-	width:895px;
+	width:1205px;
 	
 	
 	
@@ -271,6 +271,63 @@ padding-left:32px;
 background: url(../images/sitemenu_pharmacy.gif) no-repeat 6px 2px #80b24a;	
 padding-left:32px;	
 }
+
+
+
+
+.site_navigation li.surgery a.selected 
+{
+	background: url(../images/sitemenu_surgery_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:32px;	
+}
+.site_navigation li.surgery a:hover
+{
+background: url(../images/sitemenu_surgery_hover.gif) no-repeat 6px 2px #538e4a;	
+padding-left:32px;	
+}
+.site_navigation li.surgery a
+{
+background: url(../images/sitemenu_surgery.gif) no-repeat 6px 2px #80b24a;	
+padding-left:32px;	
+}
+
+
+
+.site_navigation li.expense a.selected 
+{
+	background: url(../images/sitemenu_expense_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:32px;	
+}
+.site_navigation li.expense a:hover
+{
+background: url(../images/sitemenu_expense_hover.gif) no-repeat 6px 2px #538e4a;	
+padding-left:32px;	
+}
+.site_navigation li.expense a
+{
+background: url(../images/sitemenu_expense.gif) no-repeat 6px 2px #80b24a;	
+padding-left:32px;	
+}
+
+
+
+.site_navigation li.report a.selected 
+{
+	background: url(../images/sitemenu_report_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:32px;	
+}
+.site_navigation li.report a:hover
+{
+background: url(../images/sitemenu_report_hover.gif) no-repeat 6px 2px #538e4a;	
+padding-left:32px;	
+}
+.site_navigation li.report a
+{
+background: url(../images/sitemenu_report.gif) no-repeat 6px 2px #80b24a;	
+padding-left:32px;	
+}
+
+
 
 
 .site_navigation li.appointment a.selected 

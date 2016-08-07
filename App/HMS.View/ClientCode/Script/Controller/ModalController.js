@@ -227,7 +227,7 @@ HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInst
 HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $http, $modalInstance, $filter, $window, isEdit, PatientServiceItem, LabTestItem, LabTestService) {
 
     $scope.InvoiceStatusUpdate = true;
-
+    $scope.Edit = true;
 
     $scope.loadSavedData = function () {
         if (CKEDITOR.instances.editor1) {
@@ -237,27 +237,33 @@ HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $h
 
 
             } else {
-                CKEDITOR.instances.editor1.setData(PatientServiceItem.ReportFormatName);
+               CKEDITOR.instances.editor1.setData(PatientServiceItem.ReportFormatName);
             }
 
         }
     }
-    $scope.LoadData = function () {
+    $scope.LoadData = function (temnplate) {
         if ($scope.labreportTemplates != null) {
-            $scope.labreportSingleTemplate = $scope.labreportTemplates[0];
+            $scope.labreportSingleTemplate = temnplate;
 
             richTextData = $scope.labreportSingleTemplate.RichContent;
             CKEDITOR.instances.editor1.setData(richTextData);
+
+            $(".chooseTemplate").addClass('hide');
+            $(".editor").removeClass('hide');
         }
     }
 
 
-    if (isEdit == "false") {
+    if (!isEdit) {
+        $scope.Edit = false;
         LabTestService.LoadLabReportbyId(PatientServiceItem.Item.Id)
             .success(function (pt) {
                 console.log(pt);
                 $scope.labreportTemplates = pt;
-                $scope.LoadData();
+                // $scope.LoadData();
+                $(".editor").addClass('hide');
+                $(".chooseTemplate").removeClass('hide');
 
             })
             .error(function (error) {
@@ -265,9 +271,22 @@ HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $h
                 console.log($scope.status);
             });
 
+    } else {
+
+        $scope.Edit = true;
+
     }
 
+    $scope.Back=function()
+    {
+        $(".editor").addClass('hide');
+        $(".chooseTemplate").removeClass('hide');
+        angular.forEach($scope.labreportTemplates, function (item) {
 
+            item.Select = false;
+
+        });
+    }
 
     $scope.ok = function (richTextData) {
 
@@ -311,17 +330,19 @@ HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $h
         LabTestService.UpdateLabStatus(PatientServiceItem, $scope.InvoiceStatusUpdate, PatientServiceItem.InvoiceID)
             .success(function (pt) {
                 console.log(pt);
-                $scope.labreportTemplates = pt;
+               // $scope.labreportTemplates = pt;
                 //$scope.LoadData();
+
+                $modalInstance.dismiss('cancel');
 
             })
             .error(function (error) {
                 $scope.status = 'Unable to load  lab report  ' + error.message;
                 console.log($scope.status);
+                $modalInstance.dismiss('cancel');
             });
 
 
-        $modalInstance.dismiss('cancel');
     };
 
 

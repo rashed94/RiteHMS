@@ -30,16 +30,37 @@
 </div>
 <div class="modal-body">
     
+    <div ng-show="labreportTemplates.length==0" style="height:80px;"><h2></he>No Report Template found for this item. Please Enter a Template first</h2></div>
 
+    <div class="chooseTemplate hide" ng-show="labreportTemplates.length>0">
+        <table width="393" border="0" class="report_template" align="center">
+            <thead>
+                <tr>
+                    <th colspan="2" align="left" height="40px;"><h2>Select A Template </h2></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="labreportTemplate in labreportTemplates">
+                <tr>
+                    <td width="57" align="center">
+                        <input type="radio" name="radio" id="radio" ng-model="labreportTemplate.Select" ng-change="LoadData(labreportTemplate)" value="radio" />
+                    </td>
+                    <td width="326">{{labreportTemplate.Name}}</td>
+                </tr>
+            </tbody>
 
-        <div class="payment">
+        </table>
+    </div>
+
+        <div class="editor">
 
             <div style="clear: both"></div>
             <div class="space"></div>
+            <div ng-hide="Edit"><a href="#" ng-click="$event.preventDefault();Back();" class="link_brown">Back</a></div>
             <div class="space"></div>
 
+          
 
-            <textarea name="editor1" id="editor1" ng-model="reportFomrat" rows="10" cols="80">
+            <textarea name="editor1" id="editor1" ng-model="reportFomrat" rows="10" cols="80" ng-init="loadSavedData();">
                 This is my textarea to be replaced with CKEditor.
             </textarea>
 
@@ -47,7 +68,7 @@
                 // Replace the <textarea id="editor1"> with a CKEditor
                 // instance, using default configuration.
                 CKEDITOR.replace('editor1');
-                
+
             </script>
 
 
@@ -58,7 +79,7 @@
                 <input name="save" type="button" value="save" class="md_button" onclick="ok(this);">
                 <input name="cancel" type="button" value="cancel" class="md_button cancel" ng-click="cancel()">
                 <div style="clear: both"></div>
-                <div class="space" ng-init="loadSavedData()"></div>
+                <div class="space"></div>
 
 
             </div>
@@ -66,4 +87,4 @@
             <div style="clear: both"></div>
         </div>
 
-</div>
+    </div>
