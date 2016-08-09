@@ -42,6 +42,24 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
         when('/surgery/:tab/:id', {
             templateUrl: '/ClientCode/Template/Surgery.html',
         }).
+        when('/doctor', {
+            templateUrl: '/ClientCode/Template/Doctor.html',
+        }).
+        when('/doctor/:tab', {
+            templateUrl: '/ClientCode/Template/Doctor.html',
+        }).
+        when('/doctor/:tab/:id', {
+            templateUrl: '/ClientCode/Template/Doctor.html',
+        }).
+        when('/expense', {
+            templateUrl: '/ClientCode/Template/Expense.html',
+        }).
+        when('/expense/:tab', {
+            templateUrl: '/ClientCode/Template/Expense.html',
+        }).
+        when('/expense/:tab/:id', {
+            templateUrl: '/ClientCode/Template/Expense.html',
+        }).
         when('/billing', {
             templateUrl: '/ClientCode/Template/Billing.html',
         }).
@@ -54,8 +72,6 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
         when('/appointment/:tab', {
             templateUrl: '/ClientCode/Template/Appointment.html',
         }).
-
-
         when('/labtest', {
             templateUrl: '/ClientCode/Template/LabTest.html',
         }).
@@ -71,7 +87,6 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
         when('/configuration/:tab', {
             templateUrl: '/ClientCode/Template/Configuration.html',
         }).
-
       when('/admin', {
           templateUrl: '/ClientCode/Template/Admin.html',
       }).
@@ -81,7 +96,13 @@ var HmsApp = angular.module('HMS', ['ngRoute', 'ui.bootstrap', 'ngFileUpload', '
       when('/admin/patientsummaryreport/:tab', {
           templateUrl: '/ClientCode/Template/PatientSummaryReport.html',
       }).
-        when('/contact/:id', {
+      when('/report', {
+          templateUrl: '/ClientCode/Template/ReportTransaction.html',
+      }).
+      when('/report/transaction/:tab', {
+          templateUrl: '/ClientCode/Template/ReportTransaction.html',
+      }).
+      when('/contact/:id', {
             templateUrl: '/ClientCode/Template/EditContact.html',
             controller: 'ContactController'
         }).

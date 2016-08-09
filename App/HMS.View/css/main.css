@@ -191,7 +191,7 @@ input[type=text]:focus, textarea:focus {
 	color: #ff45f;
 	text-transform: uppercase;
     margin:0 auto;
-	width:1205px;
+	width:1265px;
 	
 	
 	
@@ -288,6 +288,23 @@ padding-left:32px;
 .site_navigation li.surgery a
 {
 background: url(../images/sitemenu_surgery.gif) no-repeat 6px 2px #80b24a;	
+padding-left:32px;	
+}
+
+
+.site_navigation li.doctor a.selected 
+{
+	background: url(../images/sitemenu_doctor_hover.gif) no-repeat 6px 2px #538e4a;
+	padding-left:32px;	
+}
+.site_navigation li.doctor a:hover
+{
+background: url(../images/sitemenu_doctor_hover.gif) no-repeat 6px 2px #538e4a;	
+padding-left:32px;	
+}
+.site_navigation li.doctor a
+{
+background: url(../images/sitemenu_doctor.gif) no-repeat 6px 2px #80b24a;	
 padding-left:32px;	
 }
 

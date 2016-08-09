@@ -76,6 +76,27 @@ HmsApp.controller("PrimaryMenuController", function ($scope, $routeParams, $loca
                 //  $window.location.href = '#/billing';
             }
 
+            else if (link.indexOf("doctor") > -1) {
+                $('.site_navigation li a').removeClass('selected');
+                $('.site_navigation li.doctor a').addClass('selected');
+
+                //  $window.location.href = '#/billing';
+            }
+
+            else if (link.indexOf("expense") > -1) {
+                $('.site_navigation li a').removeClass('selected');
+                $('.site_navigation li.expense a').addClass('selected');
+
+                //  $window.location.href = '#/billing';
+            }
+
+            else if (link.indexOf("report") > -1) {
+                $('.site_navigation li a').removeClass('selected');
+                $('.site_navigation li.report a').addClass('selected');
+
+                //  $window.location.href = '#/billing';
+            }
+
             else {
                 $('.site_navigation li a').removeClass('selected');
                 $('.site_navigation li.patientinfo a').addClass('selected');

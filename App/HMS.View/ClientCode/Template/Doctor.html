@@ -1,0 +1,604 @@
+﻿<script>
+    $(document).ready(function () {
+        $('.appointmentDate').datepicker({
+            format: "yyyy-mm-dd",
+            startView: "day",
+            minViewMode: "day"
+        }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
+        });
+        $('.drugstartdate').datepicker({
+            format: "yyyy-mm-dd",
+            startView: "day",
+            minViewMode: "day"
+        }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
+        });
+
+        function setHeight()
+        {
+            var B = document.body,
+                H = document.documentElement,
+                height;
+
+            if (typeof document.height !== 'undefined') {
+                height = document.height // For webkit browsers
+            } else {
+                height = Math.max(B.scrollHeight, B.offsetHeight, H.clientHeight, H.scrollHeight, H.offsetHeight);
+            }
+            $('.overlay').height(height);
+        }
+
+        $('#generalInfoPop').click(function (event) {
+            //  alert("test");
+            event.preventDefault();
+            $('#popupGeneralInfo').css("visibility", "visible");
+            $('#popupGeneralInfo').css("opacity", 1);
+            setHeight();
+
+        });
+
+        $('#patientHistoryPopAlergy').click(function (event) {
+            //  alert("test");
+            event.preventDefault();
+            $('#popupPatientHistory').css("visibility", "visible");
+            $('#popupPatientHistory').css("opacity", 1);
+            setHeight();
+
+        });
+        $('#patientHistoryPopSurgery').click(function (event) {
+            //  alert("test");
+            event.preventDefault();
+            $('#popupPatientHistory').css("visibility", "visible");
+            $('#popupPatientHistory').css("opacity", 1);
+            setHeight();
+
+        });
+        $('#patientHistoryPopDiabetic').click(function (event) {
+            //  alert("test");
+            event.preventDefault();
+            $('#popupPatientHistory').css("visibility", "visible");
+            $('#popupPatientHistory').css("opacity", 1);
+            setHeight();
+
+        });
+
+
+        $("#popupGeneralInfo .close").click(function () {
+
+            $('#popupGeneralInfo').css("visibility", "hidden");
+            $('#popupGeneralInfo').css("opacity", 0);
+        });
+
+        $("#popupPatientHistory .close").click(function () {
+
+            $('#popupPatientHistory').css("visibility", "hidden");
+            $('#popupPatientHistory').css("opacity", 0);
+        });
+
+    });
+</script>
+
+
+
+<div class="container_secondary_tab" style="">
+    <div class="container_secondary_tab_abs">
+        <ul class="tabs group">
+            <li class="dashboard active"><a href="#/doctor/dashboard">dashboard</a></li>
+            <li class="prescription active"><a href="#/doctor/prescription">prescription</a></li>
+            <li class="newprescription active"><a href="#/doctor/newprescription">Add New Prescription</a></li>
+            <li class="pinfo"><a href="#/doctor/pinfo">Patient Info</a></li>
+
+        </ul>
+        <div style="clear: both"></div>
+    </div>
+    <div style="clear: both"></div>
+</div>
+
+<div class="content" ng-controller="DcotorController">
+
+
+    <div id="popupGeneralInfo" class="overlay">
+        <div class="popup">
+            <h2>Enter General Info</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">×</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Height</div>
+                    <div><input type="text" class="height"></div>
+                    <div>Weight</div>
+                    <div><input type="text" class="weight"></div>
+                    <div>Blood Pressure</div>
+                    <div><input type="text" class="blood_pressure"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="saveGeneralInfo()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popupPatientHistory" class="overlay">
+        <div class="popup">
+            <h2>Enter General Info</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">×</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Category</div>
+                    <div>
+                        <select style="width: 120px;">
+
+                           <option value="orrlay" selected>Allergy</option>
+                            <option value="Surgery">Surgery</option>
+                            <option value="Diabetic">Diabetic</option>
+
+                    </select>
+
+                    </div>
+                    <div>Details</div>
+                    <div><textarea rows="4" cols="50" ></textarea><br /></div>
+                    
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="savePatientHistory()"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard hide">
+
+        
+        <div class="dashboard_container">
+            
+            
+            <div class="dashbaord_left">
+                <h2>View Appionment</h2>
+                <div class="dashboard_content">
+                    <div>Appointment Date : <input type="text" width="110" placeholder="click to show datepicker" name="appointmentDate" class="appointmentDate" ng-model="appointment"></div>
+                     
+                </div>
+            </div>
+            <div class="dashbaord_right">
+
+                <h2>Patient Investigation Alert</h2>
+                <div class="dashboard_content">
+
+                    <table width="100%" border="0">
+                        <thead>
+                            <tr>
+                                <th width="26%" align="left">Patient</th>
+                                <th width="64%" align="left">Investigatino Name</th>
+                                <th width="10%">&nbsp;</th>
+                            </tr>
+                        <thead>
+                        <tbody>
+                            <tr>
+                                <td class="border_bottom_dashboard">Rashidul Alam</td>
+                                <td class="border_bottom_dashboard">Blood Grouping &amp; Rh typing </td>
+                                <td class="border_bottom_dashboard"><a href="#" class="fa fa-file-o fa-1_5x" aria-hidden="true"></a>&nbsp;<a class="fa fa-trash fa-1_5x" aria-hidden="true"></a></td>
+                            </tr>
+                            <tr>
+                                <td class="border_bottom_dashboard">Rashidul Alam</td>
+                                <td class="border_bottom_dashboard">Blood Grouping &amp; Rh typing </td>
+                                <td class="border_bottom_dashboard"><a href="#" class="fa fa-file-o fa-1_5x" aria-hidden="true"></a>&nbsp;<a class="fa fa-trash fa-1_5x" aria-hidden="true"></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+            <div style="clear:both;"></div>
+            <div class="horizontal_line"></div>
+
+
+        </div>
+    </div>
+    <div class="prescription hide">
+
+       <div class="inner_content">
+
+           <div class=""><a href="#" class="link_brown" id="generalInfoPop"> Add Patient's General Information</a> (will be hidden after enter general info)</div>
+           <div class="space"></div>
+           <div style="margin-left:12px;margin-top:12px;">
+
+               Height : 5'3" - Weight : 70 Kg - Blood Pressure -120,80 <a class="link_brown">Create Prescription</a> ( this will only apear after enter general info)
+
+           </div>
+
+           <div class="space"></div>
+           <div class="horizontal_line"></div>
+
+           <div class="space"></div>
+
+          
+           <div class="inner_left">
+
+               
+
+               <div class="inner_top">
+                   Select Doctor <select name="Doctor"
+                                         data-ng-model="Doctor"
+                                         style="width: 200px;"></select>
+               </div>
+
+               <table border="0" width="95%">
+                   <thead>
+                       <tr class="selected">
+                           <th width="41%" align="left">Prescription Date</th>
+                           <th width="59%" align="left">Patient Name</th>
+                       </tr>
+                   <thead>
+                   <tbody>
+                       <tr class="selected">
+                           <td>01-08-2016</td>
+                           <td>Rashidul Alam ebne rafiqul alam</td>
+                       </tr>
+                       <tr>
+                           <td>01-07-2016</td>
+                           <td>Rashidul Alam</td>
+                       </tr>
+                       <tr>
+                           <td>01-06-2016</td>
+                           <td>Rashidul Alam</td>
+                       </tr>
+                       <tr>
+                           <td>&nbsp;</td>
+                           <td>&nbsp;</td>
+                       </tr>
+                   </tbody>
+               </table>
+
+           </div>
+
+           <div class="inner_right">
+
+               <div class="margin_top_bottom align_right">
+                   <a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>
+               </div>
+
+               <div class="heading"><h2>Medication</h2></div>
+
+               <div class="content">
+                   <p>ace plus (500 mg)   - 1 tb - 0+0+1 - 12 days</p>
+                   <p>ace plus (500 mg)   - 1 tb - 0+0+1 - 12 days</p>
+                   <p>ace plus (500 mg)   - 1 tb - 0+0+1 - 12 days</p>
+                   <p>ace plus (500 mg)   - 1 tb - 0+0+1 - 12 days</p>
+
+               </div>
+
+               <div class="heading"><h2>Investigation</h2></div>
+
+               <div class="content">
+                   <p>Troponin-1,CK-MB,LDH 	Blood Test - Cardiac Enzymes <a class="link_brown">View</a></p>
+                   <p>Glucose -	Glucose <a class="link_brown">View</a></p>
+                   <p>Blood Grouping & Rh typing  -	Blood Test<a class="link_brown">View</a></p>
+                   
+
+               </div>
+
+               <div class="heading"><h2>Clinical Findings (Notes)</h2></div>
+
+               <div class="content">
+                   <ul>
+                       <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u</li>
+                       <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u</li>
+                       <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u</li>
+                       <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u</li>
+                   </ul>
+
+
+               </div>
+
+               <div class="heading"><h2>General Info</h2></div>
+
+               <div class="content">
+
+                   Height : 5'3" - Weight : 70 Kg - Blood Pressure -120,80
+
+               </div>
+
+
+           </div>
+           <div style="clear:both"></div>
+
+       </div>
+
+
+    </div>
+    <div class="newprescription hide">
+
+        <div class="inner_content clinicfinding">
+
+            <div class="margin_top_bottom align_right">
+                <a class="fa fa-print fa-2x" aria-hidden="true" href="#"></a>
+            </div>
+
+                <div class="heading"><h2>Clinical Findings (Notes)</h2></div>
+            <div class="inner_left">
+                <textarea rows="4" cols="50" ng-model="Admission.Notes"></textarea><br />
+                <input name="save" type="button" value="Add" class="md_button">
+                <div class="space"></div>
+                <div class="notes_prescription">
+                    <ul>
+
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ultricies ex ipsum, ut feugiat ante commodo sit amet.  <a class="link_brown">delete</a></li>
+
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="float_left left_margin">
+
+                <div class="heading"><h2>General Info</h2></div>
+
+                <div class="float_left gap">
+                    <div class="bottom_padding">
+                        Height
+                    </div>
+                    <div>
+                        <input type="text" width="60" name="" value="5''6" class="height">
+                    </div>
+                </div>
+                <div class="float_left gap">
+                    <div class="bottom_padding">
+                        width
+                    </div>
+                    <div>
+                        <input type="text" width="60" name="" value="60 kg" class="weight">
+                    </div>
+                </div>
+                <div class="float_left gap">
+                    <div class="bottom_padding">
+                        Blood Pressure
+                    </div>
+                    <div>
+                       
+                            <input type="text" width="60" name="" value="120,80" class="blood_pressure">
+                        
+                    </div>
+                </div>
+
+                <div style="clear:both;"></div>
+
+                <div style="padding-top:12px;">
+                    <input name="save" type="button" value="Save" class="md_button">
+                </div>
+
+                </div>
+            <div style="clear:both;"></div>
+
+            </div>
+        <div style="clear:both;"></div>
+        <div class="horizontal_line"></div>
+
+        <div class="inner_content">
+
+
+
+                <div class="inner_left">
+                    <div class="heading"><h2>Medication</h2></div>
+
+                    <div class="float_left inner_heading">Type Drug Name</div>
+                    <div class="float_left"><input class="doctor" type="text" /></div>
+                    <div style="clear:both;"></div>
+                    <div class="space"></div>
+                    <div class="float_left inner_heading">Type Drug Name(if not listed)</div>
+                    <div class="float_left"><input class="doctor" type="text" /></div>
+                    <div style="clear:both;"></div>
+
+                    <div class="space"></div>
+
+                    <div class="float_left">
+
+
+                        <div class="float_left gap">
+                            <div class="bottom_padding">
+                                Dosage
+                            </div>
+                            <div>
+                                <input type="text" value="3 tb" />
+                            </div>
+
+                        </div>
+                        <div class="float_left gap">
+                            <div class="bottom_padding">
+                                Administration
+                            </div>
+                            <div>
+                                <select style="width: 120px;">
+
+                                    <option value="orrlay" selected>Orally</option>
+                                    <option value="orrlay">S.C.</option>
+
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="float_left gap">
+                            <div class="bottom_padding">
+                                Frequency
+                            </div>
+                            <div>
+                                <input type="text" value="1+1+1" />
+                            </div>
+
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+
+                    <div style="clear:both;"></div>
+                    <div class="space"></div>
+                    <div class="space"></div>
+
+                    <div class="float_left">
+
+                        <div class="float_left gap">
+                            <div class="bottom_padding">
+                                Start Date
+                            </div>
+                            <div>
+                                <input type="text" width="110" placeholder="click to show datepicker" name="drugstartdate" class="drugstartdate">
+                            </div>
+                        </div>
+                        <div class="float_left gap">
+                            <div class="bottom_padding">
+                                Period
+                            </div>
+                            <div>
+                                <input type="text" class="sm_texbox" value="12" />
+                            </div>
+                        </div>
+                        <div class="float_left gap">
+                            <div class="bottom_padding">
+                                Type
+                            </div>
+                            <div>
+                                <select style="width: 120px;">
+
+                                    <option value="orrlay" selected>Days</option>
+                                    <option value="orrlay">Week</option>
+                                    <option value="orrlay">Month</option>
+                                    <option value="orrlay">Single Dose</option>
+                                    <option value="orrlay">Continuous</option>
+                                    <option value="orrlay">When Needed</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="clear:both;"></div>
+                    </div>
+
+                    <div style="clear:both;"></div>
+
+                    <div class="space"></div>
+                    <div class="space"></div>
+                    <div class="space"></div>
+
+                    <input name="save" type="button" value="Add" class="md_button">
+
+                    <div class="druglist_prescription">
+
+                        <ul>
+
+                            <li>ace plus (500 mg)   - 1 tb - 0+0+1 - 12 days <a class="link_brown">delete</a></li>
+                            <li>ace plus (500 mg)   - 1 tb - 0+0+1 - 12 days <a class="link_brown">delete</a></li>
+                            <li>ace plus (500 mg)   - 1 tb - 0+0+1 - 12 days<a class="link_brown">delete</a></li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="inner_right">
+
+                    <div class="heading"><h2>Investigation</h2></div>
+
+                    <div class="float_left inner_heading">Type Investigation Name</div>
+                    <div class="float_left"><input type="text" class="investigation" /></div>
+                    <div style="clear:both;"></div>
+                    <div class="space"></div>
+
+                    <div class="float_left inner_heading">Type Investigation Name(if not listed)</div>
+                    <div class="float_left"><input class="investigation" type="text" /></div>
+                    <div style="clear:both"></div>
+
+                    <div class="space"></div>
+                    <div class="space"></div>
+
+                    <div class="druglist_prescription">
+
+                        <ul>
+
+                            <li>Troponin-1,CK-MB,LDH -	(Blood Test) <a class="link_brown">delete</a>  [ Notification Alert <input type="checkbox" name="test"> ]</li>
+                            <li>Glucose -	(Glucose Test)  <a class="link_brown">delete</a> [ Notification Alert <input type="checkbox" name="test"> ]</li>
+                            <li>Blood Grouping & Rh typing  -	(Blood Test)<a class="link_brown">delete</a> [ Notification Alert <input type="checkbox" name="test"> ]</li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div style="clear:both;"></div>
+
+            </div>
+
+        </div>
+    <div class="pinfo hide">
+
+        <div class="inner_content">
+
+            <div class="inner_left">
+
+                <a href="#" class="link_brown" id="patientHistoryPopAlergy"> Add Allergy Information</a>
+
+                <div class="heading"><h2>Allergy</h2></div>
+
+                <div class="content">
+                    <ul>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li> 
+                    </ul>
+
+
+                </div>
+
+
+            </div>
+            <div class="inner_right">
+
+                <a href="#" class="link_brown" id="patientHistoryPopSurgery"> Add Surgery Information</a>
+
+
+                <div class="heading"><h2>Surgery</h2></div>
+
+                <div class="content">
+                    <ul>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li> 
+                    </ul>
+
+
+                </div>
+
+            </div>
+
+            <div style="clear:both;"></div>
+            <div class="horizontal_line"></div>
+
+            <div class="inner_left">
+
+                <a href="#" class="link_brown" id="patientHistoryPopDiabetic"> Add Diabetic Information</a>
+
+                <div class="heading"><h2>Diabetic</h2></div>
+
+                <div class="content">
+                    <ul>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li> 
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li>
+                        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris u <a class="link_brown">Delete</a></li> 
+                    </ul>
+
+
+                </div>
+
+
+            </div>
+            <div style="clear:both;"></div>
+
+
+        </div>
+
+
+    </div>
+</div>
