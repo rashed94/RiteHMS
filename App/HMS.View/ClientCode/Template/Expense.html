@@ -102,14 +102,14 @@
     <div class="addexpense hide">
 
         <div class="round_box box_general" ng-class="{true: 'error'}[submitted && form1.name.$invalid]">
-            <table width="95%" border="1" ng-model="SingleItem">
+            <table width="95%" border="1" ng-model="Expense">
 
 
 
                 <tr>
-                    <td height="39">&nbsp;</td>
-                    <td>CATEGORY</td>
-                    <td colspan="2">
+                    <td width="27%" height="39">&nbsp;</td>
+                    <td width="9%">Category</td>
+                    <td width="64%" colspan="2">
 
                         <select ng-model="filterCondition.ItemCategoryId">
 
@@ -125,7 +125,12 @@
                 <tr>
                     <td height="39">&nbsp;</td>
                     <td>Amount</td>
-                    <td colspan="2"><input type="text" ng-model="SingleItem.SalePrice"></td>
+                    <td colspan="2"><input type="text" ng-model="Expense.SalePrice"></td>
+                </tr>
+                <tr>
+                    <td height="39">&nbsp;</td>
+                    <td>Description</td>
+                    <td colspan="2"><textarea rows="4" cols="50" ng-model="Expense.Description"></textarea></td>
                 </tr>
 
                 <tr>
@@ -142,6 +147,6 @@
                     </td>
                 </tr>
             </table>
-        </div>
+         </div>
     </div>
 </div>

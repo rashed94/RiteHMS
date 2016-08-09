@@ -23,6 +23,10 @@ namespace HMS.DAL
         protected virtual DbSet<DrugAdministration> DrugAdministrations { get; set; }
         protected virtual DbSet<DrugDosage> DrugDosages { get; set; }
         protected virtual DbSet<DrugFrequency> DrugFrequencies { get; set; }
+
+        protected virtual DbSet<Expense> Expense { get; set; }
+        protected virtual DbSet<ExpenseCategory> ExpenseCategory { get; set; }
+
         protected virtual DbSet<InitialSetup> InitialSetup { get; set; }
         protected virtual DbSet<InitialSetupItem> InitialSetupItem { get; set; }
         protected virtual DbSet<Inventory> Inventories { get; set; }
@@ -48,6 +52,9 @@ namespace HMS.DAL
         protected virtual DbSet<Payment> Payments { get; set; }
         protected virtual DbSet<PaymentMethod> PaymentMethod { get; set; }
         protected virtual DbSet<PaymentType> PaymentTypes { get; set; }
+        protected virtual DbSet<PeriodType> PeriodType { get; set; }
+        protected virtual DbSet<Prescription> Prescription { get; set; }
+        protected virtual DbSet<PrescriptionItem> PrescriptionItem { get; set; }
         protected virtual DbSet<ReceiptPayment> ReceiptPayments { get; set; }
         protected virtual DbSet<Referral> Referrals { get; set; }
         protected virtual DbSet<Refund> Refunds { get; set; }

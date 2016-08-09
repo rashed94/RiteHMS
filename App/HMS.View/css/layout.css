@@ -947,6 +947,11 @@ table.report_template td{
 {
     margin-top:20px;
 }
+.dashboard_content table
+{
+    border-collapse:separate;
+}
+
 .dashboard_content th
 {
     font-weight:bold;
@@ -958,14 +963,11 @@ table.report_template td{
 .dashboard_content  tbody td {
 
     padding:6px 0px 6px 0px;
-
+    border-bottom: 1px solid #eae7e7;
   
 }
 
-.border_bottom_dashboard
-{
- border-bottom: 1px solid #f0f0f0;
-}
+
 
 .dashboard_content table a{
 
