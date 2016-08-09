@@ -99,6 +99,9 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
             });
         };
 
+
+
+
         $scope.DeleteServiceProvider = function (serviceProvider) {
             var reallyDelete = confirm('Really delete this provider?');
             if (reallyDelete) {
@@ -139,6 +142,33 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
                 console.log('Modal dismissed at: ' + new Date());
             });
         };
+
+        $scope.TreatmentModal = function (size, item) {
+
+            if (item == "") item = { Id: null };
+
+            var modalInstance = $modal.open({
+                templateUrl: '/ClientCode/Template/EditTreatment.html',
+                size: size,
+                controller: 'TreatmentModalController',
+                scope: $scope,
+                resolve: {
+                    item: function () {
+                        return item;
+                    }
+                }
+            });
+            modalInstance.result.then(function (result) {
+
+                console.log('Modal ok at: ' + new Date());
+                $scope.loadItems();
+            }, function () {
+                console.log('Modal dismissed at: ' + new Date());
+            });
+        };
+
+
+
         function prepareOtherServiceDataModel() {
             angular.forEach($scope.Items, function (obj) {
 
@@ -275,6 +305,7 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
 
 
                 $scope.medicalTypeID = $scope.Configuration.Configuration.MedicalTypeOther.toString();
+                $scope.medicalTypeIDTreatment = $scope.Configuration.Configuration.MedicalTypeTreatment.toString();
                 $scope.NonRegisterPatientId = $scope.Configuration.Configuration.NonRegisterPatientId;
                 $scope.HospitalAdmissionId = $scope.Configuration.Configuration.InititalSetupHospitalAdmission;
                 init();

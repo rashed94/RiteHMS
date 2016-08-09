@@ -174,6 +174,63 @@ HmsApp.controller("OtherServicesModalController", function ($scope, $modalInstan
 
 
 
+HmsApp.controller("TreatmentModalController", function ($scope, $modalInstance, item, ItemService) {
+
+
+
+    $scope.Treatment = {
+        id: 0,
+        Name: "",
+        GenericName: "",
+        Code: "",
+        ItemTypeId: 31,
+        MedicalTypeId: $scope.medicalTypeIDTreatment,
+        ItemCategoryId: null,
+        MeasurementUnitId: null,
+        SalePrice: "",
+        BuyPrice: 0.00,
+        ServiceProviderId: "",
+        ReferralAllowed: 0,
+        Description: "",
+        DefaultReferrarFee: "",
+        LabReportGroupId: "",
+
+
+    };
+
+    if (item.Id != null) {
+        $scope.Treatment = item;
+    }
+
+    $scope.ok = function () {
+
+        $scope.Treatment.BedOccupancies = null;
+        $scope.Treatment.ItemCategory = null;
+        ItemService.SaveItem($scope.Treatment)
+        .success(function (data) {
+
+            //$scope.loadItembyId(data);
+            $scope.saveSuccess = 1;
+            console.log("Save successfull");
+            $modalInstance.close();
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+
+
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+
+});
+
+
+
 HmsApp.controller("PrintInvoiceModalController", function ($scope, $modalInstance, singleInvoice) {
 
     $scope.singleinvoice = singleInvoice;

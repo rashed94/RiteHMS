@@ -4,6 +4,8 @@
             <li class="copayer active"><a href="#/configuration/copayer">COPAYER SETUP</a></li>
             <li class="serviceprovider"><a href="#/configuration/serviceprovider">ADD SERVICE PROVIDER</a></li>
             <li class="OtherServices"><a href="#/configuration/OtherServices">ADD OTHER SERVICES</a></li>
+            <li class="treatment"><a href="#/configuration/treatment">ADD Treatment</a></li>
+
 
         </ul>
         <div style="clear: both"></div>
@@ -241,4 +243,41 @@
 
 
     </div>
+
+    <div class="treatment hide">
+
+        <div style="padding-top:12px; padding-bottom:20px;">
+            <input name="ADD OTHER SERVICES" type="button" value="ADD TREATMENT" class="sm_button" ng-click="TreatmentModal('lg','')">
+        </div>
+
+        <table width="100%" border="1" align="center" class="bordered" ng-model="TreatmentItems">
+            <thead>
+                <tr>
+                    <th width="24%">Name</th>
+                    <th colspan="6">Price</th>
+                    <th width="62%">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in TreatmentItems">
+                    <td>{{item.Name}} </td>
+                    <td colspan="6">{{item.SalePrice}}   </td>
+
+                    <td>
+                        <a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteTreatment(item);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>
+                        &nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-click="TreatmentModal('lg',item)"></a>
+                    </td>
+                </tr>
+
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+
+
+    </div>
+
+
+
+
 </div>

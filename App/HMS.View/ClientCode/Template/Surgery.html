@@ -1,8 +1,37 @@
-﻿<div class="container_secondary_tab" style="">
+﻿
+<script>
+
+
+    $(document).ready(function () {
+
+
+        $('#categoryPop').click(function (event) {
+            //  alert("test");
+            event.preventDefault();
+            $('#popupCategory').css("visibility", "visible");
+            $('#popupCategory').css("opacity", 1);
+
+        });
+
+
+        
+
+        $("#popupCategory .close").click(function () {
+
+            $('#popupCategory').css("visibility", "hidden");
+            $('#popupCategory').css("opacity", 0);
+        });
+
+    });
+
+
+ </script>
+
+<div class="container_secondary_tab" style="">
     <div class="container_secondary_tab_abs">
         <ul class="tabs group">
             <li class="summary active"><a href="#/surgery/summary">SUMMARY</a></li>
-            <li class="addpsurgery"><a href="#/surgery/addpsurgery">ADD/EDIT PHARMACY</a></li>
+            <li class="addpsurgery"><a href="#/surgery/addpsurgery">ADD/EDIT SURGERY ITEM</a></li>
 
         </ul>
         <div style="clear: both"></div>
@@ -11,12 +40,129 @@
 </div>
 
 <div class="content" ng-controller="SurgeryController">
+
+    <div id="popupCategory" class="overlay">
+        <div class="popup">
+            <h2>Enter Category</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">×</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Category Name</div>
+                    <div><input type="text" ng-model="categoryName"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="saveCategory()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="summary hide">
 
-        demo
+        <div class="criteria_box">
+
+
+            <select ng-model="filterCondition.CategoryId" ng-change="loadItems()">
+
+                <option ng-selected="true" value="0"> All</option>
+                <option ng-repeat="category in ItemCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+
+            </select>
+        </div>
+        <table width="100%" border="1" align="center" class="bordered" ng-model="items">
+            <thead>
+                <tr>
+                    <th width="36%">Surgery Item Name</th>
+                    <th colspan="6">Category</th>
+                    <th width="17%">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in items">
+                    <td>{{item.Name}} </td>
+                    <td colspan="6">{{item.ItemCategory.Name}}   </td>
+                    <!--<td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/pharmacy/addpharmacy/{{labitem.Id}}"></a></td>-->
+
+                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteItem(item.Id);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/surgery/addpsurgery/{{item.Id}}"></a></td>
+                </tr>
+
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+
+
     </div>
     <div class="addpsurgery hide">
 
-        demo
+        <form name="form1">
+            <!--<form name="loginform" novalidate ng-submit="login.submit(loginForm)" class="css-form">-->
+            <div class="round_box box_general" ng-class="{true: 'error'}[submitted && form1.name.$invalid]">
+                <table width="95%" border="1" ng-model="SingleItem">
+                    <tr>
+                        <td width="14%" height="39">&nbsp;</td>
+                        <td width="19%">NAME</td>
+                        <td width="19%">
+                            <input type="text" ng-model="SingleItem.Name" required name="name">
+                            <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
+                            <div ng-show="form1.name.$invalid">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </td>
+                        <td width="48%"></td>
+                        <!--<td><span ng-show="!SingleItem.Name.length">Please enter something!</span></td>-->
+                    </tr>
+
+
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CODE</td>
+                        <td colspan="2">
+                            <input type="text" ng-model="SingleItem.Code"  name="code">
+                         </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CATEGORY</td>
+                        <td colspan="2">
+
+                            <select ng-model="filterCondition.ItemCategoryId">
+
+                                <option ng-repeat="category in TestCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+                            </select>
+                            <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
+
+
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CHARGE PRICE</td>
+                        <td colspan="2"><input type="text" ng-model="SingleItem.SalePrice"></td>
+                    </tr>
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td colspan="3">
+                            <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();" ng-disabled="form1.$invalid">
+                            <!--<input name="save" type="submit" value="save" class="md_button" ng-click="submitted = true;saveItem();">-->
+                            <input name="cancel" type="button" value="cancel" class="md_button">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
     </div>
  </div>

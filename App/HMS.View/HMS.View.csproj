@@ -168,6 +168,7 @@
     <Content Include="ClientCode\Template\EditOtherServices.html" />
     <Content Include="ClientCode\Template\EditPatient.html" />
     <Content Include="ClientCode\Template\EditServiceProvider.html" />
+    <Content Include="ClientCode\Template\EditTreatment.html" />
     <Content Include="ClientCode\Template\Expense.html" />
     <Content Include="ClientCode\Template\PrintReceipt.html" />
     <Content Include="ClientCode\Template\Receipt.html" />
