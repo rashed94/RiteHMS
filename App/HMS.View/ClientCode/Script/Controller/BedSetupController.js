@@ -126,7 +126,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                 $scope.ItemCategories = pt;
                 //$scope.filterCondition.ItemCategoryId = $scope.ItemCategories[1].Id;
 
-                if (!$routeParams.id) {
+                if (!$routeParams.id && $scope.ItemCategories.length > 0) {
                     $scope.filterCondition.ItemCategoryId = $scope.ItemCategories[0].Id.toString();
                 }
 

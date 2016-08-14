@@ -307,7 +307,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                     //$scope.LabTestCategories = pt;
                     $scope.LabTestCategories = pt;
 
-                    if (!$routeParams.id) {
+                    if (!$routeParams.id && $scope.LabTestCategories.length>0) {
                         $scope.filterCondition.ItemCategoryId = $scope.LabTestCategories[0].Id.toString();
                     }
 

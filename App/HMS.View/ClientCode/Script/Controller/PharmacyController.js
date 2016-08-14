@@ -229,7 +229,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
                  .success(function (pt) {
                      //$scope.TestCategories = pt;
                      $scope.TestCategories = pt;
-                     if (!$routeParams.id) {
+                     if (!$routeParams.id && $scope.TestCategories.length>0) {
                          $scope.filterCondition.ItemCategoryId = $scope.TestCategories[0].Id.toString();
                      }
 

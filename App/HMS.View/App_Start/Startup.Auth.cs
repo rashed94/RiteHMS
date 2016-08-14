@@ -17,6 +17,7 @@ namespace HMS.View
             {
                 AuthenticationType = "ApplicationCookie",
                 LoginPath = new PathString("/Login/Login")
+                
             });
         }
     }
