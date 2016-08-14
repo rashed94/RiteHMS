@@ -23,6 +23,9 @@ namespace HMS.Model.Core
         public long? DepartmentId { get; set; }
         public long? BedId { get; set; }
         public bool IsReleased { get; set; }
+        public long? DischargeApprovalStatusId { get; set; }
+        public string DischargeNote { get; set; }
+        public long? ApprovedUserId { get; set; }
         public string Notes { get; set; }
 
 
@@ -34,6 +37,8 @@ namespace HMS.Model.Core
         public virtual Patient Patient { get; set; }
         [ForeignKey("BedId")]
         public virtual Item Item { get; set; }
+        [ForeignKey("DischargeApprovalStatusId")]
+        public virtual DischargeApprovalStatus DischargeApprovalStatus { get; set; }
 
         public virtual ICollection<PatientService> PatientServices { get; set; }
 

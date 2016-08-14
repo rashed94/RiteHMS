@@ -63,7 +63,7 @@
             <select ng-model="filterCondition.CategoryId" ng-change="loadItems()">
 
                 <option ng-selected="true" value="0"> All</option>
-                <option ng-repeat="category in ItemCategories" value="{{category.Id}}"> {{category.Name}}</option>
+                <option ng-repeat="category in SurgeryCategories" value="{{category.Id}}"> {{category.Name}}</option>
 
 
             </select>
@@ -82,7 +82,7 @@
                     <td colspan="6">{{item.ItemCategory.Name}}   </td>
                     <!--<td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/pharmacy/addpharmacy/{{labitem.Id}}"></a></td>-->
 
-                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteItem(item.Id);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/surgery/addpsurgery/{{item.Id}}"></a></td>
+                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();DeleteItem(item.Id);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/surgery/addpsurgery/{{item.Id}}"></a></td>
                 </tr>
 
             </tbody>
@@ -93,6 +93,15 @@
 
     </div>
     <div class="addpsurgery hide">
+
+        <div class="round_box box_general" ng-show="saveSuccess>0">
+
+            <div class="success_message">Successfully Saved the Item</div>
+        </div>
+
+        <div ng-show="saveSuccess>0" class="register">
+            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" ng-href="#/surgery/addpsurgery">Add New Surgery Item</a>
+        </div>
 
         <form name="form1">
             <!--<form name="loginform" novalidate ng-submit="login.submit(loginForm)" class="css-form">-->
@@ -131,7 +140,7 @@
 
                             <select ng-model="filterCondition.ItemCategoryId">
 
-                                <option ng-repeat="category in TestCategories" value="{{category.Id}}"> {{category.Name}}</option>
+                                <option ng-repeat="category in SurgeryCategories" value="{{category.Id}}"> {{category.Name}}</option>
 
                             </select>
                             <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>

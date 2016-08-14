@@ -253,19 +253,21 @@
         <table width="100%" border="1" align="center" class="bordered" ng-model="TreatmentItems">
             <thead>
                 <tr>
-                    <th width="24%">Name</th>
+                    <th width="20%">Name</th>
+                    <th width="30%">Category</th>
                     <th colspan="6">Price</th>
-                    <th width="62%">&nbsp;</th>
+                    <th width="31%">&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in TreatmentItems">
-                    <td>{{item.Name}} </td>
-                    <td colspan="6">{{item.SalePrice}}   </td>
+                <tr ng-repeat="titem in TreatmentItems">
+                    <td>{{titem.Name}} </td>
+                    <td>{{titem.ItemCategory.Name}} </td>
+                    <td colspan="6">{{titem.SalePrice}}   </td>
 
                     <td>
-                        <a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteTreatment(item);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>
-                        &nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-click="TreatmentModal('lg',item)"></a>
+                        <a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();DeleteTreatment(titem.Id);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>
+                        &nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-click="TreatmentModal('lg',titem)"></a>
                     </td>
                 </tr>
 

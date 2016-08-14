@@ -1246,4 +1246,9 @@ margin-left:22px;
     margin-left:0px;
     
 }
+.btn_custom{
+    border-color:#ccc;
+    color:#333;
+    margin-bottom:2px;
+}
 

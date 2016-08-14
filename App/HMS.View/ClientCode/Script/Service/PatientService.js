@@ -36,8 +36,8 @@
     };
 
     
-    PatientService.DischagePatient = function ( patientAdmission) {
-        return $http.post('/Patient/DischagePatient', patientAdmission);
+    PatientService.DischagePatient = function (patientAdmission, isAdmin) {
+        return $http.post('/Patient/DischagePatient', { patientAdmission: patientAdmission, isAdmin: isAdmin });
     };
     PatientService.SavePatientServiceItem = function (patientService) {
         return $http.post('/Patient/CreatePatientService', patientService);
@@ -50,6 +50,10 @@
     PatientService.GetAdmission = function (patientId) {
         return $http.get('/Patient/GetAdmission?PatientId=' + patientId);
     };
+    PatientService.GetPatientAdmissionForApproval = function () {
+        return $http.get('/Patient/GetPatientAdmissionForApproval');
+    };
+
 
     PatientService.UploadPhoto = function (patient) {
         return $http({

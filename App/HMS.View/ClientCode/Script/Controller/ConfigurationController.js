@@ -161,7 +161,7 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
             modalInstance.result.then(function (result) {
 
                 console.log('Modal ok at: ' + new Date());
-                $scope.loadItems();
+                $scope.LoadTreatmentItems();
             }, function () {
                 console.log('Modal dismissed at: ' + new Date());
             });
@@ -212,13 +212,30 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
 
         $scope.loadItems = function () {
 
-
-
             $scope.GetOtherServices($scope.medicalTypeID);
 
+        }
 
+        $scope.LoadTreatmentItems = function () {
+
+            ItemService.LoadTreatmentItems($scope.medicalTypeIDTreatment)
+                .success(function (pt) {
+                    $scope.TreatmentItems = pt;
+                    // preparelabtestDataModel();
+                    //prepareOtherServiceDataModel();
+                    console.log(pt);
+
+
+
+                })
+                .error(function (error) {
+                    $scope.status = 'Unable to load  item data: ' + error.message;
+                    console.log($scope.status);
+                });
 
         }
+
+
 
         $scope.HospitalAdmissionDefault = function (item) {
             var initialSetupItem = {
@@ -265,7 +282,23 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
 
 
         }
+        $scope.DeleteTreatment=function(itemId)
+        {
 
+            ItemService.deleteItem(itemId)
+            .success(function (data) {
+
+
+                $scope.LoadTreatmentItems();
+                console.log("delete successfull");
+                // $modalInstance.close();
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to delete item data: ' + error.message;
+
+            });
+        }
         $scope.deleteService = function (item) {
 
             ItemService.DeleteOtherService(item, item.InitialSetupItem)
@@ -274,7 +307,7 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
 
                 $scope.GetOtherServices($scope.medicalTypeID);
                 console.log("delete successfull");
-                $modalInstance.close();
+               // $modalInstance.close();
 
             })
             .error(function (error) {
@@ -288,6 +321,10 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
 
         if ($routeParams.tab == "OtherServices") {
             $scope.loadItems();
+
+        }
+        if ($routeParams.tab == "treatment") {
+            $scope.LoadTreatmentItems();
 
         }
     }

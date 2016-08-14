@@ -23,6 +23,14 @@
             $('#popupCategory').css("opacity", 0);
         });
 
+
+        $('.expensedate').datepicker({
+            format: "mm/dd/yyyy"
+        }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
+        });
+
     });
 
 
@@ -51,7 +59,7 @@
                 <div class="padding40">
                     <div>Category Name</div>
                     <div><input type="text" ng-model="categoryName"></div>
-                    <div><input name="save" type="button" value="save" class="md_button" ng-click="saveCategory()"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="SaveCategory()"></div>
                 </div>
             </div>
         </div>
@@ -62,35 +70,48 @@
         <div class="criteria_box">
 
 
-            <select ng-model="filterCondition.CategoryId" ng-change="loadItems()">
+            <select ng-model="filterCondition.CategoryId" ng-change="LoadItems()">
 
                 <option ng-selected="true" value="0"> All</option>
-                <option ng-repeat="category in ItemCategories" value="{{category.Id}}"> {{category.Name}}</option>
+                <option ng-repeat="category in Categories" value="{{category.Id}}"> {{category.Name}}</option>
 
 
             </select>
+            <div class="date_range">
+                <h2 class="padding_left10">start date</h2>
+                <input type="text" width="110" placeholder="click to show datepicker" ng-model="ExpenseDateStart" name="Expensedate" class="expensedate">
+                <h2 class="padding_left10">end date</h2>
+                <input type="text" width="110" placeholder="click to show datepicker" ng-model="ExpenseDateEnd" name="Expensedate" class="expensedate">
+
+                               
+                <button class="btn btn_custom" type="button" ng-click="LoadItems()">Go!</button>
+                
+            </div>
+    
         </div>
-        <table width="100%" border="1" align="center" class="bordered" ng-model="items">
+
+
+
+        <table width="100%" border="1" align="center" class="bordered" ng-model="Items">
             <thead>
                 <tr>
-                    <th width="36%">Expense Item Name</th>
-                    <th colspan="6">Category</th>
-                    <th colspan="6">Expense Amount</th>
+                    <th width="18%">Expense Date</th>
+                    <th width="31%">Category</th>
+                    <th width="18%">Expense Amount</th>
 
-                    <th width="17%">&nbsp;</th>
+                    <th width="33%">&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in items">
+                <tr ng-repeat="item in Items">
+                    <td>{{item.ExpenseDate}}</td>
 
-                    <td>{{item.Name}} </td>
-
-                    <td colspan="6">{{item.ItemCategory.Name}}   </td>
+                    <td>{{item.ExpenseCategory.Name}}   </td>
 
                     <!--<td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/pharmacy/addpharmacy/{{labitem.Id}}"></a></td>-->
-                    <td colspan="6">{{item.Amount}}   </td>
+                    <td>{{item.Amount}}   </td>
 
-                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteItem(item.Id);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/surgery/addpsurgery/{{item.Id}}"></a></td>
+                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();DeleteItem(item);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>		&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/expense/addexpense/{{item.Id}}"></a></td>
                 </tr>
 
             </tbody>
@@ -100,6 +121,15 @@
        
     </div>
     <div class="addexpense hide">
+
+        <div class="round_box box_general" ng-show="saveSuccess>0">
+
+            <div class="success_message">Successfully Saved the Item</div>
+        </div>
+
+        <div ng-show="saveSuccess>0" class="register">
+            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" ng-href="#/expense/addexpense">Add New Expense </a>
+        </div>
 
         <div class="round_box box_general" ng-class="{true: 'error'}[submitted && form1.name.$invalid]">
             <table width="95%" border="1" ng-model="Expense">
@@ -111,9 +141,9 @@
                     <td width="9%">Category</td>
                     <td width="64%" colspan="2">
 
-                        <select ng-model="filterCondition.ItemCategoryId">
+                        <select ng-model="filterCondition.CategoryId">
 
-                            <option ng-repeat="category in TestCategories" value="{{category.Id}}"> {{category.Name}}</option>
+                            <option ng-repeat="category in Categories" value="{{category.Id}}"> {{category.Name}}</option>
 
                         </select>
                         <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
@@ -125,7 +155,7 @@
                 <tr>
                     <td height="39">&nbsp;</td>
                     <td>Amount</td>
-                    <td colspan="2"><input type="text" ng-model="Expense.SalePrice"></td>
+                    <td colspan="2"><input type="text" ng-model="Expense.Amount"></td>
                 </tr>
                 <tr>
                     <td height="39">&nbsp;</td>
@@ -141,7 +171,7 @@
                 <tr>
                     <td height="39">&nbsp;</td>
                     <td colspan="3">
-                        <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();" ng-disabled="form1.$invalid">
+                        <input name="save" type="button" value="save" class="md_button" ng-click="SaveItem();" ng-disabled="form1.$invalid">
                         <!--<input name="save" type="submit" value="save" class="md_button" ng-click="submitted = true;saveItem();">-->
                         <input name="cancel" type="button" value="cancel" class="md_button">
                     </td>

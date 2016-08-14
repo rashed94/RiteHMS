@@ -397,6 +397,65 @@ namespace HMS.Controllers
             }
         }
 
+        public JsonResult LoadTreatmentItems(long medicalTypeID)
+        {
+            List<Item> onlyItemsforTreatment = new List<Item>();
+            List<Item> itemsforTreatment;
+
+            using (ItemRepository repository = new ItemRepository())
+            {
+                Expression<Func<Item, bool>> lambda;
+
+                lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true);
+
+                itemsforTreatment = repository.GetByQuery(lambda).ToList();
+
+                foreach (Item c in itemsforTreatment)
+                {
+                    Item TeatmentItem = new Item();
+
+
+                    TeatmentItem.Id = c.Id;
+                    TeatmentItem.Name = c.Name;
+                    TeatmentItem.GenericName = c.GenericName;
+                    TeatmentItem.Code = c.Code;
+                    TeatmentItem.ItemTypeId = c.ItemTypeId;
+                    TeatmentItem.MedicalTypeId = c.MedicalTypeId;
+                    TeatmentItem.ItemCategoryId = c.ItemCategoryId;
+                    TeatmentItem.MeasurementUnitId = c.MeasurementUnitId;
+                    TeatmentItem.SalePrice = c.SalePrice;
+                    TeatmentItem.BuyPrice = c.BuyPrice;
+                    TeatmentItem.DefaultReferrarFee = c.DefaultReferrarFee;
+                    TeatmentItem.ReferralAllowed = c.ReferralAllowed;
+                    TeatmentItem.Description = c.Description;
+                    TeatmentItem.ServiceProviderId = c.ServiceProviderId;
+                    TeatmentItem.LabReportGroupId = c.LabReportGroupId;
+                    if (c.ItemCategoryId != null)
+                    {
+                        TeatmentItem.ItemCategory = new ItemCategory();
+                        TeatmentItem.ItemCategory.Name = c.ItemCategory.Name;
+                    }
+
+
+
+                    onlyItemsforTreatment.Add(TeatmentItem);
+                }
+
+                if (onlyItemsforTreatment == null)
+                {
+                    return Json(HttpNotFound(), JsonRequestBehavior.AllowGet);
+                }
+
+
+
+
+                return Json(onlyItemsforTreatment, JsonRequestBehavior.AllowGet);
+
+            }
+
+
+        }
+
         public JsonResult GetOtherServices(long medicalTypeID)
         {
             List<Item> onlyItemsforOtherServices = new List<Item>();
@@ -412,30 +471,30 @@ namespace HMS.Controllers
 
                 foreach (Item c in itemsforOtherService)
                 {
-                    Item LabTestItem = new Item();
-                    
+                    Item OtherServiceItem = new Item();
 
-                    LabTestItem.Id = c.Id;
-                    LabTestItem.Name = c.Name;
-                    LabTestItem.GenericName = c.GenericName;
-                    LabTestItem.Code = c.Code;
-                    LabTestItem.ItemTypeId = c.ItemTypeId;
-                    LabTestItem.MedicalTypeId = c.MedicalTypeId;
-                    LabTestItem.ItemCategoryId = c.ItemCategoryId;
-                    LabTestItem.MeasurementUnitId = c.MeasurementUnitId;
-                    LabTestItem.SalePrice = c.SalePrice;
-                    LabTestItem.BuyPrice = c.BuyPrice;
-                    LabTestItem.DefaultReferrarFee = c.DefaultReferrarFee;
-                    LabTestItem.ReferralAllowed = c.ReferralAllowed;
-                    LabTestItem.Description = c.Description;
-                    LabTestItem.ServiceProviderId = c.ServiceProviderId;
-                    LabTestItem.LabReportGroupId = c.LabReportGroupId;
+
+                    OtherServiceItem.Id = c.Id;
+                    OtherServiceItem.Name = c.Name;
+                    OtherServiceItem.GenericName = c.GenericName;
+                    OtherServiceItem.Code = c.Code;
+                    OtherServiceItem.ItemTypeId = c.ItemTypeId;
+                    OtherServiceItem.MedicalTypeId = c.MedicalTypeId;
+                    OtherServiceItem.ItemCategoryId = c.ItemCategoryId;
+                    OtherServiceItem.MeasurementUnitId = c.MeasurementUnitId;
+                    OtherServiceItem.SalePrice = c.SalePrice;
+                    OtherServiceItem.BuyPrice = c.BuyPrice;
+                    OtherServiceItem.DefaultReferrarFee = c.DefaultReferrarFee;
+                    OtherServiceItem.ReferralAllowed = c.ReferralAllowed;
+                    OtherServiceItem.Description = c.Description;
+                    OtherServiceItem.ServiceProviderId = c.ServiceProviderId;
+                    OtherServiceItem.LabReportGroupId = c.LabReportGroupId;
                     if (c.ItemCategoryId != null)
                     {
-                        LabTestItem.ItemCategory.Name = c.ItemCategory.Name;
+                        OtherServiceItem.ItemCategory.Name = c.ItemCategory.Name;
                     }
 
-                    LabTestItem.InitialSetupItems = new List<InitialSetupItem>();
+                    OtherServiceItem.InitialSetupItems = new List<InitialSetupItem>();
 
                     foreach (InitialSetupItem item in c.InitialSetupItems)
                     {
@@ -447,12 +506,12 @@ namespace HMS.Controllers
                             iniItem.InitialSetupId = item.InitialSetupId;
                             iniItem.ItemId = item.ItemId;
                             iniItem.MedicalTypeId = item.MedicalTypeId;
-                            LabTestItem.InitialSetupItems.Add(iniItem);
+                            OtherServiceItem.InitialSetupItems.Add(iniItem);
                         }
                     }
-                   
 
-                    onlyItemsforOtherServices.Add(LabTestItem);
+
+                    onlyItemsforOtherServices.Add(OtherServiceItem);
                 }
 
                 if (onlyItemsforOtherServices == null)
@@ -560,12 +619,13 @@ namespace HMS.Controllers
             using (ItemCategoryRepository repository = new ItemCategoryRepository())
             {
                 category.UserId = GetLoggedinUserInfo().UserId;
-                repository.Insert(category);
-                repository.Commit();
+
+                outPutCategory = repository.Insert(category);
+                                repository.Commit();
                 // CreatePatientService(invoice.Id, patientServices);
             }
 
-            return Json("Category Insert successfull");
+            return Json(outPutCategory, JsonRequestBehavior.AllowGet);
 
         }
 

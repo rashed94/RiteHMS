@@ -20,6 +20,7 @@ namespace HMS.DAL
         protected virtual DbSet<BedOccupancy> BedOccupancies { get; set; }
         protected virtual DbSet<Contact> Contacts { get; set; }
         protected virtual DbSet<Department> Departments { get; set; }
+        protected virtual DbSet<DischargeApprovalStatus> DischargeApprovalStatus { get; set; }
         protected virtual DbSet<DrugAdministration> DrugAdministrations { get; set; }
         protected virtual DbSet<DrugDosage> DrugDosages { get; set; }
         protected virtual DbSet<DrugFrequency> DrugFrequencies { get; set; }

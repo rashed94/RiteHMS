@@ -17,7 +17,7 @@
 //    };
 //});
 
-HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout, $window, $modal, $location, $filter, $http, $localStorage, PatientService, IniService) {
+HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout, $window, $modal, $location, $filter, $http, $localStorage, PatientService,BillingService, IniService) {
     //$scope.calculateAge = function (birthday) { // birthday is a date
     //    var ageDifMs = Date.now() - birthday.getTime();
     //    var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -43,9 +43,13 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         DepartmentId: "",
         BedId: null,
         IsReleased: true,
+        DischargeApprovalStatusId: null,
+        DischargeNote:"",
         Notes:""
     };
    
+    $scope.IsDuebill = true;
+    $scope.IsShowDischarge = false;
 
     /*------------------------- configuration begin -------------------------*/
    
@@ -105,6 +109,7 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                 sessionStorage.Patient = angular.toJson($scope.Patient);
                 $scope.Patient.Name = $scope.Patient.FirstName + " " + $scope.Patient.LastName;
                 $scope.getAppointment();
+                $scope.getPatientAdmission();
 
             }
         }
@@ -543,6 +548,10 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                     } else {
                         $scope.PatientAdmission = data;
                         $scope.Patient.AdmissionId = $scope.PatientAdmission.Id;
+                        if ($scope.PatientAdmission.DischargeApprovalStatusId == 102 )
+                        {
+                            $scope.IsShowDischarge = true;
+                        }
                     }
 
 
@@ -557,16 +566,80 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
         }
     }
 
+    $scope.OpenPopUp = function (event) {
+
+        $('#popupDischarge').css("display", "block");
+        //$('#popupRefundApproval').css("opacity", 1);
+        $("#popupDischarge").css({ position: "absolute", top: event.pageY - 100, left: event.pageX - 220 });
+
+        
+
+        
+     
+            BillingService.HosipitalAdmissionbillingItem($scope.Patient.Id, $scope.PatientAdmission.Id)
+            .success(function (pt) {
+
+                $scope.getPatientAdmission();
+
+                //console.log($scope.BillingItem);
+                if (pt == 0)
+                {
+                    $scope.IsDuebill = false;
+                    $scope.IsShowDischarge = true;
+                } else
+                {
+                   
+                    $scope.IsShowDischarge = false;
+                    $scope.IsDuebill = true;
+                }
+
+                console.log("Successfully load billing data");
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load Billing data: ' + error.message;
+                console.log($scope.status);
+            });
+        
+    }
+    $scope.AdminApprovalRequest=function()
+    {
+        
+       
+        $scope.PatientAdmission.AdmissionDate=ToJavaScriptDate($scope.PatientAdmission.AdmissionDate);
+        $scope.PatientAdmission.DischargeApprovalStatusId=101;
+
+        PatientService.DischagePatient( $scope.PatientAdmission,false)
+                .success(function (data) {
+
+                    console.log("request sent successful");
+
+                    $('#popupDischarge').css("display", "none");
+
+                    $scope.getPatientAdmission();
+
+                })
+                .error(function (error) {
+
+                    $scope.status = 'Unable to Discharge Admission: ' + error.message;
+                    console.log($scope.status);
+
+                });
+
+
+    }
+   
+   
     $scope.DischagePatient=function()
     {
         $scope.PatientAdmission.DischargeDate = $filter('date')(new Date(), 'MM/dd/yy');
         $scope.PatientAdmission.IsReleased = true;
         $scope.PatientAdmission.AdmissionDate=ToJavaScriptDate($scope.PatientAdmission.AdmissionDate);
-        PatientService.DischagePatient( $scope.PatientAdmission)
+        PatientService.DischagePatient( $scope.PatientAdmission,false)
                 .success(function (data) {
 
                     console.log("Discharge successful");
                     $scope.getPatientAdmission();
+                    $('#popupDischarge').css("display", "none");
 
                 })
                 .error(function (error) {

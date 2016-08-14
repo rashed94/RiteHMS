@@ -32,6 +32,12 @@
     };
 
 
+    ItemService.LoadTreatmentItems = function (medicalType) {
+        //return $http.get('/Billing/GetInvoicesByPatientId?id=' + patientid + "&statusid=1" );
+
+        return $http.get('/Item/LoadTreatmentItems?medicalTypeID=' + medicalType);
+    };
+
 
     ItemService.loadItembyId = function (itemID) {
 

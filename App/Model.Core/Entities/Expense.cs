@@ -9,6 +9,8 @@ namespace HMS.Model.Core
         public long ExpenseCategoryId { get; set; }
         public decimal Amount { get; set; }
         public System.DateTime ExpenseDate { get; set; }
+        public System.DateTime? ModifiedDate { get; set; }
+        
         public string Description { get; set; }
       
 

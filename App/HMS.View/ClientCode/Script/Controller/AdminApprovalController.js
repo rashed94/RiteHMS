@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 
-HmsApp.controller("AdminApprovalController", function ($scope, $routeParams, $window, $filter, $modal, AdminApprovalService, ItemService) {
+HmsApp.controller("AdminApprovalController", function ($scope, $routeParams, $window, $filter, $modal, AdminApprovalService,PatientService, ItemService) {
 
 
     $scope.PatientServices = {};
@@ -76,11 +76,82 @@ HmsApp.controller("AdminApprovalController", function ($scope, $routeParams, $wi
                     });
     }
 
+    $scope.GetPatientAdmissionForApproval=function()
+    {
+        PatientService.GetPatientAdmissionForApproval()
+                .success(function (data) {
+
+                    $scope.AllPatientAdmission = data;
+                    console.log("Get Admission Data successfully");
+
+                })
+                .error(function (error) {
+
+                    $scope.status = 'Unable to get Admission data: ' + error.message;
+                    console.log($scope.status);
+
+                });
+    }
+
+
+    $scope.approveDischarge = function (patientAdmission) {
+      
+     
+        patientAdmission.AdmissionDate = ToJavaScriptDate(patientAdmission.AdmissionDate);
+        patientAdmission.DischargeApprovalStatusId = 102;
+        PatientService.DischagePatient(patientAdmission,true)
+                .success(function (data) {
+
+                    console.log("approveDischarge successful");
+                    $scope.GetPatientAdmissionForApproval();
+
+                })
+                .error(function (error) {
+
+                    $scope.status = 'Unable to approveDischarge Admission: ' + error.message;
+                    console.log($scope.status);
+
+                });
+
+
+    }
+
+
+    $scope.cancelDischarge = function (patientAdmission) {
+
+
+        patientAdmission.AdmissionDate = ToJavaScriptDate(patientAdmission.AdmissionDate);
+        patientAdmission.DischargeApprovalStatusId = null;
+        patientAdmission.DischargeNote = "Discharge without payement Request Cancel by Admin";
+        PatientService.DischagePatient(patientAdmission,true)
+                .success(function (data) {
+
+                    console.log("cancelDischarge successful");
+
+                    $scope.GetPatientAdmissionForApproval();
+
+                    
+
+                })
+                .error(function (error) {
+
+                    $scope.status = 'Unable to cancelDischarge Admission: ' + error.message;
+                    console.log($scope.status);
+
+                });
+
+
+    }
 
 
     if ($routeParams.tab == "refund") {
 
         $scope.GetRefundedItem();
+    }
+
+    if ($routeParams.tab == "discharge") {
+
+        $scope.GetPatientAdmissionForApproval();
     }
 
     var tabClass = ".refund";

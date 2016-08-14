@@ -29,6 +29,11 @@
 
     };
 
+    BillingService.HosipitalAdmissionbillingItem = function (patientId, admissionId) {
+
+        return $http.get('/Billing/HosipitalAdmissionbillingItem?patientId=' + patientId + "&admissionId=" + admissionId);
+    }
+
     BillingService.SaveInvoice = function (invoice, patientServices) {
         if (invoice.Id == null) {
             invoice.PatientServices = patientServices;

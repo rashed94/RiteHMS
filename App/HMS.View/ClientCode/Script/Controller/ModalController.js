@@ -198,14 +198,68 @@ HmsApp.controller("TreatmentModalController", function ($scope, $modalInstance, 
 
     };
 
+    $scope.ItemCategories = {};
+    $scope.filterCondition={
+        ItemCategoryId:""
+        }
+    $scope.InsertedDataId = null
+
+    $scope.saveCategory = function () {
+        ItemService.CreateCategory($scope.categoryName, $scope.medicalTypeIDTreatment)
+        .success(function (data) {
+
+            $scope.loadTreatMentCategories();
+           // $scope.resetpopupFiled();
+            $scope.InsertedDataId = data.Id.toString();
+            $('#popupCategory').css("visibility", "hidden");
+            $('#popupCategory').css("opacity", 0);
+
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to save category data: ' + error.message;
+
+        });
+
+    }
+
+    $scope.loadTreatMentCategories = function () {
+        ItemService.loadTestCategories($scope.medicalTypeIDTreatment)
+             .success(function (pt) {
+                 //$scope.TestCategories = pt;
+                 $scope.ItemCategories = pt;
+                 if ($scope.ItemCategories.length > 0) {
+                     $scope.filterCondition.ItemCategoryId = $scope.ItemCategories[0].Id.toString();
+                 }
+                 if ($scope.InsertedDataId != null)
+                 {
+                     $scope.filterCondition.ItemCategoryId = $scope.InsertedDataId;
+                     $scope.InsertedDataId = null;
+                 }
+                 if (item.Id != null)
+                 {
+                     $scope.filterCondition.ItemCategoryId = $scope.Treatment.ItemCategoryId.toString();
+                 }
+
+                 console.log(pt);
+             })
+             .error(function (error) {
+                 $scope.status = 'Unable to load test category for  test only data: ' + error.message;
+                 console.log($scope.status);
+             });
+    }
+
+    $scope.loadTreatMentCategories();
+
     if (item.Id != null) {
         $scope.Treatment = item;
+        
     }
 
     $scope.ok = function () {
 
         $scope.Treatment.BedOccupancies = null;
         $scope.Treatment.ItemCategory = null;
+        $scope.Treatment.ItemCategoryId = $scope.filterCondition.ItemCategoryId;
         ItemService.SaveItem($scope.Treatment)
         .success(function (data) {
 
@@ -660,8 +714,11 @@ HmsApp.controller("ReceiptModalController", function ($scope, $modalInstance, $f
             $scope.serviceItem.ReceiptId = receipt.Id;
             $scope.serviceItem.ServiceListPrice = item.ServiceListPrice;
         }
-
-        $scope.serviceItem.PatientAdmissionId = $scope.Patient.AdmissionId;
+        if (item.PatientAdmissionId == null) {
+            $scope.serviceItem.PatientAdmissionId = $scope.Patient.AdmissionId;
+        } else {
+            $scope.serviceItem.PatientAdmissionId = item.PatientAdmissionId;
+        }
         $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
         $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;
         $scope.serviceItem.ServiceDate = ToJavaScriptDate(item.ServiceDate);
@@ -897,7 +954,11 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.PatientId = item.PatientID;
         $scope.serviceItem.ItemId = item.ItemId;
         $scope.serviceItem.InvoiceID = null;
-        $scope.serviceItem.PatientAdmissionId = $scope.Patient.AdmissionId;
+        if (item.PatientAdmissionId == null) {
+            $scope.serviceItem.PatientAdmissionId = $scope.Patient.AdmissionId;
+        } else {
+            $scope.serviceItem.PatientAdmissionId = item.PatientAdmissionId;
+        }
         $scope.serviceItem.ServiceListPrice = item.ServiceListPriceAfterDiscount;
         $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
         $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;
@@ -942,7 +1003,11 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.PatientId = item.PatientID;
         $scope.serviceItem.ItemId = item.ItemId;
         $scope.serviceItem.InvoiceID = null;
-        $scope.serviceItem.PatientAdmissionId = $scope.Patient.AdmissionId;
+        if (item.PatientAdmissionId == null) {
+            $scope.serviceItem.PatientAdmissionId = $scope.Patient.AdmissionId;
+        } else {
+            $scope.serviceItem.PatientAdmissionId = item.PatientAdmissionId;
+        }
         $scope.serviceItem.ServiceListPrice = item.ServiceListPrice;
         $scope.serviceItem.ServiceActualPrice = item.ServiceActualPrice;
         $scope.serviceItem.ServiceQuantity = item.ServiceQuantity;

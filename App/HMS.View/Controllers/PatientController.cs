@@ -66,13 +66,14 @@ namespace HMS.Controllers
                     addItem.ItemCategory = icategory;
                     addItem.Id = sitem.Id;
                     addItem.Name = sitem.Name;
-                    addItem.GenericName = sitem.ItemCategory.Name;
+                   
 
                     if (sitem.ItemCategory != null)
                     {
                         ItemCategory itemCategory = new ItemCategory();
                         addItem.ItemCategory = itemCategory;
                         addItem.ItemCategory.Name = sitem.ItemCategory.Name;
+                        addItem.GenericName = sitem.ItemCategory.Name;
                     }
 
                     addItem.Code = sitem.Code;
@@ -430,9 +431,13 @@ namespace HMS.Controllers
                         patientervice.Item.Id = cItem.Id;
                         patientervice.Item.Name = cItem.Name;
                         patientervice.Item.MedicalTypeId = cItem.MedicalTypeId;
-                        patientervice.Item.GenericName = cItem.ItemCategory.Name;
-                        patientervice.Item.ItemCategory = new ItemCategory();
-                        patientervice.Item.ItemCategory.Name = cItem.ItemCategory.Name;
+                        if (cItem.ItemCategory != null)
+                        {
+                            patientervice.Item.GenericName = cItem.ItemCategory.Name;
+
+                            patientervice.Item.ItemCategory = new ItemCategory();
+                            patientervice.Item.ItemCategory.Name = cItem.ItemCategory.Name;
+                        }
                         patientervice.Item.ReferralAllowed = cItem.ReferralAllowed;
                     }
                     
@@ -443,37 +448,47 @@ namespace HMS.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public JsonResult DischagePatient(PatientAdmission patientAdmission)
+        public JsonResult DischagePatient(PatientAdmission patientAdmission,bool isAdmin)
         {
+            patientAdmission.Patient = null;
+            patientAdmission.Department = null;
+            patientAdmission.Item = null;
+
             using (Repository<PatientAdmission> Repository = new Repository<PatientAdmission>())
             {
 
-                patientAdmission.UserId = GetLoggedinUserInfo().UserId;
-                patientAdmission.Active = false;
+                if(!isAdmin)patientAdmission.UserId = GetLoggedinUserInfo().UserId;
+
+                if (isAdmin) patientAdmission.ApprovedUserId = GetLoggedinUserInfo().UserId;
+                if(patientAdmission.IsReleased) patientAdmission.Active = false;
+
                 Repository.Update(patientAdmission);
                 Repository.Commit();
             }
-
-            using (Repository<BedOccupancy> repository = new Repository<BedOccupancy>())
+            if (patientAdmission.IsReleased)
             {
-                Expression<Func<BedOccupancy, bool>> lambda;
+                using (Repository<BedOccupancy> repository = new Repository<BedOccupancy>())
+                {
+                    Expression<Func<BedOccupancy, bool>> lambda;
 
-                lambda = (x => x.Occupied == true && x.Active == true && x.AdmissioinId == patientAdmission.Id);
+                    lambda = (x => x.Occupied == true && x.Active == true && x.AdmissioinId == patientAdmission.Id);
 
-                 List<BedOccupancy> bedlist = new List<BedOccupancy>();
-                 bedlist = repository.GetByQuery(lambda).ToList();
+                    List<BedOccupancy> bedlist = new List<BedOccupancy>();
+                    bedlist = repository.GetByQuery(lambda).ToList();
 
-              if (bedlist.Count > 0)
-              {
-                  BedOccupancy bed = new BedOccupancy();
-                  bed = bedlist[0];
-                  bed.UserId = GetLoggedinUserInfo().UserId;
-                  bed.Occupied = false;
-                  bed.Active = false;
-                  repository.Update(bed);
-                  repository.Commit();
-              }
+                    if (bedlist.Count > 0)
+                    {
+                        BedOccupancy bed = new BedOccupancy();
+                        bed = bedlist[0];
+                        bed.UserId = GetLoggedinUserInfo().UserId;
+                        bed.Occupied = false;
+                        bed.Active = false;
+                        repository.Update(bed);
+                        repository.Commit();
+                    }
 
+
+                }
             }
             return Json("Discharge successfull", JsonRequestBehavior.AllowGet);
         }
@@ -531,6 +546,68 @@ namespace HMS.Controllers
                 return Json(onlyAdmission, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult GetPatientAdmissionForApproval()
+        {
+            PatientAdmission onlyAdmission = null;
+            List<PatientAdmission> onlyAdmissionList =new List<PatientAdmission> ();
+            List<PatientAdmission> outPutAdmissionList = new List<PatientAdmission>();
+            using (Repository<PatientAdmission> Repository = new Repository<PatientAdmission>())
+            {
+                Expression<Func<PatientAdmission, bool>> lambda;
+                lambda = (x =>  x.DischargeApprovalStatusId==101 && x.IsReleased == false && x.Active == true);
+
+                onlyAdmissionList = Repository.GetByQuery(lambda).ToList();
+
+                if (onlyAdmissionList != null)
+                {
+                    foreach (PatientAdmission item in onlyAdmissionList)
+                    {
+                        onlyAdmission = new PatientAdmission();
+                        onlyAdmission.Id = item.Id;
+                        onlyAdmission.PatientId = item.PatientId;
+                        onlyAdmission.AdmissionDate = item.AdmissionDate;
+                        onlyAdmission.ServiceProviderId = item.ServiceProviderId;
+                        onlyAdmission.RefererId = item.RefererId;
+                        onlyAdmission.DepartmentId = item.DepartmentId;
+                        onlyAdmission.BedId = item.BedId;
+                        onlyAdmission.IsReleased = item.IsReleased;
+                        onlyAdmission.DischargeApprovalStatusId = item.DischargeApprovalStatusId;
+                        onlyAdmission.DischargeNote = item.DischargeNote;
+                        onlyAdmission.ApprovedUserId = item.ApprovedUserId;
+                        onlyAdmission.Notes = item.Notes;
+                        onlyAdmission.UserId = item.UserId;
+                        onlyAdmission.Active = item.Active;
+
+                        onlyAdmission.Patient = new Patient();
+                        onlyAdmission.Patient.FirstName = item.Patient.FirstName;
+                        onlyAdmission.Patient.LastName = item.Patient.LastName;
+
+                        onlyAdmission.Department = new Department();
+
+                        onlyAdmission.Department.Name = item.Department.Name;
+
+                        if (item.Item != null)
+                        {
+                            onlyAdmission.Item = new Item();
+
+                            onlyAdmission.Item.Name = item.Item.Name;
+                        }
+
+                        outPutAdmissionList.Add(onlyAdmission);
+
+
+
+                    }
+                }
+
+            }
+
+
+            return Json(outPutAdmissionList, JsonRequestBehavior.AllowGet);
+          
+        }
+
         public JsonResult GetAdmission(long PatientId)
         {
             PatientAdmission onlyAdmission=null;
@@ -555,9 +632,27 @@ namespace HMS.Controllers
                         onlyAdmission.DepartmentId = item.DepartmentId;
                         onlyAdmission.BedId = item.BedId;
                         onlyAdmission.IsReleased = item.IsReleased;
+                        onlyAdmission.DischargeApprovalStatusId = item.DischargeApprovalStatusId;
+                        onlyAdmission.DischargeNote = item.DischargeNote;
+                        onlyAdmission.ApprovedUserId = item.ApprovedUserId;
                         onlyAdmission.Notes = item.Notes;
                         onlyAdmission.UserId = item.UserId;
                         onlyAdmission.Active = item.Active;
+
+                       /* onlyAdmission.Patient = new Patient();
+                        onlyAdmission.Patient.FirstName = item.Patient.FirstName;
+                        onlyAdmission.Patient.LastName = item.Patient.LastName;
+
+                        onlyAdmission.Department = new Department();
+
+                        onlyAdmission.Department.Name = item.Department.Name;
+
+                        onlyAdmission.Item = new Item();
+
+                        onlyAdmission.Item.Name = item.Item.Name;*/
+
+                        
+
                     }
                 }
                 

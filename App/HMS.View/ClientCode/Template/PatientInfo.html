@@ -1,5 +1,59 @@
-﻿<div class="top_space"></div>
+﻿<script>
+    $("#popupDischarge .close").click(function () {
+
+        $('#popupDischarge').css("display", "none");
+
+    });
+
+</script>
+<div class="top_space"></div>
 <div class="content">
+
+    <div id="popupDischarge" class="overlay1" style="display:none;  width:500px; background:#fff;">
+        <div class="popupLight">
+            <h2>Enter Discharge Note</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">x</a>
+            <div class="content_text1">
+                <div class="padding40">
+
+                    <div ng-show="IsDuebill">
+
+                        <div ng-show="PatientAdmission.DischargeApprovalStatusId==null">
+                            <div>Patient has due bill.. Need Admin approval to discharge.</div>
+                           
+                        </div>
+                        <div ng-show="PatientAdmission.DischargeApprovalStatusId==102">
+                            <div>Patient has due bill.. (Approved by Admin)</div>
+
+                        </div>
+                        <div ng-show="PatientAdmission.DischargeApprovalStatusId==101">
+
+                            <div>Patient has due bill.. (Approved Request sent)</div>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <div ng-hide="PatientAdmission.DischargeApprovalStatusId==102 || PatientAdmission.DischargeApprovalStatusId==101">Note</div>
+                        <div ng-hide="PatientAdmission.DischargeApprovalStatusId==102 || PatientAdmission.DischargeApprovalStatusId==101" >
+                            <textarea rows="4" cols="50" ng-model="PatientAdmission.DischargeNote">
+                                .
+                            </textarea>
+                        </div>
+                        <div>
+
+                            <input ng-show="IsShowDischarge"  name="save" type="button" value="Discharge" class="md_button" ng-click="DischagePatient()">
+                            <input ng-hide="IsShowDischarge || PatientAdmission.DischargeApprovalStatusId==102 || PatientAdmission.DischargeApprovalStatusId==101" name="save" type="button" value="Sent Admin Approval Request" class="md_button" ng-click="AdminApprovalRequest()">
+
+
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+    </div>
 
     <div class="home_top">
         <div class="home_patient_details">
@@ -9,7 +63,7 @@
                 </div>
 
                 <input name="Admit to Hospital" ng-show="PatientAdmission.IsReleased" type="button" value="Admit to Hospital" ng-click="OpenAdmissionModal('lg')" class="sm_button">
-                <input name="Discharge Patient" ng-hide="PatientAdmission.IsReleased" type="button" value="Discharge Patient" ng-really-message="Are you Sure you want to Discharge Patient ?" ng-really-click="takeAction()" ng-click="DischagePatient()" class="sm_button">
+                <input name="Discharge Patient" ng-hide="PatientAdmission.IsReleased" type="button" value="Discharge Patient" ng-really-message="Are you Sure you want to Discharge Patient ?" ng-really-click="takeAction()" ng-click="$event.preventDefault();OpenPopUp($event)" class="sm_button">
             </div>
             <p>&nbsp;</p>
             <div class="patient_address">

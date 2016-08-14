@@ -39,6 +39,20 @@ namespace HMS.Controllers
             }
         }
 
+        public JsonResult HosipitalAdmissionbillingItem(long patientId, long admissionId)
+        {
+            
+            using (PatientServiceRepository repository = new PatientServiceRepository())
+            {
+                Expression<Func<PatientService, bool>> lambda;
+
+                lambda = (x => x.PatientID == patientId && x.PatientAdmissionId == admissionId && x.Active == true && (x.Billed==false || x.Billed==null));
+                List<PatientService> patientServices = repository.GetByQuery(lambda).ToList();
+
+                return Json(patientServices.Count, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public JsonResult GetAdvancePayment(long patientId)
         {
             List<Payment> OnlyAdvancePayment=new List<Payment>();
