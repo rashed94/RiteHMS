@@ -117,6 +117,7 @@
                             <div ng-show="items[$index].BedOccupancies[0].Occupied==true">{{items[$index].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index].Name}}</div>
                             <div>Charge : {{items[$index].SalePrice}}</div>
+                             <div>Category : {{items[$index].ItemCategory.Name}}</div>
                             <div>Description : {{items[$index].Description}}</div>
                             <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index]);" ng-hide="items[$index].BedOccupancies[0].Occupied==true">Add Patient</a></div>
                             <div><a class="link_brown" ng-click="$event.preventDefault();emptyBed(items[$index]);" ng-show="items[$index].BedOccupancies[0].Occupied==true">Empty Bed</a></div>
@@ -132,6 +133,7 @@
                             <div ng-show="items[$index+1].BedOccupancies[0].Occupied==true">{{items[$index+1].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+1].Name}}</div>
                             <div>Charge : {{items[$index+1].SalePrice}}</div>
+                            <div>Category : {{items[$index+1].ItemCategory.Name}}</div>
                             <div>Description : {{items[$index+1].Description}}</div>
                             <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+1]);" ng-hide="items[$index+1].BedOccupancies[0].Occupied==true">Add Patient</a></div>
                             <div><a class="link_brown" ng-click="$event.preventDefault();emptyBed(items[$index+1]);" ng-show="items[$index+1].BedOccupancies[0].Occupied==true">Empty Bed</a></div>
@@ -145,6 +147,7 @@
                             <div ng-show="items[$index+2].BedOccupancies[0].Occupied==true">{{items[$index+2].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+2].Name}}</div>
                             <div>Charge : {{items[$index+2].SalePrice}}</div>
+                            <div>Category : {{items[$index+2].ItemCategory.Name}}</div>
                             <div>Description : {{items[$index+2].Description}}</div>
                             <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+2]);" ng-hide="items[$index+2].BedOccupancies[0].Occupied==true">Add Patient</a></div>
                             <div><a class="link_brown" ng-click="$event.preventDefault();emptyBed(items[$index+2]);" ng-show="items[$index+2].BedOccupancies[0].Occupied==true">Empty Bed</a></div>
@@ -157,6 +160,7 @@
                             <div ng-show="items[$index+3].BedOccupancies[0].Occupied==true">{{items[$index+3].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+3].Name}}</div>
                             <div>Charge : {{items[$index+3].SalePrice}}</div>
+                            <div>Category : {{items[$index+3].ItemCategory.Name}}</div>
                             <div>Description : {{items[$index+3].Description}}</div>
                             <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+3]);" ng-hide="items[$index+3].BedOccupancies[0].Occupied==true">Add Patient</a></div>
                             <div><a class="link_brown" ng-click="$event.preventDefault();emptyBed(items[$index+3]);" ng-show="items[$index+3].BedOccupancies[0].Occupied==true">Empty Bed</a></div>
@@ -169,6 +173,7 @@
                             <div ng-show="items[$index+4].BedOccupancies[0].Occupied==true">{{items[$index+4].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+4].Name}}</div>
                             <div>Charge : {{items[$index+4].SalePrice}}</div>
+                            <div>Category : {{items[$index+4].ItemCategory.Name}}</div>
                             <div>Description : {{items[$index+4].Description}}</div>
                             <div><a class="link_brown" ng-click="$event.preventDefault();addPatient(items[$index+4]);" ng-hide="items[$index+4].BedOccupancies[0].Occupied==true">Add Patient</a></div>
                             <div><a class="link_brown" ng-click="$event.preventDefault();emptyBed(items[$index+4]);" ng-show="items[$index+4].BedOccupancies[0].Occupied==true">Empty Bed</a></div>

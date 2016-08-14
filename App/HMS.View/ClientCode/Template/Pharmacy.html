@@ -168,17 +168,7 @@
                             <td width="48%"></td>
                             <!--<td><span ng-show="!SingleItem.Name.length">Please enter something!</span></td>-->
                         </tr>
-                        <tr ng-show="SingleItem.Id>0">
-                            <td height="39">&nbsp;</td>
-                            <td>REPORT FORMAT</td>
-                            <td colspan="2">
-                                <!--1. X-Ray PNS - Normal Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a><br>
-                        2.  X-Ray PNS - Detail Report &nbsp;&nbsp;&nbsp; <a class="link_green" href="#">EDIT</a> <a class="link_brown" href="#">DELETE</a>-->
-                                <div ng-repeat="reportformat in ReportFormats">
-                                    <span>{{reportformat.Name}}</span><a class="link_green" href="#" ng-click="$event.preventDefault();openTemplate('lg','true',reportformat.Id)">EDIT</a> <a class="link_brown" href="#" ng-click="$event.preventDefault();DeleteReportFormat(reportformat.Id);">DELETE</a><br>
-                                </div>
-                            </td>
-                        </tr>
+
 
 
                         <tr>
