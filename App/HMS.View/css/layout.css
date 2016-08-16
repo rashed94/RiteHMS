@@ -674,7 +674,7 @@ select option:empty { display:none }
 }
 
 .appointment-doctor-bio {
-    width: 500px;
+   /* width: 500px;*/
     margin: 25px;
 }
 .appointment-doctor-speciality {
