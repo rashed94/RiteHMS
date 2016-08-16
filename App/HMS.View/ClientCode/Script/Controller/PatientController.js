@@ -317,8 +317,10 @@ HmsApp.controller("PatientController", function ($scope, $routeParams, $timeout,
                 var peviousBillingItem = [];
                 if ($scope.NonRegisterPatientId == $scope.Patient.Id) {
 
-                     
-                     peviousBillingItem = $localStorage.BillingItem;
+                    if ($localStorage.BillingItem) {
+                        peviousBillingItem = $localStorage.BillingItem;
+                    }
+
                     if (peviousBillingItem.length > 0)
                     {
                         angular.forEach(data, function (item) {

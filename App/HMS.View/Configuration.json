@@ -1,7 +1,7 @@
 ﻿
     {
         "Configuration": {
-            "NonRegisterPatientId": 10212,
+            "NonRegisterPatientId": 10213,
             "DoctorTypeId": 56,
             "InititalSetupHospitalAdmission": 101,
             "MedicalTypeDrug": 60,
