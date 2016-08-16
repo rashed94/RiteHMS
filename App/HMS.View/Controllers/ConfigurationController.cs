@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using System.Collections;
 using System.IO;
 using HMS.View.Mappers;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace HMS.Controllers
 {
@@ -52,7 +54,13 @@ namespace HMS.Controllers
         {
             using (Repository<Department> repo = new Repository<Department>())
             {
-                IList<Department> departments = (IList<Department>)repo.GetByQuery();
+
+                Expression<Func<Department, bool>> lambda;
+                lambda = (m => m.Active == true);
+
+                Func<IQueryable<Department>, IOrderedQueryable<Department>> orderingFunc = query => query.OrderBy(m => m.Name);
+
+                IList<Department> departments = (IList<Department>)repo.GetByQuery(lambda, orderingFunc);
                 IList<Department> mappedDepartments = new List<Department>();
                 departments.ToList().ForEach(d => mappedDepartments.Add(new Department { Id = d.Id, Name = d.Name }));
                 return Json(mappedDepartments, JsonRequestBehavior.AllowGet);

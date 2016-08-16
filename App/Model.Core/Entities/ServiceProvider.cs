@@ -14,6 +14,7 @@ namespace HMS.Model.Core
         }
     
         public long ContactId { get; set; }
+        public string Title { get; set; }
         public long ServiceProviderTypeId { get; set; }
         public long DepartmentId { get; set; }
         public string Speciality { get; set; }

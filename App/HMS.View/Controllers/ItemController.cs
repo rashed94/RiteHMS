@@ -720,10 +720,11 @@ namespace HMS.Controllers
             {
 
                 Expression<Func<ItemCategory, bool>> lambda;
+                Func<IQueryable<ItemCategory>, IOrderedQueryable<ItemCategory>> orderingFunc = query => query.OrderBy(m => m.Name);
 
                 lambda = (x => x.Active == true && x.MedicalTypeId == medicalTypeID);
 
-                ItemCategories = repository.GetByQuery(lambda).ToList();
+                ItemCategories = repository.GetByQuery(lambda, orderingFunc).ToList();
 
                 foreach (ItemCategory catogry in ItemCategories)
                 {
@@ -759,10 +760,11 @@ namespace HMS.Controllers
             {
 
                 Expression<Func<ItemCategory, bool>> lambda;
+                Func<IQueryable<ItemCategory>, IOrderedQueryable<ItemCategory>> orderingFunc = query => query.OrderBy(m => m.Name);
 
                 lambda = (x => x.Active == true && x.MedicalTypeId == medicalTypeID);
 
-                ItemCategories = repository.GetByQuery(lambda).ToList();
+                ItemCategories = repository.GetByQuery(lambda, orderingFunc).ToList();
 
                 foreach (ItemCategory catogry in ItemCategories)
                 {

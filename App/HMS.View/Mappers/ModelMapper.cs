@@ -13,6 +13,7 @@ namespace HMS.View.Mappers
             ServiceProvider mappedServiceProvider = new ServiceProvider {
                 Id = serviceProvider.Id,
                 Code = serviceProvider.Code,
+                Title=serviceProvider.Title,
                 AssignedToAllUsers = serviceProvider.AssignedToAllUsers,
                 Active = serviceProvider.Active,
                 ContactId = serviceProvider.ContactId,

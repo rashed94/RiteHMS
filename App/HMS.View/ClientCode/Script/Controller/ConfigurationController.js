@@ -20,8 +20,8 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
             ConfigurationService.GetServiceProviderTypes()
             .success(function (serviceProviderTypes) {
                 $scope.ServiceProviderTypes = serviceProviderTypes;
-                $scope.SelectedServiceProviderType = $scope.ServiceProviderTypes[0];
-
+              //  $scope.SelectedServiceProviderType = $scope.ServiceProviderTypes[0];
+                $scope.SelectedServiceProviderType.Id = $scope.ServiceProviderTypes[0].Id;
                 $scope.GetServiceProviders();
 
                 console.log($scope.ServiceProviderTypes);

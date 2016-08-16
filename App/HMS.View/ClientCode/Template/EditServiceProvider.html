@@ -8,6 +8,26 @@
 <div class="modal-body">
     <div class="serviceprovider_registration_contnet">
         <div class="pull-left">
+
+            <div class="input_containter">
+                <div class="title">Type</div>
+                <div class="inputbox">
+                    <select name="ServiceProviderType"
+                            class="_s_ServiceProviderType"
+                            ng-model="ServiceProvider.ServiceProviderType.Id"
+                           
+                            ng-options="type.Id as type.Name for type in ServiceProviderTypes"></select>
+                </div>
+            </div>
+
+            <div class="input_containter" ng-show="ServiceProvider.ServiceProviderType.Id==56 || ServiceProvider.ServiceProviderType.Id==57">
+                <div class="title">Title</div>
+                <div class="inputbox">
+              
+                    <input type="text" class="first_name" ng-model="ServiceProvider.Title">
+                </div>
+            </div>
+
             <div class="input_containter">
                 <div class="title">First Name</div>
                 <div class="inputbox">
@@ -29,17 +49,7 @@
                 </div>
             </div>
 
-            <div class="input_containter">
-                <div class="title">Type</div>
-                <div class="inputbox">
-                    <select name="ServiceProviderType"
-                        class="_s_ServiceProviderType"
-                        ng-model="ServiceProvider.ServiceProviderType.Id"
-                        ng-init="ServiceProvider.ServiceProviderTypeId = ServiceProvider.ServiceProviderType.Id || ServiceProviderTypes[0].Id"
-                        ng-options="type.Id as type.Name for type in ServiceProviderTypes">
-                    </select>
-                </div>
-            </div>
+
 
             <div class="input_containter">
                 <div class="title">Department</div>
@@ -125,6 +135,13 @@
                 <div class="title">Country</div>
                 <div class="inputbox">
                     <input type="text" class="country" ng-model="ServiceProvider.Contact.Country">
+                </div>
+            </div>
+
+            <div class="input_containter">
+                <div class="title">Description</div>
+                <div class="inputbox">
+                    <textarea rows="4" cols="20" ng-model="ServiceProvider.Description"></textarea> 
                 </div>
             </div>
 

@@ -172,7 +172,7 @@
                     class="_s_ServiceProviderType"
                     ng-model="SelectedServiceProviderType.Id"
                     ng-change="GetServiceProviders()"
-                    ng-init="SelectedServiceProviderType = SelectedServiceProviderType || ServiceProviderTypes[0]"
+                  
                     ng-options="type.Id as type.Name for type in ServiceProviderTypes">
             </select>
         </div>
