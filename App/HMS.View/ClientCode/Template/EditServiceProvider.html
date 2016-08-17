@@ -10,7 +10,7 @@
         <div class="pull-left">
 
             <div class="input_containter">
-                <div class="title">Type</div>
+                <div class="title"><div class="require">*</div>Type</div>
                 <div class="inputbox">
                     <select name="ServiceProviderType"
                             class="_s_ServiceProviderType"
@@ -29,14 +29,14 @@
             </div>
 
             <div class="input_containter">
-                <div class="title">First Name</div>
+                <div class="title"><div class="require">*</div>First Name</div>
                 <div class="inputbox">
                     <input type="text" class="first_name" ng-model="ServiceProvider.Contact.FirstName">
                 </div>
             </div>
 
             <div class="input_containter">
-                <div class="title">Last Name</div>
+                  <div class="title"><div class="require">*</div>Last Name</div>
                 <div class="inputbox">
                     <input type="text" class="last_name" ng-model="ServiceProvider.Contact.LastName">
                 </div>
@@ -52,7 +52,7 @@
 
 
             <div class="input_containter">
-                <div class="title">Department</div>
+                 <div class="title"><div class="require">*</div>Department</div>
                 <div class="inputbox">
                     <select name="ServiceProviderDepartment"
                         class="_s_ServiceProviderDepartment"
@@ -71,7 +71,7 @@
             </div>
 
             <div class="input_containter">
-                <div class="title">Referer?</div>
+                <div class="title"><div class="require">*</div>Referer?</div>
                 <div class="inputbox">
                     <input type="radio" name="isreferer" class="isreferer" ng-value="true" ng-model="ServiceProvider.IsReferer">Yes
                     <input type="radio" name="isreferer" class="isreferer" ng-value="false" ng-model="ServiceProvider.IsReferer">No
@@ -88,7 +88,7 @@
         </div>
         <div class="pull-left">
             <div class="input_containter">
-                <div class="title">gender</div>
+                <div class="title"><div class="require">*</div>gender</div>
                 <div class="inputbox">
                     <select name="gender" class="generaldropdown" ng-model="ServiceProvider.Contact.Gender">
                         <option ng-value="">Unspecified</option>

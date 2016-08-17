@@ -299,7 +299,7 @@
                 <table width="95%" border="1" ng-model="SingleLabItem">
                     <tr>
                         <td width="14%" height="39">&nbsp;</td>
-                        <td width="19%">NAME</td>
+                        <td width="19%"><div class="require">*</div>NAME</td>
                         <td width="19%"><input type="text" ng-model="SingleLabItem.Name"></td>
                         <td width="48%"><input ng-show="SingleLabItem.Id>0" name="report format" type="button" value="ADD NEW REPORT FORMAT" ng-click="openTemplate('lg','false',labreportformat.Id)" class="sm_button"></td>
                     </tr>
@@ -330,7 +330,7 @@
 
                     <tr>
                         <td height="39">&nbsp;</td>
-                        <td>CATEGORY</td>
+                        <td><div class="require">*</div>CATEGORY</td>
                         <td colspan="2">
 
                             <select ng-model="filterCondition.ItemCategoryId">
@@ -380,7 +380,7 @@
                     </tr>
                     <tr>
                         <td height="39">&nbsp;</td>
-                        <td>CHARGE PRICE</td>
+                        <td><div class="require">*</div>CHARGE PRICE</td>
                         <td colspan="2"><input type="text" ng-model="SingleLabItem.SalePrice"></td>
                     </tr>
                     <tr>

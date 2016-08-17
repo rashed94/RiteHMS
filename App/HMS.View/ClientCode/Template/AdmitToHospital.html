@@ -28,7 +28,7 @@
     <div class="patient_registration_contnet">
 
         <div class="input_containter">
-            <div class="title">Admission Date</div>
+            <div class="title"><div class="require">*</div>Admission Date</div>
             <div class="inputbox_patient_edit">
                 <input type="text" width="110" placeholder="click to show datepicker" name="admissiondate" class="admissiondate" ng-model="Admission.AdmissionDate">
             </div>
@@ -42,7 +42,7 @@
         </div>
 
         <div class="input_containter">
-            <div class="title">Super Vise Doctor's Name</div>
+            <div class="title"><div class="require">*</div>Super Vise Doctor's Name</div>
             <div class="inputbox_patient_edit">
                 <input name="doctorName" id="doctorName" type="text" placeholder="Type Doctor's name"
                        ng-model="SDoctor.Name"
@@ -69,7 +69,7 @@
         </div>
 
         <div class="input_containter">
-            <div class="title">Department</div><div class="inputbox_patient_edit">
+            <div class="title"><div class="require">*</div>Department</div><div class="inputbox_patient_edit">
 
             <select name="ServiceProviderDepartment"
                     class="_s_ServiceProviderDepartment"

@@ -9,7 +9,7 @@
         <table width="65%" border="1" ng-model="OtherService" align="center">
             <tr>
                 <td width="14%" height="39">&nbsp;</td>
-                <td width="19%">NAME</td>
+                <td width="25%"><div class="require">*</div>NAME</td>
                 <td width="19%">
                     <input type="text" ng-model="OtherService.Name" required name="name">
                     <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
@@ -23,7 +23,7 @@
 
             <tr>
                 <td height="39">&nbsp;</td>
-                <td>CHARGE PRICE</td>
+                <td><div class="require">*</div>CHARGE PRICE</td>
                 <td colspan="2">
                     <input type="text" ng-model="OtherService.SalePrice" required name="SalePrice">
                     <div ng-show="form1.SalePrice.$invalid">
