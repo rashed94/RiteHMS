@@ -451,6 +451,12 @@ a:active, a:focus { outline-style: none; -moz-outline-style:none; }
 	margin-right:30px;
 }
 
+.inputbox
+{
+	float:left;
+	margin-right:30px;
+}
+
 .inputbox_patient_edit input[type="text"] {
 
     width:180px;
@@ -626,6 +632,58 @@ a.link_green:hover
 {
 	margin-left:120px;
 }
+.inputbox_inner_round::before
+{
+    clear:both;
+    display:block;
+}
+
+.inputbox_inner_round ul {
+    list-style-type: disc;
+     padding-left:26px;
+}
+
+.inputbox_inner_round ul li {
+
+    line-height:20px;
+   
+}
+
+.inputbox_inner_round
+{
+    border-radius:5px;
+    border:1px solid #CCC;
+    background:#fdfdfd;
+    padding:6px;
+    margin-top:6px;
+    width:200px;
+}
+
+
+.dropdown_width_medium
+{
+    width:150px;
+}
+
+.input_containter_inner
+{
+	padding:6px;
+    margin-left:220px;
+}
+
+.input_containter_inner:after
+{
+	 content: ".";
+   display: block;
+   clear: both;
+   visibility: hidden;
+   height: 0;
+}
+.patient_registration_contnet
+{
+	margin-left:120px;
+}
+
 select.generaldropdown {
     text-transform:uppercase;
 
@@ -977,6 +1035,17 @@ table.report_template td{
 {
     margin-left:40px;
     margin-top:30px;
+}
+
+.inner_container
+{
+    margin-left:40px;
+    margin-top:30px;
+    margin-right:40px;
+}
+.popup_left_margin
+{
+    margin-left:120px;
 }
 .inner_left
 {

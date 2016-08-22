@@ -1,4 +1,16 @@
-﻿<div class="modal-header rite_modal_header">
+﻿<script>
+    $(document).ready(function () {
+        $('.expireDate').datepicker({
+            format: "yyyy-mm-dd",
+            startView: "day",
+            minViewMode: "day"
+        }).on('changeDate', function (ev) {
+            $(this).blur();
+            $(this).datepicker('hide');
+        });
+    });
+</script>
+<div class="modal-header rite_modal_header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden=" true">&times;</span></button>
     <h2 class="modal-title" id="myModalLabel">
         Add Stock
@@ -6,7 +18,104 @@
 </div>
 <div class="modal-body">
     
-    <h3>Under Construction</h3>
+   <div class="popup_left_margin">
+
+       <div class="input_containter">
+           <div class="store">
+
+               <div class="input_containter">
+                   <div class="title">Item Name</div>
+                   <div class="inputbox"> 
+                       <input type="text" ng-model="" disabled>
+                   </div>
+               </div>
+               <div class="input_containter">
+                   <div class="title">Store Name</div>
+                   <div class="inputbox">
+                       <select ng-model="" class="dropdown_width_medium">
+                           <option ng-repeat="" value="{{}}"> {{}}</option>
+                       </select>
+                   </div>
+                </div>
+               
+           </div>
+
+           <div class="inventory">
+               
+               <div class="input_containter">
+                   <div class="title">Shelf No</div>
+                   <div class="inputbox">
+                       <input type="text" ng-model="">
+                   </div>
+               </div>
+
+               <div class="input_containter">
+                   <div class="title">Bin No</div>
+                   <div class="inputbox">
+                       <input type="text" ng-model="">
+                   </div>
+               </div>
+
+
+               <div class="input_containter">
+                   <div class="title">Re-Order Level</div>
+                   <div class="inputbox">
+                       <input type="text" ng-model="">
+                   </div>
+               </div>
+
+               <div class="input_containter">
+                   <div class="title"></div>
+                   <div class="inputbox">
+                       <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();">
+                   </div>
+               </div>
+
+              
+           </div>
+
+           
+
+           <div class="add_stock">
+               <h4>Add Stock</h4>
+               <div class="border_bottom"></div>
+
+               <div class="space"></div>
+
+               <div class="input_containter">
+                   <div class="title">Quantiy</div>
+                   <div class="inputbox">
+                       <input type="text" ng-model="">
+                   </div>
+               </div>
+
+               <div class="input_containter">
+                   <div class="title">Buy Price</div>
+                   <div class="inputbox">
+                       <input type="text" ng-model="">
+                   </div>
+               </div>
+
+               <div class="input_containter">
+                   <div class="title">Expire Date</div>
+                   <div class="inputbox">
+                       <input type="text" width="110" placeholder="click to show datepicker" name="expireDate" class="expireDate" >
+                   </div>
+               </div>
+
+
+               <div class="input_containter">
+                   <div class="title"></div>
+                   <div class="inputbox">
+                       <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();">
+                   </div>
+               </div>
+
+           </div>
+
+       </div>
+
+   </div>
 
 
 </div>

@@ -69,6 +69,16 @@ h3
 	display:block;
 	padding-bottom:30px;
 }
+
+h4
+{
+	
+	color:#424342;
+	font-size:15px;
+	text-transform:uppercase;
+	display:block;
+	
+}
 strong
 {
 font-family:SansSemiBold;

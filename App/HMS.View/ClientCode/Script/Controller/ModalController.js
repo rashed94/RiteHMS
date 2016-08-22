@@ -14,7 +14,7 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, 
     };
 });
 
-HmsApp.controller("PharmacyStockModelController", function ($scope, $modalInstance) {
+HmsApp.controller("StockModelController", function ($scope, $modalInstance) {
 
 
     $scope.ok = function (file) {
