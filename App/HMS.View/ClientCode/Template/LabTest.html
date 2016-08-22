@@ -22,6 +22,15 @@
 
         });
 
+        $('#reagentCategoryPop').click(function (event) {
+            //  alert("test");
+            event.preventDefault();
+            $('#popupCategoryReagent').css("visibility", "visible");
+            $('#popupCategoryReagent').css("opacity", 1);
+
+        });
+        
+
 
         $('#LabReportGroup').click(function (event) {
             //  alert("test");
@@ -50,6 +59,12 @@
       
       $('#popupCategory').css("visibility", "hidden");
       $('#popupCategory').css("opacity", 0);
+   });
+
+   $("#popupCategoryReagent .close").click(function () {
+
+       $('#popupCategoryReagent').css("visibility", "hidden");
+       $('#popupCategoryReagent').css("opacity", 0);
    });
 
 
@@ -81,6 +96,9 @@
             <li class="summary active"><a ng-href="#/labtest/summary">SUMMARY</a></li>
             <li class="listlabtest"><a ng-href="#/labtest/listlabtest">LAB TEST LIST</a></li>
             <li class="addlabtest"><a ng-href="#/labtest/addlabtest">ADD/EDIT LAB TEST</a></li>
+            <li class="listreagent"><a ng-href="#/labtest/listreagent">REAGENT LIST</a></li>
+            <li class="addreagent"><a ng-href="#/labtest/addreagent">ADD/EDIT REAGENT</a></li>
+            <li class="inventory"><a ng-href="#/labtest/inventory">INVENTORY</a></li>
 
         </ul>
         <div style="clear: both"></div>
@@ -95,6 +113,20 @@
 <div class="content" ng-controller="LabTestController">
 
     <div id="popupCategory" class="overlay">
+        <div class="popup">
+            <h2>Enter Category</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">×</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Category Name</div>
+                    <div><input type="text" ng-model="categoryName"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="saveCategory()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popupCategoryReagent" class="overlay">
         <div class="popup">
             <h2>Enter Category</h2>
             <a class="close" href="#" ng-click="$event.preventDefault();">×</a>
@@ -405,6 +437,133 @@
 
         <div style="clear:both;"></div>
         </div>
-    <div style="clear:both;"></div>
 
-</div>
+    <div class="listreagent hide">
+
+        <div class="criteria_box">
+
+
+            <select ng-model="filterCondition.ReagentCategoryId" ng-change="loadItems()">
+
+                <option ng-selected="true" value="0"> All</option>
+                <option ng-repeat="category in ReagentCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+
+            </select>
+        </div>
+        <table width="100%" border="1" align="center" class="bordered" ng-model="items">
+            <thead>
+                <tr>
+                    <th width="36%">Re-agent Item Name</th>
+                    <th colspan="6">Category</th>
+                    <th width="17%">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in ReagentItems">
+                    <td>{{item.Name}} </td>
+                    <td colspan="6">{{item.ItemCategory.Name}}   </td>
+                    <!--<td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/pharmacy/addpharmacy/{{labitem.Id}}"></a></td>-->
+
+                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();DeleteItem(item.Id);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/surgery/addpsurgery/{{item.Id}}"></a></td>
+                </tr>
+
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+
+    </div>
+
+    <div class="addreagent hide">
+
+
+
+        <div class="round_box box_general" ng-show="saveSuccess>0">
+
+            <div class="success_message">Successfully Saved the Item</div>
+        </div>
+
+        <div ng-show="saveSuccess>0" class="register">
+            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" ng-href="#/surgery/addpsurgery">Add New Surgery Item</a>
+        </div>
+
+        <form name="form1">
+            <!--<form name="loginform" novalidate ng-submit="login.submit(loginForm)" class="css-form">-->
+            <div class="round_box box_general" ng-class="{true: 'error'}[submitted && form1.name.$invalid]">
+                <table width="95%" border="1" ng-model="SingleItem">
+                    <tr>
+                        <td width="14%" height="39">&nbsp;</td>
+                        <td width="19%"><div class="require">*</div>NAME</td>
+                        <td width="19%">
+                            <input type="text" ng-model="SingleReagentItem.Name" required name="name">
+                            <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
+                            <div ng-show="form1.name.$invalid">
+                                <div ng-message="required">This field is required</div>
+                            </div>
+                        </td>
+                        <td width="48%"></td>
+                        <!--<td><span ng-show="!SingleItem.Name.length">Please enter something!</span></td>-->
+                    </tr>
+
+
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>CODE</td>
+                        <td colspan="2">
+                            <input type="text" ng-model="SingleReagentItem.Code" name="code">
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td><div class="require">*</div>CATEGORY</td>
+                        <td colspan="2">
+
+                            <select ng-model="filterCondition.ReagentItemCategoryId">
+
+                                <option ng-repeat="category in ReagentCategories" value="{{category.Id}}"> {{category.Name}}</option>
+
+                            </select>
+                            <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="reagentCategoryPop"></a>
+
+
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td><div class="require">*</div>CHARGE PRICE</td>
+                        <td colspan="2"><input type="text" ng-model="SingleReagentItem.SalePrice"></td>
+                    </tr>
+
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td colspan="3">
+                            <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();" ng-disabled="form1.$invalid">
+                            <!--<input name="save" type="submit" value="save" class="md_button" ng-click="submitted = true;saveItem();">-->
+                            <input name="cancel" type="button" value="cancel" class="md_button">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+
+    </div>
+
+
+    <div class="inventory hide">
+    </div>
+        <div style="clear:both;"></div>
+
+    </div>

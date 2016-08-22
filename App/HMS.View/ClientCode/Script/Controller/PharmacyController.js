@@ -561,7 +561,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
             var modalInstance = $modal.open({
                 templateUrl: '/ClientCode/Template/AddStock.html',
                 size: size,
-                controller: 'PharmacyStockModelController',
+                controller: 'StockModelController',
                 scope: $scope
             });
             modalInstance.result.then(function (result) {
