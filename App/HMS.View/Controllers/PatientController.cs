@@ -154,7 +154,16 @@ namespace HMS.Controllers
             }
 
             Patient patient = MapToClientObject(corePatient);
-            var jsondata= Json(patient, JsonRequestBehavior.AllowGet);
+
+            //var settings = new JsonSerializerSettings
+            //{
+            //    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            //    Converters = new JsonConverter[] { new StringEnumConverter() },
+            //    NullValueHandling = includeNull ? NullValueHandling.Include : NullValueHandling.Ignore
+            //};
+            //var patientAsJson = Newtonsoft.Json.JsonConvert.SerializeObject(patient);
+
+            var jsondata = Json(patient, JsonRequestBehavior.AllowGet);
             return jsondata;
         }
 

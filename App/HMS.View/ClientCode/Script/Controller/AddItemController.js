@@ -13,7 +13,7 @@ HmsApp.controller("AddItemController", function ($scope, $http, $filter, AddItem
                 .success(function (mdtype) {
                     $scope.MedicalTypes = mdtype;
 
-                    $scope.MedicalTypes.splice(4, 2);
+                    $scope.MedicalTypes.splice(4, 3);
 
                 })
                 .error(function (error) {

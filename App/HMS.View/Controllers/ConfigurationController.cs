@@ -94,6 +94,11 @@ namespace HMS.Controllers
                 else
                 {
                     serviceProvider = repo.Update(serviceProvider);
+                    using (Repository<Contact> repository = new Repository<Contact>())
+                    {
+                        repository.Update(serviceProvider.Contact);
+                        repository.Commit();
+                    }
                 }
                 repo.Commit();
 
