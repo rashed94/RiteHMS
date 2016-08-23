@@ -755,12 +755,12 @@ select option:empty { display:none }
 .bed_view{
 
     width:200px;
-    height:140px; 
+    min-height:200px; 
     border:1px solid #b5b6b8; 
     background-color:#e8e8e9; 
     text-align:center;
     vertical-align:middle; 
-    padding-top:60px;
+    padding-top:30px;
 
 }
 .bed_view_patient{
