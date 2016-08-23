@@ -64,13 +64,21 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
             return ConfigurationService.SaveServiceProvider($scope, file);
         };
 
-        $scope.ServiceProviderModal = function (size, serviceProvider) {
+        $scope.ServiceProviderModal = function (size, serviceProvider,editMode) {
             if (!serviceProvider) {
                 serviceProvider = {
                     Contact: {},
                     DepartmentId: 0,
                     ServiceProviderTypeId: 0
                 };
+            }
+            if (editMode)
+            {
+                $scope.editMode = true;
+            }
+            else
+            {
+                $scope.editMode = false;
             }
             var modalInstance = $modal.open({
                 templateUrl: '/ClientCode/Template/EditServiceProvider.html',
@@ -80,6 +88,9 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
                 resolve: {
                     serviceProvider: function () {
                         return serviceProvider;
+                    },
+                    editMode: function () {
+                        return editMode;
                     }
                 }
             });

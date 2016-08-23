@@ -315,7 +315,7 @@ HmsApp.controller("PrintReceiptModalController", function ($scope, $modalInstanc
 });
 
 
-HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInstance, serviceProvider, ConfigurationService) {
+HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInstance, serviceProvider,editMode, ConfigurationService) {
     $scope.ServiceProvider = serviceProvider;
     if ($scope.ServiceProvider.Contact.Gender == null) {
         $scope.ServiceProvider.Contact.Gender = false;
@@ -325,7 +325,7 @@ HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInst
        
         $scope.ServiceProvider.Department = { Id: $scope.Departments[0].Id }
     }
-
+    $scope.IsNull = "null";
     $scope.ok = function (file) {
         $modalInstance.close({ ServiceProvider: $scope.ServiceProvider, File: file });
     };
@@ -333,6 +333,7 @@ HmsApp.controller("ServiceProviderModalController", function ($scope, $modalInst
         $modalInstance.dismiss('cancel');
     };
 });
+
 
 
 HmsApp.controller("LabReportTemplateResultModalController", function ($scope, $http, $modalInstance, $filter, $window, isEdit, PatientServiceItem, LabTestItem, LabTestService) {

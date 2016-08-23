@@ -59,6 +59,9 @@
             <li class="summary active"><a href="#/pharmacy/summary">SUMMARY</a></li>
             <li class="addpharmacy"><a href="#/pharmacy/addpharmacy">ADD/EDIT PHARMACY</a></li>
             <li class="inventory"><a href="#/pharmacy/inventory">Inventory</a></li>
+            <li class="dashboard"><a href="#/pharmacy/dashboard">DASHBOARD</a></li>
+            <li class="requsition"><a href="#/pharmacy/requsition">REQUSITION</a></li>
+            <li class="admin"><a href="#/pharmacy/admin">Admin</a></li>
 
         </ul>
         <div style="clear: both"></div>
@@ -338,5 +341,185 @@
         </table>
 
     </div>
+
+    <div class="dashboard hide">
+
+        <div class="criteria_box">
+            Store
+            <select>
+                <option> </option>
+            </select>
+        </div>
+
+            <div class="space"></div>
+
+            <div class="dashboard_container">
+
+                <div class="dashbaord_left">
+
+
+                    <h2>Re-order Alert</h2>
+                    <div class="dashboard_content">
+
+                        <button type="button" class="sm_button modal_click">Submit Requsition</button>
+                        <div class="space"></div>
+                        <table width="100%" border="0">
+                            <thead>
+                                <tr>
+                                    <th width="50%" align="left">Item Name</th>
+                                    <th width="15%" align="left">Quantity</th>
+                                    <th width="35%">&nbsp;</th>
+                                </tr>
+                            <thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border_bottom_dashboard">Napa extended</td>
+                                    <td class="border_bottom_dashboard">10 </td>
+                                    <td class="border_bottom_dashboard">
+                                        <a class="link_brown" href="#" ng-click="$event.preventDefault();">Add to Requsition</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="border_bottom_dashboard">Napa extended</td>
+                                    <td class="border_bottom_dashboard">10 </td>
+                                    <td class="border_bottom_dashboard">
+                                        <a class="link_brown" href="#" ng-click="$event.preventDefault();">Add to Requsition</a>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+                </div>
+
+                <div class="dashbaord_right">
+
+                    <h2> Requsition Status</h2>
+                    <div class="dashboard_content">
+
+                        <table width="100%" border="0">
+                            <thead>
+                                <tr>
+                                    <th width="5%" align="left">&nbsp;</th>
+                                    <th width="20%" align="left">Requsition Date</th>
+                                    <th width="75%" align="left">Purpose</th>
+                                </tr>
+                            <thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border_bottom_none"><a class="fa fa-arrow-circle-down fa-2x"></a></td>
+                                    <td class="border_bottom_none">11/11/2016</td>
+                                    <td class="border_bottom_none">10 </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" align="center" class="border_bottom_dashboard">
+
+                                        <table width="95%" border="0" class="nested">
+                                            <thead>
+                                                <tr>
+                                                    <th width="57%" align="left">Item Name</th>
+                                                    <th width="10%" align="left">Quantity</th>
+                                                    <th width="33%">&nbsp;</th>
+                                                </tr>
+                                            <thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Napa extended</td>
+                                                    <td>10 </td>
+                                                    <td><a class="fa fa-check fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()"></a> <a class="fa fa-times fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()" ng-really-message="Are you Sure you want to Cancel ?" ng-really-click="takeAction()"></a>
+                                                </tr>
+                                                <tr>
+                                                    <td>Napa extended</td>
+                                                    <td>10 </td>
+                                                    <td><a class="fa fa-check fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()"></a> <a class="fa fa-times fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()" ng-really-message="Are you Sure you want to Cancel ?" ng-really-click="takeAction()"></a>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    </div>
+                </div>
+
+                <div style="clear:both;"></div>
+
+            </div>
+
+       
+
+    <div class="requsition hide">
+
+        requsition
+
+    </div>
+
+    <div class="admin hide">
+
+        <table width="100%" border="1" align="center" class="bordered evencolor">
+            <thead>
+                <tr>
+                    <th width="3%">&nbsp;</th>
+                    <th width="16%">Date</th>
+                    <th width="25%">From Store</th>
+                    <th width="34%">Purpose</th>
+                    <th width="22%">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a class="fa fa-arrow-circle-right fa-2x"></a></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+
+                        <a class="link_brown" href="#" ng-click="$event.preventDefault();">Approve All</a> <a class="link_brown" href="#" ng-click="$event.preventDefault();">Cancel All</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" align="center" class="padding_left60">
+
+                        <table width="90%" border="1" align="center" class="bordered small_header">
+                            <thead>
+                                <tr>
+                                    <th width="48%">Item Name</th>
+                                    <th width="17%">Quantiy</th>
+                                    <th width="35%">&nbsp;</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <a class="fa fa-check fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()"></a> <a class="fa fa-times fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()" ng-really-message="Are you Sure you want to Cancel ?" ng-really-click="takeAction()"></a>
+                                    </td>
+
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+
+
 
 </div>

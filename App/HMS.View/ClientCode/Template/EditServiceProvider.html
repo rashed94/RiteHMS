@@ -6,192 +6,286 @@
     </h2>
 </div>
 <div class="modal-body">
-    <div class="serviceprovider_registration_contnet">
-        <div class="pull-left">
 
-            <div class="input_containter">
-                <div class="title"><div class="require">*</div>Type</div>
-                <div class="inputbox">
-                    <select name="ServiceProviderType"
-                            class="_s_ServiceProviderType"
-                            ng-model="ServiceProvider.ServiceProviderType.Id"
-                           
-                            ng-options="type.Id as type.Name for type in ServiceProviderTypes"></select>
-                </div>
-            </div>
+    <div ng-show="editMode">
+        <div class="serviceprovider_registration_contnet">
+            <div class="pull-left">
 
-            <div class="input_containter" ng-show="ServiceProvider.ServiceProviderType.Id==56 || ServiceProvider.ServiceProviderType.Id==57">
-                <div class="title">Title</div>
-                <div class="inputbox">
-              
-                    <input type="text" class="first_name" ng-model="ServiceProvider.Title">
-                </div>
-            </div>
-
-            <div class="input_containter">
-                <div class="title"><div class="require">*</div>First Name</div>
-                <div class="inputbox">
-                    <input type="text" class="first_name" ng-model="ServiceProvider.Contact.FirstName">
-                </div>
-            </div>
-
-            <div class="input_containter">
-                  <div class="title"><div class="require">*</div>Last Name</div>
-                <div class="inputbox">
-                    <input type="text" class="last_name" ng-model="ServiceProvider.Contact.LastName">
-                </div>
-            </div>
-
-            <div class="input_containter">
-                <div class="title">Speciality</div>
-                <div class="inputbox">
-                    <input type="text" class="speciality" ng-model="ServiceProvider.Speciality">
-                </div>
-            </div>
-
-
-
-            <div class="input_containter">
-                 <div class="title"><div class="require">*</div>Department</div>
-                <div class="inputbox">
-                    <select name="ServiceProviderDepartment"
-                        class="_s_ServiceProviderDepartment"
-                        ng-model="ServiceProvider.Department.Id"
-                       
-                        ng-options="department.Id as department.Name for department in Departments">
-                    </select>
-                </div>
-            </div>
-
-            <div class="input_containter">
-                <div class="title">Code</div>
-                <div class="inputbox">
-                    <input type="text" class="code" ng-model="ServiceProvider.Code">
-                </div>
-            </div>
-
-            <div class="input_containter">
-                <div class="title"><div class="require">*</div>Referer?</div>
-                <div class="inputbox">
-                    <input type="radio" name="isreferer" class="isreferer" ng-value="true" ng-model="ServiceProvider.IsReferer">Yes
-                    <input type="radio" name="isreferer" class="isreferer" ng-value="false" ng-model="ServiceProvider.IsReferer">No
-                </div>
-            </div>
-
-            <div class="input_containter">
-                <div class="title">Assign to all users?</div>
-                <div class="inputbox">
-                    <input type="radio" name="assignedtoallusers" class="assignedtoallusers" ng-value="true" ng-model="ServiceProvider.AssignedToAllUsers">Yes
-                    <input type="radio" name="assignedtoallusers" class="assignedtoallusers" ng-value="false" ng-model="ServiceProvider.AssignedToAllUsers">No
-                </div>
-            </div>
-        </div>
-        <div class="pull-left">
-            <div class="input_containter">
-                <div class="title"><div class="require">*</div>gender</div>
-                <div class="inputbox">
-                    <select name="gender" class="generaldropdown" ng-model="ServiceProvider.Contact.Gender">
-                        <option ng-value="">Unspecified</option>
-                        <option ng-value="false" ng-selected="{{ ServiceProvider.Contact.Gender == false }}">MALE</option>
-                        <option ng-value="true" ng-selected="{{ ServiceProvider.Contact.Gender == true }}">Female</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="input_containter">
-                <div class="title">mobile</div>
-                <div class="inputbox">
-                    <input type="text" class="mobile" ng-model="ServiceProvider.Contact.PhoneNumber">
-                </div>
-            </div>
-
-            <div class="input_containter">
-                <div class="title">e-mail</div>
-                <div class="inputbox">
-                    <input type="text" class="email" ng-model="ServiceProvider.Contact.Email">
-                </div>
-            </div>
-
-            <div class="input_containter">
-                <div class="title">Street</div>
-                <div class="inputbox">
-                    <input type="text" class="street" ng-model="ServiceProvider.Contact.Street">
-                </div>
-            </div>
-            <div class="input_containter">
-                <div class="title">city</div>
-                <div class="inputbox">
-                    <input type="text" class="city" ng-model="ServiceProvider.Contact.City">
-                </div>
-            </div>
-            <div class="input_containter">
-                <div class="title">zip</div>
-                <div class="inputbox">
-                    <input type="text" class="zip" ng-model="ServiceProvider.Contact.Zip">
-                </div>
-            </div>
-
-            <div class="input_containter">
-                <div class="title">Country</div>
-                <div class="inputbox">
-                    <input type="text" class="country" ng-model="ServiceProvider.Contact.Country">
-                </div>
-            </div>
-
-            <div class="input_containter">
-                <div class="title">Description</div>
-                <div class="inputbox">
-                    <textarea rows="4" cols="20" ng-model="ServiceProvider.Description"></textarea> 
-                </div>
-            </div>
-
-            <div class="input_containter">
-                <form name="form">
-                    <div class="title">Picture</div>
-                    <input type="file"
-                           id="ServiceProviderFileInput"
-                           accept="image/*"
-                           ngf-select ng-model="picFile"
-                           name="file"
-                           ngf-max-size="2MB"
-                           ngf-model-invalid="errorFile"
-                           style="opacity:0; position: absolute; top: 0px;">
-
-                    <input type="button"
-                           ng-show="!picFile && (!ServiceProvider.Contact.Photo || ServiceProvider.Contact.Photo == 'null')"
-                           class="_s_SelectFile md_button"
-                           style="width: 100px; float: left;"
-                           onclick="document.getElementById('ServiceProviderFileInput').click()"
-                           value="Select file">
-
-                    <i ng-show="form.file.$error.maxSize" class="text-danger">
-                        File too large({{errorFile.size / 1000000|number:2}}MB). Maximum file size is 2MB.
-                    </i>
-
-                    <div>
-                        <div ng-show="form.file.$valid">
-                            <img ngf-thumbnail="picFile" class="thumb" style="width: 200px;">
-                            <button ng-click="picFile = null" ng-show="picFile" class="md_button">Remove</button>
-                        </div>
-                        <div ng-show="ServiceProvider.Contact.Photo != null && ServiceProvider.Contact.Photo != 'null'">
-                            <img ng-src="GetImage.ashx?Name={{ServiceProvider.Contact.Photo && ServiceProvider.Contact.Photo != 'null' ? ServiceProvider.Contact.Photo : ''}}" style="width: 200px" alt="{{ServiceProvider.Contact.FirstName}} {{ServiceProvider.Contact.LastName}}">
-                            <button ng-click="ServiceProvider.Contact.Photo = null" class="md_button">Remove</button>
-                        </div>
+                <div class="input_containter">
+                    <div class="title"><div class="require">*</div>Type</div>
+                    <div class="inputbox">
+                        <select name="ServiceProviderType"
+                                class="_s_ServiceProviderType"
+                                ng-model="ServiceProvider.ServiceProviderType.Id"
+                                ng-options="type.Id as type.Name for type in ServiceProviderTypes"></select>
                     </div>
-                </form>
-                <span class="progress" ng-show="picFile.progress >= 0">
-                    <div style="width: {{picFile.progress}}%" ng-bind="picFile.progress + '%'"></div>
-                </span>
-            </div>
-        </div>
+                </div>
 
-        <div class="input_containter">
-            <div class="space"></div>
-            <div class="title"></div>
-            <div class="inputbox">
-                <input name="save" type="button" value="save" class="md_button" ng-click="ok(picFile)">
-                <input name="cancel" type="button" value="cancel" class="md_button cancel" ng-click="cancel()">
+                <div class="input_containter" ng-show="ServiceProvider.ServiceProviderType.Id==56 || ServiceProvider.ServiceProviderType.Id==57">
+                    <div class="title">Title</div>
+                    <div class="inputbox">
+
+                        <input type="text" class="first_name" ng-model="ServiceProvider.Title">
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <div class="title"><div class="require">*</div>First Name</div>
+                    <div class="inputbox">
+                        <input type="text" class="first_name" ng-model="ServiceProvider.Contact.FirstName">
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <div class="title"><div class="require">*</div>Last Name</div>
+                    <div class="inputbox">
+                        <input type="text" class="last_name" ng-model="ServiceProvider.Contact.LastName">
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <div class="title">Speciality</div>
+                    <div class="inputbox">
+                        <input type="text" class="speciality" ng-model="ServiceProvider.Speciality">
+                    </div>
+                </div>
+
+
+
+                <div class="input_containter">
+                    <div class="title"><div class="require">*</div>Department</div>
+                    <div class="inputbox">
+                        <select name="ServiceProviderDepartment"
+                                class="_s_ServiceProviderDepartment"
+                                ng-model="ServiceProvider.Department.Id"
+                                ng-options="department.Id as department.Name for department in Departments"></select>
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <div class="title">Code</div>
+                    <div class="inputbox">
+                        <input type="text" class="code" ng-model="ServiceProvider.Code">
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <div class="title"><div class="require">*</div>Referer?</div>
+                    <div class="inputbox">
+                        <input type="radio" name="isreferer" class="isreferer" ng-value="true" ng-model="ServiceProvider.IsReferer">Yes
+                        <input type="radio" name="isreferer" class="isreferer" ng-value="false" ng-model="ServiceProvider.IsReferer">No
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <div class="title">Assign to all users?</div>
+                    <div class="inputbox">
+                        <input type="radio" name="assignedtoallusers" class="assignedtoallusers" ng-value="true" ng-model="ServiceProvider.AssignedToAllUsers">Yes
+                        <input type="radio" name="assignedtoallusers" class="assignedtoallusers" ng-value="false" ng-model="ServiceProvider.AssignedToAllUsers">No
+                    </div>
+                </div>
+            </div>
+            <div class="pull-left">
+                <div class="input_containter">
+                    <div class="title"><div class="require">*</div>gender</div>
+                    <div class="inputbox">
+                        <select name="gender" class="generaldropdown" ng-model="ServiceProvider.Contact.Gender">
+                            <option ng-value="">Unspecified</option>
+                            <option ng-value="false" ng-selected="{{ ServiceProvider.Contact.Gender == false }}">MALE</option>
+                            <option ng-value="true" ng-selected="{{ ServiceProvider.Contact.Gender == true }}">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <div class="title">mobile</div>
+                    <div class="inputbox">
+                        <input type="text" class="mobile" ng-model="ServiceProvider.Contact.PhoneNumber">
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <div class="title">e-mail</div>
+                    <div class="inputbox">
+                        <input type="text" class="email" ng-model="ServiceProvider.Contact.Email">
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <div class="title">Street</div>
+                    <div class="inputbox">
+                        <input type="text" class="street" ng-model="ServiceProvider.Contact.Street">
+                    </div>
+                </div>
+                <div class="input_containter">
+                    <div class="title">city</div>
+                    <div class="inputbox">
+                        <input type="text" class="city" ng-model="ServiceProvider.Contact.City">
+                    </div>
+                </div>
+                <div class="input_containter">
+                    <div class="title">zip</div>
+                    <div class="inputbox">
+                        <input type="text" class="zip" ng-model="ServiceProvider.Contact.Zip">
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <div class="title">Country</div>
+                    <div class="inputbox">
+                        <input type="text" class="country" ng-model="ServiceProvider.Contact.Country">
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <div class="title">Description</div>
+                    <div class="inputbox">
+                        <textarea rows="4" cols="20" ng-model="ServiceProvider.Description"></textarea>
+                    </div>
+                </div>
+
+                <div class="input_containter">
+                    <form name="form">
+                        <div class="title">Picture</div>
+                        <input type="file"
+                               id="ServiceProviderFileInput"
+                               accept="image/*"
+                               ngf-select ng-model="picFile"
+                               name="file"
+                               ngf-max-size="2MB"
+                               ngf-model-invalid="errorFile"
+                               style="opacity:0; position: absolute; top: 0px;">
+
+                        <input type="button"
+                               ng-show="!picFile && (!ServiceProvider.Contact.Photo || ServiceProvider.Contact.Photo == 'null')"
+                               class="_s_SelectFile md_button"
+                               style="width: 100px; float: left;"
+                               onclick="document.getElementById('ServiceProviderFileInput').click()"
+                               value="Select file">
+
+                        <i ng-show="form.file.$error.maxSize" class="text-danger">
+                            File too large({{errorFile.size / 1000000|number:2}}MB). Maximum file size is 2MB.
+                        </i>
+
+                        <div>
+                            <div ng-show="form.file.$valid">
+                                <img ngf-thumbnail="picFile" class="thumb" style="width: 200px;">
+                                <button ng-click="picFile = null" ng-show="picFile" class="md_button">Remove</button>
+                            </div>
+                            <div ng-show="ServiceProvider.Contact.Photo != null && ServiceProvider.Contact.Photo != 'null'">
+                                <img ng-src="GetImage.ashx?Name={{ServiceProvider.Contact.Photo && ServiceProvider.Contact.Photo != 'null' ? ServiceProvider.Contact.Photo : ''}}" style="width: 200px" alt="{{ServiceProvider.Contact.FirstName}} {{ServiceProvider.Contact.LastName}}">
+                                <button ng-click="ServiceProvider.Contact.Photo = null" class="md_button">Remove</button>
+                            </div>
+                        </div>
+                    </form>
+                    <span class="progress" ng-show="picFile.progress >= 0">
+                        <div style="width: {{picFile.progress}}%" ng-bind="picFile.progress + '%'"></div>
+                    </span>
+                </div>
+            </div>
+
+            <div class="input_containter">
+                <div class="space"></div>
+                <div class="title"></div>
+                <div class="inputbox">
+                    <input name="save" type="button" value="save" class="md_button" ng-click="ok(picFile)">
+                    <input name="cancel" type="button" value="cancel" class="md_button cancel" ng-click="cancel()">
+                </div>
             </div>
         </div>
     </div>
+    <div ng-hide="editMode" class="modal_left_margin60">
+        <div class="view_container">
+
+            <div class="floatleft">
+                <div class="view_title">Name</div>
+                <div class="view_detail"><span ng-show="!!ServiceProvider.Title">[{{ServiceProvider.Title}}]</span> {{ServiceProvider.Contact.FirstName}} {{ServiceProvider.Contact.LastName}} - {{ServiceProvider.Speciality}}</div>
+            </div>
+           
+            <div class="floatleft" ng-hide="ServiceProvider.Description==NULL || ServiceProvider.Description=='null'">
+                <div class="view_title">Department</div>
+                <div class="view_detail">{{ServiceProvider.Department.Name}}</div>
+            </div>
+
+                <div style="clear:both;"></div>
+
+        </div>
+     <div class="view_container">
+         <div class="floatleft" ng-hide="ServiceProvider.Contact.Email==NULL || ServiceProvider.Contact.Email=='null'">
+             <div class="view_title">Email</div>
+             <div class="view_detail">{{ServiceProvider.Contact.Email}}</div>
+         </div>
+         <div class="horixontal_gap"></div>
+         <div class="floatleft" ng-hide="ServiceProvider.Contact.PhoneNumber==NULL || ServiceProvider.Contact.PhoneNumber=='null'">
+             <div class="view_title">Phone</div>
+             <div class="view_detail">{{ServiceProvider.Contact.PhoneNumber}}</div>
+
+         </div>
+
+         <div style="clear:both;"></div>
+    </div>
+    <div class="view_container">
+
+
+        <div class="floatleft" ng-hide="ServiceProvider.Description==NULL || ServiceProvider.Description=='null'">
+            <div class="view_title">Description</div>
+            <div class="view_detail">{{ServiceProvider.Description}}</div>
+        </div>
+            
+
+        <div style="clear:both;"></div>
+    </div>
+
+    <div class="view_container">
+
+
+        <div class="floatleft" ng-hide="ServiceProvider.Contact.Street==NULL ||ServiceProvider.Contact.Street=='null'">
+            <div class="view_title">Street</div>
+            <div class="view_detail">{{ServiceProvider.Contact.Street}}</div>
+        </div>
+
+        <div class="floatleft" ng-hide="ServiceProvider.Contact.City==NULL ||ServiceProvider.Contact.City=='null'">
+            <div class="view_title">City</div>
+            <div class="view_detail">{{ServiceProvider.Contact.City}}</div>
+        </div>
+
+        <div class="floatleft" ng-hide="ServiceProvider.Contact.Zip==NULL ||ServiceProvider.Contact.Zip=='null'">
+            <div class="view_title">Zip</div>
+            <div class="view_detail">{{ServiceProvider.Contact.Zip}}</div>
+        </div>
+
+
+        <div style="clear:both;"></div>
+    </div>
+
+        <div class="view_container">
+
+
+            <div class="floatleft" ng-hide="ServiceProvider.Contact.Country==NULL || ServiceProvider.Contact.Country=='null'">
+                <div class="view_title">Country</div>
+                <div class="view_detail">{{ServiceProvider.Contact.Country}}</div>
+            </div>
+
+
+            <div style="clear:both;"></div>
+        </div>
+
+        <div class="view_container">
+
+
+            <div class="floatleft" ng-show="ServiceProvider.Contact.Photo != null && ServiceProvider.Contact.Photo != 'null'">
+                <div class="view_title">Photo</div>
+                <div class="view_detail">
+                    <img ng-src="GetImage.ashx?Name={{ServiceProvider.Contact.Photo && ServiceProvider.Contact.Photo != 'null' ? ServiceProvider.Contact.Photo : ''}}" style="width: 200px" alt="{{ServiceProvider.Contact.FirstName}} {{ServiceProvider.Contact.LastName}}">
+                </div>
+            </div>
+
+
+
+
+            <div style="clear:both;"></div>
+        </div>
+
+
+
 </div>

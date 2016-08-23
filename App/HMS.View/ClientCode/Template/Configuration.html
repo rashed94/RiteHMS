@@ -155,7 +155,7 @@
     <div class="serviceprovider hide">
 
         <div style="padding-top:12px;">
-            <input name="ADD SERVICE PROVIDER" type="button" value="ADD SERVICE PROVIDER" class="sm_button" ng-click="ServiceProviderModal('lg')">
+            <input name="ADD SERVICE PROVIDER" type="button" value="ADD SERVICE PROVIDER" class="sm_button" ng-click="ServiceProviderModal('lg','',true)">
         </div>
         <div class="criteria_box">
             <!--<div class="search_container">
@@ -202,7 +202,8 @@
                     <td>{{ServiceProvider.IsReferer}}</td>
                     <td>
                         <a class="fa fa-trash fa-2x" aria-hidden="true" title="Delete" ng-click="DeleteServiceProvider(ServiceProvider)"></a>
-                        <a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" title="Edit" ng-click="ServiceProviderModal('lg', ServiceProvider)"></a>
+                        <a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" title="Edit" ng-click="ServiceProviderModal('lg', ServiceProvider,true)"></a>
+                        <a class="fa fa-file-o  fa-1_5x" aria-hidden="true" title="Edit" ng-click="ServiceProviderModal('lg', ServiceProvider,false)"></a>
                     </td>
                 </tr>
             </tbody>
@@ -282,6 +283,7 @@
     </div>
 
     <div class="viewstore hide">
+
         <div class="inner_container">
             <table width="100%" border="0" class="bordered">
                 <thead>
@@ -299,15 +301,15 @@
                         <td>Demo Type</td>
                         <td>
                             <a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteStore();" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;
-                            <a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/configuration/viewstore{{store.Id}}"></a>
+                            <a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/configuration/viewstore"></a>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        </div>
-
+    </div>
+ 
     <div class="store hide">
 
         <div class="inner_content">
@@ -315,8 +317,8 @@
             <div class="input_containter_inner">
                 <div class="title">Store Type</div>
                 <div class="inputbox">
-                    <select ng-model="" class="dropdown_width_medium">
-                        <option ng-repeat="" value="{{}}"> {{}}</option>
+                    <select class="dropdown_width_medium">
+                        <option></option>
                     </select>
                 </div>
             </div>
@@ -326,14 +328,14 @@
             <div class="input_containter_inner">
                 <div class="title">Store Name</div><div class="require">*</div>
                 <div class="inputbox">
-                    <input type="text" ng-model="">
+                    <input type="text">
                 </div>
             </div>
 
             <div class="input_containter_inner">
                 <div class="title">Store Address</div><div class="require">*</div>
                 <div class="inputbox">
-                    <input type="text" ng-model="">
+                    <input type="text">
                 </div>
             </div>
 
@@ -341,42 +343,42 @@
             <div class="input_containter_inner">
                 <div class="title">Store Phone Number</div>
                 <div class="inputbox">
-                    <input type="text" ng-model="">
+                    <input type="text">
                 </div>
             </div>
 
             <div class="input_containter_inner">
                 <div class="title">Store Fax</div>
                 <div class="inputbox">
-                    <input type="text" ng-model="">
+                    <input type="text">
                 </div>
             </div>
 
             <div class="input_containter_inner">
                 <div class="title">Store Email</div>
                 <div class="inputbox">
-                    <input type="text" ng-model="">
+                    <input type="text">
                 </div>
             </div>
 
             <div class="input_containter_inner">
                 <div class="title">Add Store Keeper</div><div class="require">*</div>
                 <div class="inputbox">
-                    <input type="text" ng-model="">
-            
+                    <input type="text">
+
                 </div>
             </div>
 
-            <div class="input_containter_inner">
+            <div class="input_containter_inner round_box">
                 <div class="title">Add Line Manager</div>
                 <div class="inputbox">
-                    <input type="text" ng-model="">
+                    <input type="text">
 
                     <div class="inputbox_inner_round">
                         <ul>
-                            <li>Rashed <a href="#" class="link_brown"> Delete </a></li> 
-                            <li>Muzahid <a href="#" class="link_brown"> Delete </a></li> 
-                       </ul>
+                            <li>Rashed <a href="#" class="link_brown"> Delete </a></li>
+                            <li>Muzahid <a href="#" class="link_brown"> Delete </a></li>
+                        </ul>
                     </div>
 
                 </div>
@@ -385,7 +387,7 @@
             <div class="input_containter_inner">
                 <div class="title">Select Parent Store</div>
                 <div class="inputbox">
-                    <input type="text" ng-model="">
+                    <input type="text">
 
                 </div>
             </div>
@@ -400,11 +402,9 @@
             </div>
 
 
-
         </div>
-    </div>
-
-
-
 
     </div>
+
+
+ </div>
