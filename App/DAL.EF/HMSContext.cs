@@ -18,6 +18,7 @@ namespace HMS.DAL
 
         protected virtual DbSet<Appointment> Appointments { get; set; }
         protected virtual DbSet<BedOccupancy> BedOccupancies { get; set; }
+        protected virtual DbSet<Bin> Bins { get; set; }
         protected virtual DbSet<Contact> Contacts { get; set; }
         protected virtual DbSet<Department> Departments { get; set; }
         protected virtual DbSet<DischargeApprovalStatus> DischargeApprovalStatus { get; set; }
@@ -31,6 +32,8 @@ namespace HMS.DAL
         protected virtual DbSet<InitialSetup> InitialSetup { get; set; }
         protected virtual DbSet<InitialSetupItem> InitialSetupItem { get; set; }
         protected virtual DbSet<Inventory> Inventories { get; set; }
+        protected virtual DbSet<InventoryItem> InventoryItems { get; set; }
+        protected virtual DbSet<InvestigationReagent> InvestigationReagents { get; set; }   
         protected virtual DbSet<InvoicePayment> InvoicePayments { get; set; }
         protected virtual DbSet<InvoiceStatus> InvoiceStatus { get; set; }
         protected virtual DbSet<Item> Items { get; set; }
@@ -39,6 +42,7 @@ namespace HMS.DAL
         protected virtual DbSet<ItemDefault> ItemDefaults { get; set; }
         protected virtual DbSet<ItemGroup> ItemGroups { get; set; }
         protected virtual DbSet<ItemReorder> ItemReorders { get; set; }
+        protected virtual DbSet<ItemRequisition> ItemRequisitions { get; set; }
         protected virtual DbSet<ItemType> ItemTypes { get; set; }
         protected virtual DbSet<MeasurementUnit> MeasurementUnits { get; set; }
         protected virtual DbSet<LabReportGroup> LabReportGroup { get; set; }
@@ -59,10 +63,15 @@ namespace HMS.DAL
         protected virtual DbSet<ReceiptPayment> ReceiptPayments { get; set; }
         protected virtual DbSet<Referral> Referrals { get; set; }
         protected virtual DbSet<Refund> Refunds { get; set; }
+        protected virtual DbSet<Requisition> Requisition { get; set; }
+        protected virtual DbSet<RequisitionStatus> RequisitionStatus { get; set; }
         protected virtual DbSet<ServiceProvider> ServiceProviders { get; set; }
         protected virtual DbSet<ServiceProviderType> ServiceProviderTypes { get; set; }
         protected virtual DbSet<ServiceProviderAppointment> ServiceProviderAppointments { get; set; }
+        protected virtual DbSet<Shelf> Shelf { get; set; }
         protected virtual DbSet<Store> Stores { get; set; }
+        protected virtual DbSet<StoreLineManager> StoreLineManager { get; set; }
+        protected virtual DbSet<StoreType> StoreType { get; set; }
         protected virtual DbSet<User> Users { get; set; }
   
        

@@ -138,7 +138,9 @@
     <Content Include="ClientCode\Script\Controller\ReportTransactionMenuController.js" />
     <Content Include="ClientCode\Script\Controller\SurgeryController.js" />
     <Content Include="ClientCode\Script\Controller\UserController.js" />
+    <Content Include="ClientCode\Script\Directive\AddStore.js" />
     <Content Include="ClientCode\Script\Directive\ConfirmationBox.js" />
+    <Content Include="ClientCode\Script\Directive\ViewStore.js" />
     <Content Include="ClientCode\Script\Service\AddItemService.js" />
     <Content Include="ClientCode\Script\Service\AdminApprovalService.js" />
     <Content Include="ClientCode\Script\Service\AppointmentService.js" />
@@ -147,6 +149,7 @@
     <Content Include="ClientCode\Script\Service\DoctorService.js" />
     <Content Include="ClientCode\Script\Service\ExpenseService.js" />
     <Content Include="ClientCode\Script\Service\IniService.js" />
+    <Content Include="ClientCode\Script\Service\InventoryService.js" />
     <Content Include="ClientCode\Script\Service\ItemService.js" />
     <Content Include="ClientCode\Script\Service\LabTestLService.js" />
     <Content Include="ClientCode\Script\Service\PatientSummaryReportService.js" />
@@ -154,6 +157,7 @@
     <Content Include="ClientCode\Script\Service\ReportTransactionService.js" />
     <Content Include="ClientCode\Script\Service\UserService.js" />
     <Content Include="ClientCode\Template\AddStock.html" />
+    <Content Include="ClientCode\Template\AddStore.html" />
     <Content Include="ClientCode\Template\Admin.html" />
     <Content Include="ClientCode\Template\AdmitToHospital.html" />
     <Content Include="ClientCode\Template\AdvancePayment.html" />
@@ -171,6 +175,7 @@
     <Content Include="ClientCode\Template\EditTreatment.html" />
     <Content Include="ClientCode\Template\Expense.html" />
     <Content Include="ClientCode\Template\PrintReceipt.html" />
+    <Content Include="ClientCode\Template\Reagent.html" />
     <Content Include="ClientCode\Template\Receipt.html" />
     <Content Include="ClientCode\Template\Invoice.html" />
     <Content Include="ClientCode\Template\LabTest.html" />
@@ -192,6 +197,7 @@
     <Content Include="ClientCode\Template\ReportTransaction.html" />
     <Content Include="ClientCode\Template\ReportTransactionMenu.html" />
     <Content Include="ClientCode\Template\Surgery.html" />
+    <Content Include="ClientCode\Template\ViewStore.html" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\datepicker.css" />
@@ -513,9 +519,11 @@
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\ExpenseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="GetImage.ashx.cs">
       <DependentUpon>GetImage.ashx</DependentUpon>
     </Compile>

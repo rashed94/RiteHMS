@@ -262,6 +262,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
                 .success(function (pt) {
                     $scope.MeasureMentUnits = pt;
                     if (!$routeParams.id) {
+                        if ($scope.MeasureMentUnits.length>0)
                         $scope.filterCondition.MeasurementUnitId = $scope.MeasureMentUnits[0].Id.toString();
                     }
 
@@ -366,8 +367,8 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
         }
         $scope.filterCondition = {
-            MeasurementUnitId: '62',
-            ItemCategoryId: '41',
+            MeasurementUnitId: '',
+            ItemCategoryId: '',
             ReportGroupId: "",
             CategoryId: "0"
 

@@ -1,0 +1,123 @@
+﻿<form name="form1">
+    <div class="inner_content" ng-class="{true: 'error'}[submitted && form1.name.$invalid]">
+
+        <div class="round_box box_general" ng-show="SaveSuccess">
+
+            <div class="success_message">Store Saved Successfully</div>
+        </div>
+        <div ng-show="SaveSuccess" class="register">
+            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" ng-href="#/configuration/store">Add New Store</a>
+        </div>
+
+        <div class="input_containter_inner">
+            <div class="title">Store Type</div>
+            <div class="inputbox">
+                <select class="dropdown_width_medium" ng-model="filterCondition.StoreTypeId" ng-change="GetParentStore();">
+                    <option ng-repeat="storeType in StoreType" value="{{storeType.Id}}"> {{storeType.Name}}</option>
+                </select>
+            </div>
+        </div>
+
+
+
+        <div class="input_containter_inner">
+            <div class="title">Store Name</div><div class="require">*</div>
+            <div class="inputbox">
+                <input type="text" ng-model="Store.Name" required name="name">
+
+                <div ng-show="form1.name.$invalid">
+                    <div ng-message="required">This field is required</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input_containter_inner">
+            <div class="title">Store Address</div>
+            <div class="inputbox">
+                <input type="text" ng-model="Store.Address">
+            </div>
+        </div>
+
+
+        <div class="input_containter_inner">
+            <div class="title">Store Phone Number</div>
+            <div class="inputbox">
+                <input type="text" ng-model="Store.PhoneNumber">
+            </div>
+        </div>
+
+        <div class="input_containter_inner">
+            <div class="title">Store Fax</div>
+            <div class="inputbox">
+                <input type="text" ng-model="Store.Fax">
+            </div>
+        </div>
+
+        <div class="input_containter_inner">
+            <div class="title">Store Email</div>
+            <div class="inputbox">
+                <input type="text" ng-model="Store.Email">
+            </div>
+        </div>
+
+        <div class="input_containter_inner">
+            <div class="title">Add Store Keeper</div><div class="require">*</div>
+            <div class="inputbox">
+                <input required name="username1" id="username1" type="text" placeholder="Type User's name"
+                       ng-model="StoreKeeperUser.UserName"
+                       typeahead="item as (item.UserName + ' ('+item.Contact.FirstName+ '  ' + item.Contact.LastName +') ') for item in GetUserByPartialName($viewValue)"
+                       typeahead-on-select="OnUserSelect($item)"
+                       typeahead-min-length="1"
+                       typeahead-wait-ms="1"
+                       class="form-control">
+
+                <div ng-show="form1.username1.$invalid">
+                    <div ng-message="required">This field is required</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="input_containter_inner round_box" ng-show="ShowLineManager">
+            <div class="title">Add Line Manager</div>
+            <div class="inputbox">
+                <input name="username2" id="username2" type="text" placeholder="Type User's name"
+                       ng-model="LineManagerUser.UserName"
+                       typeahead="item as (item.UserName + ' ('+item.Contact.FirstName+ '  ' + item.Contact.LastName +') ') for item in GetUserByPartialName($viewValue)"
+                       typeahead-on-select="OnLineManagerSelect($item)"
+                       typeahead-min-length="1"
+                       typeahead-wait-ms="1"
+                       class="form-control">
+
+                <div class="inputbox_inner_round" ng-show="LineManagerList.length>0">
+                    <ul ng-repeat="singleLineManager in LineManagerList">
+                        <li>{{singleLineManager.LineManagerUser.UserName}} <a href="#" class="link_brown" ng-click="$event.preventDefault();DeleteLineManager(singleLineManager)"> Delete </a></li>
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="input_containter_inner">
+            <div class="title">Select Parent Store</div>
+            <div class="inputbox">
+
+                <input type="text" ng-model="Store.ParentStore.Name" disabled>
+
+            </div>
+        </div>
+
+        <div class="input_containter_inner">
+            <div class="title"></div>
+            <div class="inputbox">
+                <input name="save" type="button" value="save" class="md_button" ng-click="SaveStore();" ng-disabled="form1.$invalid">
+                <input name="cancel" type="button" value="cancel" class="md_button">
+
+            </div>
+        </div>
+
+
+
+    </div>
+</form>

@@ -21,8 +21,28 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
 
     };
+    $scope.SingleReagentItem = {
+        id: 0,
+        Name: "",
+        GenericName: "",
+        Code: "",
+        ItemTypeId: "",
+        MedicalTypeId: "",
+        ItemCategoryId: "",
+        MeasurementUnitId: "",
+        SalePrice: "",
+        BuyPrice: 0.00,
+        ServiceProviderId: "",
+        ReferralAllowed: 1,
+        DefaultReferrarFee: "",
+        LabReportGroupId: "",
+
+
+    };
+    
     $scope.saveSuccess = 0;
     $scope.LabTestCategories = {};
+    $scope.ReagentCategories = {};
     $scope.LabTestGroups = {};
     $scope.MeasureMentUnits = {};
     $scope.medicalTypeID = "";
@@ -343,6 +363,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                     $scope.MeasureMentUnits = pt;
 
                     if (!$routeParams.id) {
+                        if ($scope.MeasureMentUnits.length>0)
                         $scope.filterCondition.MeasurementUnitId = $scope.MeasureMentUnits[0].Id.toString();
                     }
 
@@ -449,16 +470,18 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
         }
         $scope.filterCondition = {
-            MeasurementUnitId: '62',
-            ItemCategoryId: '41',
+            MeasurementUnitId: '',
+            ItemCategoryId: '',
             LabReportGroupId: "",
-            CategoryId: "0"
+            CategoryId: "0",
+            ReagentItemCategoryId: '',
+            ReagentCategoryId:"0"
 
 
         }
 
         $scope.LoadFilterCondition = function () {
-            $scope.filterCondition.MeasurementUnitId = $scope.SingleLabItem.MeasurementUnitId.toString();
+          //  $scope.filterCondition.MeasurementUnitId = $scope.SingleLabItem.MeasurementUnitId.toString();
             $scope.filterCondition.ItemCategoryId = $scope.SingleLabItem.ItemCategoryId.toString();
             if ($scope.SingleLabItem.LabReportGroupId != null) {
                 $scope.filterCondition.LabReportGroupId = $scope.SingleLabItem.LabReportGroupId.toString()
@@ -486,7 +509,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
         $scope.saveItem = function () {
 
-            $scope.SingleLabItem.MeasurementUnitId = $scope.filterCondition.MeasurementUnitId;
+            $scope.SingleLabItem.MeasurementUnitId = null;
             $scope.SingleLabItem.ItemCategoryId = $scope.filterCondition.ItemCategoryId;
             $scope.SingleLabItem.LabReportGroupId = $scope.filterCondition.LabReportGroupId;
 
@@ -634,7 +657,8 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 templateUrl: '/ClientCode/Template/DoctorCommission.html',
                 size: size,
                 controller: 'CommissionModalController',
-                scope: $scope
+                scope: $scope,
+
             });
             modalInstance.result.then(function (result) {
 
@@ -647,6 +671,153 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
 
         };
 
+
+        $scope.ReagentModal = function (size, isEdit,item) {
+
+
+            var modalInstance = $modal.open({
+                templateUrl: '/ClientCode/Template/Reagent.html',
+                size: size,
+                controller: 'ReagentModalController',
+                scope: $scope,
+                resolve:
+                        {
+                            item: function () {
+                                return item;
+                            }
+                        }
+            });
+            modalInstance.result.then(function (result) {
+
+            }, function () {
+
+                console.log('Modal dismissed at: ' + new Date());
+
+            });
+
+
+        };
+
+        $scope.saveReagentCategory = function () {
+            LabTestService.CreateCategory($scope.categoryName, $scope.MedicalTypeReagent)
+            .success(function (data) {
+
+                $scope.loadReagentCategories();
+                $scope.resetpopupFiled();
+
+                $('#popupCategoryReagent').css("visibility", "hidden");
+                $('#popupCategoryReagent').css("opacity", 0);
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to save category data: ' + error.message;
+
+            });
+
+        }
+
+        $scope.saveReagentItem = function () {
+
+            $scope.SingleReagentItem.MeasurementUnitId = $scope.filterCondition.MeasurementUnitId;
+            $scope.SingleReagentItem.ItemCategoryId = $scope.filterCondition.ReagentItemCategoryId;
+           
+
+
+            LabTestService.SaveItem($scope.SingleReagentItem)
+            .success(function (data) {
+
+                $scope.loadItembyId(data);
+                $scope.saveSuccess = 1;
+                console.log("Save successfull");
+
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to save category data: ' + error.message;
+
+            });
+        }
+
+
+        $scope.loadReagentItems = function () {
+
+            $scope.GetReagentItemsByMedicalType($scope.MedicalTypeReagent);
+
+        }
+
+        $scope.GetReagentItemsByMedicalType = function (medicalType) {
+            LabTestService.GetLabItemsByMedicalType(medicalType, $scope.filterCondition.ReagentCategoryId)
+                .success(function (pt) {
+                    $scope.ReagentItems = pt;
+                    // preparelabtestDataModel();
+                    console.log(pt);
+                })
+                .error(function (error) {
+                    $scope.status = 'Unable to load lab item data: ' + error.message;
+                    console.log($scope.status);
+                });
+        }
+
+
+        $scope.loadReagentCategories = function () {
+            LabTestService.loadLabTestCategories($scope.MedicalTypeReagent)
+                 .success(function (pt) {
+                     //$scope.TestCategories = pt;
+                     $scope.ReagentCategories = pt;
+                     if (!$routeParams.id && $scope.ReagentCategories.length > 0) {
+                         $scope.filterCondition.ReagentItemCategoryId = $scope.ReagentCategories[0].Id.toString();
+                     }
+
+                     console.log(pt);
+                 })
+                 .error(function (error) {
+                     $scope.status = 'Unable to load test category for  test only data: ' + error.message;
+                     console.log($scope.status);
+                 });
+        }
+
+
+        $scope.LoadReagentFilterCondition = function () {
+            $scope.filterCondition.MeasurementUnitId = $scope.SingleReagentItem.MeasurementUnitId.toString();
+            $scope.filterCondition.ReagentItemCategoryId = $scope.SingleReagentItem.ItemCategoryId.toString();
+ 
+        }
+        $scope.LoadReagentItembyId = function (itemid) {
+
+            LabTestService.loadItembyId(itemid)
+                .success(function (pt) {
+                    $scope.SingleReagentItem = pt;
+                    $scope.LoadReagentFilterCondition();
+
+
+
+                    console.log(pt);
+                })
+                .error(function (error) {
+                    $scope.status = 'Unable to load single lab item ' + error.message;
+                    console.log($scope.status);
+                });
+        }
+
+        $scope.loadReagent = function () {
+            if ($routeParams.tab == "addreagent") {
+
+                //  $scope.LabTestCategories =  $scop
+                // $scope.LabTestGroups = 
+                // $scope.MeasureMentUnits = 
+
+                /* $scope.loadLabTestGroups();
+                $scope.loadMeasureMentUnits();*/
+
+                $scope.loadReagentCategories();
+
+                $scope.loadMeasureMentUnits();
+
+                if ($routeParams.id) {
+                    $scope.LoadReagentItembyId($routeParams.id);
+                }
+
+            }
+        }
 
         //----------------------------------------------------------------------------------------------------
 
@@ -678,6 +849,14 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
             $scope.loadLabTest();
         }
 
+        if ($routeParams.tab == "addreagent") {
+            $scope.loadReagent();
+        }
+        if ($routeParams.tab == "listreagent") {
+            $scope.loadReagentItems();
+            $scope.loadReagentCategories();
+        }
+
 
 
 
@@ -707,8 +886,11 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 $scope.SingleLabItem.MedicalTypeId = $scope.Configuration.Configuration.MedicalTypeLabTest;
                 $scope.NonRegisterPatientId = $scope.Configuration.Configuration.NonRegisterPatientId;
                 $scope.ServiceProviderType = $scope.Configuration.Configuration.DoctorTypeId;
-                $scope.SingleLabItem.ItemTypeId = $scope.Configuration.Configuration.InventoryItem;
+                $scope.SingleLabItem.ItemTypeId = $scope.Configuration.Configuration.ServiceItem;
                 $scope.medicalTypeIDLab = $scope.Configuration.Configuration.MedicalTypeLabTest.toString();
+                $scope.MedicalTypeReagent = $scope.Configuration.Configuration.MedicalTypeReagent.toString();
+                $scope.SingleReagentItem.MedicalTypeId = $scope.Configuration.Configuration.MedicalTypeReagent;
+                $scope.SingleReagentItem.ItemTypeId = $scope.Configuration.Configuration.InventoryItem;
                 $scope.LabTestStatus = "0";
 
                 init();

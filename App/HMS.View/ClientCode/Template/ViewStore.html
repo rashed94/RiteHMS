@@ -1,0 +1,23 @@
+﻿<div class="inner_container">
+    <table width="100%" border="0" class="bordered">
+        <thead>
+            <tr>
+                <th>Store Name</th>
+                <th>Store Address</th>
+                <th>Store Type</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="singleStore in StoreList">
+            <tr>
+                <td>{{singleStore.Name}}</td>
+                <td>{{singleStore.Address}}</td>
+                <td>{{singleStore.StoreType.Name}}</td>
+                <td>
+                    <a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();DeleteStore(singleStore);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;
+                    <a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="{{editUrl}}{{singleStore.Id}}"></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -162,6 +162,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
             .success(function (pt) {
                 $scope.MeasureMentUnits = pt;
                 if (!$routeParams.id) {
+                    if ($scope.MeasureMentUnits.length > 0)
                     $scope.filterCondition.MeasurementUnitId = $scope.MeasureMentUnits[0].Id.toString();
                 }
 
@@ -187,7 +188,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
 
     $scope.LoadFilterCondition = function () {
-        $scope.filterCondition.MeasurementUnitId = $scope.SingleBedItem.MeasurementUnitId.toString();
+       // $scope.filterCondition.MeasurementUnitId = $scope.SingleBedItem.MeasurementUnitId.toString();
         $scope.filterCondition.ItemCategoryId = $scope.SingleBedItem.ItemCategoryId.toString();
         if ($scope.SingleBedItem.LabReportGroupId != null) {
             $scope.filterCondition.LabReportGroupId = $scope.SingleBedItem.LabReportGroupId.toString()
@@ -221,9 +222,10 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
 
     $scope.saveItem = function () {
 
-        $scope.SingleBedItem.MeasurementUnitId = 62;
+       // $scope.SingleBedItem.MeasurementUnitId = 62;
         $scope.SingleBedItem.ItemCategoryId = $scope.filterCondition.ItemCategoryId;
         $scope.SingleBedItem.LabReportGroupId = null;
+        $scope.SingleBedItem.MeasurementUnitId = null;
 
 
         BedSetupService.SaveItem($scope.SingleBedItem)

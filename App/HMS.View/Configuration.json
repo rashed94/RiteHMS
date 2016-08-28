@@ -10,6 +10,7 @@
             "MedicalTypeSurgery": 63,
             "MedicalTypeBed": 64,
             "MedicalTypeOther": 65,
+            "MedicalTypeReagent": 66,
             "InventoryItem": 32,
             "ServiceItem": 31
         }

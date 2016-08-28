@@ -7,7 +7,7 @@ namespace HMS.Model.Core
     {
         public User()
         {
-            Contact = new Contact();
+           // Contact = new Contact();
         }
 
         public long ContactId { get; set; }

@@ -136,7 +136,7 @@
                 <div class="padding40">
                     <div>Category Name</div>
                     <div><input type="text" ng-model="categoryName"></div>
-                    <div><input name="save" type="button" value="save" class="md_button" ng-click="saveCategory()"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="saveReagentCategory()"></div>
                 </div>
             </div>
         </div>
@@ -420,7 +420,10 @@
                     <tr>
                         <td height="39">&nbsp;</td>
                         <td>REFERRAR'S COMISSIOM</td>
-                        <td colspan="2"><input type="text" ng-model="SingleLabItem.DefaultReferrarFee"> &nbsp;&nbsp; <a class="arrow_head" href="#" ng-click="$event.preventDefault();CommissionModal('lg',true)" ng-show="SingleLabItem.Id>0"> Set Comission by Doctor's Name</a></td>
+                        <td colspan="2"><input type="text" ng-model="SingleLabItem.DefaultReferrarFee">
+                         &nbsp;&nbsp; <a class="arrow_head" href="#" ng-click="$event.preventDefault();CommissionModal('lg',true)" ng-show="SingleLabItem.Id>0"> Set Comission by Doctor's Name</a>
+                            &nbsp;&nbsp; <a class="arrow_head" href="#" ng-click="$event.preventDefault();ReagentModal('lg',true,SingleLabItem)" ng-show="SingleLabItem.Id>0"> Set Reagent</a>
+                        </td>
                     </tr>
                     <tr>
                         <td height="39">&nbsp;</td>
@@ -445,9 +448,9 @@
         <div class="criteria_box">
 
 
-            <select ng-model="filterCondition.ReagentCategoryId" ng-change="loadItems()">
+            <select ng-model="filterCondition.ReagentCategoryId" ng-change="loadReagentItems()">
 
-                <option ng-selected="true" value="0"> All</option>
+                <option ng-selected="true" value="0">All</option>
                 <option ng-repeat="category in ReagentCategories" value="{{category.Id}}"> {{category.Name}}</option>
 
 
@@ -467,7 +470,7 @@
                     <td colspan="6">{{item.ItemCategory.Name}}   </td>
                     <!--<td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/pharmacy/addpharmacy/{{labitem.Id}}"></a></td>-->
 
-                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();DeleteItem(item.Id);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/surgery/addpsurgery/{{item.Id}}"></a></td>
+                    <td><a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();DeleteItem(item.Id);" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;<a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/labtest/addreagent/{{item.Id}}"></a></td>
                 </tr>
 
             </tbody>
@@ -487,7 +490,7 @@
         </div>
 
         <div ng-show="saveSuccess>0" class="register">
-            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" ng-href="#/surgery/addpsurgery">Add New Surgery Item</a>
+            <a class="modal_registration_click" aria-hidden="true" ng-click="ReloadPage()" ng-href="#/labtest/addreagent">Add New Surgery Item</a>
         </div>
 
         <form name="form1">
@@ -536,12 +539,29 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td height="39">&nbsp;</td>
+                        <td><div class="require">*</div>MEASURE UNIT</td>
+                        <td colspan="2">
 
+                            <select name="palnType3" class="distype" ng-model="filterCondition.MeasurementUnitId">
+
+
+                                <option ng-repeat="measureMentUnit in MeasureMentUnits" value="{{measureMentUnit.Id}}">{{measureMentUnit.Name}}</option>
+
+
+
+                            </select>
+                            <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#" id="MeasurementUnit"></a>
+
+
+                        </td>
+                    </tr>
 
                     <tr>
                         <td height="39">&nbsp;</td>
-                        <td><div class="require">*</div>CHARGE PRICE</td>
-                        <td colspan="2"><input type="text" ng-model="SingleReagentItem.SalePrice"></td>
+                        <td><div class="require">*</div>BUY PRICE</td>
+                        <td colspan="2"><input type="text" ng-model="SingleReagentItem.BuyPrice"></td>
                     </tr>
 
                     <tr>
@@ -552,7 +572,7 @@
                     <tr>
                         <td height="39">&nbsp;</td>
                         <td colspan="3">
-                            <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();" ng-disabled="form1.$invalid">
+                            <input name="save" type="button" value="save" class="md_button" ng-click="saveReagentItem();" ng-disabled="form1.$invalid">
                             <!--<input name="save" type="submit" value="save" class="md_button" ng-click="submitted = true;saveItem();">-->
                             <input name="cancel" type="button" value="cancel" class="md_button">
                         </td>

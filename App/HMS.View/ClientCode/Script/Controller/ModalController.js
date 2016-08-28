@@ -533,6 +533,90 @@ HmsApp.controller("LabReportTemplateModalController", function ($scope, $http, $
 
 });
 
+HmsApp.controller("ReagentModalController", function ($scope, $http, $modalInstance, $filter, $window, item, LabTestService, ItemService) {
+
+
+    $scope.Reagent = {
+        InvestigationId: item.Id,
+        ReagentId: "",
+        Quantity: "",
+        MeasurementUnitId: ""
+    }
+    $scope.SingleReagent={
+        Name : ""
+    }
+    $scope.ReagentList = [];
+    
+
+    $scope.OnReagentSelect = function ($item) {
+
+        $scope.SingleReagent.Name = $item.Name;
+        $scope.Reagent.ReagentId = $item.Id;
+        $scope.Reagent.MeasurementUnitId = $item.MeasurementUnitId;
+
+    }
+
+    $scope.GetReagentByPartialName = function (name) {
+        return $http.get('/Patient/GetItembyMedicalPartialName?id=' + $scope.SingleReagentItem.MedicalTypeId + '&name=' + name).then(function (response) {
+            return response.data;
+        });
+    }
+
+    $scope.LoadReagent=function()
+    {
+        ItemService.GetReagents(item.Id)
+          .success(function (pt) {
+
+              $scope.ReagentList = pt;
+              console.log("Successfully Load Reagent");
+              console.log(pt);
+          })
+          .error(function (error) {
+              $scope.status = 'Unable to load Reagent item for Lab Test ' + error.message;
+              console.log($scope.status);
+          });
+    }
+
+    // init
+    $scope.LoadReagent();
+
+    $scope.DeletReagent=function(reagent)
+    {
+        ItemService.DeletReagent(reagent)
+        .success(function (pt) {
+
+            $scope.ReagentList = pt.Data;
+            console.log("Successfully Delete Reagent");
+            console.log(pt);
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to Delete Reagent item for Lab Test ' + error.message;
+            console.log($scope.status);
+        });
+    }
+    $scope.ok = function () {
+
+        $scope.SingleReagent.Name = "";
+        $scope.SingleReagent.Quantity = "";
+        ItemService.SaveReagentForInvestigation($scope.Reagent)
+        .success(function (pt) {
+
+            $scope.ReagentList = pt.Data;
+            console.log("Successfully Save Reagent");
+            console.log(pt);
+        })
+        .error(function (error) {
+            $scope.status = 'Unable to Save Reagent item for Lab Test ' + error.message;
+            console.log($scope.status);
+        });
+      //  $modalInstance.close();
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+
+});
+
 HmsApp.controller("CommissionModalController", function ($scope, $http, $modalInstance, $filter, $window, LabTestService) {
 
 

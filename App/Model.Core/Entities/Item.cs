@@ -15,6 +15,7 @@ namespace HMS.Model.Core
             this.ItemReorders = new List<ItemReorder>();
             this.PatientServices = new List<PatientService>();
             this.ReceiptPayments = new List<ReceiptPayment>();
+            this.InventoryItem = new List<InventoryItem>();
         }
     
         public string Name { get; set; }
@@ -51,6 +52,7 @@ namespace HMS.Model.Core
         public virtual ServiceProvider ServiceProvider { get; set; }
         public virtual ICollection<PatientService> PatientServices { get; set; }
         public virtual ICollection<ReceiptPayment> ReceiptPayments { get; set; }
+        public virtual ICollection<InventoryItem> InventoryItem { get; set; }
 
         protected override void RegisterValidationMethods()
         {

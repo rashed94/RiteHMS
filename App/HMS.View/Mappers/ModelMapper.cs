@@ -8,6 +8,134 @@ namespace HMS.View.Mappers
 {
     public class ModelMapper
     {
+
+        public static User MapToClient(User user)
+        {
+            User singleUser = new User
+            {
+                Id = user.Id,
+                UserName=user.UserName,
+                Contact=user.Contact!=null ? MapToClient(user.Contact) :null
+
+            };
+
+            return singleUser;
+        }
+
+        public static ItemCategory MapToClient(ItemCategory category)
+        {
+            ItemCategory onlyCategory = new ItemCategory()
+            {
+                Id=category.Id,
+                Name=category.Name
+            };
+            return onlyCategory;
+        }
+
+        public static Item MapToClient(Item item)
+        {
+            Item onlyItem = new Item()
+            {
+                Id = item.Id,
+                Name = item.Name,
+                GenericName = item.GenericName,
+                Code = item.Code,
+                ItemTypeId = item.ItemTypeId,
+                MedicalTypeId = item.MedicalTypeId,
+                ItemCategoryId = item.ItemCategoryId,
+                ItemCategory = item.ItemCategory != null ? MapToClient(item.ItemCategory) : null,
+                MeasurementUnitId = item.MeasurementUnitId,
+                SalePrice = item.SalePrice,
+                BuyPrice = item.BuyPrice,
+                ServiceProviderId = item.ServiceProviderId,
+                ReferralAllowed = item.ReferralAllowed,
+                DefaultReferrarFee = item.DefaultReferrarFee,
+                Description = item.Description,
+                UserId = item.UserId,
+                LabReportGroupId = item.LabReportGroupId,
+                Active = item.Active
+
+            };
+            return onlyItem;
+        }
+
+        public static InvestigationReagent MapToClient(InvestigationReagent reagent)
+        {
+            InvestigationReagent investiGationReagent = new InvestigationReagent()
+            {
+                Id = reagent.Id,
+                InvestigationId = reagent.InvestigationId,
+                ReagentId = reagent.ReagentId,
+                Reagent = reagent.Reagent != null ? MapToClient(reagent.Reagent) : null,
+
+                Quantity=reagent.Quantity
+
+            };
+            return investiGationReagent;
+        }
+
+        public static StoreType MapToClient(StoreType storeType)
+        {
+            StoreType singleStoreType = new StoreType()
+            {
+                Id=storeType.Id,
+                Name=storeType.Name
+
+            };
+            return singleStoreType;
+        }
+
+        public static List<StoreLineManager> MapToClient(List<StoreLineManager> listStoreLineManager)
+        {
+            List<StoreLineManager> onlyStoreLineManagers = new List<StoreLineManager>();
+
+            listStoreLineManager.ForEach(s => 
+            {
+                if (s.Active == true)
+                {
+                    StoreLineManager singleStoreLineManager = ModelMapper.MapToClient(s);
+                    onlyStoreLineManagers.Add(singleStoreLineManager);
+                }
+            });
+
+            return onlyStoreLineManagers;
+        }
+        public static Store MapToClient(Store store)
+        {
+            Store singleStore = new Store
+            {
+                Id=store.Id,
+                Name=store.Name,
+                Address=store.Address,
+                PhoneNumber=store.PhoneNumber,
+                Fax=store.Fax,
+                Email=store.Email,
+                StoreKeeperId=store.StoreKeeperId,
+                StoreKeeper=store.StoreKeeper!=null ? MapToClient(store.StoreKeeper):null,
+                ParentStoreId=store.ParentStoreId,
+                ParentStore = store.ParentStore != null ? MapToClient(store.ParentStore) : null,
+                StoreTypeId=store.StoreTypeId,
+                StoreType=store.StoreType!=null? MapToClient( store.StoreType):null,
+                StoreLineManagers=store.StoreLineManagers!=null ? MapToClient(store.StoreLineManagers):null
+          
+
+            };
+
+            return singleStore;
+        }
+
+        public static StoreLineManager MapToClient(StoreLineManager lineManager)
+        {
+            StoreLineManager singleLineManager = new StoreLineManager
+            {
+                Id = lineManager.Id,
+                StoreId = lineManager.StoreId,
+                LineManagerId = lineManager.LineManagerId,
+                LineManagerUser = lineManager.LineManagerUser != null ? MapToClient(lineManager.LineManagerUser) : null
+            };
+            return singleLineManager;
+        }
+
         public static ServiceProvider MapToClient(ServiceProvider serviceProvider)
         {
             ServiceProvider mappedServiceProvider = new ServiceProvider {

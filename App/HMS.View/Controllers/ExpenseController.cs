@@ -210,13 +210,6 @@ namespace HMS.Controllers
             }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
 
-            }
-            base.Dispose(disposing);
-        }
     }
 }

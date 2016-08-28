@@ -53,6 +53,13 @@
     <Compile Include="Entities\Base\EntityBase.cs" />
     <Compile Include="Entities\Base\ISetProperty.cs" />
     <Compile Include="Entities\BedOccupancy.cs" />
+    <Compile Include="Entities\InventoryItem.cs" />
+    <Compile Include="Entities\InvestigationReagent.cs" />
+    <Compile Include="Entities\ItemRequisition.cs" />
+    <Compile Include="Entities\Requisition.cs" />
+    <Compile Include="Entities\RequisitionStatus.cs" />
+    <Compile Include="Entities\Shelf.cs" />
+    <Compile Include="Entities\Bin.cs" />
     <Compile Include="Entities\Configuration\ContactConfiguration.cs" />
     <Compile Include="Entities\Contact.cs" />
     <Compile Include="Entities\Department.cs" />
@@ -98,8 +105,11 @@
     <Compile Include="Entities\ServiceProviderAppointment.cs" />
     <Compile Include="Entities\ServiceProviderType.cs" />
     <Compile Include="Entities\Store.cs" />
+    <Compile Include="Entities\StoreLineManager.cs" />
+    <Compile Include="Entities\StoreType.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\ValidationExtensions\PersonValidationExtensions.cs" />
+    <Compile Include="Entities\ViewParentStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

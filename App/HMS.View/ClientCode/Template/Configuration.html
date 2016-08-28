@@ -283,126 +283,14 @@
     </div>
 
     <div class="viewstore hide">
-
-        <div class="inner_container">
-            <table width="100%" border="0" class="bordered">
-                <thead>
-                    <tr>
-                        <th>Store Name</th>
-                        <th>Store Address</th>
-                        <th>Store Type</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Demo Name</td>
-                        <td>Demo Address</td>
-                        <td>Demo Type</td>
-                        <td>
-                            <a class="fa fa-trash fa-2x" aria-hidden="true" ng-click="$event.preventDefault();deleteStore();" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>&nbsp;
-                            <a class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ng-href="#/configuration/viewstore"></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    
+        <view-store ng-if="ViewStore" edit-url="#/configuration/store/"></view-store>
 
     </div>
  
     <div class="store hide">
 
-        <div class="inner_content">
-
-            <div class="input_containter_inner">
-                <div class="title">Store Type</div>
-                <div class="inputbox">
-                    <select class="dropdown_width_medium">
-                        <option></option>
-                    </select>
-                </div>
-            </div>
-
-
-
-            <div class="input_containter_inner">
-                <div class="title">Store Name</div><div class="require">*</div>
-                <div class="inputbox">
-                    <input type="text">
-                </div>
-            </div>
-
-            <div class="input_containter_inner">
-                <div class="title">Store Address</div><div class="require">*</div>
-                <div class="inputbox">
-                    <input type="text">
-                </div>
-            </div>
-
-
-            <div class="input_containter_inner">
-                <div class="title">Store Phone Number</div>
-                <div class="inputbox">
-                    <input type="text">
-                </div>
-            </div>
-
-            <div class="input_containter_inner">
-                <div class="title">Store Fax</div>
-                <div class="inputbox">
-                    <input type="text">
-                </div>
-            </div>
-
-            <div class="input_containter_inner">
-                <div class="title">Store Email</div>
-                <div class="inputbox">
-                    <input type="text">
-                </div>
-            </div>
-
-            <div class="input_containter_inner">
-                <div class="title">Add Store Keeper</div><div class="require">*</div>
-                <div class="inputbox">
-                    <input type="text">
-
-                </div>
-            </div>
-
-            <div class="input_containter_inner round_box">
-                <div class="title">Add Line Manager</div>
-                <div class="inputbox">
-                    <input type="text">
-
-                    <div class="inputbox_inner_round">
-                        <ul>
-                            <li>Rashed <a href="#" class="link_brown"> Delete </a></li>
-                            <li>Muzahid <a href="#" class="link_brown"> Delete </a></li>
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="input_containter_inner">
-                <div class="title">Select Parent Store</div>
-                <div class="inputbox">
-                    <input type="text">
-
-                </div>
-            </div>
-
-            <div class="input_containter_inner">
-                <div class="title"></div>
-                <div class="inputbox">
-                    <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();">
-                    <input name="cancel" type="button" value="cancel" class="md_button">
-
-                </div>
-            </div>
-
-
-        </div>
+        <add-store ng-if="Store" store-id="{{StoreId}}"> </add-store>
 
     </div>
 

@@ -181,7 +181,20 @@
         return $http.post('/Item/cancelRefund', patientService);
     };
 
+    ItemService.SaveReagentForInvestigation = function (Reagent) {
 
+        return $http.post('/Item/SaveReagentForInvestigation', { Reagent: Reagent});
+    };
+
+    ItemService.GetReagents = function (InvestigationId) {
+
+        return $http.post('/Item/GetReagents', { InvestigationId: InvestigationId });
+    };
+
+    ItemService.DeletReagent = function (reagent) {
+
+        return $http.post('/Item/DeletReagent', { reagent: reagent });
+    };
 
 
     return ItemService;

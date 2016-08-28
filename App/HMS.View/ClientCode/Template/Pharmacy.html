@@ -190,10 +190,8 @@
                             <td height="39">&nbsp;</td>
                             <td>GENERIC NAME</td>
                             <td colspan="2">
-                                <input type="text" ng-model="SingleItem.GenericName" required name="genericName">
-                                <div ng-show="form1.genericName.$invalid">
-                                    <div ng-message="required">This field is required</div>
-                                </div>
+                                <input type="text" ng-model="SingleItem.GenericName">
+             
                             </td>
                         </tr>
 
@@ -213,9 +211,9 @@
                             </td>
                         </tr>
 
-                        <tr ng-show="hide">
+                        <tr>
                             <td height="39">&nbsp;</td>
-                            <td>MEASURE UNIT</td>
+                            <td><div class="require">*</div>MEASURE UNIT</td>
                             <td colspan="2">
 
                                 <select name="palnType3" class="distype" ng-model="filterCondition.MeasurementUnitId">

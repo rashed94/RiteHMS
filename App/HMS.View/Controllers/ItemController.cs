@@ -11,6 +11,7 @@ using HMS.Model.Core;
 using HMS.DAL.Repository;
 using System.Security.Claims;
 using System.Linq.Expressions;
+using HMS.View.Mappers;
 
 namespace HMS.Controllers
 {
@@ -33,6 +34,73 @@ namespace HMS.Controllers
 
             }
             return Json(labReport, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetReagents(long InvestigationId)
+        {
+
+            List<InvestigationReagent> onlyReagentList = new List<InvestigationReagent>();
+           
+
+            using (Repository<InvestigationReagent> repository = new Repository<InvestigationReagent>())
+            {
+
+                Expression<Func<InvestigationReagent, bool>> lambda;
+
+                lambda = (x => x.Active == true && x.InvestigationId == InvestigationId);
+
+                List<InvestigationReagent>  ReagentList = repository.GetByQuery(lambda).ToList();
+
+                ReagentList.ForEach(r =>
+                {
+                    InvestigationReagent Reagent = ModelMapper.MapToClient(r);
+                    onlyReagentList.Add(Reagent);
+                });
+                
+                
+            }
+
+            return Json(onlyReagentList, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+        public JsonResult DeletReagent(InvestigationReagent reagent)
+        {
+
+            InvestigationReagent onlyReagent = new InvestigationReagent();
+
+
+
+            
+
+
+            using (Repository<InvestigationReagent> repository = new Repository<InvestigationReagent>())
+            {
+                repository.DeleteByID(reagent.Id, GetLoggedinUserInfo().UserId);
+
+            }
+            return Json(GetReagents(reagent.InvestigationId), JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult SaveReagentForInvestigation(InvestigationReagent Reagent)
+        {
+
+            InvestigationReagent onlyReagent = new InvestigationReagent();
+
+            
+
+            Reagent.UserId= GetLoggedinUserInfo().UserId;
+
+
+            using (Repository<InvestigationReagent> repository = new Repository<InvestigationReagent>())
+            {
+                onlyReagent= repository.Insert(Reagent);
+                
+            }
+            return Json(GetReagents(onlyReagent.InvestigationId), JsonRequestBehavior.AllowGet);
+
         }
 
         public JsonResult LoadLabReportbyId(long itemID)

@@ -1,0 +1,64 @@
+﻿<div class="modal-header rite_modal_header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden=" true">&times;</span></button>
+    <h2 class="modal-title" id="myModalLabel">
+        Set Reagent
+    </h2>
+</div>
+<div class="modal-body">
+    <div class="payment">
+
+        <div class="title">Select Item</div>
+        <div class="inputbox">
+
+            <input required name="username1" id="username1" type="text" placeholder="Type User's name" style="width:300px;"
+                   ng-model="SingleReagent.Name"
+                   typeahead="item as (item.Name) for item in GetReagentByPartialName($viewValue)"
+                   typeahead-on-select="OnReagentSelect($item)"
+                   typeahead-min-length="1"
+                   typeahead-wait-ms="1"
+                   class="form-control">
+
+        </div>
+
+        <div class="title" style="width:60px;">Quantity</div>
+        <div class="inputbox">
+            <input type="text" style="width:50px;" ng-model="Reagent.Quantity">
+        </div>
+
+        <div style="clear: both"></div>
+        <div class="space"></div>
+        <div class="title"></div>
+        <div class="inputbox">
+            <input name="save" type="button" value="save" class="md_button" ng-click="ok()">
+            <!--<input name="cancel" type="button" value="cancel" class="md_button cancel" ng-click="cancel()">-->
+            <div style="clear: both"></div>
+            <div class="space"></div>
+
+
+        </div>
+
+
+
+    </div>
+
+    <table width="95%" border="0" class="flatTable" ng-model="Referrals">
+        <thead>
+            <tr>
+                <th width="8%">&nbsp;</th>
+                <th width="38%">Reagent Name</th>
+                <th width="29%">Quantity</th>
+                <th width="25%">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="reagent in ReagentList">
+            <tr>
+                <td>&nbsp;</td>
+                <td>{{reagent.Reagent.Name}}</td>
+                <td>{{reagent.Quantity}}</td>
+                <td><a class="fa fa-trash fa-2x" aria-hidden="true" href="#" ng-click="$event.preventDefault();DeletReagent(reagent)" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a></td>
+            </tr>
+<tbody>
+    </table>
+
+
+</div>

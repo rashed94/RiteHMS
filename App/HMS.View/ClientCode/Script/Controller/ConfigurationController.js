@@ -3,7 +3,9 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
 
     $scope.medicalTypeID ;
     $scope.HospitalAdmissionId;
-
+    $scope.Store = false;
+    $scope.ViewStore = false;
+    $scope.StoreId = 0;
 
     function init() {
 
@@ -337,6 +339,18 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
         if ($routeParams.tab == "treatment") {
             $scope.LoadTreatmentItems();
 
+        }
+
+        if($routeParams.tab == "store")
+        {
+            if ($routeParams.id) $scope.StoreId = $routeParams.id;
+            $scope.Store = true;
+            
+                
+            
+        }
+        if ($routeParams.tab == "viewstore") {
+            $scope.ViewStore = true;
         }
     }
 
