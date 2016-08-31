@@ -9,6 +9,51 @@
             $(this).datepicker('hide');
         });
     });
+
+    $('#shelfPop').click(function (event) {
+        //  alert("test");
+        event.preventDefault();
+        $('#popupShelf').css("visibility", "visible");
+        $('#popupShelf').css("opacity", 1);
+
+        $(".popup").css({ position: "absolute", top: event.pageY - 300, left: event.pageX - 660 });
+
+    });
+
+
+
+    $("#popupShelf .close").click(function () {
+
+        $('#popupShelf').css("visibility", "hidden");
+        $('#popupShelf').css("opacity", 0);
+    });
+
+
+    $('#binPop').click(function (event) {
+        //  alert("test");
+        event.preventDefault();
+        if (angular.element(document.getElementById("shelf")).scope().filterCondition.ShelfId != "") {
+            
+            $('#popupBin').css("visibility", "visible");
+            $('#popupBin').css("opacity", 1);
+
+            $(".popup").css({ position: "absolute", top: event.pageY - 300, left: event.pageX - 660 });
+        }else
+        {
+            alert("Please Select a Shelf first");
+        }
+
+    });
+
+
+
+    $("#popupBin .close").click(function () {
+
+        $('#popupBin').css("visibility", "hidden");
+        $('#popupBin').css("opacity", 0);
+    });
+
+
 </script>
 <div class="modal-header rite_modal_header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden=" true">&times;</span></button>
@@ -18,22 +63,57 @@
 </div>
 <div class="modal-body">
     
+
+    <div id="popupShelf" class="overlay">
+        <div class="popup">
+            <h2>Enter Shelf Name</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">x</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Shelf Name</div>
+                    <div><input type="text" ng-model="ShelfName"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="CreateSelf()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="popupBin" class="overlay">
+        <div class="popup">
+            <h2>Enter Bin Name</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">x</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Bin Name</div>
+                    <div><input type="text" ng-model="BinName"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="CreateBin()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
    <div class="popup_left_margin">
 
        <div class="input_containter">
+
+           <div class="round_box box_general" ng-show="SaveInventory">
+
+               <div class="success_message">Successfully Save Inventory</div>
+           </div>
            <div class="store">
 
                <div class="input_containter">
                    <div class="title">Item Name</div>
                    <div class="inputbox"> 
-                       <input type="text" ng-model="" disabled>
+                       <input type="text" ng-model="PharmacyItemName" disabled>
                    </div>
                </div>
                <div class="input_containter">
                    <div class="title">Store Name</div>
                    <div class="inputbox">
-                       <select ng-model="" class="dropdown_width_medium">
-                           <option ng-repeat="" value="{{}}"> {{}}</option>
+                       <select class="dropdown_width_medium" ng-model="filterCondition.StoreId" ng-change="GetInventoryByItem()">
+                           <option ng-repeat="store in StoreList" value="{{store.Id}}">  {{store.Name}}</option>
                        </select>
                    </div>
                 </div>
@@ -45,14 +125,23 @@
                <div class="input_containter">
                    <div class="title">Shelf No</div>
                    <div class="inputbox">
-                       <input type="text" ng-model="">
+                       <select class="dropdown_width_medium" ng-model="filterCondition.ShelfId" id="shelf" ng-change="GetBin()">
+                           <option value="" selected> None </option>
+                           <option ng-repeat="shelf in ShelfList" value="{{shelf.Id}}">  {{shelf.Name}}</option>
+                       </select>
+                       <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="shelfPop"></a>
                    </div>
                </div>
 
                <div class="input_containter">
                    <div class="title">Bin No</div>
                    <div class="inputbox">
-                       <input type="text" ng-model="">
+                       <select class="dropdown_width_medium" ng-model="filterCondition.BinId">
+
+                           <option value="" selected> None </option>
+                           <option ng-repeat="bin in BinList" value="{{bin.Id}}">  {{bin.Name}}</option>
+                       </select>
+                       <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="binPop"></a>
                    </div>
                </div>
 
@@ -60,14 +149,23 @@
                <div class="input_containter">
                    <div class="title">Re-Order Level</div>
                    <div class="inputbox">
-                       <input type="text" ng-model="">
+                       <input type="text" ng-model="Inventory.ReorderLevel">
                    </div>
                </div>
 
                <div class="input_containter">
+                   <div class="title">Quantity</div>
+                   <div class="inputbox">
+                       <input type="text" ng-model="Inventory.Quantity" disabled>
+                   </div>
+               </div>
+
+
+
+               <div class="input_containter">
                    <div class="title"></div>
                    <div class="inputbox">
-                       <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();">
+                       <input name="save" type="button" value="save" class="md_button" ng-click="CreateInventory();">
                    </div>
                </div>
 
@@ -77,41 +175,80 @@
            
 
            <div class="add_stock">
-               <h4>Add Stock</h4>
-               <div class="border_bottom"></div>
+               <form name="form1">
 
-               <div class="space"></div>
+                   <h4>Add Stock</h4>
 
-               <div class="input_containter">
-                   <div class="title">Quantiy</div>
-                   <div class="inputbox">
-                       <input type="text" ng-model="">
+                   <div class="round_box box_general" style="margin-top:22px;" ng-show="SaveInventoryItem">
+
+                       <div class="success_message">Successfully Update Stock</div>
                    </div>
-               </div>
 
-               <div class="input_containter">
-                   <div class="title">Buy Price</div>
-                   <div class="inputbox">
-                       <input type="text" ng-model="">
+                   <div class="border_bottom"></div>
+
+                   <div class="space"></div>
+
+                   <div class="input_containter">
+                       
+                       <div class="title">Quantiy</div>
+                       <div class="inputbox">
+                           <input type="text" ng-model="InventoryItem.Quantity" required name="Quantity">
+                           <div class="require">*</div>
+                       </div>
+                      
+
                    </div>
-               </div>
 
-               <div class="input_containter">
-                   <div class="title">Expire Date</div>
-                   <div class="inputbox">
-                       <input type="text" width="110" placeholder="click to show datepicker" name="expireDate" class="expireDate" >
+                   <div class="input_containter">
+                       
+                       <div class="title">Buy Price</div>
+                       <div class="inputbox">
+                           <input type="text" ng-model="InventoryItem.BuyPrice" required name="BuyPrice">
+                           <div class="require">*</div>
+                       </div>
                    </div>
-               </div>
 
-
-               <div class="input_containter">
-                   <div class="title"></div>
-                   <div class="inputbox">
-                       <input name="save" type="button" value="save" class="md_button" ng-click="saveItem();">
+                   <div class="input_containter">
+                      
+                       <div class="title">Expire Date</div>
+                       <div class="inputbox">
+                           <input type="text" required name="ExpireDate"  width="110" placeholder="click to show datepicker" name="expireDate" ng-model="InventoryItem.ExpiryDate" class="expireDate">
+                           <div class="require">*</div>
+                       </div>
                    </div>
-               </div>
 
-           </div>
+
+                   <div class="input_containter">
+                       <div class="title"></div>
+                       <div class="inputbox">
+                           <input name="save" type="button" value="save" class="md_button" ng-click="PrepareAndSaveInventoryItem();" ng-disabled="form1.$invalid">
+                       </div>
+                   </div>
+
+                   <div ng-show="InventoryItemList.length>0">
+                       <table width="95%" border="0" class="flatTable" ng-model="Referrals">
+                           <thead>
+                               <tr>
+                                   <th width="8%">&nbsp;</th>
+                                   <th width="38%">Expire Date</th>
+                                   <th width="29%">Quantity</th>
+                                   <th width="29%">Buy Price</th>
+                               </tr>
+                           </thead>
+                           <tbody ng-repeat="stock in InventoryItemList">
+                               <tr>
+                                   <td>&nbsp;</td>
+                                   <td>{{stock.ExpiryDate}}</td>
+                                   <td>{{stock.Quantity}}</td>
+                                   <td>{{stock.BuyPrice}}</td>
+                               </tr>
+                           <tbody>
+                       </table>
+                   </div>
+
+               </form>
+
+            </div>
 
        </div>
 

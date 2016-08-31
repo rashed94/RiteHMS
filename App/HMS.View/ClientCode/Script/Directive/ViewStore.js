@@ -10,9 +10,11 @@ angular.module('HMS').directive('viewStore', function () {
 
             $scope.StoreList = [];
 
-            $scope.GetStores = function () {
+           var storeType = 0;
 
-                InventoryService.GetStores()
+           $scope.GetStores = function () {
+
+               InventoryService.GetStores(storeType)
                 .success(function (pt) {
                     $scope.StoreList = pt;
                     console.log(pt);

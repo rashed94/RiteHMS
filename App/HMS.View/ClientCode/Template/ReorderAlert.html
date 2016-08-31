@@ -1,0 +1,129 @@
+﻿
+
+    <!--<script>
+
+        $(document).ready(function () {
+
+            $('#quantityPopUp').click(function (event) {
+                 alert("test");
+                event.preventDefault();
+                $('#popupQuantity').css("visibility", "visible");
+                $('#popupQuantity').css("opacity", 1);
+
+                $(".popup").css({ position: "absolute" });
+               // alert(angular.element(event).scope().inventory.Item.Name);
+            });
+
+
+            $("#popupQuantity .close").click(function () {
+
+                $('#popupQuantity').css("visibility", "hidden");
+                $('#popupQuantity').css("opacity", 0);
+            });
+
+
+
+
+
+
+        });
+    </script>-->
+
+
+    <div id="popupQuantity" class="overlay">
+        <div class="popup">
+            <h2>Enter Quantiy</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();PopUpRequsitionClose()">x</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Quantity</div>
+                    <div><input type="text" ng-model="ItemRequisition.Quantity"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="AddToRequsition()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div id="popupRequsition" class="overlay">
+            <div class="popup">
+                <h2>Enter Requsition Information</h2>
+                <a class="close" href="#" ng-click="$event.preventDefault();">x</a>
+                <div class="content_text">
+                    <div class="padding40">
+                        <form name="form1">
+                            <div class="input_containter">
+                                <div class="title">Request to</div>
+                                <div class="inputbox">
+                                    <select class="dropdown_width_medium" ng-model="filterCondition.StoreId">
+                                        <option ng-repeat="store in RequisitionStoreList" value="{{store.Id}}">  {{store.Name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input_containter">
+                                <div class="title">Purpose</div>
+                                <div class="inputbox">
+                                    <input type="text" ng-model="Requisition.Purpose" class="input_width_medium" required name="Quantity">
+                                    <div class="require">*</div>
+                                </div>
+                            </div>
+                            <div class="input_containter">
+                                <div class="title">Note</div>
+                                <div class="inputbox">
+                                    <textarea rows="7" cols="30" ng-model="Requisition.Note"></textarea>
+                                </div>
+                            </div>
+                            <div class="input_containter">
+                                <div class="title"></div>
+                                <div class="inputbox">
+                                    <input name="save" type="button" value="save" class="md_button" ng-click="SubmitRequsition()" ng-disabled="form1.$invalid">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div id="popupShelf" class="overlay">
+        <div class="popup">
+            <h2>Enter Shelf Name</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();">x</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Shelf Name</div>
+                    <div><input type="text" ng-model="ShelfName"></div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="CreateSelf()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Re-order Alert</h2>
+    <div class="dashboard_content">
+
+        <button type="button" class="sm_button modal_click" ng-click="PopUpRequsition($event)">Submit Requsition</button>
+        <div class="space"></div>
+        <table width="100%" border="0">
+            <thead>
+                <tr>
+                    <th width="50%" align="left">Item Name</th>
+                    <th width="15%" align="left">Quantity</th>
+                    <th width="35%">&nbsp;</th>
+                </tr>
+            <thead>
+            <tbody ng-repeat="inventory in Inventories">
+                <tr>
+                    <td class="border_bottom_dashboard">{{inventory.Item.Name}}</td>
+                    <td class="border_bottom_dashboard">{{inventory.Quantity}}</td>
+                    <td class="border_bottom_dashboard">
+                        <a class="link_brown" id="quantityPopUp" ng-show="!inventory.IsAdded" ng-click="$event.preventDefault();popUpQuantity(inventory,$event)">Add to Requsition</a>
+                        <div ng-show="inventory.IsAdded" class="status_brown">Added</div>
+                    </td>
+                </tr>
+
+
+
+            </tbody>
+        </table>
+
+    </div>

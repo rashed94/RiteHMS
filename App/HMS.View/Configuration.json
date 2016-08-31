@@ -12,6 +12,11 @@
             "MedicalTypeOther": 65,
             "MedicalTypeReagent": 66,
             "InventoryItem": 32,
-            "ServiceItem": 31
+            "ServiceItem": 31,
+            "StoreTypePharmacy": 101,
+            "StoreTypeInvestigation": 110,
+            "RequsitionStatusOpened": 110,
+            "RequsitionStatusApproved": 120,
+            "RequsitionStatusReceived": 130
         }
     }

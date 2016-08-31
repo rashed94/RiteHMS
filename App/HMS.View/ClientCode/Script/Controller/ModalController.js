@@ -14,15 +14,350 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, 
     };
 });
 
-HmsApp.controller("StockModelController", function ($scope, $modalInstance) {
+HmsApp.controller("StockModelController", function ($scope, $modalInstance, $filter, singleItem,storeId,storeType, InventoryService) {
+
+            $scope.PharmacyItemName = singleItem.Name;
+            $scope.filterCondition={
+                StoreId: "",
+                ShelfId:"",
+                BinId:""
+            }
+            $scope.StoreList = [];
+            $scope.ShelfList = [];
+            $scope.BinList = [];
+            $scope.InventoryItemList = [];
+            $scope.SaveInventory = false;
+            $scope.SaveInventoryItem = false;
+
+             $scope.Inventory = {
+
+                id:"",
+                ItemID: singleItem.Id,
+                InventoryId:"",
+                StoreID :$scope.filterCondition.StoreId,
+                Quantity :0,
+                ReorderLevel :"",
+                ShelfId:"",
+                BinId:"",
+                MeasurementUnitId: singleItem.MeasurementUnitId,
+                LastModifiedDate: $filter('date')(new Date(), 'yyyy-MM-dd')
+             }
+
+             $scope.InventoryItem = {
+
+                 id:"",
+                 ItemId: singleItem.Id,
+                 InventoryId: $scope.Inventory.Id,
+                 StoreId: $scope.filterCondition.StoreId,
+                 Quantity: "",
+                 MeasurementUnitId: singleItem.MeasurementUnitId,
+                 ExpiryDate: "",
+                 BuyPrice: "",
+                 ModifiedDate: $filter('date')(new Date(), 'yyyy-MM-dd')
+
+             }
+        
+             var closeShelf=function()
+             {
+                 $('#popupShelf').css("visibility", "hidden");
+                 $('#popupShelf').css("opacity", 0);
+                 $scope.ShelfName = "";
+             }
+             var closeBin = function () {
+                 $('#popupBin').css("visibility", "hidden");
+                 $('#popupBin').css("opacity", 0);
+                 $scope.BinName = "";
+             }
+
+             $scope.CreateSelf=function()
+             {
+                 var shelf = {
+                     Name: $scope.ShelfName,
+                     StoreId:$scope.filterCondition.StoreId
+                 }
+                 InventoryService.CreateSelf(shelf)
+
+                    .success(function (pt) {
+
+                        closeShelf()
+                        
+                        $scope.ShelfList.push(pt);
+                        $scope.filterCondition.ShelfId = pt.Id.toString();
+                        console.log("Successfully Careate Shelf data");
+                        console.log(pt);
+                        $scope.GetBin();
+                    })
+                    .error(function (error) {
+
+                        $scope.status = 'Unable to Create  Shelf data: ' + error.message;
+                        console.log($scope.status);
+                    });
+             }
+
+             $scope.CreateBin = function () {
+                 var bin = {
+                     Name: $scope.BinName,
+                     ShelfId: $scope.filterCondition.ShelfId
+                 }
+                 InventoryService.CreateBin(bin)
+
+                    .success(function (pt) {
+
+                        closeBin()
+
+                        $scope.BinList.push(pt);
+                        $scope.filterCondition.BinId = pt.Id.toString();
+                        console.log("Successfully Careate bin data");
+                        console.log(pt);
+                    })
+                    .error(function (error) {
+
+                        $scope.status = 'Unable to Create  bin data: ' + error.message;
+                        console.log($scope.status);
+                    });
+             }
+
+             $scope.GetShelf=function()
+             {
+
+                 InventoryService.GetShelf($scope.filterCondition.StoreId)
+                .success(function (pt) {
+
+                    $scope.ShelfList = pt;
+                    if ($scope.ShelfList.length > 0)
+                    {
+                        if($scope.Inventory.ShelfId>0)
+                        {
+                            $scope.filterCondition.ShelfId = $scope.Inventory.ShelfId.toString();
+                            
+                        }
+                    } else
+                    {
+                        $scope.filterCondition.ShelfId = "";
+                    }
+                    $scope.GetBin();
+                    console.log("Successfully get Shelf data");
+                    console.log(pt);
+                })
+                .error(function (error) {
+
+                    $scope.status = 'Unable to load  Shelf data: ' + error.message;
+                    console.log($scope.status);
+                });
+
+             }
+
+             $scope.GetBin=function()
+             {
+
+                 InventoryService.GetBin($scope.filterCondition.ShelfId)
+                .success(function (pt) {
+
+                    $scope.BinList = pt;
+
+                    if ($scope.BinList.length > 0) {
+                        if ($scope.Inventory.BinId > 0) {
+                            $scope.filterCondition.BinId = $scope.Inventory.BinId.toString();
+                           
+                        }
+                    } else
+                    {
+                        $scope.filterCondition.BinId = "";
+                    }
+                    
+                    console.log("Successfully get Bin data");
+                    console.log(pt);
+                })
+                .error(function (error) {
+
+                    $scope.status = 'Unable to load  Bin data: ' + error.message;
+                    console.log($scope.status);
+                });
+
+             }
+            
+             $scope.CreateInventoryWithInventoryItem=function()
+             {
+
+                 $scope.Inventory.ShelfId = $scope.filterCondition.ShelfId;
+                 $scope.Inventory.BinId = $scope.filterCondition.BinId;
+                 $scope.Inventory.LastModifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
+                 $scope.SaveInventory = false;
+                 $scope.SaveInventoryItem = false;
+
+                var data= InventoryService.CreateInventory($scope.Inventory)
+                 .success(function (pt) {
+
+                     $scope.SaveInventory = true;
+                     $scope.Inventory = pt;
+                     console.log("Successfully Create inventory data");
+                     console.log(pt);
+                 })
+                 .error(function (error) {
+
+                     $scope.status = 'Unable to Create  Inventory data: ' + error.message;
+                     console.log($scope.status);
+                 });
+
+                return { data: data };
+             }
 
 
-    $scope.ok = function (file) {
-        $modalInstance.close();
-    };
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
+             $scope.CreateInventory = function () {
+
+                 $scope.Inventory.ShelfId = $scope.filterCondition.ShelfId;
+                 $scope.Inventory.BinId = $scope.filterCondition.BinId;
+                 $scope.Inventory.LastModifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
+                 $scope.SaveInventory = false;
+                 $scope.SaveInventoryItem = false;
+
+                  InventoryService.CreateInventory($scope.Inventory)
+                  .success(function (pt) {
+
+                      $scope.SaveInventory = true;
+                      $scope.Inventory = pt;
+                      console.log("Successfully Create inventory data");
+                      console.log(pt);
+                  })
+                  .error(function (error) {
+
+                      $scope.status = 'Unable to Create  Inventory data: ' + error.message;
+                      console.log($scope.status);
+                  });
+
+                 
+             }
+
+
+
+             $scope.PrepareAndSaveInventoryItem=function()
+             {
+                 if ($scope.Inventory.Id == 0) {
+
+                     $scope.Inventory.Quantity = parseInt($scope.InventoryItem.Quantity) + parseInt($scope.Inventory.Quantity);
+
+                     $scope.CreateInventoryWithInventoryItem().data.success(function (pt) {
+
+
+                             $scope.InventoryItem.InventoryId = $scope.Inventory.Id;
+                             $scope.InventoryItem.ModifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
+
+
+                             $scope.CreateInventoryItem();
+                         })
+                        .error(function (error) {
+
+                            alert("Error occurred ...Updating inventory ..please try again");
+
+                        });
+
+                 } else {
+
+                     $scope.InventoryItem.InventoryId = $scope.Inventory.Id;
+                     $scope.Inventory.Quantity = parseInt($scope.InventoryItem.Quantity) + parseInt($scope.Inventory.Quantity);
+                     $scope.CreateInventoryWithInventoryItem().data.success(function (pt) {
+
+                         $scope.CreateInventoryItem();
+                         })
+                        .error(function (error) {
+
+                            alert("Error occurred ...Updating inventory ..please try again");
+
+                        });
+                     
+                 }
+                 
+             }
+             $scope.ClearInventoryItem=function()
+             {
+                 $scope.InventoryItem.Quantity = "";
+                 $scope.InventoryItem.BuyPrice = ""
+                 $scope.InventoryItem.ExpiryDate = "";
+             }
+             $scope.CreateInventoryItem=function()
+             {
+                 InventoryService.CreateInventoryItem($scope.InventoryItem)
+                 .success(function (pt) {
+
+                     $scope.SaveInventoryItem = true;
+                     pt.ExpiryDate=ToJavaScriptDate(pt.ExpiryDate);
+                     $scope.InventoryItemList.push(pt);
+
+                     $scope.ClearInventoryItem();                     
+                     console.log("Successfully Careate Stock data");
+
+                     console.log(pt);
+                 })
+                 .error(function (error) {
+
+                     $scope.status = 'Unable to Create  Stock data: ' + error.message;
+                     console.log($scope.status);
+                 });
+             }
+
+
+             $scope.GetInventoryByItem=function()
+             {
+                 $scope.InventoryItemList = [];
+                 InventoryService.GetInventoryByItem(singleItem.Id, $scope.filterCondition.StoreId)
+                 .success(function (pt) {
+
+                     $scope.Inventory = pt;
+                     if ($scope.Inventory.Id == 0) {
+                         $scope.Inventory.StoreID = $scope.filterCondition.StoreId;
+                         $scope.Inventory.ItemID = singleItem.Id;
+                         $scope.Inventory.Quantity = 0;
+                         $scope.Inventory.MeasurementUnitId = singleItem.MeasurementUnitId;
+                         $scope.Inventory.LastModifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
+                         
+                     }
+                     $scope.GetShelf();
+                     console.log("Successfully get inventory data");
+                     console.log(pt);
+                 })
+                 .error(function (error) {
+
+                     $scope.status = 'Unable to load  Inventory data: ' + error.message;
+                     console.log($scope.status);
+                 });
+
+             }
+            $scope.GetStores = function () {
+
+                InventoryService.GetStores(storeType)
+                .success(function (pt) {
+
+                    if (pt.length > 0) {
+                        $scope.StoreList = pt;
+                        $scope.filterCondition.StoreId = pt[0].Id.toString();
+                    }
+                    if (storeId)
+                    {
+                        $scope.filterCondition.StoreId = storeId.toString();
+                    }
+
+                    $scope.GetInventoryByItem();
+                    
+
+                    console.log(pt);
+                })
+                .error(function (error) {
+                    $scope.status = 'Unable to load  Store data: ' + error.message;
+                    console.log($scope.status);
+                });
+            }
+
+            $scope.GetStores();
+
+            $scope.ok = function () {
+                $modalInstance.close();
+            };
+            $scope.cancel = function () {
+                $modalInstance.dismiss('cancel');
+            };
+
+
+
 });
 
 

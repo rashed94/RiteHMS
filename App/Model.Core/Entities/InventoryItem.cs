@@ -10,7 +10,7 @@ namespace HMS.Model.Core
         {
             
         }
-        public string Name { get; set; }
+       
         public long ItemId { get; set; }
         public long InventoryId { get; set; }
         public long StoreId { get; set; }

@@ -140,6 +140,9 @@
     <Content Include="ClientCode\Script\Controller\UserController.js" />
     <Content Include="ClientCode\Script\Directive\AddStore.js" />
     <Content Include="ClientCode\Script\Directive\ConfirmationBox.js" />
+    <Content Include="ClientCode\Script\Directive\EditInventory.js" />
+    <Content Include="ClientCode\Script\Directive\ReorderAlert.js" />
+    <Content Include="ClientCode\Script\Directive\RequsitionStatus.js" />
     <Content Include="ClientCode\Script\Directive\ViewStore.js" />
     <Content Include="ClientCode\Script\Service\AddItemService.js" />
     <Content Include="ClientCode\Script\Service\AdminApprovalService.js" />
@@ -169,6 +172,7 @@
     <Content Include="ClientCode\Template\Doctor.html" />
     <Content Include="ClientCode\Template\DoctorCommission.html" />
     <Content Include="ClientCode\Template\EditContact.html" />
+    <Content Include="ClientCode\Template\EditInventory.html" />
     <Content Include="ClientCode\Template\EditOtherServices.html" />
     <Content Include="ClientCode\Template\EditPatient.html" />
     <Content Include="ClientCode\Template\EditServiceProvider.html" />
@@ -191,11 +195,13 @@
     <Content Include="ClientCode\Template\Pharmacy.html" />
     <Content Include="ClientCode\Template\PrimaryMenu.html" />
     <Content Include="ClientCode\Template\PrintInvoice.html" />
+    <Content Include="ClientCode\Template\ReorderAlert.html" />
     <Content Include="ClientCode\Template\ReportTemplateResult.html" />
     <Content Include="ClientCode\Template\ReportTemplate.html" />
     <Content Include="ClientCode\Template\AdminSecondaryMenu.html" />
     <Content Include="ClientCode\Template\ReportTransaction.html" />
     <Content Include="ClientCode\Template\ReportTransactionMenu.html" />
+    <Content Include="ClientCode\Template\RequsitionStatus.html" />
     <Content Include="ClientCode\Template\Surgery.html" />
     <Content Include="ClientCode\Template\ViewStore.html" />
     <Content Include="css\bootstrap.css" />

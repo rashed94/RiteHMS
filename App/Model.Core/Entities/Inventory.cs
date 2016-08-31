@@ -15,8 +15,8 @@ namespace HMS.Model.Core
         public int? Quantity { get; set; }
         public int? ReorderLevel { get; set; }
 
-        public string ShelfId { get; set; }
-        public string BinId { get; set; }
+        public long? ShelfId { get; set; }
+        public long? BinId { get; set; }
         public long? MeasurementUnitId { get; set; }
         public System.DateTime? LastModifiedDate { get; set; }
        
@@ -27,8 +27,12 @@ namespace HMS.Model.Core
         public virtual Store Store { get; set; }
         [ForeignKey("MeasurementUnitId")]
         public virtual MeasurementUnit MeasurementUnit { get; set; }
+        [ForeignKey("ShelfId")]
+        public virtual Shelf Shelf { get; set; }
+        [ForeignKey("BinId")]
+        public virtual Bin Bin { get; set; }
 
-        public virtual ICollection<InventoryItem> InventoryItems { get; set; }
+        public virtual List<InventoryItem> InventoryItems { get; set; }
 
         protected override void RegisterValidationMethods()
         {

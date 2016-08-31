@@ -1,0 +1,95 @@
+﻿<script>
+   
+
+   
+</script>
+<div class="criteria_box">
+
+    Store Name
+    <select class="dropdown_width_medium" ng-model="filterCondition.StoreId" ng-change="GetInventories()">
+        <option ng-repeat="store in StoreList" value="{{store.Id}}">  {{store.Name}}</option>
+    </select>
+
+</div>
+<div class="space"></div>
+
+<table width="100%" border="1" align="center" class="bordered evencolor">
+    <thead>
+        <tr>
+            <th width="2%" height="27">&nbsp;</th>
+            <th width="32%">Item Name</th>
+            <th width="8%">Quantity</th>
+            <th width="10%">Re-Order Level</th>
+            <th width="16%">Shelf</th>
+            <th width="15%">Bin</th>
+            <th width="17%">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody ng-repeat="inventory in Inventories">
+        <tr>
+            <td><a class="fa fa-arrow-circle-right fa-2x" ng-class="{'fa fa-arrow-circle-down fa-2x' : inventory.ActivePosition,'fa fa-arrow-circle-right fa-2x':!inventory.ActivePosition}" ng-click="$event.preventDefault();ToggleDetail(inventory)"></a></td>
+            <td>{{inventory.Item.Name}}</td>
+            <td>{{inventory.Quantity}}</td>
+            <td>{{inventory.ReorderLevel}}</td>
+            <td>{{inventory.Shelf.Name}}</td>
+            <td>{{inventory.Bin.Name}}</td>
+            <td><a class="link_brown" href="#" ng-click="$event.preventDefault();StockModal('lg',true,inventory.Item)"> EDIT INVENTORY</a></td>
+        </tr>
+        <tr ng-show="inventory.ActivePosition">
+
+            <td colspan="7" align="center" class="padding_left60">
+                <table width="90%" border="1" align="center" class="bordered small_header">
+                    <thead>
+                        <tr>
+                            <th width="7%">&nbsp;</th>
+                            <th width="34%">QUANTITY</th>
+                            <th width="17%">BUY PRICE</th>
+                            <th width="16%">EXPIRE DATE</th>
+                            <th width="26%">&nbsp;</th>
+
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="inventoryItem in inventory.InventoryItems" ng-include="GetTemplate(inventoryItem)"></tbody>
+                </table>
+
+
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+<script type="text/ng-template" id="display">
+
+    <tr>
+        <td>&nbsp;</td>
+        <td>{{inventoryItem.Quantity}}</td>
+        <td>{{inventoryItem.BuyPrice}}</td>
+        <td>{{inventoryItem.ExpiryDate}}</td>
+        <td>
+            <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();EditInventoryItem(inventory,inventoryItem,$index)"></a>
+            <a class="fa fa-trash fa-1_5x" aria-hidden="true" ng-click="$event.preventDefault();" ng-really-message="Are you Sure you want to Delete ?" ng-really-click="takeAction()"></a>
+        </td>
+
+
+    </tr>
+
+</script>
+
+<script type="text/ng-template" id="edit">
+
+    <tr>
+        <td>&nbsp;</td>
+        <td><input type="text" ng-model="inventoryItem.Quantity"></td>
+        <td><input type="text" ng-model="inventoryItem.BuyPrice"></td>
+        <td><input type="text" width="110" placeholder="click to show datepicker" name="expireDate" ng-model="inventoryItem.ExpiryDate" ng-init="dateInit()" class="expireDate"></td>
+        <td>
+            <a class="fa fa-floppy-o fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();
+               (inventory,inventoryItem)"></a>
+            &nbsp;&nbsp;&nbsp;<a class="fa fa-times fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();Reset(inventory,inventoryItem)"></a>
+        </td>
+
+
+    </tr>
+
+</script>

@@ -663,6 +663,11 @@ a.link_green:hover
 .dropdown_width_medium
 {
     width:150px;
+    
+}
+.input_width_medium{
+
+    width:200px;
 }
 
 .input_containter_inner

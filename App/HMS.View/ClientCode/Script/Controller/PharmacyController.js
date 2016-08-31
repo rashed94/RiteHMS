@@ -1,5 +1,5 @@
 ﻿'use strict';
-HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window, $filter, $route, $modal, ItemService, IniService) {
+HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window, $filter, $route, $modal, ItemService, IniService, InventoryService) {
     $scope.ReportFormats = {};
     $scope.SingleItem = {
         id: 0,
@@ -25,6 +25,10 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
     $scope.MeasureMentUnits = {};
     $scope.medicalTypeID = '';
     $scope.ItemEdit = false;
+    $scope.ShowInventory = false;
+    $scope.IsStore = false;
+    $scope.StoreList = [];
+    $scope.IsParentStore = false;
 
 
     function init() {
@@ -370,7 +374,8 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
             MeasurementUnitId: '',
             ItemCategoryId: '',
             ReportGroupId: "",
-            CategoryId: "0"
+            CategoryId: "0",
+            StoreId:"0"
 
 
         }
@@ -556,14 +561,28 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
         };
 
-        $scope.StockModal = function (size, isEdit) {
+        $scope.StockModal = function (size, isEdit,singleItem) {
 
-
+            var storeId = null;
+            var storeType = $scope.StoreType;
             var modalInstance = $modal.open({
                 templateUrl: '/ClientCode/Template/AddStock.html',
                 size: size,
                 controller: 'StockModelController',
-                scope: $scope
+                scope: $scope,
+                resolve:
+                          {
+                              singleItem: function () {
+                                  return singleItem;
+                              },
+                              storeId: function () {
+
+                                  return storeId;
+                              },
+                              storeType: function () {
+                                  return storeType
+                              }
+                          }
             });
             modalInstance.result.then(function (result) {
 
@@ -579,6 +598,53 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
         //----------------------------------------------------------------------------------------------------
 
+
+        //-----------store---------------------
+
+        $scope.SelectStore=function()
+        {
+            $scope.IsParentStore = false;
+
+            angular.forEach($scope.StoreList, function (obj) {
+
+                if(obj.Id==$scope.filterCondition.StoreId)
+                {
+                    if (obj.ParentStoreId == null) {
+
+                        $scope.IsParentStore = true;
+                    }
+                }
+
+            });
+        }
+        $scope.GetStores = function () {
+
+            InventoryService.GetStores($scope.StoreType)
+            .success(function (pt) {
+
+                if (pt.length > 0) {
+                    $scope.StoreList = pt;
+                    $scope.filterCondition.StoreId = pt[0].Id.toString();
+                   
+                    if( $scope.StoreList[0].ParentStoreId==null)
+                    {
+                        $scope.IsParentStore = true;
+                    }
+                }
+
+                $scope.IsStore = true;
+
+                console.log(pt);
+            })
+            .error(function (error) {
+                $scope.status = 'Unable to load  Store data: ' + error.message;
+                console.log($scope.status);
+            });
+        }
+
+        
+
+        //--------------------------------------
 
 
 
@@ -610,6 +676,19 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
             $scope.loadTestCategories();
         }
 
+        if ($routeParams.tab == "inventory") {
+
+            $scope.ShowInventory = true;
+        }
+        if ($routeParams.tab == "dashboard") {
+
+            $scope.GetStores();
+        }
+
+
+       
+        
+
 
         var tabClass = ".summary";
         if ($routeParams.tab != null) {
@@ -637,6 +716,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
                 $scope.ServiceProviderType = $scope.Configuration.Configuration.DoctorTypeId;
                 $scope.SingleItem.ItemTypeId = $scope.Configuration.Configuration.ServiceItem;
                 $scope.medicalTypeIDLab = $scope.Configuration.Configuration.MedicalTypeLabTest.toString();
+                $scope.StoreType = $scope.Configuration.Configuration.StoreTypePharmacy.toString();
 
                 init();
 

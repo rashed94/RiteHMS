@@ -174,11 +174,235 @@ namespace HMS.Controllers
 
         }
 
-        public JsonResult GetStores()
+        public JsonResult GetShelf(long storeId)
+        {
+            List<Shelf> onlyShelf = new List<Shelf>();
+
+            using (Repository<Shelf> repository = new Repository<Shelf>())
+            {
+                Expression<Func<Shelf, bool>> lambda;
+                lambda = (x => x.Active == true && x.StoreId==storeId);
+
+                List<Shelf> selfList = repository.GetByQuery(lambda).ToList();
+
+                selfList.ForEach(s =>
+                {
+                    Shelf shelf = ModelMapper.MapToClient(s);
+                    onlyShelf.Add(shelf);
+                });
+
+
+
+            }
+            return Json(onlyShelf, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CreateSelf(Shelf shelf)
+        {
+            Shelf onlyShelf = new Shelf();
+            shelf.UserId = GetLoggedinUserInfo().UserId;
+            using (Repository<Shelf> repository = new Repository<Shelf>())
+            {
+               onlyShelf= repository.Insert(shelf);
+               repository.Commit();
+            }
+            return Json(onlyShelf, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CreateBin(Bin bin)
+        {
+            Bin onlyBin = new Bin();
+            bin.UserId = GetLoggedinUserInfo().UserId;
+            using (Repository<Bin> repository = new Repository<Bin>())
+            {
+                onlyBin = repository.Insert(bin);
+                repository.Commit();
+            }
+            return Json(onlyBin, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult CreateInventory(Inventory inventory)
+        {
+            inventory.Shelf = null;
+            inventory.Bin = null;
+            Inventory onlyInventory = new Inventory();
+
+            inventory.UserId = GetLoggedinUserInfo().UserId;
+
+            using (Repository<Inventory> repository = new Repository<Inventory>())
+            {
+                if (inventory.Id == 0)
+                {
+                    onlyInventory = repository.Insert(inventory);
+                }
+                else
+                {
+                    onlyInventory = repository.Update(inventory);
+                }
+                repository.Commit();
+            }
+            return Json(onlyInventory, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult CreateInventoryItem(InventoryItem inventoryItem)
+        {
+            InventoryItem onlyInventoryItem = new InventoryItem();
+
+            inventoryItem.UserId = GetLoggedinUserInfo().UserId;
+
+            using (Repository<InventoryItem> repository = new Repository<InventoryItem>())
+            {
+                if (inventoryItem.Id == 0)
+                {
+                    onlyInventoryItem = repository.Insert(inventoryItem);
+                }
+                else
+                {
+                    onlyInventoryItem = repository.Update(inventoryItem);
+                }
+                repository.Commit();
+            }
+            return Json(onlyInventoryItem, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetBin(long? shelfId)
+        {
+            List<Bin> onlyBin = new List<Bin>();
+
+            using (Repository<Bin> repository = new Repository<Bin>())
+            {
+                Expression<Func<Bin, bool>> lambda;
+                lambda = (x => x.Active == true && x.ShelfId==shelfId);
+
+                List<Bin> binList = repository.GetByQuery(lambda).ToList();
+
+                binList.ForEach(b =>
+                {
+                    Bin shelf = ModelMapper.MapToClient(b);
+                    onlyBin.Add(shelf);
+                });
+
+
+
+            }
+            return Json(onlyBin, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetInventoryByItem(long itemId,long storeId)
+        {
+            Inventory onlyInventory = new Inventory();
+
+            using (Repository<Inventory> repository = new Repository<Inventory>())
+            {
+                Expression<Func<Inventory, bool>> lambda;
+                lambda = (x => x.Active == true && x.ItemID==itemId && x.StoreID==storeId);
+
+                Inventory inventory = new Inventory();
+
+                List<Inventory> inventoryList = repository.GetByQuery(lambda).ToList();
+                
+                if(inventoryList.Count>0)
+                {
+                   inventory= inventoryList.ElementAt(0);
+                   onlyInventory = ModelMapper.MapToClientWithoutItem(inventory);
+                }
+
+               
+         
+            }
+            return Json(onlyInventory, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetInventories(long storeId)
+        {
+            List<Inventory> onlyInventories = new List<Inventory>();
+
+            using (Repository<Inventory> repository = new Repository<Inventory>())
+            {
+                Expression<Func<Inventory, bool>> lambda;
+                lambda = (x => x.Active == true  && x.StoreID == storeId);
+
+                
+
+                List<Inventory> inventoryList = repository.GetByQuery(lambda).ToList();
+
+                inventoryList.ForEach(i =>
+                {
+                    Inventory inventory = ModelMapper.MapToClientWithItem(i);
+                    onlyInventories.Add(inventory);
+                });
+
+
+
+            }
+            return Json(onlyInventories, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult GetReorderInventories(long storeId)
+        {
+            List<Inventory> onlyInventories = new List<Inventory>();
+
+            using (Repository<Inventory> repository = new Repository<Inventory>())
+            {
+                Expression<Func<Inventory, bool>> lambda;
+                lambda = (x => x.Active == true && x.StoreID == storeId && x.ReorderLevel>x.Quantity);
+
+
+
+                List<Inventory> inventoryList = repository.GetByQuery(lambda).ToList();
+
+                inventoryList.ForEach(i =>
+                {
+                    Inventory inventory = ModelMapper.MapToClientWithItem(i);
+                    onlyInventories.Add(inventory);
+                });
+
+
+
+            }
+            return Json(onlyInventories, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult GetInventoryItems(long inventoryId)
+        {
+            List<InventoryItem> onlyInventoruItems = new List<InventoryItem>();
+
+            using (Repository<InventoryItem> repository = new Repository<InventoryItem>())
+            {
+                Expression<Func<InventoryItem, bool>> lambda;
+                lambda = (x => x.Active == true && x.InventoryId == inventoryId);
+
+
+
+                List<InventoryItem> inventoryItemList = repository.GetByQuery(lambda).ToList();
+
+                inventoryItemList.ForEach(i =>
+                {
+                    InventoryItem inventory = ModelMapper.MapToClient(i);
+                    onlyInventoruItems.Add(inventory);
+                });
+
+
+
+            }
+            return Json(onlyInventoruItems, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetStores(long storeType)
         {
             List<Store> onlyStore = new List<Store>();
             Expression<Func<Store, bool>> lambda;
-            lambda = (x => x.Active == true);
+
+            if (storeType == 0)
+            {
+                lambda = (x => x.Active == true);
+            }else
+            {
+                lambda = (x => x.Active == true && x.StoreTypeId==storeType);
+            }
 
             using (Repository<Store> repository = new Repository<Store>())
             {

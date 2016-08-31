@@ -236,7 +236,7 @@
                             <td colspan="2">
                                 <input type="text" ng-model="SingleItem.BuyPrice">
 
-                                &nbsp;&nbsp;  <a ng-show="SingleItem.Id>0" class="arrow_head" href="#" ng-click="$event.preventDefault();StockModal('lg',true)"> ADD STOCK</a>
+                                &nbsp;&nbsp;  <a ng-show="SingleItem.Id>0" class="arrow_head" href="#" ng-click="$event.preventDefault();StockModal('lg',true,SingleItem)"> ADD STOCK</a>
                             </td>
 
                         </tr>
@@ -269,84 +269,21 @@
     <div class="inventory hide">
 
 
-        <div class="criteria_box">
 
 
-          Store   <select>
-
-                
-                <option> </option>
-
-
-            </select>
-        </div>
-        <div class="space"></div>
-
-        <table width="100%" border="1" align="center" class="bordered evencolor">
-            <thead>
-                <tr>
-                    <th width="3%">&nbsp;</th>
-                    <th width="41%">Item Name</th>
-                    <th width="17%">Quantity</th>
-                    <th width="25%">Re-Order Level</th>
-                    <th width="14%">&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><a class="fa fa-arrow-circle-right fa-2x"></a></td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>
-
-                        <a class="link_brown" href="#" ng-click="$event.preventDefault();">Edit Inventory</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="5" align="center" class="padding_left60">
-
-                        <table width="90%" border="1" align="center" class="bordered small_header">
-                            <thead>
-                                <tr>
-                                    <th width="16%">QUANTITY</th>
-                                    <th width="13%">BUY PRICE</th>
-                                    <th width="7%">EXPIRE DATE</th>
-                                    <th width="21%">&nbsp;</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>
-                                        <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" href="#"></a>
-                                    </td>
-
-
-                                </tr>
-
-                            </tbody>
-                        </table>
-
-
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
+        <inventory ng-if="ShowInventory" store-type="{{StoreType}}"></inventory>
 
     </div>
 
     <div class="dashboard hide">
 
         <div class="criteria_box">
-            Store
-            <select>
-                <option> </option>
+
+            Store Name
+            <select class="dropdown_width_medium" ng-model="filterCondition.StoreId" ng-change="SelectStore()">
+                <option ng-repeat="store in StoreList" value="{{store.Id}}">  {{store.Name}}</option>
             </select>
+
         </div>
 
             <div class="space"></div>
@@ -356,96 +293,17 @@
                 <div class="dashbaord_left">
 
 
-                    <h2>Re-order Alert</h2>
-                    <div class="dashboard_content">
-
-                        <button type="button" class="sm_button modal_click">Submit Requsition</button>
-                        <div class="space"></div>
-                        <table width="100%" border="0">
-                            <thead>
-                                <tr>
-                                    <th width="50%" align="left">Item Name</th>
-                                    <th width="15%" align="left">Quantity</th>
-                                    <th width="35%">&nbsp;</th>
-                                </tr>
-                            <thead>
-                            <tbody>
-                                <tr>
-                                    <td class="border_bottom_dashboard">Napa extended</td>
-                                    <td class="border_bottom_dashboard">10 </td>
-                                    <td class="border_bottom_dashboard">
-                                        <a class="link_brown" href="#" ng-click="$event.preventDefault();">Add to Requsition</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="border_bottom_dashboard">Napa extended</td>
-                                    <td class="border_bottom_dashboard">10 </td>
-                                    <td class="border_bottom_dashboard">
-                                        <a class="link_brown" href="#" ng-click="$event.preventDefault();">Add to Requsition</a>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-
-                    </div>
+                    <reorder-alert ng-if="IsStore" parent="{{IsParentStore}}" store-list="StoreList" store-id="{{filterCondition.StoreId}}"></reorder-alert>
 
 
                 </div>
 
-                <div class="dashbaord_right">
+                    <div class="dashbaord_right">
 
-                    <h2> Requsition Status</h2>
-                    <div class="dashboard_content">
-
-                        <table width="100%" border="0">
-                            <thead>
-                                <tr>
-                                    <th width="5%" align="left">&nbsp;</th>
-                                    <th width="20%" align="left">Requsition Date</th>
-                                    <th width="75%" align="left">Purpose</th>
-                                </tr>
-                            <thead>
-                            <tbody>
-                                <tr>
-                                    <td class="border_bottom_none"><a class="fa fa-arrow-circle-down fa-2x"></a></td>
-                                    <td class="border_bottom_none">11/11/2016</td>
-                                    <td class="border_bottom_none">10 </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" align="center" class="border_bottom_dashboard">
-
-                                        <table width="95%" border="0" class="nested">
-                                            <thead>
-                                                <tr>
-                                                    <th width="57%" align="left">Item Name</th>
-                                                    <th width="10%" align="left">Quantity</th>
-                                                    <th width="33%">&nbsp;</th>
-                                                </tr>
-                                            <thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Napa extended</td>
-                                                    <td>10 </td>
-                                                    <td><a class="fa fa-check fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()"></a> <a class="fa fa-times fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()" ng-really-message="Are you Sure you want to Cancel ?" ng-really-click="takeAction()"></a>
-                                                </tr>
-                                                <tr>
-                                                    <td>Napa extended</td>
-                                                    <td>10 </td>
-                                                    <td><a class="fa fa-check fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()"></a> <a class="fa fa-times fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()" ng-really-message="Are you Sure you want to Cancel ?" ng-really-click="takeAction()"></a>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                        <requsition-status ng-if="IsStore" store-list="StoreList" store-id="{{filterCondition.StoreId}}"></requsition-status>
 
                     </div>
-                    </div>
-                </div>
+             </div>
 
                 <div style="clear:both;"></div>
 

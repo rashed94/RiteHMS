@@ -13,6 +13,7 @@ namespace HMS.Model.Core
         public long  FromStoreId { get; set; }
         public bool IsSubStoreRequisition { get; set; }
         public string Note { get; set; }
+        public bool IsOpen { get; set; }
 
 
 

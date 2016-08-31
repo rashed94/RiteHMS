@@ -100,6 +100,124 @@ namespace HMS.View.Mappers
 
             return onlyStoreLineManagers;
         }
+        public static Shelf MapToClient(Shelf shelf)
+        {
+
+            Shelf onlyShelf = new Shelf
+            {
+                Id=shelf.Id,
+                Name=shelf.Name
+
+            };
+
+            return onlyShelf;
+
+        }
+
+        public static Bin MapToClient(Bin bin)
+        {
+
+            Bin onlybin = new Bin
+            {
+                Id = bin.Id,
+                Name = bin.Name
+
+            };
+
+            return onlybin;
+
+        }
+
+        public static List<InventoryItem> MapToClient(List<InventoryItem> inventoryItems)
+        {
+            List<InventoryItem> onlyInventory = new List<InventoryItem>();
+
+            inventoryItems.ForEach(i =>
+            {
+                InventoryItem inventoryItem = ModelMapper.MapToClient(i);
+                onlyInventory.Add(inventoryItem);
+            });
+            return onlyInventory;
+        }
+
+        public static InventoryItem MapToClient(InventoryItem inventoryItem)
+        {
+
+            InventoryItem onluInventoryItem = new InventoryItem
+            {
+                Id = inventoryItem.Id,
+                InventoryId = inventoryItem.InventoryId,
+                StoreId=inventoryItem.StoreId,
+                Quantity=inventoryItem.Quantity,
+                MeasurementUnitId=inventoryItem.MeasurementUnitId,
+                ExpiryDate=inventoryItem.ExpiryDate,
+                BuyPrice=inventoryItem.BuyPrice,
+                ModifiedDate=inventoryItem.ModifiedDate,
+                Active=inventoryItem.Active,
+                UserId=inventoryItem.UserId
+
+            };
+
+            return onluInventoryItem;
+
+        }
+
+
+        public static Inventory MapToClientWithItem(Inventory inventory)
+        {
+            Inventory singleInventory = new Inventory{
+
+                Id=inventory.Id,
+                ItemID=inventory.ItemID,
+                Item = inventory.Item != null ? MapToClient(inventory.Item) : null,
+                StoreID=inventory.StoreID,
+                Quantity=inventory.Quantity,
+                ReorderLevel=inventory.ReorderLevel,
+                ShelfId=inventory.ShelfId,
+                Shelf = inventory.Shelf != null ? MapToClient(inventory.Shelf) : null,
+                BinId=inventory.BinId,
+                Bin = inventory.Bin != null ? MapToClient(inventory.Bin) : null,
+                MeasurementUnitId=inventory.MeasurementUnitId,
+                LastModifiedDate=inventory.LastModifiedDate,
+               // InventoryItems = inventory.InventoryItems != null ? MapToClient(inventory.InventoryItems) : null
+
+               
+               
+
+            };
+
+            return singleInventory;
+
+
+        }
+
+  
+
+        public static Inventory MapToClientWithoutItem(Inventory inventory)
+        {
+            Inventory singleInventory = new Inventory
+            {
+
+                Id = inventory.Id,
+                ItemID = inventory.ItemID,
+                //Item = inventory.Item != null ? MapToClient(inventory.Item) : null,
+                StoreID = inventory.StoreID,
+                Quantity = inventory.Quantity,
+                ReorderLevel = inventory.ReorderLevel,
+                ShelfId = inventory.ShelfId,
+                Shelf = inventory.Shelf != null ? MapToClient(inventory.Shelf) : null,
+                BinId = inventory.BinId,
+                Bin = inventory.Bin != null ? MapToClient(inventory.Bin) : null,
+                MeasurementUnitId = inventory.MeasurementUnitId,
+                LastModifiedDate = inventory.LastModifiedDate
+
+            };
+
+            return singleInventory;
+
+
+        }
+
         public static Store MapToClient(Store store)
         {
             Store singleStore = new Store
