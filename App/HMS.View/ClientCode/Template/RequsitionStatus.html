@@ -2,20 +2,35 @@
 <div class="dashboard_content">
 
     <div id="popupExpireDate" class="overlay">
-        <div class="popup">
-            <h2>Enter Expire Date</h2>
-            <a class="close" href="#" ng-click="$event.preventDefault();PopUpExpireDateClose()">x</a>
-            <div class="content_text">
-                <div class="padding40">
-                    <div>Expire Date</div>
-                    <div>
-                       
-                        <input type="text"  width="110" placeholder="click to show datepicker" name="expireDate" ng-model="ExpireDate" class="expireDate">
+
+        <form name="form1">
+            <div class="popup">
+                <h2>Enter Expire Date</h2>
+                <a class="close" href="#" ng-click="$event.preventDefault();PopUpExpireDateClose()">x</a>
+                <div class="content_text">
+                    <div class="padding40">
+                        <div>
+                            <div>Expire Date</div>
+                            <div>
+
+                                <input type="text" width="110" placeholder="click to show datepicker" required name="ExpireDate" ng-model="ExpireDate" class="expireDate">
+                                <div class="require">*</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div>Buy Price</div>
+                            <div>
+
+                                <input type="text" ng-model="BuyPrice" required name="BuyPrice">
+                                <div class="require">*</div>
+                            </div>
+                        </div>
+
+                        <div><input name="save" type="button" value="save" class="md_button" ng-click="UpdateInventory()" ng-disabled="form1.$invalid"></div>
                     </div>
-                    <div><input name="save" type="button" value="save" class="md_button" ng-click="AddToRequsition()"></div>
                 </div>
             </div>
-        </div>
+         </form>
     </div>
     <table width="100%" border="0">
         <thead>
@@ -82,7 +97,7 @@
 
                                     <div ng-show="requisitonItem.RequisitionStatusId==RequsitionStatusApproved" class="floatleft">
 
-                                        <a class="fa fa-check fa-2x" aria-hidden="true" alt="Accept Stock" herf="#" ng-click="$event.preventDefault();PopUpExpireDate(requisitonItem,$event)"></a>
+                                        <a class="fa fa-check fa-2x" aria-hidden="true" alt="Accept Stock" herf="#" ng-click="$event.preventDefault();PopUpExpireDate(requisitonItem,requisiton,$event)"></a>
 
                                     </div>
 

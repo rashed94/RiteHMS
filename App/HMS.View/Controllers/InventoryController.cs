@@ -225,6 +225,7 @@ namespace HMS.Controllers
         {
             inventory.Shelf = null;
             inventory.Bin = null;
+            inventory.InventoryItems = null;
             Inventory onlyInventory = new Inventory();
 
             inventory.UserId = GetLoggedinUserInfo().UserId;
@@ -349,9 +350,10 @@ namespace HMS.Controllers
                 Expression<Func<Inventory, bool>> lambda;
                 lambda = (x => x.Active == true && x.StoreID == storeId && x.ReorderLevel>x.Quantity);
 
+                Func<IQueryable<Inventory>, IOrderedQueryable<Inventory>> orderingFunc = query => query.OrderByDescending(m => m.Item.Name);
 
 
-                List<Inventory> inventoryList = repository.GetByQuery(lambda).ToList();
+                List<Inventory> inventoryList = repository.GetByQuery(lambda, orderingFunc).ToList();
 
                 inventoryList.ForEach(i =>
                 {
@@ -374,6 +376,7 @@ namespace HMS.Controllers
             {
                 Expression<Func<InventoryItem, bool>> lambda;
                 lambda = (x => x.Active == true && x.InventoryId == inventoryId);
+                
 
 
 
@@ -445,6 +448,7 @@ namespace HMS.Controllers
         {
             requisitionItem.UserId=GetLoggedinUserInfo().UserId;
             requisitionItem.Item = null;
+            requisitionItem.Inventory = null;
 
             using (Repository<ItemRequisition> repository = new Repository<ItemRequisition>())
             {
@@ -550,6 +554,26 @@ namespace HMS.Controllers
             return Json(onlyStore, JsonRequestBehavior.AllowGet);
         }
 
+
+        public JsonResult UpdateRequisition(Requisition requisition)
+        {
+            // requisitionItem.UserId = GetLoggedinUserInfo().UserId;
+
+            requisition.ItemRequisitions = null;
+            requisition.ToStore = null;
+            requisition.FromStore = null;
+            requisition.RequisitionByUser = null;
+
+            requisition.UserId = GetLoggedinUserInfo().UserId;
+
+            using (Repository<Requisition> repository = new Repository<Requisition>())
+            {
+                repository.Update(requisition);
+
+                return Json("Requisition  update successfull", JsonRequestBehavior.AllowGet);
+            }
+
+        }
 
         public JsonResult CreateRequisition(Requisition requisition)
         {

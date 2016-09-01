@@ -57,7 +57,7 @@ angular.module('HMS').directive('storeAdmin', function () {
 
                                      singleRequisitionItem.ItemRequisitions = pt;
                                      prepareDataModelForRequisitionItem(singleRequisitionItem.ItemRequisitions);
-                                     if (ApproveAllStatus) singleRequisitionItem.ApproveAllStatus = true;
+                                     if ($scope.ApproveAllStatus) singleRequisitionItem.ApproveAllStatus = true;
 
                                  }
 

@@ -124,6 +124,11 @@
     };
 
 
+    InventoryService.UpdateRequisition = function (requisition) {
+
+        return $http.post('/Inventory/UpdateRequisition', requisition);
+    };
+   
     
 
 

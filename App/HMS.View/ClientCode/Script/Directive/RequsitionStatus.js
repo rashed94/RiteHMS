@@ -8,11 +8,30 @@ angular.module('HMS').directive('requsitionStatus', function () {
             storeList: '='
         },
 
-        controller: function ($scope, $http, InventoryService,IniService, requsition) {
+        controller: function ($scope, $filter, $http, InventoryService, IniService, requsition) {
 
             $scope.RequisitonList = [];
             $scope.State = requsition;
             var AccetAllStatus = false;
+
+            $scope.InventoryItem = {
+
+                id: "",
+                ItemId:"" ,
+                InventoryId:"" ,
+                StoreId:"",
+                Quantity: "",
+                MeasurementUnitId: "",
+                ExpiryDate: "",
+                BuyPrice: "",
+                ModifiedDate: $filter('date')(new Date(), 'yyyy-MM-dd')
+
+            }
+            $scope.Inventory = {};
+            $scope.RequsitionItem = {};
+            $scope.Requsition = {};
+
+
            
             $scope.$watch('storeId', function () {
                 
@@ -148,6 +167,121 @@ angular.module('HMS').directive('requsitionStatus', function () {
       
             }
 
+            $scope.CreateInventoryWithInventoryItem = function () {
+
+
+                var data = InventoryService.CreateInventory($scope.Inventory)
+                 .success(function (pt) {
+
+                     console.log("Successfully Create inventory data");
+                     console.log(pt);
+                 })
+                 .error(function (error) {
+
+                     $scope.status = 'Unable to Create  Inventory data: ' + error.message;
+                     console.log($scope.status);
+                 });
+
+                return { data: data };
+            }
+
+            $scope.CreateInventoryItem = function () {
+
+                InventoryService.CreateInventoryItem($scope.InventoryItem)
+                .success(function (pt) {
+                 
+                    console.log("Successfully Careate Stock data");
+                    console.log(pt);
+
+                    $scope.UpdateRequisitionItemStatus($scope.RequsitionItem);
+
+
+                })
+                .error(function (error) {
+
+                    $scope.status = 'Unable to Create  Stock data: ' + error.message;
+                    console.log($scope.status);
+                });
+            }
+
+            $scope.UpdateRequisitionItemStatus= function (reqItem) {
+
+                InventoryService.UpdateRequisitionItem(reqItem)
+                    .success(function (pt) {
+
+                        console.log("Successfully update Requisition item Data ");
+                        reqItem.Status = "Received";
+
+                        $scope.CheckAndUpdateRequsition();
+                    })
+                    .error(function (error) {
+
+                        alert("Something went wrong while saving Item please try again");
+                        $scope.status = 'Unable to update   Requisition Item data: ' + error.message;
+                        console.log($scope.status);
+                    });
+
+
+            }
+
+            $scope.CheckAndUpdateRequsition=function()
+            {
+                var updateReq=true;
+                angular.forEach($scope.Requsition.ItemRequisitions, function (obj) {
+
+                    if(obj.RequisitionStatusId!=$scope.RequsitionStatusReceived)
+                    {
+                        updateReq=false
+                    }
+
+                });
+
+                if (updateReq) {
+                    $scope.Requsition.IsOpen = false;
+                    $scope.UpdateRequisition();
+                }
+            }
+
+            $scope.UpdateRequisition=function()
+            {
+
+                InventoryService.UpdateRequisition($scope.Requsition)
+                    .success(function (pt) {
+
+                        console.log("Successfully update Requisition  Data ");
+                                              
+                    })
+                    .error(function (error) {
+
+                        $scope.status = 'Unable to update   Requisition  data: ' + error.message;
+                        console.log($scope.status);
+
+                    });
+
+            }
+
+
+            $scope.UpdateInventory=function()
+            {
+                 $scope.InventoryItem.ExpiryDate = $scope.ExpireDate;
+                 $scope.InventoryItem.BuyPrice = $scope.BuyPrice;
+                 $scope.InventoryItem.ModifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
+
+                $scope.CreateInventoryWithInventoryItem().data.success(function (pt) {
+
+
+                  $scope.CreateInventoryItem();
+
+                 })
+                    .error(function (error) {
+
+                        alert("Error occurred ...Updating inventory ..please try again");
+
+                    });
+
+                 $scope.PopUpExpireDateClose();
+            }
+
 
             //---------------------------ini data call ----------------------
 
@@ -176,10 +310,33 @@ angular.module('HMS').directive('requsitionStatus', function () {
         },
         link: function ($scope, el, attrs) {
 
-            $scope.PopUpExpireDate = function (reqItem,event) {
+            $scope.PopUpExpireDate = function (reqItem,requistion,event) {
                 $('#popupExpireDate').css("visibility", "visible");
                 $('#popupExpireDate').css("opacity", 1);
                 $(".popup").css({ position: "absolute", top: event.pageY - 360, left: event.pageX - 70, width: "300px" });
+
+                $scope.InventoryItem.ItemId = reqItem.ItemId;
+                $scope.InventoryItem.InventoryId = reqItem.InventoryId;
+                $scope.InventoryItem.StoreId = requistion.FromStoreId;
+                $scope.InventoryItem.Quantity = reqItem.Quantity;
+                $scope.InventoryItem.MeasurementUnitId = reqItem.MeasurementUnitId;
+              //  $scope.InventoryItem.ExpiryDate = $scope.ExpireDate;
+               // $scope.InventoryItem.BuyPrice = $scope.BuyPrice;
+                
+
+                reqItem.Inventory.Quantity = reqItem.Inventory.Quantity + reqItem.Quantity;
+                $scope.Inventory = reqItem.Inventory;
+                $scope.Inventory.LastModifiedDate = ToJavaScriptDate($scope.Inventory.LastModifiedDate);
+                $scope.Inventory.Bin = null;
+                $scope.Inventory.Shelf = null;
+                $scope.Inventory.InventoryItems = null;
+
+                $scope.RequsitionItem = reqItem;
+                $scope.RequsitionItem.RequisitionStatusId = $scope.RequsitionStatusReceived;
+
+                $scope.Requsition = requistion;
+
+
             }
 
             $scope.PopUpExpireDateClose=function()
@@ -187,6 +344,7 @@ angular.module('HMS').directive('requsitionStatus', function () {
                 $('#popupExpireDate').css("visibility", "hidden");
                 $('#popupExpireDate').css("opacity", 0);
                 $scope.ExpireDate = "";
+                $scope.BuyPrice = "";
             }
 
             $('.expireDate').datepicker({
