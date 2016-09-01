@@ -85,6 +85,48 @@
         return $http.get('/Inventory/GetReorderInventories?storeId=' + storeId);
     };
     
+
+    InventoryService.CreateRequisition = function (requisition) {
+
+        return $http.post('/Inventory/CreateRequisition', requisition);
+    };
+
+    InventoryService.GetRequistionsWithoutItem = function (fromStoreId) {
+
+        return $http.get('/Inventory/GetRequistionsWithoutItem?fromStoreId=' + fromStoreId);
+    };
+
+    InventoryService.GetRequistionsItems = function (requisitionId) {
+
+        return $http.get('/Inventory/GetRequistionsItems?requisitionId=' + requisitionId);
+    };
+
+    InventoryService.GetRequistionsItemsWithoutInventory = function (requisitionId) {
+
+        return $http.get('/Inventory/GetRequistionsItemsWithoutInventory?requisitionId=' + requisitionId);
+    };
+
+
+    InventoryService.UpdateRequisitionItem = function (requisitionItem) {
+
+        return $http.post('/Inventory/UpdateRequisitionItem', requisitionItem);
+    };
+
+    InventoryService.UpdateRequisitionItemFromAdmin = function (requisitionItem) {
+
+        return $http.post('/Inventory/UpdateRequisitionItemFromAdmin', requisitionItem);
+    };
+    
+
+    InventoryService.GetAdminRequsition = function (toStoreId) {
+
+        return $http.get('/Inventory/GetAdminRequsition?toStoreId=' + toStoreId);
+    };
+
+
+    
+
+
      
     return InventoryService;
 

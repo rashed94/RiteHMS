@@ -26,6 +26,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
     $scope.medicalTypeID = '';
     $scope.ItemEdit = false;
     $scope.ShowInventory = false;
+    $scope.ShowStoreAdmin = false;
     $scope.IsStore = false;
     $scope.StoreList = [];
     $scope.IsParentStore = false;
@@ -680,6 +681,11 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
 
             $scope.ShowInventory = true;
         }
+        if ($routeParams.tab == "admin") {
+
+            $scope.ShowStoreAdmin = true;
+        }
+        
         if ($routeParams.tab == "dashboard") {
 
             $scope.GetStores();

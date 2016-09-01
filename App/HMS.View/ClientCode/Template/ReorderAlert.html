@@ -33,7 +33,7 @@
     <div id="popupQuantity" class="overlay">
         <div class="popup">
             <h2>Enter Quantiy</h2>
-            <a class="close" href="#" ng-click="$event.preventDefault();PopUpRequsitionClose()">x</a>
+            <a class="close" href="#" ng-click="$event.preventDefault();PopUpRequsitionItemClose()">x</a>
             <div class="content_text">
                 <div class="padding40">
                     <div>Quantity</div>
@@ -46,8 +46,8 @@
 
         <div id="popupRequsition" class="overlay">
             <div class="popup">
-                <h2>Enter Requsition Information</h2>
-                <a class="close" href="#" ng-click="$event.preventDefault();">x</a>
+                <h2>Enter Requisition Information</h2>
+                <a class="close" href="#" ng-click="$event.preventDefault();PopUpRequsitionClose()">x</a>
                 <div class="content_text">
                     <div class="padding40">
                         <form name="form1">
@@ -101,7 +101,13 @@
     <h2>Re-order Alert</h2>
     <div class="dashboard_content">
 
-        <button type="button" class="sm_button modal_click" ng-click="PopUpRequsition($event)">Submit Requsition</button>
+
+        <div class="round_box box_general" ng-show="SaveSuccess" style="width:70%">
+
+            <div class="success_message">Requisiton Sent Successfully</div>
+        </div>
+
+        <button type="button" class="sm_button modal_click" ng-click="PopUpRequsition($event)">Submit Requisition</button>
         <div class="space"></div>
         <table width="100%" border="0">
             <thead>
@@ -116,7 +122,7 @@
                     <td class="border_bottom_dashboard">{{inventory.Item.Name}}</td>
                     <td class="border_bottom_dashboard">{{inventory.Quantity}}</td>
                     <td class="border_bottom_dashboard">
-                        <a class="link_brown" id="quantityPopUp" ng-show="!inventory.IsAdded" ng-click="$event.preventDefault();popUpQuantity(inventory,$event)">Add to Requsition</a>
+                        <a class="link_brown" id="quantityPopUp" ng-show="!inventory.IsAdded"  ng-click="$event.preventDefault();popUpQuantity(inventory,$event)">Add to Requsition</a>
                         <div ng-show="inventory.IsAdded" class="status_brown">Added</div>
                     </td>
                 </tr>

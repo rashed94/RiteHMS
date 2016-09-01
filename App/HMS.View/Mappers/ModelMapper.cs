@@ -191,6 +191,201 @@ namespace HMS.View.Mappers
 
         }
 
+        public static Inventory MapToClient(Inventory inventory)
+        {
+            Inventory singleInventory = new Inventory
+            {
+
+                Id = inventory.Id,
+                ItemID = inventory.ItemID,
+               // Item = inventory.Item != null ? MapToClient(inventory.Item) : null,
+                StoreID = inventory.StoreID,
+                Quantity = inventory.Quantity,
+                ReorderLevel = inventory.ReorderLevel,
+                ShelfId = inventory.ShelfId,
+                Shelf = inventory.Shelf != null ? MapToClient(inventory.Shelf) : null,
+                BinId = inventory.BinId,
+                Bin = inventory.Bin != null ? MapToClient(inventory.Bin) : null,
+                MeasurementUnitId = inventory.MeasurementUnitId,
+                LastModifiedDate = inventory.LastModifiedDate,
+                // InventoryItems = inventory.InventoryItems != null ? MapToClient(inventory.InventoryItems) : null
+
+
+
+
+            };
+
+            return singleInventory;
+
+
+        }
+        public static ItemRequisition MapToClient(ItemRequisition itemReq)
+        {
+            ItemRequisition onlyItemRequisition = new ItemRequisition()
+            {
+                Id=itemReq.Id,
+                ItemId =itemReq.ItemId,
+                InventoryId=itemReq.InventoryId,
+                RequisitionId=itemReq.RequisitionId,
+                ApprovedBy =itemReq.ApprovedBy,
+                ApprovalDate =itemReq.ApprovalDate,
+                Quantity =itemReq.Quantity,
+                MeasurementUnitId= itemReq.MeasurementUnitId,
+                RequisitionStatusId =itemReq.RequisitionStatusId,
+                UserId=itemReq.UserId,
+                Item = itemReq.Item != null ? MapToClient(itemReq.Item) : null,
+                Inventory = itemReq.Inventory != null ? MapToClient(itemReq.Inventory) : null
+
+
+            };
+            return onlyItemRequisition;
+        }
+
+        public static ItemRequisition MapToClientWithoutInventory(ItemRequisition itemReq)
+        {
+            ItemRequisition onlyItemRequisition = new ItemRequisition()
+            {
+                Id = itemReq.Id,
+                ItemId = itemReq.ItemId,
+                InventoryId=itemReq.InventoryId,
+                RequisitionId = itemReq.RequisitionId,
+                ApprovedBy = itemReq.ApprovedBy,
+                ApprovalDate = itemReq.ApprovalDate,
+                Quantity = itemReq.Quantity,
+                MeasurementUnitId = itemReq.MeasurementUnitId,
+                RequisitionStatusId = itemReq.RequisitionStatusId,
+                UserId=itemReq.UserId,
+                Item = itemReq.Item != null ? MapToClient(itemReq.Item) : null
+
+
+            };
+
+            return onlyItemRequisition;
+        }
+
+
+        public static Requisition MapToClient(Requisition req)
+        {
+
+            Requisition requisition = new Requisition()
+            {
+                Id=req.Id,
+                RequisitionDate=req.RequisitionDate,
+                RequisitionBy=req.RequisitionBy,
+                Purpose=req.Purpose,
+                ToStoreId=req.ToStoreId,
+                FromStoreId=req.FromStoreId,
+                IsSubStoreRequisition = req.IsSubStoreRequisition,
+                Note=req.Note,
+                IsOpen=req.IsOpen,
+                UserId=req.UserId,
+                Active=req.Active,
+                ItemRequisitions = req.ItemRequisitions != null ? MapToClient(req.ItemRequisitions) : null,
+
+            };
+            return requisition;
+
+        }
+
+        public static Requisition MapToClientWithoutItemRequisition(Requisition req)
+        {
+
+            Requisition requisition = new Requisition()
+            {
+                Id = req.Id,
+                RequisitionDate = req.RequisitionDate,
+                RequisitionBy = req.RequisitionBy,
+                Purpose = req.Purpose,
+                ToStoreId = req.ToStoreId,
+                ToStore = req.ToStore != null ? MapToClient(req.ToStore) : null,
+                FromStoreId = req.FromStoreId,
+                FromStore = req.FromStore != null ? MapToClient(req.FromStore) : null,
+                IsSubStoreRequisition = req.IsSubStoreRequisition,
+                Note = req.Note,
+                IsOpen = req.IsOpen,
+                UserId = req.UserId,
+                Active = req.Active,
+                //ItemRequisitions = req.ItemRequisitions != null ? MapToClient(req.ItemRequisitions) : null,
+                //ItemRequisitions = req.ItemRequisitions != null ? MapToClient(req.ItemRequisitions) : null,
+
+            };
+            return requisition;
+
+        }
+
+
+        public static List<ItemRequisition> MapToClient(List<ItemRequisition> itemRequisition)
+        {
+            List<ItemRequisition> onlyitemRequisition = new List<ItemRequisition>();
+
+            itemRequisition.ForEach(i =>
+            {
+                ItemRequisition itemReq = ModelMapper.MapToClient(i);
+                onlyitemRequisition.Add(itemReq);
+            });
+
+            return onlyitemRequisition;
+         }
+        
+
+
+
+        public static Item MapToClientWithRequisition(Item item)
+        {
+            Item onlyItem = new Item()
+            {
+                Id = item.Id,
+                Name = item.Name,
+                GenericName = item.GenericName,
+                Code = item.Code,
+                ItemTypeId = item.ItemTypeId,
+                MedicalTypeId = item.MedicalTypeId,
+                ItemCategoryId = item.ItemCategoryId,
+                ItemRequisition = item.ItemRequisition != null ? MapToClient(item.ItemRequisition) : null,
+                MeasurementUnitId = item.MeasurementUnitId,
+                SalePrice = item.SalePrice,
+                BuyPrice = item.BuyPrice,
+                ServiceProviderId = item.ServiceProviderId,
+                ReferralAllowed = item.ReferralAllowed,
+                DefaultReferrarFee = item.DefaultReferrarFee,
+                Description = item.Description,
+                UserId = item.UserId,
+                LabReportGroupId = item.LabReportGroupId,
+                Active = item.Active
+
+            };
+            return onlyItem;
+        }
+
+
+        public static Inventory MapToClientWithItemAndRequisition(Inventory inventory)
+        {
+            Inventory singleInventory = new Inventory
+            {
+
+                Id = inventory.Id,
+                ItemID = inventory.ItemID,
+                Item = inventory.Item != null ? MapToClientWithRequisition(inventory.Item) : null,
+                StoreID = inventory.StoreID,
+                Quantity = inventory.Quantity,
+                ReorderLevel = inventory.ReorderLevel,
+                ShelfId = inventory.ShelfId,
+                Shelf = inventory.Shelf != null ? MapToClient(inventory.Shelf) : null,
+                BinId = inventory.BinId,
+                Bin = inventory.Bin != null ? MapToClient(inventory.Bin) : null,
+                MeasurementUnitId = inventory.MeasurementUnitId,
+                LastModifiedDate = inventory.LastModifiedDate,
+                // InventoryItems = inventory.InventoryItems != null ? MapToClient(inventory.InventoryItems) : null
+
+
+
+
+            };
+
+            return singleInventory;
+
+        }
+
   
 
         public static Inventory MapToClientWithoutItem(Inventory inventory)

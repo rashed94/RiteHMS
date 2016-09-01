@@ -1,0 +1,67 @@
+﻿<div class="criteria_box">
+
+    Store Name
+    <select class="dropdown_width_medium" ng-model="filterCondition.StoreId" ng-change="GetAdminRequsition()">
+        <option ng-repeat="store in StoreList" value="{{store.Id}}">  {{store.Name}}</option>
+    </select>
+
+</div>
+
+<table width="100%" border="1" align="center" class="bordered evencolor">
+    <thead>
+        <tr>
+            <th width="3%">&nbsp;</th>
+            <th width="16%">Date</th>
+            <th width="25%">From Store</th>
+            <th width="34%">Purpose</th>
+            <th width="22%">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody ng-repeat="requisiton in RequisitonList">
+        <tr>
+            <td><a ng-class="{'fa fa-arrow-circle-down fa-2x' : requisiton.ActivePosition,'fa fa-arrow-circle-right fa-2x':!requisiton.ActivePosition}" ng-click="$event.preventDefault();ToggleDetail(requisiton)"></a></td>
+            <td>{{requisiton.RequisitionDate}}</td>
+            <td>{{requisiton.FromStore.Name}}</td>
+            <td>{{requisiton.Purpose}}</td>
+            <td>
+                <div ng-show="ApproveAllStatus">
+                    <a class="link_brown" href="#" ng-click="$event.preventDefault();">Approve All</a>
+                </div>
+            </td>
+        </tr>
+        <tr ng-show="requisiton.ActivePosition">
+            <td colspan="5" align="center" class="padding_left60">
+
+                <table width="90%" border="1" align="center" class="bordered small_header">
+                    <thead>
+                        <tr>
+                            <th width="48%">Item Name</th>
+                            <th width="17%">Quantiy</th>
+                            <th width="35%">&nbsp;</th>
+
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="requisitonItem in requisiton.ItemRequisitions">
+                        <tr>
+                            <td>{{requisitonItem.Item.Name}}</td>
+                            <td>{{requisitonItem.Quantity}}</td>
+                            <td>
+                                <div class="floatleft" ng-show="requisitonItem.RequisitionStatusId==RequsitionStatusOpened">
+                                    <a class="fa fa-check fa-2x" aria-hidden="true" herf="#" ng-really-message="Are you Sure you want to Approve ?" ng-really-click="takeAction()" ng-click="$event.preventDefault();ApproveRequisition(requisitonItem,requisiton.ItemRequisitions)"></a>
+                                </div>   
+                                <div style="margin-left:6px;" class="status_brown floatleft">
+                                    ({{requisitonItem.Status}})
+                                </div></td>
+
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+            </td>
+        </tr>
+
+    </tbody>
+</table>

@@ -9,6 +9,7 @@ namespace HMS.Model.Core
 
         public long ItemId { get; set; }
         public long? RequisitionId { get; set; }
+        public long InventoryId { get; set; }
         public long? ApprovedBy { get; set; }
         public System.DateTime? ApprovalDate { get; set; }
         public int Quantity { get; set; }
@@ -21,13 +22,23 @@ namespace HMS.Model.Core
 
         [ForeignKey("ItemId")]
         public virtual Item Item { get; set; }
+
         [ForeignKey("ApprovedBy")]
         public virtual User ApprovedByUser { get; set; }
+
         [ForeignKey("MeasurementUnitId")]
         public virtual MeasurementUnit MeasurementUnit { get; set; }
 
+        [ForeignKey("InventoryId")]
+        public virtual Inventory Inventory { get; set; }
+
+        [ForeignKey("RequisitionId")]
+        public virtual Requisition Requisition { get; set; }
+
         [ForeignKey("RequisitionStatusId")]
         public virtual RequisitionStatus RequisitionStatus { get; set; }
+
+        
 
         protected override void RegisterValidationMethods()
         {

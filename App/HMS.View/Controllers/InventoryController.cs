@@ -391,6 +391,136 @@ namespace HMS.Controllers
             return Json(onlyInventoruItems, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetRequistionsWithoutItem(long fromStoreId)
+        {
+            List<Requisition> onlyRequsitions = new List<Requisition>();
+
+            using (Repository<Requisition> repository = new Repository<Requisition>())
+            {
+                Expression<Func<Requisition, bool>> lambda;
+                lambda = (x => x.Active == true && x.IsOpen == true && x.FromStoreId == fromStoreId);
+
+                Func<IQueryable<Requisition>, IOrderedQueryable<Requisition>> orderingFunc = query => query.OrderByDescending(m => m.RequisitionDate);
+
+                List<Requisition> requisitonList = repository.GetByQuery(lambda, orderingFunc).ToList();
+
+                requisitonList.ForEach(r =>
+                {
+                    Requisition inventory = ModelMapper.MapToClientWithoutItemRequisition(r);
+                    onlyRequsitions.Add(inventory);
+                });
+
+            }
+
+            return Json(onlyRequsitions, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult GetAdminRequsition(long toStoreId)
+        {
+            List<Requisition> onlyRequsitions = new List<Requisition>();
+
+            using (Repository<Requisition> repository = new Repository<Requisition>())
+            {
+                Expression<Func<Requisition, bool>> lambda;
+                lambda = (x => x.Active == true && x.IsOpen == true && x.ToStoreId == toStoreId);
+
+                Func<IQueryable<Requisition>, IOrderedQueryable<Requisition>> orderingFunc = query => query.OrderByDescending(m => m.RequisitionDate);
+
+                List<Requisition> requisitonList = repository.GetByQuery(lambda, orderingFunc).ToList();
+
+                requisitonList.ForEach(r =>
+                {
+                    Requisition inventory = ModelMapper.MapToClientWithoutItemRequisition(r);
+                    onlyRequsitions.Add(inventory);
+                });
+
+            }
+
+            return Json(onlyRequsitions, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult UpdateRequisitionItem(ItemRequisition requisitionItem)
+        {
+            requisitionItem.UserId=GetLoggedinUserInfo().UserId;
+            requisitionItem.Item = null;
+
+            using (Repository<ItemRequisition> repository = new Repository<ItemRequisition>())
+            {
+                repository.Update(requisitionItem);
+
+                return Json("Requisition item update successfull", JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
+        public JsonResult UpdateRequisitionItemFromAdmin(ItemRequisition requisitionItem)
+        {
+           // requisitionItem.UserId = GetLoggedinUserInfo().UserId;
+
+            requisitionItem.Item = null;
+            requisitionItem.ApprovedBy = GetLoggedinUserInfo().UserId;
+
+            using (Repository<ItemRequisition> repository = new Repository<ItemRequisition>())
+            {
+                repository.Update(requisitionItem);
+
+                return Json("Requisition item update successfull", JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+
+        public JsonResult GetRequistionsItems(long requisitionId)
+        {
+            List<ItemRequisition> onlyRequsitionItems = new List<ItemRequisition>();
+
+            using (Repository<ItemRequisition> repository = new Repository<ItemRequisition>())
+            {
+                Expression<Func<ItemRequisition, bool>> lambda;
+                lambda = (x => x.Active == true && x.RequisitionId == requisitionId);
+
+                Func<IQueryable<ItemRequisition>, IOrderedQueryable<ItemRequisition>> orderingFunc = query => query.OrderBy(m => m.Item.Name);
+
+                List<ItemRequisition> requisitonItemList = repository.GetByQuery(lambda, orderingFunc).ToList();
+
+                requisitonItemList.ForEach(r =>
+                {
+                    ItemRequisition requisitionItem = ModelMapper.MapToClient(r);
+                    onlyRequsitionItems.Add(requisitionItem);
+                });
+
+            }
+
+            return Json(onlyRequsitionItems, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult GetRequistionsItemsWithoutInventory(long requisitionId)
+        {
+            List<ItemRequisition> onlyRequsitionItems = new List<ItemRequisition>();
+
+            using (Repository<ItemRequisition> repository = new Repository<ItemRequisition>())
+            {
+                Expression<Func<ItemRequisition, bool>> lambda;
+                lambda = (x => x.Active == true && x.RequisitionId == requisitionId);
+
+                Func<IQueryable<ItemRequisition>, IOrderedQueryable<ItemRequisition>> orderingFunc = query => query.OrderBy(m => m.Item.Name);
+
+                List<ItemRequisition> requisitonItemList = repository.GetByQuery(lambda, orderingFunc).ToList();
+
+                requisitonItemList.ForEach(r =>
+                {
+                    ItemRequisition requisitionItem = ModelMapper.MapToClientWithoutInventory(r);
+                    onlyRequsitionItems.Add(requisitionItem);
+                });
+
+            }
+
+            return Json(onlyRequsitionItems, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetStores(long storeType)
         {
             List<Store> onlyStore = new List<Store>();
@@ -418,6 +548,37 @@ namespace HMS.Controllers
 
 
             return Json(onlyStore, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult CreateRequisition(Requisition requisition)
+        {
+
+            requisition.UserId = GetLoggedinUserInfo().UserId;
+            requisition.RequisitionBy = GetLoggedinUserInfo().UserId;
+
+            if(requisition.ItemRequisitions.Count>0)
+            {
+                requisition.ItemRequisitions.ForEach(s =>
+                {
+                    s.UserId = GetLoggedinUserInfo().UserId; 
+                });
+                
+            }
+
+            using (Repository<Requisition> repository = new Repository<Requisition>())
+            {
+                if (requisition.Id == 0)
+                {
+                    repository.Insert(requisition);
+                }
+                else
+                {
+                   repository.Update(requisition);
+                }
+                repository.Commit();
+            }
+            return Json("Insert Requstion successfull", JsonRequestBehavior.AllowGet);
         }
 
       

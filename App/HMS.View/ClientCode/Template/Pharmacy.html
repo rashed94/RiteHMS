@@ -218,10 +218,7 @@
 
                                 <select name="palnType3" class="distype" ng-model="filterCondition.MeasurementUnitId">
 
-
                                     <option ng-repeat="measureMentUnit in MeasureMentUnits" value="{{measureMentUnit.Id}}">{{measureMentUnit.Name}}</option>
-
-
 
                                 </select>
                                 <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#" id="MeasurementUnit"></a>
@@ -344,59 +341,7 @@
 
     <div class="admin hide">
 
-        <table width="100%" border="1" align="center" class="bordered evencolor">
-            <thead>
-                <tr>
-                    <th width="3%">&nbsp;</th>
-                    <th width="16%">Date</th>
-                    <th width="25%">From Store</th>
-                    <th width="34%">Purpose</th>
-                    <th width="22%">&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><a class="fa fa-arrow-circle-right fa-2x"></a></td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>
-
-                        <a class="link_brown" href="#" ng-click="$event.preventDefault();">Approve All</a> <a class="link_brown" href="#" ng-click="$event.preventDefault();">Cancel All</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="5" align="center" class="padding_left60">
-
-                        <table width="90%" border="1" align="center" class="bordered small_header">
-                            <thead>
-                                <tr>
-                                    <th width="48%">Item Name</th>
-                                    <th width="17%">Quantiy</th>
-                                    <th width="35%">&nbsp;</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>
-                                        <a class="fa fa-check fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()"></a> <a class="fa fa-times fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()" ng-really-message="Are you Sure you want to Cancel ?" ng-really-click="takeAction()"></a>
-                                    </td>
-
-
-                                </tr>
-
-                            </tbody>
-                        </table>
-
-
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
+        <store-admin ng-if="ShowStoreAdmin" store-type="{{StoreType}}"></store-admin>
 
     </div>
 

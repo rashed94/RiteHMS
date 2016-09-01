@@ -1,22 +1,44 @@
 ﻿<h2> Requsition Status</h2>
 <div class="dashboard_content">
 
+    <div id="popupExpireDate" class="overlay">
+        <div class="popup">
+            <h2>Enter Expire Date</h2>
+            <a class="close" href="#" ng-click="$event.preventDefault();PopUpExpireDateClose()">x</a>
+            <div class="content_text">
+                <div class="padding40">
+                    <div>Expire Date</div>
+                    <div>
+                       
+                        <input type="text"  width="110" placeholder="click to show datepicker" name="expireDate" ng-model="ExpireDate" class="expireDate">
+                    </div>
+                    <div><input name="save" type="button" value="save" class="md_button" ng-click="AddToRequsition()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <table width="100%" border="0">
         <thead>
             <tr>
                 <th width="5%" align="left">&nbsp;</th>
                 <th width="20%" align="left">Requsition Date</th>
-                <th width="75%" align="left">Purpose</th>
+                <th width="47%" align="left">Purpose</th>
+                <th width="28%" align="left">&nbsp;</th>
             </tr>
         <thead>
-        <tbody>
+        <tbody ng-repeat="requisiton in State.RequisitonList">
             <tr>
-                <td class="border_bottom_none"><a class="fa fa-arrow-circle-down fa-2x"></a></td>
-                <td class="border_bottom_none">11/11/2016</td>
-                <td class="border_bottom_none">10 </td>
+                <td class="border_bottom_none"><a ng-class="{'fa fa-arrow-circle-down fa-2x' : requisiton.ActivePosition,'fa fa-arrow-circle-right fa-2x':!requisiton.ActivePosition}" ng-click="$event.preventDefault();ToggleDetail(requisiton)"></a></td>
+                <td class="border_bottom_none">{{requisiton.RequisitionDate}}</td>
+                <td class="border_bottom_none">{{requisiton.Purpose}}</td>
+                <td class="border_bottom_none">
+                    <div ng-show="requisiton.AccetAllStatus">
+                        <a class="link_brown" herf="#" ng-click="$event.preventDefault()"> Accept All</a>
+                    </div>
+                </td>
             </tr>
-            <tr>
-                <td colspan="3" align="center" class="border_bottom_dashboard">
+            <tr ng-show="requisiton.ActivePosition">
+                <td colspan="4" align="center" class="border_bottom_dashboard">
 
                     <table width="95%" border="0" class="nested">
                         <thead>
@@ -26,17 +48,52 @@
                                 <th width="33%">&nbsp;</th>
                             </tr>
                         <thead>
-                        <tbody>
+                        <tbody ng-repeat="requisitonItem in requisiton.ItemRequisitions">
                             <tr>
-                                <td>Napa extended</td>
-                                <td>10 </td>
-                                <td><a class="fa fa-check fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()"></a> <a class="fa fa-times fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()" ng-really-message="Are you Sure you want to Cancel ?" ng-really-click="takeAction()"></a>
+                                <td>{{requisitonItem.Item.Name}}</td>
+                                <td>
+
+                                    <div ng-show="!requisitonItem.IsEdit">
+                                        {{requisitonItem.Quantity}}
+                                    </div>
+
+                                    <div ng-show="requisitonItem.IsEdit">
+                                        <input type="text" ng-model="requisitonItem.Quantity" style="width:50px;">
+                                    </div>
+
+                                 </td>
+                                <td>
+                                    <div ng-show="requisitonItem.RequisitionStatusId==RequsitionStatusOpened" class="floatleft">
+
+                                        <div ng-show="!requisitonItem.IsEdit">
+
+                                            <a class="fa fa-pencil-square-o fa-1_5x" aria-hidden="true" herf="#" ng-click="$event.preventDefault();EditItem(requisitonItem)"></a>
+                                             <!--<a class="fa fa-times fa-1_5x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()" ng-really-message="Are you Sure you want to Cancel ?" ng-really-click="takeAction()"></a>-->
+                                        </div>
+
+                                        <div ng-show="requisitonItem.IsEdit">
+
+                                            <a class="fa fa-floppy-o fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();UpdateRequisitionItem(requisitonItem)"></a>
+                                            &nbsp;<a class="fa fa-times fa-1_5x" aria-hidden="true" href="#" ng-click="$event.preventDefault();Reset(requisitonItem)"></a>
+
+                                        </div>
+                                     
+                                    </div>
+
+                                    <div ng-show="requisitonItem.RequisitionStatusId==RequsitionStatusApproved" class="floatleft">
+
+                                        <a class="fa fa-check fa-2x" aria-hidden="true" alt="Accept Stock" herf="#" ng-click="$event.preventDefault();PopUpExpireDate(requisitonItem,$event)"></a>
+
+                                    </div>
+
+
+                                        <div style="margin-left:6px;" class="status_brown floatleft">
+                                            ({{requisitonItem.Status}})
+                                        </div>
+
+</td>
                             </tr>
-                            <tr>
-                                <td>Napa extended</td>
-                                <td>10 </td>
-                                <td><a class="fa fa-check fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()"></a> <a class="fa fa-times fa-2x" aria-hidden="true" herf="#" ng-click="$event.preventDefault()" ng-really-message="Are you Sure you want to Cancel ?" ng-really-click="takeAction()"></a>
-                            </tr>
+
                         </tbody>
                     </table>
                 </td>

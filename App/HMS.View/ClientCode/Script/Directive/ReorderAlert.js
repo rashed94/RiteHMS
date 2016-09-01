@@ -10,12 +10,14 @@ angular.module('HMS').directive('reorderAlert', function () {
 
         },
 
-        controller: function ($scope, $http, InventoryService, IniService) {
+        controller: function ($scope, $http, $filter, InventoryService, IniService, requsition) {
 
             $scope.Inventories = [];
             $scope.Inventory = {};
             $scope.ItemRequisitionList = [];
             $scope.RequisitionStoreList = [];
+            $scope.SaveSuccess = false;
+           // $scope.State = requsition;
             
             $scope.filterCondition = {
                 StoreId:""
@@ -24,6 +26,7 @@ angular.module('HMS').directive('reorderAlert', function () {
 
                 ItemId: "",
                 RequisitionId: null,
+                InventoryId:null,
                 ApprovedBy: null,
                 ApprovalDate: null,
                 Quantity: null,
@@ -33,22 +36,22 @@ angular.module('HMS').directive('reorderAlert', function () {
             };
 
             $scope.Requisition = {
-
-                RequisitionDate: "",
+                RequisitionDate: $filter('date')(new Date(), 'yyyy-MM-dd'),
                 RequisitionBy: 0,
-                Purpose: "",
                 ToStoreId: "",
-                FromStoreId: "",
-                IsSubStoreRequisition:"",
+                FromStoreId: $scope.storeId,
+                IsSubStoreRequisition: true,
+                Purpose: "",
                 Note: "",
-                IsOpen:true
-            };      
+                IsOpen: true
+            }
 
             $scope.$watch('storeId', function () {
 
-                console.log($scope.storeId + "---" + $scope.isParentStoreExist);
+                //console.log($scope.storeId + "---" + $scope.isParentStoreExist);
                 $scope.GetReorderInventories();
                 $scope.PrepareRequisitionStoreList();
+                $scope.SaveSuccess = false;
 
             });
 
@@ -99,6 +102,9 @@ angular.module('HMS').directive('reorderAlert', function () {
 
                         $scope.Inventories = pt;
                         prepareInventoryDataModel();
+                    } else
+                    {
+                        $scope.Inventories = [];
                     }
                     console.log("Successfully retrieve Inventory Data ");
                     console.log(pt);
@@ -117,12 +123,89 @@ angular.module('HMS').directive('reorderAlert', function () {
                 $scope.Inventory.IsAdded = true;
                 
                 console.log("AddToRequsition requsition");
-                $scope.PopUpRequsitionClose();
+                $scope.PopUpRequsitionItemClose();
 
             }
             $scope.SubmitRequsition=function()
             {
-                console.log("submit requsition");
+
+                $scope.Requisition.ToStoreId = $scope.filterCondition.StoreId;
+                $scope.Requisition.FromStoreId = $scope.storeId;
+
+                $scope.Requisition.RequisitionDate = $filter('date')(new Date(), 'yyyy-MM-dd');
+
+                if($scope.filterCondition.StoreId==0)
+                {
+                    $scope.Requisition.IsSubStoreRequisition = false;
+                    $scope.Requisition.ToStoreId = null;
+                }
+
+                $scope.Requisition.ItemRequisitions = $scope.ItemRequisitionList;
+
+                
+                InventoryService.CreateRequisition($scope.Requisition)
+
+                    .success(function (pt) {
+                        
+                        console.log("Requsition successfully saved");
+                        $scope.SaveSuccess = true;
+                        $scope.PopUpRequsitionClose();
+                        $scope.GetRequsition();
+                    })
+                    .error(function (error) {
+
+                        $scope.status = 'Unable to save Requsition data: ' + error.message;
+                        console.log($scope.status);
+                    });
+
+
+               
+               
+            }
+
+            var prepareDataModelForRequsition = function (RequisitonList) {
+
+                angular.forEach(RequisitonList, function (obj) {
+
+                    obj.RequisitionDate = ToJavaScriptDate(obj.RequisitionDate);
+
+                    //angular.forEach(obj.ItemRequisitions, function (reqItem) {
+
+                    //    if (reqItem.ApprovalDate != null) {
+                    //        reqItem.ApprovalDate = ToJavaScriptDate(reqItem.ApprovalDate);
+                    //    }
+
+                    //});
+
+                });
+            }
+            $scope.GetRequsition = function () {
+
+                InventoryService.GetRequistionsWithoutItem($scope.storeId)
+                .success(function (pt) {
+
+
+                    if (pt.length > 0) {
+
+                        //requsition.RequisitonList = pt;
+                        //$scope.RequisitonList = requsition.RequisitonList;
+
+                        requsition.RequisitonList = pt
+                        prepareDataModelForRequsition(requsition.RequisitonList);
+                       
+                    } else {
+                        requsition.RequisitonList = [];
+                    }
+
+                         console.log("Successfully retrieve Requisition Data ");
+                   
+                })
+                .error(function (error) {
+
+                    $scope.status = 'Unable to load  Requisition data: ' + error.message;
+                    console.log($scope.status);
+                });
+
             }
 
 
@@ -166,6 +249,7 @@ angular.module('HMS').directive('reorderAlert', function () {
                     $(".popup").css({ position: "absolute", top: event.pageY - 260, left: event.pageX - 70, width: "200px" });
                     
                     $scope.ItemRequisition.ItemId = inventory.Item.Id;
+                    $scope.ItemRequisition.InventoryId = inventory.Id;
                     $scope.ItemRequisition.MeasurementUnitId = inventory.Item.MeasurementUnitId;
                     $scope.Inventory = inventory;
             }
@@ -179,18 +263,23 @@ angular.module('HMS').directive('reorderAlert', function () {
 
 
            
-            $scope.PopUpRequsitionClose = function () {
+            $scope.PopUpRequsitionItemClose = function () {
                 $('#popupQuantity').css("visibility", "hidden");
                 $('#popupQuantity').css("opacity", 0);
                 $scope.ItemRequisition.Quantity = 0;
             }
             
 
-            $("#popupRequsition .close").click(function () {
+            $scope.PopUpRequsitionClose=function () {
 
                 $('#popupRequsition').css("visibility", "hidden");
                 $('#popupRequsition').css("opacity", 0);
-            });
+
+                $scope.Requisition.Purpose = "";
+                $scope.Requisition.Note = "";
+                $scope.ItemRequisitionList = [];
+                
+            }
     
         }
     }
