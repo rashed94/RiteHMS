@@ -904,7 +904,7 @@ namespace HMS.Controllers
             using (ItemRepository repository = new ItemRepository())
             {
                 Expression<Func<Item, bool>> lambda;
-                Func<IQueryable<Item>, IOrderedQueryable<Item>> orderingFunc = query => query.OrderBy(m => m.ItemCategoryId).ThenBy(m=>m.Name);
+                Func<IQueryable<Item>, IOrderedQueryable<Item>> orderingFunc = query => query.OrderBy(m => m.ItemCategory.Name).ThenBy(m=>m.Name);
                 
                 lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true && (categoryId==null ? x.ItemCategoryId==null|| x.ItemCategoryId>0: x.ItemCategoryId==categoryId));
 
@@ -989,7 +989,7 @@ namespace HMS.Controllers
             {
                 Expression<Func<Item, bool>> lambda;
 
-                Func<IQueryable<Item>, IOrderedQueryable<Item>> orderingFunc = query => query.OrderBy(m => m.ItemCategoryId).ThenBy(m => m.Name);
+                Func<IQueryable<Item>, IOrderedQueryable<Item>> orderingFunc = query => query.OrderBy(m => m.ItemCategory.Name).ThenBy(m => m.Name);
 
                 if (categoryId == 0 || categoryId==null)
                 {
