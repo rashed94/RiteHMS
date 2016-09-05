@@ -300,7 +300,24 @@ angular.module('HMS').directive('requsitionStatus', function () {
                  $scope.InventoryItem.BuyPrice = $scope.BuyPrice;
                  $scope.InventoryItem.ModifiedDate = $filter('date')(new Date(), 'yyyy-MM-dd');
 
-                $scope.CreateInventoryWithInventoryItem().data.success(function (pt) {
+
+                InventoryService.ApproveRequisition($scope.Inventory, $scope.InventoryItem, $scope.RequsitionItem, $scope.Requsition)
+                .success(function (pt) {
+
+                  //  $scope.CheckAndUpdateRequsition();
+                    $scope.GetReorderInventories();
+
+                    console.log("Successfullly approved Requisition");
+                })
+               .error(function (error) {
+
+                   alert("Something went wrong requisiton approved fail..");
+                   console.log("Approved Requisition Fail");
+               });
+                $scope.PopUpExpireDateClose();
+
+                $scope.RequsitionItem.Status = "Received";
+               /* $scope.CreateInventoryWithInventoryItem().data.success(function (pt) {
 
 
                   $scope.CreateInventoryItem();
@@ -312,7 +329,7 @@ angular.module('HMS').directive('requsitionStatus', function () {
 
                     });
 
-                 $scope.PopUpExpireDateClose();
+                 $scope.PopUpExpireDateClose();*/
             }
 
 

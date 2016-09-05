@@ -126,10 +126,13 @@ HmsApp.controller("StockModelController", function ($scope, $modalInstance, $fil
                     $scope.ShelfList = pt;
                     if ($scope.ShelfList.length > 0)
                     {
-                        if($scope.Inventory.ShelfId>0)
+                        if($scope.Inventory.ShelfId)
                         {
                             $scope.filterCondition.ShelfId = $scope.Inventory.ShelfId.toString();
                             
+                        }else
+                        {
+                            $scope.filterCondition.ShelfId = "";
                         }
                     } else
                     {

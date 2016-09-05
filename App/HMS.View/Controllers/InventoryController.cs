@@ -249,6 +249,10 @@ namespace HMS.Controllers
         public JsonResult CreateInventoryItem(InventoryItem inventoryItem)
         {
             InventoryItem onlyInventoryItem = new InventoryItem();
+            
+            inventoryItem.Item = null;
+            inventoryItem.Store = null;
+            inventoryItem.Inventory = null;
 
             inventoryItem.UserId = GetLoggedinUserInfo().UserId;
 
@@ -313,6 +317,32 @@ namespace HMS.Controllers
          
             }
             return Json(onlyInventory, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public Inventory GetInventoryByItemAndStore(long itemId, long? storeId)
+        {
+            Inventory onlyInventory = new Inventory();
+
+            using (Repository<Inventory> repository = new Repository<Inventory>())
+            {
+                Expression<Func<Inventory, bool>> lambda;
+                lambda = (x => x.Active == true && x.ItemID == itemId && x.StoreID == storeId);
+
+                Inventory inventory = new Inventory();
+
+                List<Inventory> inventoryList = repository.GetByQuery(lambda).ToList();
+
+                if (inventoryList.Count > 0)
+                {
+                    inventory = inventoryList.ElementAt(0);
+                    onlyInventory = ModelMapper.MapToClientWithoutItem(inventory);
+                }
+
+
+
+            }
+            return onlyInventory;
         }
 
         public JsonResult GetInventories(long storeId)
@@ -449,6 +479,10 @@ namespace HMS.Controllers
             requisitionItem.UserId=GetLoggedinUserInfo().UserId;
             requisitionItem.Item = null;
             requisitionItem.Inventory = null;
+            requisitionItem.MeasurementUnit = null;
+            requisitionItem.Requisition = null;
+            requisitionItem.RequisitionStatus = null;
+            requisitionItem.ApprovedByUser = null;
 
             using (Repository<ItemRequisition> repository = new Repository<ItemRequisition>())
             {
@@ -603,6 +637,39 @@ namespace HMS.Controllers
                 repository.Commit();
             }
             return Json("Insert Requstion successfull", JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult ApproveRequisition(Inventory inventory, InventoryItem inventoryItem, ItemRequisition requisitionItem, Requisition requistion)
+        {
+         
+                CreateInventory(inventory);
+                CreateInventoryItem(inventoryItem);
+                UpdateRequisitionItem(requisitionItem);
+                Inventory sourceInventory = GetInventoryByItemAndStore(requisitionItem.ItemId, requistion.ToStoreId);
+
+               if(sourceInventory.Id>0)
+               {
+                   sourceInventory.Quantity = sourceInventory.Quantity - requisitionItem.Quantity;
+                   CreateInventory(sourceInventory);
+               }
+                var updateReq = true;
+
+                foreach (ItemRequisition reqitem in requistion.ItemRequisitions)
+                {
+                     if(reqitem.RequisitionStatusId!=130)
+                    {
+                        updateReq = false;
+                    }
+                    
+                }
+                if (updateReq)
+                {
+                    requistion.IsOpen = false;
+                    UpdateRequisition(requistion);
+                }
+
+            return Json("Successfull Approve requistion", JsonRequestBehavior.AllowGet);
         }
 
       

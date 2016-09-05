@@ -129,6 +129,11 @@
         return $http.post('/Inventory/UpdateRequisition', requisition);
     };
    
+
+    InventoryService.ApproveRequisition = function (inventory,inventoryItem,requisitionItem,requistion) {
+
+        return $http.post('/Inventory/ApproveRequisition', { inventory: inventory, inventoryItem: inventoryItem, requisitionItem: requisitionItem, requistion: requistion });
+    };
     
 
 
