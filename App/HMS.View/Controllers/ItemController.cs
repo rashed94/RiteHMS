@@ -830,6 +830,7 @@ namespace HMS.Controllers
                 Expression<Func<ItemCategory, bool>> lambda;
                 Func<IQueryable<ItemCategory>, IOrderedQueryable<ItemCategory>> orderingFunc = query => query.OrderBy(m => m.Name);
 
+
                 lambda = (x => x.Active == true && x.MedicalTypeId == medicalTypeID);
 
                 ItemCategories = repository.GetByQuery(lambda, orderingFunc).ToList();
@@ -903,10 +904,11 @@ namespace HMS.Controllers
             using (ItemRepository repository = new ItemRepository())
             {
                 Expression<Func<Item, bool>> lambda;
+                Func<IQueryable<Item>, IOrderedQueryable<Item>> orderingFunc = query => query.OrderBy(m => m.ItemCategoryId).ThenBy(m=>m.Name);
                 
-                lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true && (categoryId==null ? x.ItemCategoryId==null|| x.ItemCategoryId>0: x.ItemCategoryId==categoryId));                
+                lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true && (categoryId==null ? x.ItemCategoryId==null|| x.ItemCategoryId>0: x.ItemCategoryId==categoryId));
 
-                    itemsforLabTest = repository.GetByQuery(lambda).ToList();
+                itemsforLabTest = repository.GetByQuery(lambda, orderingFunc).ToList();
 
                 foreach (Item c in itemsforLabTest)
                 {
@@ -987,6 +989,8 @@ namespace HMS.Controllers
             {
                 Expression<Func<Item, bool>> lambda;
 
+                Func<IQueryable<Item>, IOrderedQueryable<Item>> orderingFunc = query => query.OrderBy(m => m.ItemCategoryId).ThenBy(m => m.Name);
+
                 if (categoryId == 0 || categoryId==null)
                 {
                     lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true);
@@ -995,7 +999,7 @@ namespace HMS.Controllers
                     lambda = (x => x.MedicalTypeId == medicalTypeID && x.Active == true && x.ItemCategoryId==categoryId);
                 }
 
-                itemsforLabTest = repository.GetByQuery(lambda).ToList();
+                itemsforLabTest = repository.GetByQuery(lambda, orderingFunc).ToList();
 
                 foreach (Item c in itemsforLabTest)
                 {

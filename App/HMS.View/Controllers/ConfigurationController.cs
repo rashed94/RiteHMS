@@ -37,7 +37,8 @@ namespace HMS.Controllers
         {
             using (Repository<ServiceProvider> repo = new Repository<ServiceProvider>())
             {
-                List<ServiceProvider> providers = repo.GetByQuery(p => p.ServiceProviderTypeId == type).ToList();
+                Func<IQueryable<ServiceProvider>, IOrderedQueryable<ServiceProvider>> orderingFunc = query => query.OrderBy(m => m.Department.Name).ThenBy(m => m.Contact.FirstName+m.Contact.LastName);
+                List<ServiceProvider> providers = repo.GetByQuery(p => p.ServiceProviderTypeId == type, orderingFunc).ToList();
 
                 List<ServiceProvider> cProviders = new List<ServiceProvider>();
                 providers.ForEach(p => 
