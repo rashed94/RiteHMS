@@ -8,7 +8,7 @@ angular.module('HMS').directive('requsitionStatus', function () {
             storeList: '='
         },
 
-        controller: function ($scope, $filter, $http, InventoryService, IniService, requsition) {
+        controller: function ($scope, $filter, $http, InventoryService, IniService, requsition,reorder) {
 
             $scope.RequisitonList = [];
             $scope.State = requsition;
@@ -213,6 +213,7 @@ angular.module('HMS').directive('requsitionStatus', function () {
                         reqItem.Status = "Received";
 
                         $scope.CheckAndUpdateRequsition();
+                        $scope.GetReorderInventories();
                     })
                     .error(function (error) {
 
@@ -259,7 +260,39 @@ angular.module('HMS').directive('requsitionStatus', function () {
                     });
 
             }
+            var prepareInventoryDataModel = function (inventories) {
+                angular.forEach(inventories, function (obj) {
 
+                    obj.ActivePosition = false;
+                    obj.InventoryItems = [];
+                    obj.LastModifiedDate = ToJavaScriptDate(obj.LastModifiedDate);
+
+
+                });
+            }
+
+            $scope.GetReorderInventories = function () {
+
+                InventoryService.GetReorderInventories($scope.storeId)
+                .success(function (pt) {
+
+                    if (pt.length > 0) {
+
+                        //  $scope.Inventories = pt;
+                        reorder.Inventories = pt;
+                        prepareInventoryDataModel(reorder.Inventories);
+                    } else {
+                        reorder.Inventories = [];
+                    }
+                    console.log("Successfully retrieve Inventory Data ");
+                    console.log(pt);
+                })
+                .error(function (error) {
+                    $scope.status = 'Unable to load  Inventory data: ' + error.message;
+                    console.log($scope.status);
+                });
+
+            }
 
             $scope.UpdateInventory=function()
             {

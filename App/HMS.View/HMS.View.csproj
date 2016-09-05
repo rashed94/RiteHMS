@@ -158,6 +158,7 @@
     <Content Include="ClientCode\Script\Service\LabTestLService.js" />
     <Content Include="ClientCode\Script\Service\PatientSummaryReportService.js" />
     <Content Include="ClientCode\Script\Service\PharmacyService.js" />
+    <Content Include="ClientCode\Script\Service\ReorderDataModel.js" />
     <Content Include="ClientCode\Script\Service\ReportTransactionService.js" />
     <Content Include="ClientCode\Script\Service\RequsitionDataModel.js" />
     <Content Include="ClientCode\Script\Service\UserService.js" />

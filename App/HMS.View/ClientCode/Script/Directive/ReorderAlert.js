@@ -10,9 +10,10 @@ angular.module('HMS').directive('reorderAlert', function () {
 
         },
 
-        controller: function ($scope, $http, $filter, InventoryService, IniService, requsition) {
+        controller: function ($scope, $http, $filter, InventoryService, IniService, requsition,reorder) {
 
-            $scope.Inventories = [];
+            //$scope.Inventories = [];
+            $scope.State = reorder;
             $scope.Inventory = {};
             $scope.ItemRequisitionList = [];
             $scope.RequisitionStoreList = [];
@@ -56,7 +57,7 @@ angular.module('HMS').directive('reorderAlert', function () {
             });
 
             var prepareInventoryDataModel = function () {
-                angular.forEach($scope.Inventories, function (obj) {
+                angular.forEach($scope.State.Inventories, function (obj) {
 
                     obj.ActivePosition = false;
                     obj.InventoryItems = [];
@@ -100,11 +101,12 @@ angular.module('HMS').directive('reorderAlert', function () {
 
                     if (pt.length > 0) {
 
-                        $scope.Inventories = pt;
+                        //  $scope.Inventories = pt;
+                        reorder.Inventories = pt;
                         prepareInventoryDataModel();
                     } else
                     {
-                        $scope.Inventories = [];
+                        $scope.State.Inventories = [];
                     }
                     console.log("Successfully retrieve Inventory Data ");
                     console.log(pt);
