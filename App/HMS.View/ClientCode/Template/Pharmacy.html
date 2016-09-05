@@ -161,9 +161,9 @@
                     <table width="95%" border="1" ng-model="SingleItem">
                         <tr>
                             <td width="14%" height="39">&nbsp;</td>
-                            <td width="19%"><div class="require">*</div>NAME</td>
+                            <td width="19%">NAME</td>
                             <td width="19%">
-                                <input type="text" ng-model="SingleItem.Name" required name="name">
+                                <input type="text" ng-model="SingleItem.Name" required name="name"><div class="require">*</div>
                                 <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
                                 <div ng-show="form1.name.$invalid">
                                     <div ng-message="required">This field is required</div>
@@ -179,10 +179,8 @@
                             <td height="39">&nbsp;</td>
                             <td>CODE</td>
                             <td colspan="2">
-                                <input type="text" ng-model="SingleItem.Code" required name="code">
-                                <div ng-show="form1.code.$invalid">
-                                    <div ng-message="required">This field is required</div>
-                                </div>
+                                <input type="text" ng-model="SingleItem.Code" >
+                    
                             </td>
                         </tr>
 
@@ -197,7 +195,7 @@
 
                         <tr>
                             <td height="39">&nbsp;</td>
-                            <td><div class="require">*</div>CATEGORY</td>
+                            <td>CATEGORY</td>
                             <td colspan="2">
 
                                 <select ng-model="filterCondition.ItemCategoryId">
@@ -206,14 +204,14 @@
 
                                 </select>
                                 <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
-
+                                <div class="require">*</div>
 
                             </td>
                         </tr>
 
                         <tr>
                             <td height="39">&nbsp;</td>
-                            <td><div class="require">*</div>MEASURE UNIT</td>
+                            <td>MEASURE UNIT</td>
                             <td colspan="2">
 
                                 <select name="palnType3" class="distype" ng-model="filterCondition.MeasurementUnitId">
@@ -222,26 +220,23 @@
 
                                 </select>
                                 <a class="fa fa-plus-circle fa-2x" aria-hidden="true" href="#" id="MeasurementUnit"></a>
-
+                                <div class="require">*</div>
 
                             </td>
                         </tr>
 
+
+
                         <tr>
                             <td height="39">&nbsp;</td>
-                            <td>BUY PRICE</td>
+                            <td>CHARGE PRICE&nbsp;({{Currency}})</td>
                             <td colspan="2">
-                                <input type="text" ng-model="SingleItem.BuyPrice">
+                            <input type="text" ng-model="SingleItem.SalePrice"><div class="require">*</div>
 
                                 &nbsp;&nbsp;  <a ng-show="SingleItem.Id>0" class="arrow_head" href="#" ng-click="$event.preventDefault();StockModal('lg',true,SingleItem)"> ADD STOCK</a>
+
+
                             </td>
-
-                        </tr>
-
-                        <tr>
-                            <td height="39">&nbsp;</td>
-                            <td><div class="require">*</div>CHARGE PRICE</td>
-                            <td colspan="2"><input type="text" ng-model="SingleItem.SalePrice"></td>
                         </tr>
 
                         <tr>

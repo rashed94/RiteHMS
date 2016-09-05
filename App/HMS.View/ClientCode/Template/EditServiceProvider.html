@@ -12,12 +12,12 @@
             <div class="pull-left">
 
                 <div class="input_containter">
-                    <div class="title"><div class="require">*</div>Type</div>
+                    <div class="title">Type</div>
                     <div class="inputbox">
                         <select name="ServiceProviderType"
                                 class="_s_ServiceProviderType"
                                 ng-model="ServiceProvider.ServiceProviderType.Id"
-                                ng-options="type.Id as type.Name for type in ServiceProviderTypes"></select>
+                                ng-options="type.Id as type.Name for type in ServiceProviderTypes"></select><div class="require">*</div>
                     </div>
                 </div>
 
@@ -30,16 +30,16 @@
                 </div>
 
                 <div class="input_containter">
-                    <div class="title"><div class="require">*</div>First Name</div>
+                    <div class="title">First Name</div>
                     <div class="inputbox">
-                        <input type="text" class="first_name" ng-model="ServiceProvider.Contact.FirstName">
+                        <input type="text" class="first_name" ng-model="ServiceProvider.Contact.FirstName"><div class="require">*</div>
                     </div>
                 </div>
 
                 <div class="input_containter">
-                    <div class="title"><div class="require">*</div>Last Name</div>
+                    <div class="title">Last Name</div>
                     <div class="inputbox">
-                        <input type="text" class="last_name" ng-model="ServiceProvider.Contact.LastName">
+                        <input type="text" class="last_name" ng-model="ServiceProvider.Contact.LastName"><div class="require">*</div>
                     </div>
                 </div>
 
@@ -53,12 +53,13 @@
 
 
                 <div class="input_containter">
-                    <div class="title"><div class="require">*</div>Department</div>
+                    <div class="title">Department</div>
                     <div class="inputbox">
                         <select name="ServiceProviderDepartment"
                                 class="_s_ServiceProviderDepartment"
                                 ng-model="ServiceProvider.Department.Id"
                                 ng-options="department.Id as department.Name for department in Departments"></select>
+                        <div class="require">*</div>
                     </div>
                 </div>
 
@@ -70,10 +71,11 @@
                 </div>
 
                 <div class="input_containter">
-                    <div class="title"><div class="require">*</div>Referer?</div>
+                    <div class="title">Referer?</div>
                     <div class="inputbox">
                         <input type="radio" name="isreferer" class="isreferer" ng-value="true" ng-model="ServiceProvider.IsReferer">Yes
                         <input type="radio" name="isreferer" class="isreferer" ng-value="false" ng-model="ServiceProvider.IsReferer">No
+                        <div class="require">*</div>
                     </div>
                 </div>
 
@@ -87,13 +89,14 @@
             </div>
             <div class="pull-left">
                 <div class="input_containter">
-                    <div class="title"><div class="require">*</div>gender</div>
+                    <div class="title">gender</div>
                     <div class="inputbox">
                         <select name="gender" class="generaldropdown" ng-model="ServiceProvider.Contact.Gender">
                             <option ng-value="">Unspecified</option>
                             <option ng-value="false" ng-selected="{{ ServiceProvider.Contact.Gender == false }}">MALE</option>
                             <option ng-value="true" ng-selected="{{ ServiceProvider.Contact.Gender == true }}">Female</option>
                         </select>
+                        <div class="require">*</div>
                     </div>
                 </div>
 

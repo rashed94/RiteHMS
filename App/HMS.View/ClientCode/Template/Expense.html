@@ -138,7 +138,7 @@
 
                 <tr>
                     <td width="27%" height="39">&nbsp;</td>
-                    <td width="9%"><div class="require">*</div>Category</td>
+                    <td width="9%">Category</td>
                     <td width="64%" colspan="2">
 
                         <select ng-model="filterCondition.CategoryId">
@@ -147,15 +147,15 @@
 
                         </select>
                         <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
-
+                        <div class="require">*</div>
 
                     </td>
                 </tr>
 
                 <tr>
                     <td height="39">&nbsp;</td>
-                    <td><div class="require">*</div>Amount</td>
-                    <td colspan="2"><input type="text" ng-model="Expense.Amount"></td>
+                    <td>Amount &nbsp; ({{Currency}})</td>
+                    <td colspan="2"><input type="text" ng-model="Expense.Amount"><div class="require">*</div></td>
                 </tr>
                 <tr>
                     <td height="39">&nbsp;</td>

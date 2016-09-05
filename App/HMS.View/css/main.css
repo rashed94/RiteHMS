@@ -731,6 +731,7 @@ body.datepicker-dropdown {
 input[type="text"]#doctorName
 {
     width:200px;
+    display:inline;
 
 }
 
@@ -851,4 +852,19 @@ margin-top:10px;
 {
     text-decoration: line-through;
     color:#c46516;
+}
+
+.text_heading{
+
+   
+    float:left;min-width:100px; text-align:right;line-height:20px;
+}
+.text_content{
+
+     float:left; text-align:left; margin-left:10px;line-height:20px;
+}
+.text_content::after{
+        clear:both;
+    display: table;
+   
 }

@@ -21,10 +21,10 @@
 
 
         <div class="input_containter_inner">
-            <div class="title">Store Name</div><div class="require">*</div>
+            <div class="title">Store Name</div>
             <div class="inputbox">
                 <input type="text" ng-model="Store.Name" required name="name">
-
+                <div class="require">*</div>
                 <div ng-show="form1.name.$invalid">
                     <div ng-message="required">This field is required</div>
                 </div>
@@ -61,27 +61,28 @@
         </div>
 
         <div class="input_containter_inner">
-            <div class="title">Add Store Keeper</div><div class="require">*</div>
-            <div class="inputbox">
+            <div class="title">Add Store Keeper</div>
+            <div class="inputbox" style="width:190px;">
                 <input required name="username1" id="username1" type="text" placeholder="Type User's name"
                        ng-model="StoreKeeperUser.UserName"
                        typeahead="item as (item.UserName + ' ('+item.Contact.FirstName+ '  ' + item.Contact.LastName +') ') for item in GetUserByPartialName($viewValue)"
                        typeahead-on-select="OnUserSelect($item)"
                        typeahead-min-length="1"
                        typeahead-wait-ms="1"
-                       class="form-control">
-
+                       class="form-control" style="width:130px;float:left;">
+                <div class="require">*</div>
+                <div style="clear:both;"></div>
                 <div ng-show="form1.username1.$invalid">
                     <div ng-message="required">This field is required</div>
                 </div>
-
+                <div style="clear:both;"></div>
             </div>
         </div>
 
         <div class="input_containter_inner round_box" ng-show="ShowLineManager">
             <div class="title">Add Line Manager</div>
             <div class="inputbox">
-                <input name="username2" id="username2" type="text" placeholder="Type User's name"
+                <input name="username2" id="username2" type="text" placeholder="Type User's name" 
                        ng-model="LineManagerUser.UserName"
                        typeahead="item as (item.UserName + ' ('+item.Contact.FirstName+ '  ' + item.Contact.LastName +') ') for item in GetUserByPartialName($viewValue)"
                        typeahead-on-select="OnLineManagerSelect($item)"

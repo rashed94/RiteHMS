@@ -94,7 +94,7 @@
         </div>
 
         <div style="padding-left:60px;padding-top:60px;">
-            Select Category
+            Select Category &nbsp;
 
             <select ng-model="filterCondition.CategoryId" ng-change="loaditembyCategory()">
 
@@ -102,6 +102,19 @@
                 <option ng-repeat="category in ItemCategories" value="{{category.Id}}"> {{category.Name}}</option>
 
             </select>
+
+            <div style="display:inline; padding-left:12px;">
+                Bed Status  &nbsp;
+
+                <select>
+
+
+                    <option>All</option>
+                    <option>Occupied</option>
+                    <option>Not Occupied</option>
+
+                </select>
+            </div>
 
         </div>
 
@@ -113,7 +126,7 @@
 
                         <div ng-class="{'bed_view' : items[$index].BedOccupancies[0].Occupied==false,'bed_view_patient': items[$index].BedOccupancies[0].Occupied==true}">
 
-                            <div ng-hide="items[$index].BedOccupancies[0].Occupied==true"> Empty</div>
+                            <div ng-hide="items[$index].BedOccupancies[0].Occupied==true"> Not Occupied</div>
                             <div ng-show="items[$index].BedOccupancies[0].Occupied==true">{{items[$index].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index].Name}}</div>
                             <div>Charge : {{items[$index].SalePrice}}</div>
@@ -129,7 +142,7 @@
 
                         <div ng-class="{'bed_view':items[$index+1].BedOccupancies[0].Occupied ==false,'bed_view_patient':items[$index+1].BedOccupancies[0].Occupied==true}">
 
-                            <div ng-hide="items[$index+1].BedOccupancies[0].Occupied==true"> Empty</div>
+                            <div ng-hide="items[$index+1].BedOccupancies[0].Occupied==true"> Not Occupied</div>
                             <div ng-show="items[$index+1].BedOccupancies[0].Occupied==true">{{items[$index+1].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+1].Name}}</div>
                             <div>Charge : {{items[$index+1].SalePrice}}</div>
@@ -143,7 +156,7 @@
                     <td ng-switch-when="0" ng-show="items[$index+2]">
                         <div ng-class="{'bed_view':items[$index+2].BedOccupancies[0].Occupied ==false,'bed_view_patient':items[$index+2].BedOccupancies[0].Occupied==true}">
 
-                            <div ng-hide="items[$index+2].BedOccupancies[0].Occupied==true"> Empty</div>
+                            <div ng-hide="items[$index+2].BedOccupancies[0].Occupied==true"> Not Occupied</div>
                             <div ng-show="items[$index+2].BedOccupancies[0].Occupied==true">{{items[$index+2].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+2].Name}}</div>
                             <div>Charge : {{items[$index+2].SalePrice}}</div>
@@ -156,7 +169,7 @@
                     <td ng-switch-when="0" ng-show="items[$index+3]">
                         <div ng-class="{'bed_view':items[$index+3].BedOccupancies[0].Occupied ==false,'bed_view_patient':items[$index+3].BedOccupancies[0].Occupied==true}">
 
-                            <div ng-hide="items[$index+3].BedOccupancies[0].Occupied==true"> Empty</div>
+                            <div ng-hide="items[$index+3].BedOccupancies[0].Occupied==true"> Not Occupied</div>
                             <div ng-show="items[$index+3].BedOccupancies[0].Occupied==true">{{items[$index+3].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+3].Name}}</div>
                             <div>Charge : {{items[$index+3].SalePrice}}</div>
@@ -169,7 +182,7 @@
                     <td ng-switch-when="0" ng-show="items[$index+4]">
                         <div ng-class="{'bed_view':items[$index+4].BedOccupancies[0].Occupied ==false,'bed_view_patient':items[$index+4].BedOccupancies[0].Occupied==true}">
 
-                            <div ng-hide="items[$index+4].BedOccupancies[0].Occupied==true"> Empty</div>
+                            <div ng-hide="items[$index+4].BedOccupancies[0].Occupied==true"> Not Occupied</div>
                             <div ng-show="items[$index+4].BedOccupancies[0].Occupied==true">{{items[$index+4].BedOccupancies[0].PatientName}}</div>
                             <div>Name : {{items[$index+4].Name}}</div>
                             <div>Charge : {{items[$index+4].SalePrice}}</div>
@@ -248,9 +261,9 @@
                 <table width="95%" border="1" ng-model="SingleBedItem">
                     <tr>
                         <td width="14%" height="39">&nbsp;</td>
-                        <td width="19%"><div class="require">*</div>NAME</td>
+                        <td width="19%">NAME</td>
                         <td width="19%">
-                            <input type="text" ng-model="SingleBedItem.Name" required name="name">
+                            <input type="text" ng-model="SingleBedItem.Name" required name="name"><div class="require">*</div>
                             <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
                             <div ng-show="form1.name.$invalid">
                                 <div ng-message="required">This field is required</div>
@@ -273,7 +286,7 @@
 
                     <tr>
                         <td height="39">&nbsp;</td>
-                        <td><div class="require">*</div>CATEGORY</td>
+                        <td>CATEGORY</td>
                         <td colspan="2">
 
                             <select ng-model="filterCondition.ItemCategoryId">
@@ -282,6 +295,8 @@
 
                             </select>
                             <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
+
+                            <div class="require">*</div>
 
                         </td>
                     </tr>
@@ -307,8 +322,8 @@
 
                     <tr>
                         <td height="39">&nbsp;</td>
-                        <td><div class="require">*</div>CHARGE PRICE</td>
-                        <td colspan="2"><input type="text" ng-model="SingleBedItem.SalePrice"></td>
+                        <td>CHARGE PRICE &nbsp; ({{Currency}})</td>
+                        <td colspan="2"><input type="text" ng-model="SingleBedItem.SalePrice"><div class="require">*</div></td>
                     </tr>
 
 

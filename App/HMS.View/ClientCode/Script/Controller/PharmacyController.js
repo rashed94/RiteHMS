@@ -723,6 +723,7 @@ HmsApp.controller("PharmacyController", function ($scope, $routeParams, $window,
                 $scope.SingleItem.ItemTypeId = $scope.Configuration.Configuration.ServiceItem;
                 $scope.medicalTypeIDLab = $scope.Configuration.Configuration.MedicalTypeLabTest.toString();
                 $scope.StoreType = $scope.Configuration.Configuration.StoreTypePharmacy.toString();
+                $scope.Currency = $scope.Configuration.Configuration.Currency;
 
                 init();
 

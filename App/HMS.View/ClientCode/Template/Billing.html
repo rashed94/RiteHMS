@@ -75,15 +75,20 @@
                 <h1>Balance summary</h1>
             </div>
             <div class="round_box_rightcontent line_height_small">
-                <p>
-                    <h2>Balance</h2>
-                    {{Balance}} BDT</p>
-                <p>
-                    <h2>DEBIT</h2>
-                    {{Debit}} BDT</p>
-                <p>
-                    <h2>CREDIT</h2>
-                    {{Credit}} BDT</p>
+                
+                <div class="text_heading"><h2>Balance</h2></div>
+                <div class="text_content"> {{Balance}} BDT</div>
+                <div style="clear:both;"></div>
+                
+               
+                <div class="text_heading"> <h2>DEBIT</h2></div>
+                <div class="text_content"> {{Debit}} BDT</div>
+                <div style="clear:both;"></div>
+               
+                <div class="text_heading"><h2>CREDIT</h2></div>
+                <div class="text_content"> {{Credit}} BDT</div>
+                <div style="clear:both;"></div>
+
             </div>
         </div>
         <div style="clear: both"></div>
@@ -154,9 +159,9 @@
                     </tr>
                     <tr>
                         <td width="2%">
-                            <img src="images/ico_note.gif" width="17" height="17" aslt="note"></td>
-                        <td width="61%">
-                            <h2>DOCTOR’S REFERRER FEE   {{TotalReferralFee}}</h2>
+                            <div ng-show="TotalReferralFee>0"> <img src="images/ico_note.gif" width="17" height="17" aslt="note"></div></td>
+                        <td width="61%" >
+                            <div ng-show="TotalReferralFee>0">  <h2>DOCTOR’S REFERRER FEE  {{TotalReferralFee}}</h2></div>
                         </td>
                         <td width="12%">
                             <h2>TOTAL COST </h2>

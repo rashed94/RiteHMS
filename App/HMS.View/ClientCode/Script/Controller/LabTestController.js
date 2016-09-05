@@ -30,7 +30,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
         MedicalTypeId: "",
         ItemCategoryId: "",
         MeasurementUnitId: "",
-        SalePrice: "",
+        SalePrice:0.00,
         BuyPrice: 0.00,
         ServiceProviderId: "",
         ReferralAllowed: 1,
@@ -891,6 +891,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 $scope.MedicalTypeReagent = $scope.Configuration.Configuration.MedicalTypeReagent.toString();
                 $scope.SingleReagentItem.MedicalTypeId = $scope.Configuration.Configuration.MedicalTypeReagent;
                 $scope.SingleReagentItem.ItemTypeId = $scope.Configuration.Configuration.InventoryItem;
+                $scope.Currency = $scope.Configuration.Configuration.Currency;
                 $scope.LabTestStatus = "0";
 
                 init();

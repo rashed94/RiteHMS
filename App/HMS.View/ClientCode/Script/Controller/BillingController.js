@@ -360,6 +360,7 @@ HmsApp.controller("BillingController", function ($scope, $routeParams, $window, 
                 obj.OriginalAmountSingleQuantity = obj.ServiceListPrice / obj.ServiceQuantity;
                 obj.ServiceListPriceAfterDiscountSingleQuantity = Math.ceil(obj.ServiceListPriceAfterDiscount / obj.ServiceQuantity);
                 $scope.TotalAmount += obj.ServiceListPrice;
+                $scope.TotalReferralFee = $scope.TotalReferralFee + obj.ReferralFee;
 
             });
         }

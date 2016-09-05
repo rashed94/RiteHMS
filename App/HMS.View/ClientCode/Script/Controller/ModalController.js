@@ -276,6 +276,8 @@ HmsApp.controller("StockModelController", function ($scope, $modalInstance, $fil
              }
              $scope.CreateInventoryItem=function()
              {
+                 //StoreID: $scope.filterCondition.StoreId,
+                 $scope.InventoryItem.StoreId = $scope.filterCondition.StoreId;
                  InventoryService.CreateInventoryItem($scope.InventoryItem)
                  .success(function (pt) {
 

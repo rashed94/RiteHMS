@@ -48,9 +48,9 @@
         <table width="85%" border="1" ng-model="Treatment" align="center">
             <tr>
                 <td width="20%" height="39">&nbsp;</td>
-                <td width="19%"><div class="require">*</div>NAME</td>
+                <td width="19%">NAME</td>
                 <td>
-                    <input type="text" ng-model="Treatment.Name" required name="name">
+                    <input type="text" ng-model="Treatment.Name" required name="name"><div class="require">*</div>
                     <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
                     <div ng-show="form1.name.$invalid">
                         <div ng-message="required">This field is required</div>
@@ -60,7 +60,7 @@
             </tr>
             <tr>
                 <td height="39">&nbsp;</td>
-                <td><div class="require">*</div>CATEGORY</td>
+                <td>CATEGORY</td>
                 <td>
                     <select ng-model="filterCondition.ItemCategoryId" style="width:200px;">
                         <option value="" ng-if="false"></option>
@@ -68,14 +68,16 @@
 
                     </select>
                     <a class="fa fa-plus-circle fa-2x" aria-hidden="true" id="categoryPop"></a>
+                    <div class="require">*</div>
+
                 </td>
             </tr>
 
             <tr>
                 <td height="39">&nbsp;</td>
-                <td><div class="require">*</div>CHARGE PRICE</td>
+                <td>CHARGE PRICE &nbsp; ({{Currency}})</td>
                 <td>
-                    <input type="text" ng-model="Treatment.SalePrice" required name="SalePrice">
+                    <input type="text" ng-model="Treatment.SalePrice" required name="SalePrice"><div class="require">*</div>
                     <div ng-show="form1.SalePrice.$invalid">
                         <div ng-message="required">This field is required</div>
                     </div>

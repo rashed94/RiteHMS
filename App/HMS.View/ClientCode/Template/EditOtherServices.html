@@ -8,24 +8,24 @@
     <form name="form1">
         <table width="65%" border="1" ng-model="OtherService" align="center">
             <tr>
-                <td width="14%" height="39">&nbsp;</td>
-                <td width="25%"><div class="require">*</div>NAME</td>
-                <td width="19%">
-                    <input type="text" ng-model="OtherService.Name" required name="name">
+                <td width="6%" height="39">&nbsp;</td>
+                <td width="34%">NAME</td>
+                <td width="16%">
+                    <input type="text" ng-model="OtherService.Name" required name="name"><div class="require">*</div>
                     <!--<span class="help-inline" ng-show="submitted && form1.name.$error.required">Required</span>-->
                     <div ng-show="form1.name.$invalid">
                         <div ng-message="required">This field is required</div>
                     </div>
                 </td>
-                <td width="48%"></td>
+                <td width="44%"></td>
                 <!--<td><span ng-show="!SingleBedItem.Name.length">Please enter something!</span></td>-->
             </tr>
 
             <tr>
                 <td height="39">&nbsp;</td>
-                <td><div class="require">*</div>CHARGE PRICE</td>
+                <td>CHARGE PRICE &nbsp; ({{Currency}})</td>
                 <td colspan="2">
-                    <input type="text" ng-model="OtherService.SalePrice" required name="SalePrice">
+                    <input type="text" ng-model="OtherService.SalePrice" required name="SalePrice"><div class="require">*</div>
                     <div ng-show="form1.SalePrice.$invalid">
                         <div ng-message="required">This field is required</div>
                     </div>

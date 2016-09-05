@@ -17,6 +17,7 @@
             "StoreTypeInvestigation": 110,
             "RequsitionStatusOpened": 110,
             "RequsitionStatusApproved": 120,
-            "RequsitionStatusReceived": 130
+            "RequsitionStatusReceived": 130,
+            "Currency": "TK"
         }
     }

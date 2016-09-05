@@ -212,6 +212,7 @@ HmsApp.controller("ExpenseController", function ($scope, $routeParams, $window, 
                 $scope.ServiceProviderType = $scope.Configuration.Configuration.DoctorTypeId;
                 // $scope.SingleItem.ItemTypeId = $scope.Configuration.Configuration.ServiceItem;
                 $scope.medicalTypeIdLab = $scope.Configuration.Configuration.MedicalTypeLabTest.toString();
+                $scope.Currency = $scope.Configuration.Configuration.Currency;
 
                 init();
 

@@ -19,21 +19,21 @@
     <div class="patient_registration_contnet">
 
         <div class="input_containter">
-            <div class="title"><div class="require">*</div>First Name</div><div class="inputbox_patient_edit"><input type="text"  ng-model="Patient.FirstName"></div>
+            <div class="title">First Name</div><div class="inputbox_patient_edit"><input type="text"  ng-model="Patient.FirstName"><div class="require">*</div></div>
         </div>
 
         <div class="input_containter">
-            <div class="title"><div class="require">*</div>Last Name</div><div class="inputbox_patient_edit"><input type="text" ng-model="Patient.LastName"></div>
+            <div class="title">Last Name</div><div class="inputbox_patient_edit"><input type="text" ng-model="Patient.LastName"><div class="require">*</div></div>
         </div>
 
         <div class="input_containter">
-            <div class="title"><div class="require">*</div>gender</div>
+            <div class="title">>gender</div>
             <div class="inputbox_patient_edit">
                 <select name="gender" class="generaldropdown" ng-model="Patient.Gender">
                     <option value="false" ng-selected="{{ Patient.Gender == false }}">MALE</option>
                     <option value="true" ng-selected="{{ Patient.Gender == true }}">Female</option>
                 </select>
-            </div>
+                <div class="require">*</div></div>
         </div>
 
         <div class="input_containter">
@@ -72,7 +72,7 @@
 
         <div class="input_containter">
             <!--<div class="title">Country</div><div class="inputbox"><input type="text" class="country" ng-model="Patient.Country"></div>-->
-            <div class="title"><div class="require">*</div>Country</div>
+            <div class="title">Country</div>
             <div class="inputbox_patient_edit">
                 <select id="countries" name="countries" class="" ng-model="Patient.Country">
                     <!--<option selected="selected">Bangladesh</option>-->
@@ -321,6 +321,7 @@
                     <option value="ZM">Zambia</option>
                     <option value="ZW">Zimbabwe</option>
                 </select>
+                <div class="require">*</div>
             </div>
         </div>
 

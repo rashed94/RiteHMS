@@ -443,7 +443,7 @@ a:active, a:focus { outline-style: none; -moz-outline-style:none; }
 .inputbox
 {
 	float:left;
-	margin-right:30px;
+	margin-right:10px;
 }
 .inputbox_patient_edit
 {
@@ -1330,7 +1330,7 @@ margin-left:22px;
 .require{
     color:red;
     display:inline;
-    padding-right:5px;
+    padding-left:5px;
 }
 
 .dashbaord_right::after{
@@ -1396,4 +1396,9 @@ margin-left:22px;
 .modal_left_margin60
 {
     margin-left:60px;
+}
+.patentInfo_appointment{
+
+    float:left;
+    
 }

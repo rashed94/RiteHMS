@@ -595,6 +595,7 @@ HmsApp.controller("BedSetupController", function ($scope, $routeParams, $window,
                     $scope.ServiceProviderType = $scope.Configuration.Configuration.DoctorTypeId;
                     $scope.SingleBedItem.ItemTypeId = $scope.Configuration.Configuration.ServiceItem;
                     $scope.medicalTypeIDLab = $scope.Configuration.Configuration.MedicalTypeLabTest.toString();
+                    $scope.Currency = $scope.Configuration.Configuration.Currency;
 
                     init();
 

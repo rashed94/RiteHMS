@@ -370,6 +370,7 @@ HmsApp.controller("ConfigurationController", function ($scope, $routeParams, $wi
                 $scope.medicalTypeIDTreatment = $scope.Configuration.Configuration.MedicalTypeTreatment.toString();
                 $scope.NonRegisterPatientId = $scope.Configuration.Configuration.NonRegisterPatientId;
                 $scope.HospitalAdmissionId = $scope.Configuration.Configuration.InititalSetupHospitalAdmission;
+                $scope.Currency = $scope.Configuration.Configuration.Currency;
                 init();
 
             }).error(function (error) {
