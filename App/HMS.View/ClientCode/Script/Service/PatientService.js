@@ -9,29 +9,32 @@
             apiUrl = "/Patient/UpdatePatient";
         }
 
-        file.upload = Upload.upload({
-            url: apiUrl,
-            data: { patient: $scope.Patient, file: file },
-        }).then(function (response) {
-            $scope.Patient = response.data;
-            if ($scope.Patient.DOB != null) {
-                $scope.AgeCalculate();
-            }
-            console.log('Error status: ' + response.status);
-            if (response.status > 0) {
-                $scope.errorMsg = response.status + ': ' + response.data;
-            }
-            else {
-                console.log('Success ' + response.config.data.file.name + 'uploaded. Response: ' + response.data);
-            }
-        }, function (response) {
+        
+            file.upload = Upload.upload({
+                url: apiUrl,
+                data: { patient: $scope.Patient, file: file },
+            }).then(function (response) {
+                $scope.Patient = response.data;
+                if ($scope.Patient.DOB != null) {
+                    $scope.AgeCalculate();
+                }
+                console.log('Error status: ' + response.status);
+                if (response.status > 0) {
+                    $scope.errorMsg = response.status + ': ' + response.data;
+                }
+                else {
+                    console.log('Success ' + response.config.data.file.name + 'uploaded. Response: ' + response.data);
+                }
+            }, function (response) {
 
-        }, function (evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-        });
-
+            }, function (evt) {
+                if (file) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                    console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+                }
+            });
+       
         //return $http.post('/Patient/CreatePatient', patient);
     };
 

@@ -14,7 +14,7 @@ HmsApp.controller("ModalController", function ($scope, $modalInstance, patient, 
     };
 });
 
-HmsApp.controller("StockModelController", function ($scope, $modalInstance, $filter, singleItem,storeId,storeType, InventoryService) {
+HmsApp.controller("StockModelController", function ($scope, $modalInstance, $filter, singleItem, storeId, storeType, InventoryService, IniService) {
 
             $scope.PharmacyItemName = singleItem.Name;
             $scope.filterCondition={
@@ -22,6 +22,9 @@ HmsApp.controller("StockModelController", function ($scope, $modalInstance, $fil
                 ShelfId:"",
                 BinId:""
             }
+
+           
+
             $scope.StoreList = [];
             $scope.ShelfList = [];
             $scope.BinList = [];
@@ -353,6 +356,32 @@ HmsApp.controller("StockModelController", function ($scope, $modalInstance, $fil
             }
 
             $scope.GetStores();
+
+
+
+
+    /*------------------------- configuration begin -------------------------*/
+
+            $scope.GetConfiguration = function () {
+
+                IniService.GetConfiguration()
+                    .success(function (data) {
+
+                        $scope.Configuration = data;
+                        $scope.Currency = $scope.Configuration.Configuration.Currency;
+
+                        
+
+                    }).error(function (error) {
+
+                        $scope.status = 'Unable get currency ' + error.message;
+                        console.log($scope.status);
+
+                    });
+
+            }
+
+            $scope.GetConfiguration();
 
             $scope.ok = function () {
                 $modalInstance.close();
@@ -1290,6 +1319,8 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
     $scope.PaymentMethod = "1";
     $scope.PaymentFlag = true;
 
+   
+
     $scope.Invoice = {
         Id: null,
         InvoiceDate: $filter('date')(new Date(), 'MM/dd/yy'),
@@ -1390,8 +1421,8 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.ServiceDate = ToJavaScriptDate(item.ServiceDate);
         $scope.serviceItem.UserId = '';
         $scope.serviceItem.Discount = item.Discount;
-        $scope.serviceItem.Refund = '';
-        $scope.serviceItem.Billed = '';
+        $scope.serviceItem.Refund = item.Refund;
+        $scope.serviceItem.Billed = item.Billed;
         $scope.serviceItem.ReferralFee = item.ReferralAfterDiscount;
         $scope.serviceItem.DeliveryDate = ToJavaScriptDate(item.DeliveryDate);
         $scope.serviceItem.DeliveryTime = item.DeliveryTime;
@@ -1439,8 +1470,8 @@ HmsApp.controller("InvoiceModalController", function ($scope, $modalInstance, $f
         $scope.serviceItem.ServiceDate = ToJavaScriptDate(item.ServiceDate);
         $scope.serviceItem.UserId = '';
         $scope.serviceItem.Discount = item.Discount;
-        $scope.serviceItem.Refund = '';
-        $scope.serviceItem.Billed = '';
+        $scope.serviceItem.Refund = item.Refund;
+        $scope.serviceItem.Billed = item.Billed;
         $scope.serviceItem.ReferralFee = item.ReferralFee;
         $scope.serviceItem.ReferralFeePaid = $scope.serviceItem.ReferralFeePaid;
         $scope.serviceItem.DeliveryDate = ToJavaScriptDate(item.DeliveryDate);

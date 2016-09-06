@@ -344,6 +344,7 @@ angular.module('HMS').directive('requsitionStatus', function () {
                         $scope.RequsitionStatusOpened = $scope.Configuration.Configuration.RequsitionStatusOpened;
                         $scope.RequsitionStatusApproved = $scope.Configuration.Configuration.RequsitionStatusApproved;
                         $scope.RequsitionStatusReceived = $scope.Configuration.Configuration.RequsitionStatusReceived;
+                        $scope.Currency = $scope.Configuration.Configuration.Currency;
 
                     }).error(function (error) {
 

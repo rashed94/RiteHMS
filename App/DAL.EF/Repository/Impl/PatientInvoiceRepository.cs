@@ -36,6 +36,7 @@ namespace HMS.DAL.Repository
         public IList<PatientInvoice> GetPatientInvoicebyMedicalTypeOnlyLabItem(long id, long statusid, long medicalTypeID, DateTime invoiceDateStart, DateTime invoiceDateEnd, long? invoiceId = null)
         {
             IQueryable<PatientInvoice> queryResult = _DbSet;
+            
             //  bool active = true;
             //return queryResult.Where(c => c.MedicalTypeId == id && c.Name.StartsWith(name)).ToList();
            
