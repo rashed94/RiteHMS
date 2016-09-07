@@ -168,7 +168,7 @@ HmsApp.controller("LabTestController", function ($scope, $routeParams, $window, 
                 }
 
                 if (item.IsRefunded) {
-                    item.Staus = item.Staus + "  (Reunded)";
+                    item.Staus = item.Staus + "  (Refunded)";
                 }
 
                 if (item.TotalAmount != item.Paid) {
