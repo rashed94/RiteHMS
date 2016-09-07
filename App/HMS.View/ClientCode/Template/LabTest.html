@@ -98,9 +98,10 @@
             <li class="addlabtest"><a ng-href="#/labtest/addlabtest">ADD/EDIT LAB TEST</a></li>
             <li class="listreagent"><a ng-href="#/labtest/listreagent">REAGENT LIST</a></li>
             <li class="addreagent"><a ng-href="#/labtest/addreagent">ADD/EDIT REAGENT</a></li>
-            <li class="inventory"><a ng-href="#/labtest/inventory">INVENTORY</a></li>
-            <li class="dashboard"><a ng-href="#/labtest/dashboard">DASHBOARD</a></li>
-            <li class="requsition"><a ng-href="#/labtest/requsition">REQUSITION</a></li>
+            <li class="inventory"><a ng-href="#/labtest/inventory">Reagent INVENTORY</a></li>
+            <li class="dashboard"><a ng-href="#/labtest/dashboard">Reorder Alert</a></li>
+            <li class="requsition"><a ng-href="#/labtest/requsition">REQUSITION List</a></li>
+            <li class="admin"><a href="#/labtest/admin">Store Keeper</a></li>
 
         </ul>
         <div style="clear: both"></div>
@@ -321,7 +322,7 @@
 
         <div class="round_box box_general" ng-show="saveSuccess>0">
 
-            <div class="success_message">Successfully save the Item</div>
+            <div class="success_message">Successfully Saved the Item</div>
             </div>
         <div style="clear:both;"></div>
 
@@ -420,7 +421,7 @@
                     </tr>
                     <tr>
                         <td height="39">&nbsp;</td>
-                        <td>REFERRAR'S COMISSIOM &nbsp;({{Currency}})</td>
+                        <td>REFERRAR'S COMISSION &nbsp;({{Currency}})</td>
                         <td colspan="2"><input type="text" ng-model="SingleLabItem.DefaultReferrarFee">
                          &nbsp;&nbsp; <a class="arrow_head" href="#" ng-click="$event.preventDefault();CommissionModal('lg',true)" ng-show="SingleLabItem.Id>0"> Set Comission by Doctor's Name</a>
                             &nbsp;&nbsp; <a class="arrow_head" href="#" ng-click="$event.preventDefault();ReagentModal('lg',true,SingleLabItem)" ng-show="SingleLabItem.Id>0"> Set Reagent</a>
